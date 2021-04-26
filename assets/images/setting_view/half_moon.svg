@@ -1,0 +1,14 @@
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" width="511.99" height="511.99" viewBox="0 0 511.99 511.99">
+  <circle cx="255.99" cy="255.99" r="255.99" fill="#fff"/>
+  <path d="M391.37,292.82A123.84,123.84,0,1,1,249.86,93.75,161.18,161.18,0,1,0,415.3,259.19,123.64,123.64,0,0,1,391.37,292.82Z" fill="#347d53"/>
+  <g>
+    <polygon points="355.8 153.57 361.51 205.22 367.22 153.57 418.87 147.86 367.22 142.15 361.51 90.5 355.8 142.15 304.15 147.86 355.8 153.57" fill="#347d53"/>
+    <polygon points="112.36 410.63 116.45 447.62 120.55 410.63 157.54 406.54 120.55 402.45 116.45 365.45 112.36 402.45 75.37 406.54 112.36 410.63" fill="#347d53"/>
+    <rect x="243.18" y="248.21" width="10.36" height="10.36" transform="translate(-106.43 249.84) rotate(-45)" fill="#347d53"/>
+    <rect x="418.93" y="193.38" width="10.36" height="10.36" transform="translate(-16.18 358.05) rotate(-45)" fill="#347d53"/>
+    <rect x="450.01" y="284.42" width="10.36" height="10.36" transform="translate(-71.46 406.69) rotate(-45)" fill="#347d53"/>
+    <rect x="76.07" y="124.54" width="10.36" height="10.36" transform="translate(-67.93 95.44) rotate(-45)" fill="#347d53"/>
+    <rect x="346.32" y="421.43" width="10.36" height="10.36" transform="translate(-198.71 373.5) rotate(-45)" fill="#347d53"/>
+    <rect x="117.59" y="97.88" width="10.36" height="10.36" transform="translate(-36.92 117) rotate(-45)" fill="#347d53"/>
+  </g>
+</svg>

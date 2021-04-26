@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="119" height="119" viewBox="0 0 119 119">
+  <defs>
+    <filter id="Path_90" x="0" y="0" width="119" height="119" filterUnits="userSpaceOnUse">
+      <feOffset dy="15" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="15" result="blur"/>
+      <feFlood flood-color="#347d53" flood-opacity="0.149"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_892" data-name="Group 892" transform="translate(9 -441)">
+    <g transform="matrix(1, 0, 0, 1, -9, 441)" filter="url(#Path_90)">
+      <path id="Path_90-2" data-name="Path 90" d="M14.5,0A14.5,14.5,0,1,1,0,14.5,14.5,14.5,0,0,1,14.5,0Z" transform="translate(45 30)" fill="#347d53"/>
+    </g>
+    <g id="Group_755" data-name="Group 755" transform="translate(42 477)">
+      <path id="Path_1223" data-name="Path 1223" d="M19.9,10.242H17.069V6H12.828v4.242H10l4.948,4.948ZM10,16.6v1.414h9.9V16.6Z" transform="translate(-6.465 -3.879)" fill="#fff"/>
+      <path id="Path_1224" data-name="Path 1224" d="M0,0H16.966V16.966H0Z" transform="translate(0 0)" fill="none"/>
+    </g>
+  </g>
+</svg>

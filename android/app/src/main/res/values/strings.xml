@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">مسلم بوك</string>
+  <string name="press_here_to_close_azan">اضغط هنا للإغلاق</string>
+  <string name="azan_is_too_near">أقترب موعد الأذان</string>
+  <string name="azan_is_now">حان موعد الأذان</string>
+  <string name="fasting_tomorrow">لا تنس صيام غداً</string>
+  <string name="monday">يوم الأثنين</string>
+  <string name="thursday">يوم الخميس</string>
+
+  <string name="before_azan_1">أذان الفجر</string>
+  <string name="before_azan_3">أذان الظهر</string>
+  <string name="before_azan_4">أذان العصر</string>
+  <string name="Ramadan_Iftar_time">وقت افطار رمضان </string>
+  <string name="Ramadan_sohor_time">وقت سحور رمضان </string>
+  <string name="before_azan_5">أذان المغرب</string>
+  <string name="before_azan_6">أذان العشاء</string>
+  <string name="tab_to_close">إضغط للإغلاق</string>
+  <string name="you_have_new_questions">من الممكن أن يكون  لديك أسئلة جديدة</string>
+  <string name="exit">خروج</string>
+  <string name="enter">إبدأ الآن</string>
+  <string name="are_you_ready">هل أنت جاهز للتحدي ؟</string>
+  <string name="facebook_app_id">237347897482808</string>
+  <string name="fb_login_protocol_scheme">fb237347897482808</string>
+
+  <!--  <string name="facebook_app_id">679514076185741</string>-->
+<!--  <string name="fb_login_protocol_scheme">fb679514076185741</string>-->
+</resources>
