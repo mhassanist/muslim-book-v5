@@ -18,7 +18,7 @@ import 'package:base_app/utils/sailor.dart';
 import 'package:base_app/views/splash_view/splash_view.dart';
 import 'package:base_app/views/start_view/start_view.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:device_preview/device_preview.dart' show DevicePreview;
+// import 'package:device_preview/device_preview.dart' show DevicePreview;
 import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -56,11 +56,12 @@ void main() async {
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
   FacebookAudienceNetwork.init();
   runApp(
-    DevicePreview(
-      enabled: false,
-      // enabled: !kReleaseMode,
-      builder: (context) => MyApp(), // Wrap your app
-    ),
+    // DevicePreview(
+    //   enabled: false,
+    //   // enabled: !kReleaseMode,
+    //   builder: (context) =>
+          MyApp(), // Wrap your app
+    // ),
   );
 }
 
@@ -98,7 +99,7 @@ Future<RemoteConfig> setupRemoteConfig() async {
 class MyApp extends StatefulWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
+  FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -119,7 +120,7 @@ class _MyAppState extends State<MyApp> {
     await Constants.platform.invokeMethod("fireAzan");
     await Constants.platform.invokeMethod("fireCannonRamadan");
     await Constants.platform.invokeMethod("fireMshartRamadan");
-     await Constants.platform.invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
+    await Constants.platform.invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
     await Constants.platform.invokeMethod("fireAzkarPopUp");
     await receiveMessage();
   }
@@ -128,7 +129,7 @@ class _MyAppState extends State<MyApp> {
     String message = '';
     try {
       showCompetition =
-          await Constants.platform.invokeMethod(Constants.Open_Competition);
+      await Constants.platform.invokeMethod(Constants.Open_Competition);
       openAzkar = await Constants.platform.invokeMethod(Constants.open_Azkar);
     } on PlatformException catch (e) {
       message = e.message;
@@ -184,7 +185,14 @@ class _MyAppState extends State<MyApp> {
             GlobalCupertinoLocalizations.delegate,
             AppLocalizations.delegate
           ],
-          localeResolutionCallback: (local, supportedLocals) {
+          builder: (BuildContext context, Widget child) {
+            return new Directionality(
+              textDirection: TextDirection.rtl,
+              child: child,
+            );
+          },
+            localeResolutionCallback: (local, supportedLocals) {
+            print("shimaaa_local " +supportedLocals.first.languageCode);
             return supportedLocals.first;
           },
           theme: ThemeData(

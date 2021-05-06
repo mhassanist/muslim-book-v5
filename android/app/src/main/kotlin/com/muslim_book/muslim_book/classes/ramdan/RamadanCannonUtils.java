@@ -46,6 +46,7 @@ public class RamadanCannonUtils {
 
             List<RamadanDatum> datumList = model.getRamadanData();
             RamadanDatum james =findUsingIterator(String.valueOf(mCalendar.get(Calendar.DAY_OF_MONTH) ),datumList);
+           if(james !=null )
             pickNextMaghrib(james.getTimings(), model);
 
 

@@ -6,19 +6,21 @@ class Utils {
     // flutter defined function
 
     showDialog(
-        context: context,
+        context: context, builder: (BuildContext context) {
+          return  new CupertinoAlertDialog(
+            title: new Text("Massage"),
+            content: new Text(text),
+            actions: <Widget>[
+              new FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: new Text("OK"))
+            ],
+          );
+    },
         // return object of type AlertDialog
-        child: new CupertinoAlertDialog(
-          title: new Text("Massage"),
-          content: new Text(text),
-          actions: <Widget>[
-            new FlatButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: new Text("OK"))
-          ],
-        ));
+        );
   }
 }
 
