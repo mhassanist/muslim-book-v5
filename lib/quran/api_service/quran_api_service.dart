@@ -21,6 +21,7 @@ class QuranApiService {
       QuranModel model = QuranModel.fromMap(res.data["data"]);
       return model;
     } catch (e) {
+      print("shimaaaa  "+ e.toString());
       return e;
     }
   }

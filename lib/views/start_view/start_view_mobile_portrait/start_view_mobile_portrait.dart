@@ -34,20 +34,15 @@ class StartViewMobilePortraitView extends StatefulWidget {
 }
 
 class _StartViewMobilePortraitViewState
-    extends State<StartViewMobilePortraitView>
-    with WidgetsBindingObserver {
-
+    extends State<StartViewMobilePortraitView> with WidgetsBindingObserver {
   List<Widget> _pages;
   bool isAdd = false;
-
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    Get
-        .find<HomeController>()
-        .scaffoldKey = key;
+    Get.find<HomeController>().scaffoldKey = key;
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Constants.PRIMARY_DARK_COLOR,
     ));
@@ -80,26 +75,22 @@ class _StartViewMobilePortraitViewState
 
   check() async {
     var showCompetition =
-    await Constants.platform.invokeMethod(Constants.Open_Competition);
+        await Constants.platform.invokeMethod(Constants.Open_Competition);
     print(showCompetition);
-    List<dynamic> phoneNumbersList = await Constants.platform.invokeMethod(
-        Constants.FIRE_COMPETITION_POP_UP);
+    List<dynamic> phoneNumbersList = await Constants.platform
+        .invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
     if (showCompetition != null) {
-      Provider
-          .of<UserProvider>(context, listen: false)
-          .selectedPage = 3;
+      Provider.of<UserProvider>(context, listen: false).selectedPage = 3;
     }
     var openAzkar = await Constants.platform.invokeMethod(Constants.open_Azkar);
     if (openAzkar != null) {
-      Provider
-          .of<UserProvider>(context, listen: false)
-          .selectedPage = 4;
+      Provider.of<UserProvider>(context, listen: false).selectedPage = 4;
     }
   }
 
   checkPermissions() async {
     var checkBattery =
-    await Constants.platform.invokeMethod("checkBatteryEditing");
+        await Constants.platform.invokeMethod("checkBatteryEditing");
     if (!checkBattery) {
       Get.dialog(AdjustBatteryView(isStart: false));
       setState(() {
@@ -116,20 +107,16 @@ class _StartViewMobilePortraitViewState
       QuranView(),
       CompassView(),
       HomeView(),
-      Provider
-          .of<UserProvider>(context)
-          .isLoggedIn
+      Provider.of<UserProvider>(context).isLoggedIn
           ? CompetitionView()
           : LoginPopUpView(),
       AzkarListView(),
     ];
-    return
-      WillPopScope(
+    return WillPopScope(
       onWillPop: () {
         return _onWillPop();
       },
-      child:
-      Scaffold(
+      child: Scaffold(
         // appBar: AppBar(
         //   actions: [
         //
@@ -150,9 +137,7 @@ class _StartViewMobilePortraitViewState
           children: <Widget>[
             Container(
                 width: double.infinity,
-                child: _pages[Provider
-                    .of<UserProvider>(context)
-                    .selectedPage]),
+                child: _pages[Provider.of<UserProvider>(context).selectedPage]),
             // SafeArea(
             //   child: Container(
             //     height: kToolbarHeight,
@@ -173,71 +158,52 @@ class _StartViewMobilePortraitViewState
         ),
 
         bottomNavigationBar: ResponsiveBuilder(
-          builder: (_, sizeConfig) =>
-              BottomNavigationBar(
-                onTap: (position) async {
-                  if (position == 0) {
-                    if (locator<Prefs>().getIsFirstTime()) {
-                      Navigator.pushNamed(context, "/pick_country_view");
-                    } else {
-                      Provider
-                          .of<UserProvider>(context, listen: false)
-                          .selectedPage = 0;
-                    }
-                  } else {
-                    onPageChanged(position);
-                  }
-                },
-                type: BottomNavigationBarType.fixed,
-                items: navigationItems(context, sizeConfig),
-                backgroundColor: Theme
-                    .of(context)
-                    .primaryColorDark,
-                //showUnselectedLabels: false,
-                selectedItemColor: Constants.CANVAS_COLOR,
-                currentIndex: Provider
-                    .of<UserProvider>(context)
-                    .selectedPage,
-                unselectedItemColor: Theme
-                    .of(context)
-                    .accentColor,
-              ),
+          builder: (_, sizeConfig) => BottomNavigationBar(
+            onTap: (position) async {
+              if (position == 0) {
+                if (locator<Prefs>().getIsFirstTime()) {
+                  Navigator.pushNamed(context, "/pick_country_view");
+                } else {
+                  Provider.of<UserProvider>(context, listen: false)
+                      .selectedPage = 0;
+                }
+              } else {
+                onPageChanged(position);
+              }
+            },
+            type: BottomNavigationBarType.fixed,
+            items: navigationItems(context, sizeConfig),
+            backgroundColor: Theme.of(context).primaryColorDark,
+            //showUnselectedLabels: false,
+            selectedItemColor: Constants.CANVAS_COLOR,
+            currentIndex: Provider.of<UserProvider>(context).selectedPage,
+            unselectedItemColor: Theme.of(context).accentColor,
+          ),
         ),
       ),
     );
   }
 
-
   Drawer sideNav() {
     return Drawer(
-        child: Stack(
-            children: <Widget> [
-        //first child be the blur background
-        BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-        //this is dependent on the import statment above
-        child: Container(
-            decoration: BoxDecoration(color: Colors.grey.withOpacity(0.5))
-        )
-    ),
-    ListView(
-    padding: EdgeInsets.zero,
-    children: <Widget>[
-    DrawerHeader(
-    child: Text('Hello Drawer Title')
-    ),
-    // ListTitle(
-    // leading: Icon(Icons.dashboard, color: Colors.white)
-    // title: "Dashboard"
-    // onTap: (){
-    //
-    // }
-    // )
-    ]
-    )
-    ]
-    )
-    );
+        child: Stack(children: <Widget>[
+      //first child be the blur background
+      BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+          //this is dependent on the import statment above
+          child: Container(
+              decoration: BoxDecoration(color: Colors.grey.withOpacity(0.5)))),
+      ListView(padding: EdgeInsets.zero, children: <Widget>[
+        DrawerHeader(child: Text('Hello Drawer Title')),
+        // ListTitle(
+        // leading: Icon(Icons.dashboard, color: Colors.white)
+        // title: "Dashboard"
+        // onTap: (){
+        //
+        // }
+        // )
+      ])
+    ]));
   }
 
   void showModal(context) {
@@ -250,31 +216,21 @@ class _StartViewMobilePortraitViewState
             alignment: Alignment.center,
             child: Text('Modal'),
           );
-        }
-    );
+        });
   }
 
   Future<bool> _onWillPop() async {
-    if (Provider
-        .of<UserProvider>(context, listen: false)
-        .selectedPage != 2) {
-      Provider
-          .of<UserProvider>(context, listen: false)
-          .selectedPage = 2;
+    if (Provider.of<UserProvider>(context, listen: false).selectedPage != 2) {
+      Provider.of<UserProvider>(context, listen: false).selectedPage = 2;
     } else {
-      return
-        (await showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            backgroundColor: Colors.transparent,
-            builder: (context) =>
-                ResponsiveBuilder(builder: (context, sizeConfig) {
-                  return
-                    Container(
-                      height: MediaQuery
-                          .of(context)
-                          .size
-                          .height * 0.55,
+      return (await showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (context) =>
+                  ResponsiveBuilder(builder: (context, sizeConfig) {
+                    return Container(
+                      height: MediaQuery.of(context).size.height * 0.55,
                       decoration: new BoxDecoration(
                         color: Colors.white,
                         borderRadius: new BorderRadius.only(
@@ -284,21 +240,15 @@ class _StartViewMobilePortraitViewState
                       ),
                       child: Center(
                         child: Column(
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                          // crossAxisAlignment: CrossAxisAlignment.center,
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               Container(
-                                padding: const EdgeInsets.fromLTRB(
-                                    20, 20, 20, 30),
-
-                                width: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 20, 20, 30),
+                                width: MediaQuery.of(context).size.width,
                                 decoration: new BoxDecoration(
-                                  color: Theme
-                                      .of(context)
-                                      .primaryColor,
+                                  color: Theme.of(context).primaryColor,
                                   borderRadius: new BorderRadius.only(
                                     topLeft: const Radius.circular(25.0),
                                     topRight: const Radius.circular(25.0),
@@ -308,33 +258,28 @@ class _StartViewMobilePortraitViewState
                                   AppLocalizations.of(context)
                                       .translate("are_you_sure_exit"),
                                   style: TextStyle(
-                                    fontSize: sizeConfig.blockSizeHorizontal *
-                                        5,
+                                    fontSize:
+                                        sizeConfig.blockSizeHorizontal * 5,
                                     color: Colors.white,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
                               ),
-
-
-                              Expanded(child: Container(
-                                  child:
-                                  AdMobRectangle(BannerName.DownEditAzan))
-                              )
-
-                              ,
-
+                              Expanded(
+                                  child: Container(
+                                      child: AdMobRectangle(
+                                          BannerName.DownEditAzan))),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   Container(
                                     width: sizeConfig.blockSizeHorizontal * 30,
                                     height: sizeConfig.blockSizeVertical * 6,
-                                    margin: EdgeInsets.only(
-                                        top: 20, bottom: 20),
+                                    margin:
+                                        EdgeInsets.only(top: 20, bottom: 20),
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            10)),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
                                     child: RawMaterialButton(
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(
@@ -343,15 +288,14 @@ class _StartViewMobilePortraitViewState
                                       onPressed: () {
                                         SystemNavigator.pop();
                                       },
-                                      fillColor: Theme
-                                          .of(context)
-                                          .primaryColor,
+                                      fillColor: Theme.of(context).primaryColor,
                                       child: Text(
-                                        AppLocalizations.of(context).translate(
-                                            "yes"),
+                                        AppLocalizations.of(context)
+                                            .translate("yes"),
                                         style: TextStyle(
-                                          fontSize: sizeConfig
-                                              .blockSizeHorizontal * 6,
+                                          fontSize:
+                                              sizeConfig.blockSizeHorizontal *
+                                                  6,
                                           color: Constants.CANVAS_COLOR,
                                         ),
                                       ),
@@ -363,11 +307,11 @@ class _StartViewMobilePortraitViewState
                                   Container(
                                     width: sizeConfig.blockSizeHorizontal * 30,
                                     height: sizeConfig.blockSizeVertical * 6,
-                                    margin: EdgeInsets.only(
-                                        top: 20, bottom: 20),
+                                    margin:
+                                        EdgeInsets.only(top: 20, bottom: 20),
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(
-                                            10)),
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
                                     child: RawMaterialButton(
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(
@@ -376,15 +320,14 @@ class _StartViewMobilePortraitViewState
                                       onPressed: () {
                                         Navigator.of(context).pop(false);
                                       },
-                                      fillColor: Theme
-                                          .of(context)
-                                          .accentColor,
+                                      fillColor: Theme.of(context).accentColor,
                                       child: Text(
-                                        AppLocalizations.of(context).translate(
-                                            "cancel"),
+                                        AppLocalizations.of(context)
+                                            .translate("cancel"),
                                         style: TextStyle(
-                                          fontSize: sizeConfig
-                                              .blockSizeHorizontal * 6,
+                                          fontSize:
+                                              sizeConfig.blockSizeHorizontal *
+                                                  6,
                                           color: Constants.CANVAS_COLOR,
                                         ),
                                       ),
@@ -392,31 +335,21 @@ class _StartViewMobilePortraitViewState
                                   )
                                 ],
                               ),
-
-
                             ]),
                       ),
                     );
-                })))
-
-
-            ??
-            false;
+                  }))) ??
+          false;
     }
   }
 
   Future<bool> _onWillPop2() async {
-    if (Provider
-        .of<UserProvider>(context, listen: false)
-        .selectedPage != 2) {
-      Provider
-          .of<UserProvider>(context, listen: false)
-          .selectedPage = 2;
+    if (Provider.of<UserProvider>(context, listen: false).selectedPage != 2) {
+      Provider.of<UserProvider>(context, listen: false).selectedPage = 2;
     } else {
       return (await showDialog(
-        context: context,
-        builder: (cc) =>
-            ResponsiveBuilder(builder: (context, sizeConfig) {
+            context: context,
+            builder: (cc) => ResponsiveBuilder(builder: (context, sizeConfig) {
               return new SimpleDialog(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10)),
@@ -428,9 +361,7 @@ class _StartViewMobilePortraitViewState
                           .translate("are_you_sure_exit"),
                       style: TextStyle(
                         fontSize: sizeConfig.blockSizeHorizontal * 6,
-                        color: Theme
-                            .of(context)
-                            .primaryColorDark,
+                        color: Theme.of(context).primaryColorDark,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -452,9 +383,7 @@ class _StartViewMobilePortraitViewState
                           onPressed: () {
                             SystemNavigator.pop();
                           },
-                          fillColor: Theme
-                              .of(context)
-                              .primaryColor,
+                          fillColor: Theme.of(context).primaryColor,
                           child: Text(
                             AppLocalizations.of(context).translate("yes"),
                             style: TextStyle(
@@ -481,9 +410,7 @@ class _StartViewMobilePortraitViewState
                           onPressed: () {
                             Navigator.of(context).pop(false);
                           },
-                          fillColor: Theme
-                              .of(context)
-                              .accentColor,
+                          fillColor: Theme.of(context).accentColor,
                           child: Text(
                             AppLocalizations.of(context).translate("cancel"),
                             style: TextStyle(
@@ -503,9 +430,7 @@ class _StartViewMobilePortraitViewState
                       AppLocalizations.of(context).translate("or"),
                       style: TextStyle(
                         fontSize: sizeConfig.blockSizeHorizontal * 5,
-                        color: Theme
-                            .of(context)
-                            .primaryColorDark,
+                        color: Theme.of(context).primaryColorDark,
                       ),
                     ),
                   ),
@@ -517,7 +442,7 @@ class _StartViewMobilePortraitViewState
                     child: RawMaterialButton(
                       shape: RoundedRectangleBorder(
                         borderRadius:
-                        BorderRadius.circular(sizeConfig.blockSizeVertical),
+                            BorderRadius.circular(sizeConfig.blockSizeVertical),
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();
@@ -525,9 +450,7 @@ class _StartViewMobilePortraitViewState
                         LaunchReview.launch();
                         SystemNavigator.pop();
                       },
-                      fillColor: Theme
-                          .of(context)
-                          .primaryColor,
+                      fillColor: Theme.of(context).primaryColor,
                       child: Text(
                         AppLocalizations.of(context)
                             .translate("rating_muslim_book?"),
@@ -541,7 +464,7 @@ class _StartViewMobilePortraitViewState
                 ],
               );
             }),
-      )) ??
+          )) ??
           false;
     }
   }
@@ -554,30 +477,25 @@ class _StartViewMobilePortraitViewState
     "الأذكار"
   ];
 
-  List<Color> getPageColor(context) =>
-      [
+  List<Color> getPageColor(context) => [
         Colors.transparent,
         Constants.CANVAS_COLOR,
         Constants.CANVAS_COLOR,
-        Provider
-            .of<UserProvider>(context, listen: false)
-            .isLoggedIn
+        Provider.of<UserProvider>(context, listen: false).isLoggedIn
             ? Constants.CANVAS_COLOR
             : Colors.transparent,
         Constants.CANVAS_COLOR,
       ];
 
-  List<BottomNavigationBarItem> navigationItems(context,
-      SizingInformation sizeConfig) {
+  List<BottomNavigationBarItem> navigationItems(
+      context, SizingInformation sizeConfig) {
     return [
       BottomNavigationBarItem(
         label: _pagesNames[0],
         icon: SvgPicture.asset(
           "assets/images/start_view/mushaf.svg",
           width: sizeConfig.blockSizeHorizontal * 7,
-          color: Theme
-              .of(context)
-              .accentColor,
+          color: Theme.of(context).accentColor,
         ),
         activeIcon: SvgPicture.asset(
           "assets/images/start_view/mushaf.svg",
@@ -590,9 +508,7 @@ class _StartViewMobilePortraitViewState
         icon: SvgPicture.asset(
           "assets/images/start_view/compass_icon.svg",
           width: sizeConfig.blockSizeHorizontal * 6,
-          color: Theme
-              .of(context)
-              .accentColor,
+          color: Theme.of(context).accentColor,
         ),
         activeIcon: SvgPicture.asset(
           "assets/images/start_view/compass_icon.svg",
@@ -605,9 +521,7 @@ class _StartViewMobilePortraitViewState
         icon: Icon(
           Icons.home,
           size: sizeConfig.blockSizeHorizontal * 8,
-          color: Theme
-              .of(context)
-              .accentColor,
+          color: Theme.of(context).accentColor,
         ),
         activeIcon: Icon(
           Icons.home,
@@ -620,9 +534,7 @@ class _StartViewMobilePortraitViewState
         icon: SvgPicture.asset(
           "assets/images/start_view/quizes_icon.svg",
           width: sizeConfig.blockSizeHorizontal * 8,
-          color: Theme
-              .of(context)
-              .accentColor,
+          color: Theme.of(context).accentColor,
         ),
         activeIcon: SvgPicture.asset(
           "assets/images/start_view/quizes_icon.svg",
@@ -635,9 +547,7 @@ class _StartViewMobilePortraitViewState
         icon: SvgPicture.asset(
           "assets/images/start_view/azkar.svg",
           width: sizeConfig.blockSizeHorizontal * 6,
-          color: Theme
-              .of(context)
-              .accentColor,
+          color: Theme.of(context).accentColor,
         ),
         activeIcon: SvgPicture.asset(
           "assets/images/start_view/azkar.svg",
@@ -649,9 +559,7 @@ class _StartViewMobilePortraitViewState
   }
 
   void onPageChanged(position) {
-    Provider
-        .of<UserProvider>(context, listen: false)
-        .selectedPage = position;
+    Provider.of<UserProvider>(context, listen: false).selectedPage = position;
   }
 
 //  void openFaceBookAds() {

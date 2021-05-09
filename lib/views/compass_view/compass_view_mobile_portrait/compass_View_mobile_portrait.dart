@@ -31,6 +31,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
   @override
   void initState() {
     super.initState();
+    _fetchPermissionStatus();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       accelerometerEvents.listen((AccelerometerEvent event) {
         if (mounted) {
@@ -84,7 +85,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
         body: Container(
           height: unitSize * 100,
           // height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.only(top: kToolbarHeight + (unitSize * 3)),
+          // padding: EdgeInsets.only(top: kToolbarHeight + (unitSize * 3)),
           child: ListView(
             children: <Widget>[
               _buildCompass(unitSize),
@@ -96,6 +97,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
   }
 
   Widget _buildCompass(double unitSize) {
+
     return StreamBuilder<double>(
       stream: FlutterCompass.events,
       builder: (context, snapshot) {
@@ -136,11 +138,18 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
 //          if (status.isGranted)
 //            _fetchPermissionStatus();
 //        });
-
+//  print( "_hasPermissions   $_hasPermissions    currentLocLatLong   $currentLocLatLong    " );
         return Container(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Text(
+                  "معايرة البوصلة  الخاصه بك ، قم بإماله الهاتف",
+                  style: TextStyle(fontSize: unitSize * 2),
+                ),
+              ),
               Container(
                 alignment: Alignment.topCenter,
                 margin: EdgeInsets.only(left: 20, right: 20),
@@ -216,8 +225,9 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
                               : CrossFadeState.showFirst,
                       duration: Duration(milliseconds: 200),
                     )
-                  : Container(),
-              if (!_hasPermissions || currentLocLatLong == null)
+                : Container(),
+              if(!snapshot.hasData)
+              if ( !_hasPermissions || currentLocLatLong == null )
                 Column(
                   children: <Widget>[
                     Padding(

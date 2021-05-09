@@ -138,13 +138,16 @@ class RamadanProvider extends ViewStateProvider {
           orElse: () {
         return null;
       });
-      var beforFajirTime = ramadanDay.timings.fajr.split(" ")[0];
-      var hourUpdate = int.parse(beforFajirTime.split(":")[0]) - 2;
-      var mshatTime =
-          hourUpdate.toString() + ":" + beforFajirTime.split(":")[1];
-      locator<Prefs>().setRamadanMashartTime(mshatTime);
-      _dateTime = DateTime(now.year, now.month, now.day, hourUpdate,
-          int.parse(beforFajirTime.split(":")[1]));}
+      if(ramadanDay!= null){
+        var beforFajirTime = ramadanDay.timings.fajr.split(" ")[0];
+        var hourUpdate = int.parse(beforFajirTime.split(":")[0]) - 2;
+        var mshatTime =
+            hourUpdate.toString() + ":" + beforFajirTime.split(":")[1];
+        locator<Prefs>().setRamadanMashartTime(mshatTime);
+        _dateTime = DateTime(now.year, now.month, now.day, hourUpdate,
+            int.parse(beforFajirTime.split(":")[1]));}
+      }
+
      } else {
       _dateTime = DateTime(
           now.year,

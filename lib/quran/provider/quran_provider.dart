@@ -94,11 +94,15 @@ class QuranProvider extends ViewStateProvider {
       if (res != null && res is model.QuranModel) {
         await _quranDao.saveQuran(res);
         saveData();
-      } else
+      } else{
+        setViewState(ViewState.Idle);
         errorMessage = res.toString();
+      }
     } else {
       saveData();
     }
+    setViewState(ViewState.Idle);
+
   }
 
   void saveData() async {
