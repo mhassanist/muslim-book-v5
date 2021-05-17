@@ -36,7 +36,7 @@ class AzanHomeWidget extends StatelessWidget {
                       return Container(
                           child: Center(
                         child: Text(
-                          "لا توجد بيانات",
+                          "“سُبْحَانَ اللَّهِ وَبِحَمْدِهِ ، سُبْحَانَ اللَّهِ الْعَظِيمِ”",
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

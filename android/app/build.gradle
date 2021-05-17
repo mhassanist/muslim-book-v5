@@ -1,4 +1,4 @@
-def localProperties = new Properties()
+ def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
@@ -52,8 +52,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 29
         multiDexEnabled true
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        versionCode 50
+        versionName "4.5.12"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
