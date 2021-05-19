@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.muslim_book.muslim_book">
-
+    <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -37,6 +37,15 @@
             android:name=".services.ramadan.ramadan_mshart.RamadanMshartService"
             android:enabled="true"
             android:exported="true" />
+        <receiver
+            android:name=".MyReceiver"
+            android:enabled="true"
+            android:exported="false"></receiver>
+
+        <service
+            android:name=".MyService"
+            android:enabled="true"
+            android:exported="true" />
 
 
         <meta-data
@@ -54,8 +63,8 @@
             android:theme="@style/LaunchTheme"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
+                <action android:name="intent.my.action" />
                 <action android:name="FLUTTER_NOTIFICATION_CLICK" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>

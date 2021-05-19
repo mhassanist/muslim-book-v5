@@ -2,7 +2,9 @@ package com.muslim_book.muslim_book.services.azan;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -34,6 +36,15 @@ public class AzanService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("arrived Azan","onStartCommand");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Settings.canDrawOverlays(this)) {
+                Log.i("is_canDrawOverlays","truuuuuuuuuuuuuu");
+
+            }
+        }else {
+//            Log.i("is_canDrawOverlays","truuuuuuuuuuuuuu");
+
+        }
 
         startForeground(AZAN_NOTIFICATION_ID + 10, mAzanUtils.createForeGroundNotification(intent));
             return START_REDELIVER_INTENT;

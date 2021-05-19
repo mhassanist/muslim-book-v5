@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -111,6 +112,8 @@ public class AzanIntentService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.i("hossssssssssam  " ,"onStartCommand");
+
          if (intent != null) {
             beforeAzan = intent.getBooleanExtra(Constants.BEFORE_AZAN, false);
             showNotification(

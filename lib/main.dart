@@ -40,6 +40,7 @@ import 'utils/locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Constants.platform.invokeMethod("fireAzan");
   await Constants.platform.invokeMethod("fireCannonRamadan");
   await Constants.platform.invokeMethod("fireMshartRamadan");
   _initAdMob();
