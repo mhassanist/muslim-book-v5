@@ -41,8 +41,7 @@ public class MyService extends Service {
     private String TAG = "MyService";
     public static boolean isServiceRunning;
     private String CHANNEL_ID = "NOTIFICATION_CHANNEL";
-    private ScreenLockReceiver screenLockReceiver;
-    private Timer timer;
+     private Timer timer;
 
 
     private Handler mHandler = new Handler();
@@ -59,8 +58,7 @@ public class MyService extends Service {
     public MyService() {
         Log.d(TAG, "constructor called");
         isServiceRunning = false;
-        screenLockReceiver = new ScreenLockReceiver();
-        timer = new Timer();
+         timer = new Timer();
     }
 
     @Override
@@ -80,12 +78,7 @@ public class MyService extends Service {
         if (!overlayCheck) {
             mTimer.scheduleAtFixedRate(new TimeDisplayTimerTask(), 5, NOTIFY_INTERVAL);
         }
-
-        // register receiver to listen for screen on events
-        IntentFilter filter = new IntentFilter(Intent.ACTION_SCREEN_ON);
-        filter.addAction(Intent.ACTION_USER_PRESENT);
-        filter.addAction(Intent.ACTION_SCREEN_OFF);
-        registerReceiver(screenLockReceiver, filter);
+ 
      }
 
     class TimeDisplayTimerTask extends TimerTask {
@@ -163,25 +156,22 @@ public class MyService extends Service {
             Intent notificatonIntent = new Intent(this, MainActivity.class);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent pendiIntent = PendingIntent.getActivity(this, 0, notificatonIntent, 0);
-            try
-            {
+            try {
                 pendiIntent.send();
-            }
-            catch (PendingIntent.CanceledException e)
-            {
+            } catch (PendingIntent.CanceledException e) {
                 e.printStackTrace();
 
 
-
             }
-        /*
-         * A started service can use the startForeground API to put the service in a foreground state,
-         * where the system considers it to be something the user is actively aware of and thus not
-         * a candidate for killing when low on memory.
-         */
-        startForeground(1, notification);
+            /*
+             * A started service can use the startForeground API to put the service in a foreground state,
+             * where the system considers it to be something the user is actively aware of and thus not
+             * a candidate for killing when low on memory.
+             */
+            startForeground(1, notification);
 
-        Log.v(TAG, "Notification sent");
+            Log.v(TAG, "Notification sent");
+        }
     }
 
     @Override
@@ -233,9 +223,7 @@ public class MyService extends Service {
         isServiceRunning = false;
         stopForeground(true);
 
-        // unregister receiver
-        unregisterReceiver(screenLockReceiver);
-
+  
         // cancel the timer
         if (timer != null) {
             timer.cancel();
