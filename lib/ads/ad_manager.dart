@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:base_app/models/banner_names_enum.dart';
-import 'package:firebase_admob/firebase_admob.dart';
+// import 'package:firebase_admob/firebase_admob.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class AdManager {
@@ -16,8 +16,9 @@ class AdManager {
       throw new UnsupportedError("Unsupported platform");
     }
   }
+
   static getAdUnitId(BannerName bannerName) {
-    switch(bannerName){
+    switch (bannerName) {
       case BannerName.AZKAR:
         return remoteConfig.getString('Azkar');
         break;
@@ -30,19 +31,18 @@ class AdManager {
       case BannerName.SEBHA:
         return remoteConfig.getString('Sabha');
         break;
-        case BannerName.DownEditAzan:
+      case BannerName.DownEditAzan:
         return remoteConfig.getString('Down_Edit_Azan');
         break;
-        case BannerName.DownStartCompetition:
+      case BannerName.DownStartCompetition:
         return remoteConfig.getString('down_start_Competition');
         break;
-        case BannerName.Top:
+      case BannerName.Top:
         return remoteConfig.getString('Top');
         break;
- case BannerName.TheMiddleOfTheCompetition:
+      case BannerName.TheMiddleOfTheCompetition:
         return remoteConfig.getString('The_middle_of_the_competition');
         break;
-
     }
   }
 }

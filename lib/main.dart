@@ -1,6 +1,6 @@
 import 'package:admob_flutter/admob_flutter.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 // import 'package:alice/alice.dart';
-import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:base_app/ads/ad_manager.dart';
 import 'package:base_app/azan_feature/controllers/azan_controller.dart';
 import 'package:base_app/azkar_feature/providers/azkar_provider.dart';
@@ -18,7 +18,7 @@ import 'package:base_app/utils/sailor.dart';
 import 'package:base_app/views/splash_view/splash_view.dart';
 import 'package:base_app/views/start_view/start_view.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-// import 'package:device_preview/device_preview.dart' show DevicePreview;
+import 'package:device_preview/device_preview.dart' show DevicePreview;
 import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -53,16 +53,15 @@ void main() async {
   setupLocator();
 
   await locator<Prefs>().setSharedPreferences();
-  Crashlytics.instance.enableInDevMode = true;
-  FlutterError.onError = Crashlytics.instance.recordFlutterError;
+  // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   FacebookAudienceNetwork.init();
   runApp(
-    // DevicePreview(
-    //   enabled: false,
-    //   // enabled: !kReleaseMode,
-    //   builder: (context) =>
-          MyApp(), // Wrap your app
-    // ),
+    DevicePreview(
+      enabled: true,
+      // enabled: !kReleaseMode,
+      builder: (context) => MyApp(), // Wrap your app
+    ),
   );
 }
 
@@ -100,7 +99,7 @@ Future<RemoteConfig> setupRemoteConfig() async {
 class MyApp extends StatefulWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
-  FirebaseAnalyticsObserver(analytics: analytics);
+      FirebaseAnalyticsObserver(analytics: analytics);
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -116,6 +115,7 @@ class _MyAppState extends State<MyApp> {
     invokeMethod();
     super.initState();
   }
+
   //ramadan_time shaimaaaaaaaaaaaaaa
   Future invokeMethod() async {
     await Constants.platform.invokeMethod("fireAzan");
@@ -130,7 +130,7 @@ class _MyAppState extends State<MyApp> {
     String message = '';
     try {
       showCompetition =
-      await Constants.platform.invokeMethod(Constants.Open_Competition);
+          await Constants.platform.invokeMethod(Constants.Open_Competition);
       openAzkar = await Constants.platform.invokeMethod(Constants.open_Azkar);
     } on PlatformException catch (e) {
       message = e.message;
@@ -192,8 +192,8 @@ class _MyAppState extends State<MyApp> {
               child: child,
             );
           },
-            localeResolutionCallback: (local, supportedLocals) {
-            print("shimaaa_local " +supportedLocals.first.languageCode);
+          localeResolutionCallback: (local, supportedLocals) {
+            print("shimaaa_local " + supportedLocals.first.languageCode);
             return supportedLocals.first;
           },
           theme: ThemeData(
@@ -206,7 +206,9 @@ class _MyAppState extends State<MyApp> {
             primaryColorDark: Constants.PRIMARY_DARK_COLOR,
             canvasColor: Constants.CANVAS_COLOR,
           ),
-          home: showCompetition != null ||  openAzkar != null ? StartView() : SplashView(),
+          home: showCompetition != null || openAzkar != null
+              ? StartView()
+              : SplashView(),
           navigatorKey: Routes.sailor.navigatorKey,
           onGenerateRoute: Routes.sailor.generator(),
         ),

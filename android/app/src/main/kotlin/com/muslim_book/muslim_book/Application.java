@@ -16,8 +16,12 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+
+//import dev.fluttercommunity.plus.androidalarmmanager.AlarmService;
+//import dev.fluttercommunity.plus.androidalarmmanager.AndroidAlarmManagerPlugin;
 import io.flutter.app.FlutterApplication;
 import io.flutter.plugin.common.PluginRegistry;
+import io.flutter.plugins.GeneratedPluginRegistrant;
 import io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService;
 
 import java.util.Calendar;
@@ -39,7 +43,6 @@ public class Application extends FlutterApplication implements PluginRegistry.Pl
   @Override
   public void onCreate() {
     super.onCreate();
-
     FirebaseApp.initializeApp(this);
     AudienceNetworkAds.initialize(this);
     mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
@@ -50,13 +53,11 @@ public class Application extends FlutterApplication implements PluginRegistry.Pl
     logger.logEvent(AppEventsConstants.EVENT_NAME_ACTIVATED_APP);
     JodaTimeAndroid.init(this);
     FlutterFirebaseMessagingService.setPluginRegistrant(this);
-  }
-
-
+   }
   @Override
   public void registerWith(PluginRegistry registry) {
+   }
 
-  }
 
 }
 

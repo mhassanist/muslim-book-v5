@@ -37,15 +37,15 @@
             android:name=".services.ramadan.ramadan_mshart.RamadanMshartService"
             android:enabled="true"
             android:exported="true" />
-        <receiver
-            android:name=".MyReceiver"
-            android:enabled="true"
-            android:exported="false"></receiver>
+<!--        <receiver-->
+<!--            android:name=".MyReceiver"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="false"></receiver>-->
 
-        <service
-            android:name=".MyService"
-            android:enabled="true"
-            android:exported="true" />
+<!--        <service-->
+<!--            android:name=".MyService"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true" />-->
 
 
         <meta-data
@@ -156,14 +156,29 @@
                 <action android:name="android.intent.action.NOTIFY" />
             </intent-filter>
         </receiver>
+<!--        <receiver-->
+<!--            android:name="io.flutter.plugins.androidalarmmanager.AlarmBroadcastReceiver"-->
+<!--            android:exported="false" />-->
+<!--        <receiver-->
+<!--            android:name="io.flutter.plugins.androidalarmmanager.RebootBroadcastReceiver"-->
+<!--            android:enabled="false">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.BOOT_COMPLETED" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
+
+        <service
+            android:name="dev.fluttercommunity.plus.androidalarmmanager.AlarmService"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="false"/>
         <receiver
-            android:name="io.flutter.plugins.androidalarmmanager.AlarmBroadcastReceiver"
-            android:exported="false" />
+            android:name="dev.fluttercommunity.plus.androidalarmmanager.AlarmBroadcastReceiver"
+            android:exported="false"/>
         <receiver
-            android:name="io.flutter.plugins.androidalarmmanager.RebootBroadcastReceiver"
+            android:name="dev.fluttercommunity.plus.androidalarmmanager.RebootBroadcastReceiver"
             android:enabled="false">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
             </intent-filter>
         </receiver>
 
@@ -176,10 +191,10 @@
         <service
             android:name=".services.ramadan.ramadan_mshart.RamadanMshartIntentService"
             android:exported="false" />
-        <service
-            android:name="io.flutter.plugins.androidalarmmanager.AlarmService"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
+<!--        <service-->
+<!--            android:name="io.flutter.plugins.androidalarmmanager.AlarmService"-->
+<!--            android:exported="false"-->
+<!--            android:permission="android.permission.BIND_JOB_SERVICE" />-->
 
         <!-- <meta-data
             android:name="com.facebook.sdk.ApplicationId"
