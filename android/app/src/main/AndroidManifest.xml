@@ -29,6 +29,7 @@
             android:name=".services.azan.AzanService"
             android:enabled="true"
             android:exported="true" />
+        <service android:name=".services.azan.OverLayService" />
         <service
             android:name=".services.ramadan.ramadan_cannon.RamadanCannonService"
             android:enabled="true"

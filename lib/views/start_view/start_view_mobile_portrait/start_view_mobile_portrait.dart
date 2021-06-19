@@ -54,6 +54,8 @@ class _StartViewMobilePortraitViewState
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     check();
+    print("shaimaaaaaaaaaaa_check_here");
+    print(state);
     switch (state) {
       case AppLifecycleState.resumed:
         check();

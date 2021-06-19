@@ -17,11 +17,13 @@ import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.Log;
 
+import com.muslim_book.muslim_book.R;
 import com.muslim_book.muslim_book.classes.ramdan.RamadanCannonUtils;
 import com.muslim_book.muslim_book.classes.ramdan.RamadanMshartUtils;
 import com.muslim_book.muslim_book.recievers.azkar.AzkarAlarm;
  import com.muslim_book.muslim_book.recievers.FastingAlertsReceiver;
 import com.muslim_book.muslim_book.recievers.competition.CompetitionsAlarmReceiver;
+import com.muslim_book.muslim_book.services.azan.OverLayService;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -30,8 +32,12 @@ import java.util.List;
 import io.flutter.embedding.engine.dart.DartExecutor;
 import io.flutter.plugin.common.MethodChannel;
 import android.content.SharedPreferences;
+import android.view.Gravity;
+import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class ChannelMethods {
 
@@ -57,8 +63,7 @@ public class ChannelMethods {
 
         new MethodChannel(flutterEngine, CHANNEL).setMethodCallHandler(
                 (call, result) -> {
-                    Log.i("shimooooooooooooooo  " ,call.method);
-                    switch (call.method) {
+                     switch (call.method) {
                         case "fireCannonRamadan":
                             if(RAMADAN_CONNAN_FLAG){
                                 new RamadanCannonUtils(mContext);
@@ -79,7 +84,11 @@ public class ChannelMethods {
                                 break;
                             }
                         case "askOverlay":
+                            Intent intentOverLayService = new Intent(mContext, OverLayService.class);
+                            Constants.SETBOOTAZANRECIEVER(mContext);
+                            ContextCompat.startForegroundService(mContext, intentOverLayService);
                             boolean value = canDrawOverLays();
+
                             result.success(value);
                             break;
                         case "checkOverlay":
@@ -144,6 +153,17 @@ public class ChannelMethods {
         Uri uri = Uri.fromParts("package", mContext.getPackageName(), null);
         intent.setData(uri);
         mContext.startActivity(intent);
+    }
+    public void Info(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("Info Aplikasi");
+        builder.setIcon(R.drawable.azan_icon1);
+        builder.setMessage("Jakarta Hospital");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Exit", null);
+        AlertDialog dialog = builder.show();
+        TextView messageView = (TextView)dialog.findViewById(android.R.id.message);
+        messageView.setGravity(Gravity.CENTER);
     }
 
     private boolean checkIsXiaomi() {

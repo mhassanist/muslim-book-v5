@@ -50,4 +50,6 @@ public class AzanService extends Service {
             return START_REDELIVER_INTENT;
     }
 
+
+
 }

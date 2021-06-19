@@ -58,7 +58,7 @@ void main() async {
   FacebookAudienceNetwork.init();
   runApp(
     DevicePreview(
-      enabled: true,
+      enabled: false,
       // enabled: !kReleaseMode,
       builder: (context) => MyApp(), // Wrap your app
     ),
