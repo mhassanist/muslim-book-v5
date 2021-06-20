@@ -33,6 +33,7 @@ import com.muslim_book.muslim_book.R;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_ID;
 
 
 public class OverLayService extends Service {
@@ -110,12 +111,7 @@ public class OverLayService extends Service {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
-        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("جاري إعداد تطبيق مسلم بوك")
-                 .setSmallIcon(R.drawable.ic_wallpaper_black_24dp)
-                .setContentIntent(pendingIntent)
-                .setColor(getResources().getColor(R.color.colorPrimary))
-                .build();
+
         if (overlayCheck) {
             mTimer.cancel();
             mTimer.purge();
@@ -133,7 +129,7 @@ public class OverLayService extends Service {
 
             Log.v(TAG, "Notification sent");
         }else{
-            startForeground(1, notification);
+//            startForeground(1, notification);
         }
     }
 
@@ -145,7 +141,12 @@ public class OverLayService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand called");
-
+        Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle("جاري إعداد تطبيق مسلم بوك")
+                .setSmallIcon(R.drawable.ic_wallpaper_black_24dp)
+                 .setColor(getResources().getColor(R.color.colorPrimary))
+                .build();
+        startForeground(988 + 10,notification );
         return START_REDELIVER_INTENT;
     }
 
@@ -167,22 +168,13 @@ public class OverLayService extends Service {
         Log.d(TAG, "onDestroy called");
         isServiceRunning = false;
         stopForeground(true);
-
-
         // cancel the timer
         if (mTimer != null) {
             mTimer.cancel();
         }
 
-
-
         super.onDestroy();
     }
 
-    // Not getting called on Xiaomi Redmi Note 7S even when autostart permission is granted
-    @Override
-    public void onTaskRemoved(Intent rootIntent) {
-        Log.d(TAG, "onTaskRemoved called");
-        super.onTaskRemoved(rootIntent);
-    }
+
 }
