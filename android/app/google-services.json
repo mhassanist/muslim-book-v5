@@ -1,0 +1,81 @@
+{
+  "project_info": {
+    "project_number": "429140413449",
+    "firebase_url": "https://muslim-book-ab937.firebaseio.com",
+    "project_id": "muslim-book-ab937",
+    "storage_bucket": "muslim-book-ab937.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429140413449:android:e2dea7bd290858e3cb7cd8",
+        "android_client_info": {
+          "package_name": "com.muslim_book.muslim_book"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429140413449-1rt5i3tinkq40ipvjnplk4bs9h1h0kt8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muslim_book.muslim_book",
+            "certificate_hash": "4b2e3bef8e186afcaa1dc15592459d1ba9ca1196"
+          }
+        },
+        {
+          "client_id": "429140413449-a76smb4449jta34uo4v7ise07g489ifm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muslim_book.muslim_book",
+            "certificate_hash": "bd7797f375d1f74061cac6a6b13baf70f58db2b7"
+          }
+        },
+        {
+          "client_id": "429140413449-hlbalrhfqiiod45nohefriq32fd2pne1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muslim_book.muslim_book",
+            "certificate_hash": "c4585e13df62c7b6a844077c136601eaf85b7a71"
+          }
+        },
+        {
+          "client_id": "429140413449-qq2jms8pjbbai7vti1dqpco4fguqbrin.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muslim_book.muslim_book",
+            "certificate_hash": "21201aa6f10406f1483509a58b5bac6626b02164"
+          }
+        },
+        {
+          "client_id": "429140413449-roefrq2th7o6mvff3f45evmfnrvc4jrv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muslim_book.muslim_book",
+            "certificate_hash": "91cccfaf980fee70c917520a4f7894a442ab45f5"
+          }
+        },
+        {
+          "client_id": "429140413449-50p5omidhhqs5r229ppk0anl64ff503g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC4GCIxjEvULoLY2K6lc2k7iSeH4V4ZHY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429140413449-50p5omidhhqs5r229ppk0anl64ff503g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-8586064191208277~4831882751"
+    }
+  ],
+  "configuration_version": "1"
+}
