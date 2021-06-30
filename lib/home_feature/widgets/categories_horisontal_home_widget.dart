@@ -58,12 +58,12 @@ class CategoriesHorizontalHomeWidget extends StatelessWidget {
                       decoration: BoxDecoration(
                           color: darkish_green,
                           borderRadius: BorderRadius.circular(90)),
-                      child: Center(
-                          child: Icon(
-                        Icons.arrow_back,
-                        size: 10,
-                        color: Colors.white,
-                      )),
+                      // child: Center(
+                      //     child: Icon(
+                      //   Icons.arrow_back,
+                      //   size: 10,
+                      //   color: Colors.white,
+                      // )),
                     ),
                   )
                 ],

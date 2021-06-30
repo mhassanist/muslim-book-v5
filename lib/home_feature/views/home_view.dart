@@ -2,6 +2,7 @@ import 'package:base_app/home_feature/controllers/home_controller.dart';
 import 'package:base_app/home_feature/views/homePage.dart';
 import 'package:base_app/home_feature/widgets/azan_home_widget.dart';
 import 'package:base_app/home_feature/widgets/categories_home_widget.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/utils/sizing_info_extension.dart';
 import 'package:base_app/widgets/app_scaffold.dart';
 import 'package:base_app/widgets/share_dialog.dart';
@@ -10,7 +11,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
+
+  @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveBuilder(builder: (context, SizingInformation sizeConfig) {
@@ -45,6 +53,10 @@ class HomeView extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
+              // setState(() {
+              //   AppLocalizations(Locale("en")).load();
+              // });
+              // AppLocalizations(Locale("en")).load();
               Navigator.pushNamed(context, '/settings');
             },
             child: Padding(

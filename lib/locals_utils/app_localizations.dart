@@ -19,6 +19,7 @@ class AppLocalizations {
     String jsonString =
         await rootBundle.loadString("assets/langs/${locale.languageCode}.json");
     Map<String, dynamic> jsonMap = json.decode(jsonString);
+    print("Shaimaaaaaaaaaaa " +jsonString.toString());
 
     _localizedStrings = jsonMap.map((key, value) {
       return MapEntry(key, value.toString());

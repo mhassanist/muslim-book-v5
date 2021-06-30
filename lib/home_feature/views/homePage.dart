@@ -4,6 +4,7 @@ import 'package:base_app/home_feature/domian/model/post_model.dart';
 import 'package:base_app/home_feature/domian/repository_home.dart';
 import 'package:base_app/home_feature/widgets/azan_home_widget.dart';
 import 'package:base_app/home_feature/widgets/categories_horisontal_home_widget.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -26,7 +27,7 @@ class HomePage extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           AzanHomeWidget(),
-          buildTitle("الأقسام الرئيسية"),
+          buildTitle(AppLocalizations.of(context).translate("MainSections")),
           Container(
               height: 110,
               width: MediaQuery.of(context).size.width,

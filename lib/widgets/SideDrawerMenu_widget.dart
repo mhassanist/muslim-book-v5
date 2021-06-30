@@ -268,6 +268,19 @@ class SideDrawerMenu {
                             Navigator.of(context).pop();
                             Navigator.pushNamed(context, '/settings');
                           }, false, ""),
+
+                          _buildDivider(),
+                          _buildRow(
+                              Icons.settings,
+                              AppLocalizations.of(context)
+                                  .translate("settings"), () {
+                            AppLocalizations(Locale("en")).load();
+                            Navigator.of(context).pop();
+
+                            // AppLocalizations(Locale("en")).load();
+
+                            // Navigator.pushNamed(context, '/settings');
+                          }, false, ""),
                           Container(
                             height: 20,
                           )

@@ -69,7 +69,8 @@ void main() async {
     DevicePreview(
       enabled: false,
       // enabled: !kReleaseMode,
-      builder: (context) => ProviderScope(child: MyApp()), // Wrap your app
+      builder: (context) => ProviderScope(child:
+      MyApp()), // Wrap your app
     ),
   );
 }
@@ -112,104 +113,104 @@ class MyApp extends StatefulWidget {
       FirebaseAnalyticsObserver(analytics: analytics);
 
   static Future<Widget> exitBottomSheet(context, widgetAddMob) async {
-     var admobe = widgetAddMob;
+    var admobe = widgetAddMob;
     return await showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        builder: (context) => ResponsiveBuilder(builder: (context, sizeConfig) {
-              return Container(
-                height: MediaQuery.of(context).size.height * 0.55,
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => ResponsiveBuilder(builder: (context, sizeConfig) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.55,
+          decoration: new BoxDecoration(
+            color: Colors.white,
+            borderRadius: new BorderRadius.only(
+              topLeft: const Radius.circular(25.0),
+              topRight: const Radius.circular(25.0),
+            ),
+          ),
+          child: Center(
+            child: Column(children: <Widget>[
+              Container(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+                width: MediaQuery.of(context).size.width,
                 decoration: new BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).primaryColor,
                   borderRadius: new BorderRadius.only(
                     topLeft: const Radius.circular(25.0),
                     topRight: const Radius.circular(25.0),
                   ),
                 ),
-                child: Center(
-                  child: Column(children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: new BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: new BorderRadius.only(
-                          topLeft: const Radius.circular(25.0),
-                          topRight: const Radius.circular(25.0),
-                        ),
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)
-                            .translate("are_you_sure_exit"),
-                        style: TextStyle(
-                          fontSize: sizeConfig.blockSizeHorizontal * 5,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                    Expanded(child: Container(child: admobe)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: sizeConfig.blockSizeHorizontal * 30,
-                          height: sizeConfig.blockSizeVertical * 6,
-                          margin: EdgeInsets.only(top: 20, bottom: 20),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: RawMaterialButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  sizeConfig.blockSizeVertical),
-                            ),
-                            onPressed: () {
-                              SystemNavigator.pop();
-                            },
-                            fillColor: Theme.of(context).primaryColor,
-                            child: Text(
-                              AppLocalizations.of(context).translate("yes"),
-                              style: TextStyle(
-                                fontSize: sizeConfig.blockSizeHorizontal * 6,
-                                color: Constants.CANVAS_COLOR,
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          width: sizeConfig.blockSizeHorizontal * 30,
-                          height: sizeConfig.blockSizeVertical * 6,
-                          margin: EdgeInsets.only(top: 20, bottom: 20),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: RawMaterialButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  sizeConfig.blockSizeVertical),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            fillColor: Theme.of(context).accentColor,
-                            child: Text(
-                              AppLocalizations.of(context).translate("cancel"),
-                              style: TextStyle(
-                                fontSize: sizeConfig.blockSizeHorizontal * 6,
-                                color: Constants.CANVAS_COLOR,
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ]),
+                child: Text(
+                  AppLocalizations.of(context).translate("are_you_sure_exit"),
+                  style: TextStyle(
+                    fontSize: sizeConfig.blockSizeHorizontal * 5,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-              );
-            }));
+              ),
+              Expanded(child: Container(child: admobe)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    width: sizeConfig.blockSizeHorizontal * 30,
+                    height: sizeConfig.blockSizeVertical * 6,
+                    margin: EdgeInsets.only(top: 20, bottom: 20),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    child: RawMaterialButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(sizeConfig.blockSizeVertical),
+                      ),
+                      onPressed: () {
+                        SystemNavigator.pop();
+                      },
+                      fillColor: Theme.of(context).primaryColor,
+                      child: Text(
+                        AppLocalizations.of(context).translate("yes"),
+                        style: TextStyle(
+                          fontSize: sizeConfig.blockSizeHorizontal * 6,
+                          color: Constants.CANVAS_COLOR,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    width: sizeConfig.blockSizeHorizontal * 30,
+                    height: sizeConfig.blockSizeVertical * 6,
+                    margin: EdgeInsets.only(top: 20, bottom: 20),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    child: RawMaterialButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(sizeConfig.blockSizeVertical),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      fillColor: Theme.of(context).accentColor,
+                      child: Text(
+                        AppLocalizations.of(context).translate("cancel"),
+                        style: TextStyle(
+                          fontSize: sizeConfig.blockSizeHorizontal * 6,
+                          color: Constants.CANVAS_COLOR,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ]),
+          ),
+        );
+      }),
+    );
   }
 
   @override
@@ -285,8 +286,8 @@ class _MyAppState extends State<MyApp> {
           title: 'مسلم بوك',
           debugShowCheckedModeBanner: false,
           supportedLocales: [
-            Locale("ar"),
-            Locale("en"),
+            const Locale("ar"),
+            const Locale("en"),
           ],
           navigatorObservers: <NavigatorObserver>[MyApp.observer],
           localizationsDelegates: [
