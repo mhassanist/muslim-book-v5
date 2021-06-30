@@ -21,6 +21,14 @@ class AzkarListView extends StatefulWidget {
 }
 
 class _AzkarListViewState extends State<AzkarListView> {
+  var   widgetAddMob  ;
+  @override
+  void initState() {
+    widgetAddMob =
+    AdMobRectangle(BannerName.AZKAR) ;
+    super.initState();
+
+  }
   @override
   Widget build(BuildContext context) {
     return ResponsiveBuilder(
@@ -86,7 +94,7 @@ class _AzkarListViewState extends State<AzkarListView> {
                   SliverToBoxAdapter(
                       child: Container(
                           height: 100,
-                          child: AdMobRectangle(BannerName.AZKAR))),
+                          child:widgetAddMob )),
                 ],
               ),
             )
@@ -96,4 +104,6 @@ class _AzkarListViewState extends State<AzkarListView> {
       },
     );
   }
+
+
 }

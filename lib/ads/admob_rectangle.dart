@@ -1,14 +1,17 @@
+
 import 'package:base_app/ads/ad_manager.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_admob/flutter_native_admob.dart';
+import 'package:flutter_native_admob/native_admob_controller.dart';
+
 import 'package:flutter_native_admob/native_admob_options.dart';
 
 class AdMobRectangle extends StatefulWidget {
   final bannerName;
-
-  AdMobRectangle(this.bannerName);
+  final banner;
+  AdMobRectangle(this.bannerName,{this.banner});
 
   @override
   _AdMobRectangleState createState() => _AdMobRectangleState();
@@ -16,6 +19,31 @@ class AdMobRectangle extends StatefulWidget {
 
 class _AdMobRectangleState extends State<AdMobRectangle> {
   RemoteConfig remoteConfig;
+  NativeAdmob _ad;
+
+  final _nativeAdController = NativeAdmobController();
+  @override
+  void initState() {
+    _ad=NativeAdmob(
+      loading:Container(
+        child: Center(child: CircularProgressIndicator(),),
+      ),
+      options: NativeAdmobOptions(
+        // backgroundColor : Color(0xFFFFFFFF),
+      ),
+      adUnitID: AdManager.getAdUnitId(this.widget.bannerName),
+      numberAds: 1,
+      type: NativeAdmobType.full,
+
+    );
+    super.initState();
+  }
+  @override
+  void dispose() {
+    _nativeAdController.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +71,11 @@ class _AdMobRectangleState extends State<AdMobRectangle> {
     );
   }
 */
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+  }
   //flutter_native_admob , not showing in release mode, background is wrong
   Widget _buildNativeRect() {
     return Container(
@@ -54,17 +87,7 @@ class _AdMobRectangleState extends State<AdMobRectangle> {
       //     .of(context)
       //     .size
       //     .width / 4) * 3,
-      child: NativeAdmob(
-        loading: Container(
-          // color: Colors.white,
-            ),
-        options: NativeAdmobOptions(
-          // backgroundColor : Color(0xFFFFFFFF),
-            ),
-        adUnitID: AdManager.getAdUnitId(widget.bannerName),
-        numberAds: 3,
-        type: NativeAdmobType.full,
-      ),
+      child:_ad
     );
   } //end of build
 

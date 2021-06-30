@@ -38,6 +38,15 @@ class _SettingsViewMobilePortraitState
   SettingsMobilePortraitUi ui;
   int itmeSelection;
 
+  var   widgetAddMob  ;
+
+  @override
+  void initState() {
+    widgetAddMob =
+        AdMobRectangle(BannerName.BOSLA) ;
+    super.initState();
+  }
+
   List<ExpansionpanelItem> items = [
     ExpansionpanelItem(
       isExpanded: false,
@@ -229,7 +238,10 @@ class _SettingsViewMobilePortraitState
               SliverToBoxAdapter(
                   child:
                   Container(
-                        child: AdMobRectangle(BannerName.BOSLA))),
+                        child:
+                        widgetAddMob
+                      //   AdMobRectangle(BannerName.BOSLA)
+              )),
                         SliverToBoxAdapter(
                             child:
                             SizedBox(

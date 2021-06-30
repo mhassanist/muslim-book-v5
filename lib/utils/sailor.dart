@@ -181,16 +181,16 @@ class Routes {
           defaultTransitionCurve: Curves.ease,
           defaultTransitions: [SailorTransition.slide_from_right]),
     );
-    sailor.addRoute(
-    SailorRoute(
-          name: "/RamadanView",
-          builder: (context, args, params) {
-            return RamadanView();
-          },
-          defaultTransitionDuration: Duration(milliseconds: 300),
-          defaultTransitionCurve: Curves.ease,
-          defaultTransitions: [SailorTransition.slide_from_right]),
-    );
+    // sailor.addRoute(
+    // SailorRoute(
+    //       name: "/RamadanView",
+    //       builder: (context, args, params) {
+    //         return RamadanView();
+    //       },
+    //       defaultTransitionDuration: Duration(milliseconds: 300),
+    //       defaultTransitionCurve: Curves.ease,
+    //       defaultTransitions: [SailorTransition.slide_from_right]),
+    // );
     sailor.addRoute(
       SailorRoute(
           name: "/login",

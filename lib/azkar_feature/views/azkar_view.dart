@@ -1,5 +1,6 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:base_app/ads/ad_manager.dart';
 import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/azkar_feature/models/azkar_model.dart';
 import 'package:base_app/ads/add_widget_edit.dart';
@@ -16,6 +17,8 @@ import 'package:facebook_audience_network/ad/ad_banner.dart';
 import 'package:facebook_audience_network/ad/ad_interstitial.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_admob/flutter_native_admob.dart';
+import 'package:flutter_native_admob/native_admob_options.dart';
 import 'package:get/get.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:base_app/utils/sizing_info_extension.dart';
@@ -35,9 +38,12 @@ class _AzkarViewState extends State<AzkarView> {
   int currentIndex = 0;
   final CarouselController controller = CarouselController();
   AudioCache _audioCache;
+  var   widgetAddMob  ;
 
   @override
   void initState() {
+    widgetAddMob =
+        AdMobRectangle(BannerName.BOSLA) ;
     super.initState();
     _audioCache = AudioCache(
         prefix: "audio/",
@@ -53,7 +59,7 @@ class _AzkarViewState extends State<AzkarView> {
         contentPadding: EdgeInsets.all(0.0),
         shape: RoundedRectangleBorder(borderRadius:
         BorderRadius.all(Radius.circular(12))),
-        content: AddWidgetEdit( title:   "أذكار",bannerName :BannerName.AZKAR ,buttomTitle:  "متابعه",),
+        content: AddWidgetEdit(title:   "أذكار",bannerName :BannerName.AZKAR ,buttomTitle:  "متابعه",),
       ),
     )) ?? false;
   }
@@ -108,7 +114,7 @@ class _AzkarViewState extends State<AzkarView> {
                         Spacer(),
                         Container(
                             height: 100,
-                            child: AdMobRectangle(BannerName.BOSLA)),
+                            child: widgetAddMob),
 
                         //FacebookBannerAd
                         // Container(

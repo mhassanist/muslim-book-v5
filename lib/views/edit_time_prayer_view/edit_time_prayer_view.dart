@@ -35,9 +35,11 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
   bool _isSaveing = false;
 
   DateTime _now = DateTime.now();
-
+  var   widgetAddMob  ;
   @override
   void initState() {
+    widgetAddMob =
+        AdMobRectangle(BannerName.Top) ;
     super.initState();
 
     azanValue = controller.getAzanList();
@@ -115,7 +117,8 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                         child: Visibility(
                           visible:      widget.showAppBar,
                           child:    Container(
-                              child: AdMobRectangle(BannerName.Top)),
+                              child:
+                              widgetAddMob),
 
                         )),
                                   SliverToBoxAdapter(

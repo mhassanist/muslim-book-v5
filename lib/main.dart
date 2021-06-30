@@ -1,6 +1,5 @@
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-// import 'package:alice/alice.dart';
 import 'package:base_app/ads/ad_manager.dart';
 import 'package:base_app/azan_feature/controllers/azan_controller.dart';
 import 'package:base_app/azkar_feature/providers/azkar_provider.dart';
@@ -15,6 +14,7 @@ import 'package:base_app/sebha_feature/providers/sebha_provider.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/prefs.dart';
 import 'package:base_app/utils/sailor.dart';
+import 'package:base_app/utils/sizing_info_extension.dart';
 import 'package:base_app/views/splash_view/splash_view.dart';
 import 'package:base_app/views/start_view/start_view.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
@@ -29,11 +29,18 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_admob/flutter_native_admob.dart';
+import 'package:flutter_native_admob/native_admob_options.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
+import 'ads/admob_rectangle.dart';
 import 'locals_utils/app_localizations.dart';
+import 'models/banner_names_enum.dart';
 import 'utils/Constants.dart';
 import 'utils/locator.dart';
 // Alice alice = Alice(showNotification: true ,navigatorKey:  Routes.sailor.navigatorKey);
@@ -48,6 +55,8 @@ void main() async {
   await AndroidAlarmManager.initialize();
   AdManager.remoteConfig = await setupRemoteConfig();
 
+  AdManager.loadAdds();
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   Routes.createRoutes();
   setupLocator();
@@ -60,13 +69,14 @@ void main() async {
     DevicePreview(
       enabled: false,
       // enabled: !kReleaseMode,
-      builder: (context) => MyApp(), // Wrap your app
+      builder: (context) => ProviderScope(child: MyApp()), // Wrap your app
     ),
   );
 }
 
 _initAdMob() {
   Admob.initialize();
+  MobileAds.instance.initialize();
 }
 
 Future<RemoteConfig> setupRemoteConfig() async {
@@ -101,6 +111,107 @@ class MyApp extends StatefulWidget {
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
 
+  static Future<Widget> exitBottomSheet(context, widgetAddMob) async {
+     var admobe = widgetAddMob;
+    return await showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => ResponsiveBuilder(builder: (context, sizeConfig) {
+              return Container(
+                height: MediaQuery.of(context).size.height * 0.55,
+                decoration: new BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: new BorderRadius.only(
+                    topLeft: const Radius.circular(25.0),
+                    topRight: const Radius.circular(25.0),
+                  ),
+                ),
+                child: Center(
+                  child: Column(children: <Widget>[
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+                      width: MediaQuery.of(context).size.width,
+                      decoration: new BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: new BorderRadius.only(
+                          topLeft: const Radius.circular(25.0),
+                          topRight: const Radius.circular(25.0),
+                        ),
+                      ),
+                      child: Text(
+                        AppLocalizations.of(context)
+                            .translate("are_you_sure_exit"),
+                        style: TextStyle(
+                          fontSize: sizeConfig.blockSizeHorizontal * 5,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Expanded(child: Container(child: admobe)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Container(
+                          width: sizeConfig.blockSizeHorizontal * 30,
+                          height: sizeConfig.blockSizeVertical * 6,
+                          margin: EdgeInsets.only(top: 20, bottom: 20),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: RawMaterialButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  sizeConfig.blockSizeVertical),
+                            ),
+                            onPressed: () {
+                              SystemNavigator.pop();
+                            },
+                            fillColor: Theme.of(context).primaryColor,
+                            child: Text(
+                              AppLocalizations.of(context).translate("yes"),
+                              style: TextStyle(
+                                fontSize: sizeConfig.blockSizeHorizontal * 6,
+                                color: Constants.CANVAS_COLOR,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          width: sizeConfig.blockSizeHorizontal * 30,
+                          height: sizeConfig.blockSizeVertical * 6,
+                          margin: EdgeInsets.only(top: 20, bottom: 20),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: RawMaterialButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  sizeConfig.blockSizeVertical),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            fillColor: Theme.of(context).accentColor,
+                            child: Text(
+                              AppLocalizations.of(context).translate("cancel"),
+                              style: TextStyle(
+                                fontSize: sizeConfig.blockSizeHorizontal * 6,
+                                color: Constants.CANVAS_COLOR,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ]),
+                ),
+              );
+            }));
+  }
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -116,11 +227,10 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  //ramadan_time shaimaaaaaaaaaaaaaa
   Future invokeMethod() async {
     await Constants.platform.invokeMethod("fireAzan");
-    await Constants.platform.invokeMethod("fireCannonRamadan");
-    await Constants.platform.invokeMethod("fireMshartRamadan");
+    // await Constants.platform.invokeMethod("fireCannonRamadan");
+    // await Constants.platform.invokeMethod("fireMshartRamadan");
     await Constants.platform.invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
     await Constants.platform.invokeMethod("fireAzkarPopUp");
     await receiveMessage();
@@ -178,7 +288,6 @@ class _MyAppState extends State<MyApp> {
             Locale("ar"),
             Locale("en"),
           ],
-          // navigatorKey: alice.getNavigatorKey(),
           navigatorObservers: <NavigatorObserver>[MyApp.observer],
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
@@ -193,7 +302,6 @@ class _MyAppState extends State<MyApp> {
             );
           },
           localeResolutionCallback: (local, supportedLocals) {
-            print("shimaaa_local " + supportedLocals.first.languageCode);
             return supportedLocals.first;
           },
           theme: ThemeData(

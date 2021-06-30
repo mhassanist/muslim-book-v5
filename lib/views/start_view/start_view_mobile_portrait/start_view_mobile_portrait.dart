@@ -1,10 +1,12 @@
 import 'dart:ui';
 
+import 'package:base_app/ads/ad_manager.dart';
 import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/azkar_feature/views/azkar_list_view.dart';
 import 'package:base_app/home_feature/controllers/home_controller.dart';
 import 'package:base_app/home_feature/views/home_view.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
+import 'package:base_app/main.dart';
 import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/quran/views/quran_view.dart';
@@ -16,8 +18,11 @@ import 'package:base_app/views/compass_view/compass_view.dart';
 import 'package:base_app/views/competition_view/competition_view.dart';
 import 'package:base_app/views/login_pop_up_view/login_pop_up_view.dart';
 import 'package:base_app/widgets/SideDrawerMenu_widget.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_admob/flutter_native_admob.dart';
+import 'package:flutter_native_admob/native_admob_options.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
@@ -37,10 +42,25 @@ class _StartViewMobilePortraitViewState
     extends State<StartViewMobilePortraitView> with WidgetsBindingObserver {
   List<Widget> _pages;
   bool isAdd = false;
-
+  RemoteConfig remoteConfig;
+  static NativeAdmob _ad;
   @override
   void initState() {
+    _ad = NativeAdmob(
+      loading: Container(
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      ),
+      options: NativeAdmobOptions(
+          // backgroundColor : Color(0xFFFFFFFF),
+          ),
+      adUnitID: AdManager.getAdUnitId(BannerName.Top),
+      numberAds: 1,
+      type: NativeAdmobType.full,
+    );
     super.initState();
+
     WidgetsBinding.instance.addObserver(this);
     Get.find<HomeController>().scaffoldKey = key;
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -54,8 +74,6 @@ class _StartViewMobilePortraitViewState
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     check();
-    print("shaimaaaaaaaaaaa_check_here");
-    print(state);
     switch (state) {
       case AppLifecycleState.resumed:
         check();
@@ -225,123 +243,7 @@ class _StartViewMobilePortraitViewState
     if (Provider.of<UserProvider>(context, listen: false).selectedPage != 2) {
       Provider.of<UserProvider>(context, listen: false).selectedPage = 2;
     } else {
-      return (await showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              builder: (context) =>
-                  ResponsiveBuilder(builder: (context, sizeConfig) {
-                    return Container(
-                      height: MediaQuery.of(context).size.height * 0.55,
-                      decoration: new BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: new BorderRadius.only(
-                          topLeft: const Radius.circular(25.0),
-                          topRight: const Radius.circular(25.0),
-                        ),
-                      ),
-                      child: Center(
-                        child: Column(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            // crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Container(
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 20, 20, 30),
-                                width: MediaQuery.of(context).size.width,
-                                decoration: new BoxDecoration(
-                                  color: Theme.of(context).primaryColor,
-                                  borderRadius: new BorderRadius.only(
-                                    topLeft: const Radius.circular(25.0),
-                                    topRight: const Radius.circular(25.0),
-                                  ),
-                                ),
-                                child: Text(
-                                  AppLocalizations.of(context)
-                                      .translate("are_you_sure_exit"),
-                                  style: TextStyle(
-                                    fontSize:
-                                        sizeConfig.blockSizeHorizontal * 5,
-                                    color: Colors.white,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                              Expanded(
-                                  child: Container(
-                                      child: AdMobRectangle(
-                                          BannerName.DownEditAzan))),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    width: sizeConfig.blockSizeHorizontal * 30,
-                                    height: sizeConfig.blockSizeVertical * 6,
-                                    margin:
-                                        EdgeInsets.only(top: 20, bottom: 20),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: RawMaterialButton(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            sizeConfig.blockSizeVertical),
-                                      ),
-                                      onPressed: () {
-                                        SystemNavigator.pop();
-                                      },
-                                      fillColor: Theme.of(context).primaryColor,
-                                      child: Text(
-                                        AppLocalizations.of(context)
-                                            .translate("yes"),
-                                        style: TextStyle(
-                                          fontSize:
-                                              sizeConfig.blockSizeHorizontal *
-                                                  6,
-                                          color: Constants.CANVAS_COLOR,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Container(
-                                    width: sizeConfig.blockSizeHorizontal * 30,
-                                    height: sizeConfig.blockSizeVertical * 6,
-                                    margin:
-                                        EdgeInsets.only(top: 20, bottom: 20),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: RawMaterialButton(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            sizeConfig.blockSizeVertical),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.of(context).pop(false);
-                                      },
-                                      fillColor: Theme.of(context).accentColor,
-                                      child: Text(
-                                        AppLocalizations.of(context)
-                                            .translate("cancel"),
-                                        style: TextStyle(
-                                          fontSize:
-                                              sizeConfig.blockSizeHorizontal *
-                                                  6,
-                                          color: Constants.CANVAS_COLOR,
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ]),
-                      ),
-                    );
-                  }))) ??
-          false;
+      return (MyApp.exitBottomSheet(context, _ad)) ?? false;
     }
   }
 

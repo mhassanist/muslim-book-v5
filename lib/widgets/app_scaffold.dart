@@ -50,8 +50,8 @@ class AppScaffold extends StatelessWidget {
           color: prymaryColor,
           child: Container(
             padding:
-                padding ?? EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-            margin: EdgeInsets.only(top: 10),
+                padding ?? EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+            margin: EdgeInsets.only(top: 6),
             child: child,
             decoration: BoxDecoration(
               color: transparentBackground

@@ -16,9 +16,7 @@ class AzanHomeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ResponsiveBuilder(builder: (context, sizeConfig) {
       return Container(
-        margin:
-            EdgeInsets.symmetric(vertical: sizeConfig.blockSizeVertical * 1.5),
-        height: sizeConfig.blockSizeVertical * 25,
+        height: sizeConfig.blockSizeVertical * 17,
         decoration: BoxDecoration(
           borderRadius:
               BorderRadius.circular(sizeConfig.blockSizeHorizontal * 6),
@@ -34,15 +32,16 @@ class AzanHomeWidget extends StatelessWidget {
                   builder: (controller) {
                     if (locator<Prefs>().getAzanModel() == null) {
                       return Container(
+                          margin: EdgeInsetsDirectional.only(start: 15),
                           child: Center(
-                        child: Text(
-                          "“سُبْحَانَ اللَّهِ وَبِحَمْدِهِ ، سُبْحَانَ اللَّهِ الْعَظِيمِ”",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: sizeConfig.blockSizeHorizontal * 5),
-                        ),
-                      ));
+                            child: Text(
+                              "“سُبْحَانَ اللَّهِ وَبِحَمْدِهِ ، سُبْحَانَ اللَّهِ الْعَظِيمِ”",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: sizeConfig.blockSizeHorizontal * 4),
+                            ),
+                          ));
                     } else {
                       // return Container();
                       print(locator<Prefs>().getAssalahTime("1"));
@@ -50,7 +49,7 @@ class AzanHomeWidget extends StatelessWidget {
                           controller.getAzanList()[controller.nextAzanKey - 1];
                       return Padding(
                         padding: EdgeInsets.symmetric(
-                            vertical: sizeConfig.blockSizeVertical * 3.5),
+                            vertical: sizeConfig.blockSizeVertical * 3),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -59,55 +58,25 @@ class AzanHomeWidget extends StatelessWidget {
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize:
-                                        sizeConfig.blockSizeHorizontal * 6)),
+                                        sizeConfig.blockSizeHorizontal * 5)),
                             Text(
                                 "${nextSalah.time} ${int.parse(nextSalah.hours) >= 12 ? "مساءا" : "صباحا"}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize:
-                                        sizeConfig.blockSizeHorizontal * 6)),
+                                        sizeConfig.blockSizeHorizontal * 5)),
                             Text(
                               "متبقي : ${controller.remaining.inHours > 10 ? controller.remaining.inHours : "0${controller.remaining.inHours}"}:${DateFormat("mm:ss").format(DateTime.fromMillisecondsSinceEpoch(controller.remaining.inMilliseconds))}",
                               style: TextStyle(
                                   color: Constants.PRIMARY_COLOR,
                                   fontWeight: FontWeight.bold,
-                                  fontSize: sizeConfig.blockSizeHorizontal * 4),
+                                  fontSize: sizeConfig.blockSizeHorizontal * 3),
                             ),
                           ],
                         ),
-                      );    // print(locator<Prefs>().getAssalahTime("1"));
-                      // final nextSalah =
-                      //     controller.getAzanList()[controller.nextAzanKey - 1];
-                      // return Padding(
-                      //   padding: EdgeInsets.symmetric(
-                      //       vertical: sizeConfig.blockSizeVertical * 3.5),
-                      //   child: Column(
-                      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      //     children: [
-                      //       Text("صلاة ${nextSalah.title}",
-                      //           style: TextStyle(
-                      //               color: Colors.white,
-                      //               fontWeight: FontWeight.bold,
-                      //               fontSize:
-                      //                   sizeConfig.blockSizeHorizontal * 6)),
-                      //       Text(
-                      //           "${nextSalah.time} ${int.parse(nextSalah.hours) >= 12 ? "مساءا" : "صباحا"}",
-                      //           style: TextStyle(
-                      //               color: Colors.white,
-                      //               fontWeight: FontWeight.bold,
-                      //               fontSize:
-                      //                   sizeConfig.blockSizeHorizontal * 6)),
-                      //       Text(
-                      //         "متبقي : ${controller.remaining.inHours > 10 ? controller.remaining.inHours : "0${controller.remaining.inHours}"}:${DateFormat("mm:ss").format(DateTime.fromMillisecondsSinceEpoch(controller.remaining.inMilliseconds))}",
-                      //         style: TextStyle(
-                      //             color: Constants.PRIMARY_COLOR,
-                      //             fontWeight: FontWeight.bold,
-                      //             fontSize: sizeConfig.blockSizeHorizontal * 4),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // );
+                      ); // print(locator<Prefs>().getAssalahTime("1"));
+
                     }
                   }),
             ),
@@ -120,7 +89,7 @@ class AzanHomeWidget extends StatelessWidget {
                   style: TextStyle(
                       color: Constants.PRIMARY_COLOR,
                       fontWeight: FontWeight.bold,
-                      fontSize: sizeConfig.blockSizeHorizontal * 4),
+                      fontSize: sizeConfig.blockSizeHorizontal * 3),
                 ),
                 SizedBox(
                   height: sizeConfig.blockSizeVertical,
@@ -130,7 +99,7 @@ class AzanHomeWidget extends StatelessWidget {
                   style: TextStyle(
                       color: Constants.PRIMARY_COLOR,
                       fontWeight: FontWeight.bold,
-                      fontSize: sizeConfig.blockSizeHorizontal * 4),
+                      fontSize: sizeConfig.blockSizeHorizontal * 3),
                 ),
                 SizedBox(
                   height: sizeConfig.blockSizeVertical,
@@ -140,13 +109,13 @@ class AzanHomeWidget extends StatelessWidget {
                   style: TextStyle(
                       color: Constants.PRIMARY_COLOR,
                       fontWeight: FontWeight.bold,
-                      fontSize: sizeConfig.blockSizeHorizontal * 4),
+                      fontSize: sizeConfig.blockSizeHorizontal * 3),
                 ),
                 Container(
                   width: double.infinity,
                   margin: EdgeInsets.symmetric(
-                      horizontal: sizeConfig.blockSizeHorizontal * 2,
-                      vertical: sizeConfig.blockSizeVertical * 2),
+                      horizontal: sizeConfig.blockSizeHorizontal * 4,
+                      vertical: sizeConfig.blockSizeVertical),
                   child: RawMaterialButton(
                     onPressed: () {
                       if (locator<Prefs>().getAzanModel() != null) {
@@ -155,14 +124,14 @@ class AzanHomeWidget extends StatelessWidget {
                     },
                     elevation: 5,
                     padding: EdgeInsets.symmetric(
-                        vertical: sizeConfig.blockSizeVertical * 2),
+                        vertical: sizeConfig.blockSizeVertical * .5),
                     shape: StadiumBorder(),
                     child: Text(
                       "مواقيت الصلاة",
                       style: TextStyle(
                           color: Constants.PRIMARY_DARK_COLOR,
                           fontWeight: FontWeight.bold,
-                          fontSize: sizeConfig.blockSizeHorizontal * 5),
+                          fontSize: sizeConfig.blockSizeHorizontal * 4),
                     ),
                     fillColor: Colors.white,
                   ),

@@ -182,10 +182,10 @@ class SideDrawerMenu {
                           //         ],
                           //       ),
 
-                          _buildRow(null, "رمضانيات", () {
-                            Navigator.of(context).pop();
-                            Navigator.pushNamed(context, '/RamadanView');
-                          }, true, "assets/images/slider_view/antern.svg"),
+                          // _buildRow(null, "رمضانيات", () {
+                          //   Navigator.of(context).pop();
+                          //   Navigator.pushNamed(context, '/RamadanView');
+                          // }, true, "assets/images/slider_view/antern.svg"),
                           _buildDivider(),
                           _buildRow(null, "مواقيت الصلاة", () {
                             Navigator.of(context).pop();

@@ -1,3 +1,4 @@
+import 'package:base_app/ads/ad_manager.dart';
 import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/azan_feature/controllers/azan_controller.dart';
 import 'package:base_app/azan_feature/models/azan_model.dart';
@@ -143,7 +144,7 @@ class _AzanViewState extends State<AzanView> {
 
                           Container(
                               height: 100,
-                              child: AdMobRectangle(BannerName.BOSLA))                        ],
+                              child: AdManager.boslaBanner)                        ],
                       ),
                     ),
 

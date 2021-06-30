@@ -25,6 +25,7 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
     "assets/images/start_view/leaderboard_icon.svg",
     "assets/images/start_view/azkar.svg"
   ];
+  var   widgetAddMob  ;
 
   @override
   void didChangeDependencies() {
@@ -33,6 +34,8 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
 
   @override
   void initState() {
+    widgetAddMob =
+        AdMobRectangle(BannerName.Top) ;
     super.initState();
   }
 
@@ -84,7 +87,9 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
          SliverToBoxAdapter(
              child:
              Container(
-                 child: AdMobRectangle(BannerName.Top))),
+                 child: widgetAddMob
+             //  ..  AdMobRectangle(BannerName.Top)
+             )),
          SliverToBoxAdapter(
              child:
              SizedBox(

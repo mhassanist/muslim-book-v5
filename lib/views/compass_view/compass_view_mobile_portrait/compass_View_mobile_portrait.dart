@@ -27,9 +27,12 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
   double currentLocLat, currentLocLng;
   double degToKaabaBaring = 0;
   bool _gettingLocation;
+ var  widgetAddMob ;
 
   @override
   void initState() {
+    widgetAddMob =
+        AdMobRectangle(BannerName.BOSLA) ;
     super.initState();
     _fetchPermissionStatus();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -209,7 +212,9 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
                                 fontSize: unitSize * 3,
                                 fontWeight: FontWeight.w800),
                           ),
-                          AdMobRectangle(BannerName.BOSLA)],
+                          widgetAddMob
+                         // .. AdMobRectangle(BannerName.BOSLA)
+                        ],
                       ),
                       secondChild: Container(
                         alignment: Alignment.center,
@@ -255,7 +260,8 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
                       ),
                     ),
                     SizedBox(height: 10,),
-                    AdMobRectangle(BannerName.BOSLA)
+        widgetAddMob
+
                   ],
                 )
             ],

@@ -2,6 +2,7 @@ import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_admob/flutter_native_admob.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddWidgetEdit extends StatefulWidget {
@@ -27,10 +28,17 @@ class AddWidgetEdit extends StatefulWidget {
 }
 
 class _AddWidgetEditState extends State<AddWidgetEdit> {
+
+  var  widgetAddMob  ;
+  @override
+  void initState() {
+  widgetAddMob =
+  AdMobRectangle(widget.bannerName) ;
+  super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final isSmall = size.width <= 450;
     return Container(
         height: (MediaQuery.of(context).size.height / 1.8),
         width: (MediaQuery.of(context).size.width),
@@ -57,7 +65,7 @@ class _AddWidgetEditState extends State<AddWidgetEdit> {
               ),
               Expanded(
                   child:
-                      Container(child: AdMobRectangle(this.widget.bannerName))),
+                      Container(child: widgetAddMob)),
 
               // SizedBox(width: 3,),
               Container(

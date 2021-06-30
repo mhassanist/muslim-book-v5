@@ -53,17 +53,23 @@ class HomeController extends GetxController {
                   listen: false)
               .selectedPage = 0
         },
-    {
-      "icon":  "assets/images/slider_view/antern.svg",
-      "name": "رمضانيات",
-      "onTap": () => Get.to(RamadanView()),
-     },
+        // {
+        //   "icon":  "assets/images/slider_view/antern.svg",
+        //   "name": "رمضانيات",
+        //   "onTap": () => Get.to(RamadanView()),
+        //  },
         {
           "icon": "assets/images/start_view/compass_icon.svg",
           "name": "إتجاه القبلة",
           "onTap": () => Provider.of<UserProvider>(scaffoldKey.currentContext,
                   listen: false)
               .selectedPage = 1
+        },
+        {
+          "icon": "assets/icons/iconappbar.svg",
+          "name": "المذيد",
+          "onTap": () =>
+              Get.find<HomeController>().scaffoldKey.currentState.openDrawer()
         },
         // {
         //   "icon": "assets/images/start_view/azan_icon.svg",

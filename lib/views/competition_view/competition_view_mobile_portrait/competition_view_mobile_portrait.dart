@@ -29,9 +29,12 @@ class _CompetitionViewMobilePortraitState
     extends State<CompetitionViewMobilePortrait> {
   CompetitionUI ui;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  var   widgetAddMob  ;
 
   @override
   void initState() {
+    widgetAddMob =
+        AdMobRectangle(BannerName.COMPETITION) ;
     super.initState();
   }
 
@@ -159,7 +162,7 @@ class _CompetitionViewMobilePortraitState
       ui.questions(),
       ui.answers(),
       ui.continueButton(),
-      AdMobRectangle(BannerName.COMPETITION)
+            widgetAddMob
 //          ui.faceBookAdsWidget(
 //              locator<RemoteConfigService>().underCompetitionAdsId)
       ],
