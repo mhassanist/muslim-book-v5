@@ -2,7 +2,8 @@ import 'package:base_app/home_feature/controllers/home_controller.dart';
 import 'package:base_app/home_feature/views/homePage.dart';
 import 'package:base_app/home_feature/widgets/azan_home_widget.dart';
 import 'package:base_app/home_feature/widgets/categories_home_widget.dart';
-import 'package:base_app/locals_utils/app_localizations.dart';
+import 'package:base_app/language_constants.dart';
+import 'package:base_app/main.dart';
 import 'package:base_app/utils/sizing_info_extension.dart';
 import 'package:base_app/widgets/app_scaffold.dart';
 import 'package:base_app/widgets/share_dialog.dart';
@@ -12,12 +13,22 @@ import 'package:get/get.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class HomeView extends StatefulWidget {
-
   @override
   _HomeViewState createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
+  Locale _locale;
+  @override
+  void initState() {
+    getLocale().then((locale) {
+      setState(() {
+        this._locale = locale;
+        print("hosssssssssam " + _locale.languageCode);
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +50,35 @@ class _HomeViewState extends State<HomeView> {
           },
         ),
         actions: [
+          // InkWell(
+          //   onTap: () {
+          //     Get.dialog(ShareDialog());
+          //   },
+          //   child: Padding(
+          //     padding: EdgeInsets.symmetric(horizontal: 5),
+          //     child: Icon(Icons.share),
+          //   ),
+          // ),
+          // SizedBox(
+          //   width: 5,
+          // ),
           InkWell(
             onTap: () {
-              Get.dialog(ShareDialog());
+              Locale _activeLocale = Localizations.localeOf(context);
+              _changeLanguage(_activeLocale.languageCode == 'en' ? 'ar' : 'en');
             },
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              child: Icon(Icons.share),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  Localizations.localeOf(context).languageCode.toUpperCase(),
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600),
+                )
+              ],
             ),
           ),
           SizedBox(
@@ -53,11 +86,8 @@ class _HomeViewState extends State<HomeView> {
           ),
           InkWell(
             onTap: () {
-              // setState(() {
-              //   AppLocalizations(Locale("en")).load();
-              // });
-              // AppLocalizations(Locale("en")).load();
-              Navigator.pushNamed(context, '/settings');
+              Locale _activeLocale = Localizations.localeOf(context);
+              _changeLanguage(_activeLocale.languageCode == 'en' ? 'ar' : 'en');
             },
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 5),
@@ -90,9 +120,22 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
         ),
-        child: HomePage(),
+        child: (this._locale == null)
+            ? Container(
+                child: Center(
+                  child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Colors.blue[800])),
+                ),
+              )
+            : HomePage(),
       );
     });
+  }
+
+  void _changeLanguage(String language) async {
+    Locale _locale = await setLocale(language);
+    MyApp.setLocale(context, _locale);
   }
 
   old() {
@@ -106,13 +149,14 @@ class _HomeViewState extends State<HomeView> {
         ),
         actions: [
           InkWell(
-              onTap: () {
-                Get.dialog(ShareDialog());
-              },
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                child: Icon(Icons.share),
-              )),
+            onTap: () {
+              Get.dialog(ShareDialog());
+            },
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: Icon(Icons.share),
+            ),
+          ),
         ],
         centerTitle: true,
         title: Padding(

@@ -19,7 +19,7 @@ class AppLocalizations {
     String jsonString =
         await rootBundle.loadString("assets/langs/${locale.languageCode}.json");
     Map<String, dynamic> jsonMap = json.decode(jsonString);
-    print("Shaimaaaaaaaaaaa " +jsonString.toString());
+    print("Shaimaaaaaaaaaaa " + jsonString.toString());
 
     _localizedStrings = jsonMap.map((key, value) {
       return MapEntry(key, value.toString());
@@ -27,11 +27,12 @@ class AppLocalizations {
     return true;
   }
 
-  bool isEnglish()
-  {
+  bool isEnglish() {
     return locale.languageCode == "en";
   }
+
   String translate(String key) {
+    print("locale.languageCode  " + _localizedStrings[key]);
     return _localizedStrings[key];
   }
 }

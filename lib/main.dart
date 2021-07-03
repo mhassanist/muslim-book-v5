@@ -4,6 +4,7 @@ import 'package:base_app/ads/ad_manager.dart';
 import 'package:base_app/azan_feature/controllers/azan_controller.dart';
 import 'package:base_app/azkar_feature/providers/azkar_provider.dart';
 import 'package:base_app/home_feature/controllers/home_controller.dart';
+import 'package:base_app/language_constants.dart';
 import 'package:base_app/providers/azan_fajr_sounds_provider.dart';
 import 'package:base_app/providers/azan_sounds_provider.dart';
 import 'package:base_app/providers/user_provider.dart';
@@ -29,8 +30,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_native_admob/flutter_native_admob.dart';
-import 'package:flutter_native_admob/native_admob_options.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,11 +37,12 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-import 'ads/admob_rectangle.dart';
 import 'locals_utils/app_localizations.dart';
-import 'models/banner_names_enum.dart';
 import 'utils/Constants.dart';
 import 'utils/locator.dart';
+
+const String LAGUAGE_CODE = 'languageCode';
+
 // Alice alice = Alice(showNotification: true ,navigatorKey:  Routes.sailor.navigatorKey);
 
 void main() async {
@@ -69,8 +69,7 @@ void main() async {
     DevicePreview(
       enabled: false,
       // enabled: !kReleaseMode,
-      builder: (context) => ProviderScope(child:
-      MyApp()), // Wrap your app
+      builder: (context) => ProviderScope(child: MyApp()), // Wrap your app
     ),
   );
 }
@@ -111,6 +110,10 @@ class MyApp extends StatefulWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
+  static void setLocale(BuildContext context, Locale newLocale) {
+    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
+    state.setLocale(newLocale);
+  }
 
   static Future<Widget> exitBottomSheet(context, widgetAddMob) async {
     var admobe = widgetAddMob;
@@ -228,6 +231,24 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  Locale _locale;
+  setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    getLocale().then((locale) {
+      setState(() {
+        this._locale = locale;
+      });
+    });
+
+    super.didChangeDependencies();
+  }
+
   Future invokeMethod() async {
     await Constants.platform.invokeMethod("fireAzan");
     // await Constants.platform.invokeMethod("fireCannonRamadan");
@@ -289,21 +310,33 @@ class _MyAppState extends State<MyApp> {
             const Locale("ar"),
             const Locale("en"),
           ],
+          locale: _locale,
+          //  locale:AppLocalizations.delegate. ,
           navigatorObservers: <NavigatorObserver>[MyApp.observer],
           localizationsDelegates: [
+            AppLocalizations.delegate, // Add this line
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
-            AppLocalizations.delegate
           ],
           builder: (BuildContext context, Widget child) {
             return new Directionality(
-              textDirection: TextDirection.rtl,
+              textDirection: setTextDirection(_locale),
               child: child,
             );
           },
-          localeResolutionCallback: (local, supportedLocals) {
-            return supportedLocals.first;
+          // Returns a locale which will be used by the app
+          localeResolutionCallback: (locale, supportedLocales) {
+            // Check if the current device locale is supported
+            for (var supportedLocale in supportedLocales) {
+              if (supportedLocale.languageCode == locale.languageCode &&
+                  supportedLocale.countryCode == locale.countryCode) {
+                return supportedLocale;
+              }
+            }
+            // If the locale of the device is not supported, use the first one
+            // from the list (English, in this case).
+            return supportedLocales.first;
           },
           theme: ThemeData(
             textTheme: GoogleFonts.almaraiTextTheme(

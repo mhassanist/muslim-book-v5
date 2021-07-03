@@ -1,10 +1,10 @@
 import 'dart:ui';
 
 import 'package:base_app/ads/ad_manager.dart';
-import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/azkar_feature/views/azkar_list_view.dart';
 import 'package:base_app/home_feature/controllers/home_controller.dart';
 import 'package:base_app/home_feature/views/home_view.dart';
+import 'package:base_app/language_constants.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/main.dart';
 import 'package:base_app/models/banner_names_enum.dart';
@@ -44,6 +44,7 @@ class _StartViewMobilePortraitViewState
   bool isAdd = false;
   RemoteConfig remoteConfig;
   static NativeAdmob _ad;
+  Locale _locale;
   @override
   void initState() {
     _ad = NativeAdmob(
@@ -68,6 +69,17 @@ class _StartViewMobilePortraitViewState
     ));
     check();
     checkPermissions();
+  }
+
+  @override
+  void didChangeDependencies() {
+    getLocale().then((locale) {
+      setState(() {
+        this._locale = locale;
+      });
+    });
+
+    super.didChangeDependencies();
   }
 
   @override
@@ -136,71 +148,80 @@ class _StartViewMobilePortraitViewState
       onWillPop: () {
         return _onWillPop();
       },
-      child: Scaffold(
-        // appBar: AppBar(
-        //   actions: [
-        //
-        //     Icon(Icons.favorite),
-        //     Padding(
-        //       padding: EdgeInsets.symmetric(horizontal: 16),
-        //       child: Icon(Icons.search),
-        //     ),
-        //   ],
-        // ),
+      child: (this._locale == null)
+          ? Container(
+              child: Center(
+                child: CircularProgressIndicator(
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.blue[800])),
+              ),
+            )
+          : Scaffold(
+              // appBar: AppBar(
+              //   actions: [
+              //
+              //     Icon(Icons.favorite),
+              //     Padding(
+              //       padding: EdgeInsets.symmetric(horizontal: 16),
+              //       child: Icon(Icons.search),
+              //     ),
+              //   ],
+              // ),
 
-        drawer: SideDrawerMenu(
-          context,
-        ).buildDrawer(),
-        key: key,
-        // body: Container(),
-        body: Stack(
-          children: <Widget>[
-            Container(
-                width: double.infinity,
-                child: _pages[Provider.of<UserProvider>(context).selectedPage]),
-            // SafeArea(
-            //   child: Container(
-            //     height: kToolbarHeight,
-            //     child: ResponsiveBuilder(builder: (context, sizeConfig) {
-            //       return appBar(
-            //         context,
-            //         sizeConfig,
-            //         _pagesNames[
-            //             Provider.of<UserProvider>(context).selectedPage],
-            //         backgroundColor: getPageColor(context)[
-            //             Provider.of<UserProvider>(context).selectedPage],
-            //         key: key,
-            //       );
-            //     }),
-            //   ),
-            // ),
-          ],
-        ),
+              drawer: SideDrawerMenu(
+                context,
+              ).buildDrawer(),
+              key: key,
+              // body: Container(),
+              body: Stack(
+                children: <Widget>[
+                  Container(
+                      width: double.infinity,
+                      child: _pages[
+                          Provider.of<UserProvider>(context).selectedPage]),
+                  // SafeArea(
+                  //   child: Container(
+                  //     height: kToolbarHeight,
+                  //     child: ResponsiveBuilder(builder: (context, sizeConfig) {
+                  //       return appBar(
+                  //         context,
+                  //         sizeConfig,
+                  //         _pagesNames[
+                  //             Provider.of<UserProvider>(context).selectedPage],
+                  //         backgroundColor: getPageColor(context)[
+                  //             Provider.of<UserProvider>(context).selectedPage],
+                  //         key: key,
+                  //       );
+                  //     }),
+                  //   ),
+                  // ),
+                ],
+              ),
 
-        bottomNavigationBar: ResponsiveBuilder(
-          builder: (_, sizeConfig) => BottomNavigationBar(
-            onTap: (position) async {
-              if (position == 0) {
-                if (locator<Prefs>().getIsFirstTime()) {
-                  Navigator.pushNamed(context, "/pick_country_view");
-                } else {
-                  Provider.of<UserProvider>(context, listen: false)
-                      .selectedPage = 0;
-                }
-              } else {
-                onPageChanged(position);
-              }
-            },
-            type: BottomNavigationBarType.fixed,
-            items: navigationItems(context, sizeConfig),
-            backgroundColor: Theme.of(context).primaryColorDark,
-            //showUnselectedLabels: false,
-            selectedItemColor: Constants.CANVAS_COLOR,
-            currentIndex: Provider.of<UserProvider>(context).selectedPage,
-            unselectedItemColor: Theme.of(context).accentColor,
-          ),
-        ),
-      ),
+              bottomNavigationBar: ResponsiveBuilder(
+                builder: (_, sizeConfig) => BottomNavigationBar(
+                  onTap: (position) async {
+                    if (position == 0) {
+                      if (locator<Prefs>().getIsFirstTime()) {
+                        Navigator.pushNamed(context, "/pick_country_view");
+                      } else {
+                        Provider.of<UserProvider>(context, listen: false)
+                            .selectedPage = 0;
+                      }
+                    } else {
+                      onPageChanged(position);
+                    }
+                  },
+                  type: BottomNavigationBarType.fixed,
+                  items: navigationItems(context, sizeConfig),
+                  backgroundColor: Theme.of(context).primaryColorDark,
+                  //showUnselectedLabels: false,
+                  selectedItemColor: Constants.CANVAS_COLOR,
+                  currentIndex: Provider.of<UserProvider>(context).selectedPage,
+                  unselectedItemColor: Theme.of(context).accentColor,
+                ),
+              ),
+            ),
     );
   }
 
