@@ -4,10 +4,14 @@ import 'package:base_app/home_feature/domian/model/post_model.dart';
 import 'package:base_app/home_feature/domian/repository_home.dart';
 import 'package:base_app/home_feature/widgets/azan_home_widget.dart';
 import 'package:base_app/home_feature/widgets/categories_horisontal_home_widget.dart';
-import 'package:base_app/locals_utils/app_localizations.dart';
+import 'package:base_app/language_constants.dart';
+import 'package:base_app/main.dart';
+import 'package:base_app/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:loading/indicator/ball_beat_indicator.dart';
+import 'package:loading/loading.dart';
 
 class HomePage extends ConsumerWidget {
   HomeRepository homeRepository = HomeRepository();
@@ -21,213 +25,99 @@ class HomePage extends ConsumerWidget {
     if (postschanges.posts.isEmpty || postschanges.isloading == true) {
       postschanges.getPosts();
     }
-    return SafeArea(
-        child: Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          AzanHomeWidget(),
-          buildTitle(AppLocalizations.of(context).translate("MainSections")),
-          Container(
-              height: 110,
-              width: MediaQuery.of(context).size.width,
-              child: CategoriesHorizontalHomeWidget()),
-
-          buildTitle("الاخبار"),
-
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.center,
-          //   children: [
-          //     InkWell(
-          //       onTap: () {
-          //         postschanges.changetabBar(true);
-          //       },
-          //       child: Column(
-          //         children: [
-          //           Text(
-          //             "الاخبار",
-          //             style: TextStyle(
-          //                 color:
-          //                     postschanges.isnews ? darkish_green : warm_grey,
-          //                 fontSize: 20,
-          //                 fontWeight: FontWeight.bold,
-          //                 fontStyle: FontStyle.normal),
-          //           ),
-          //           Container(
-          //             margin: EdgeInsets.only(top: 5),
-          //             height: 5,
-          //             width: 35,
-          //             decoration: BoxDecoration(
-          //                 color: postschanges.isnews
-          //                     ? darkish_green
-          //                     : Colors.white,
-          //                 borderRadius: BorderRadius.circular(30)),
-          //           )
-          //         ],
-          //       ),
-          //     ),
-          //     SizedBox(
-          //       width: 30,
-          //     ),
-          //     InkWell(
-          //         onTap: () {
-          //           postschanges.changetabBar(false);
-          //         },
-          //         child: Column(
-          //           children: [
-          //             Text(
-          //               "التحديثات",
-          //               style: TextStyle(
-          //                   color:
-          //                       postschanges.isnews ? warm_grey : darkish_green,
-          //                   fontSize: 20,
-          //                   fontWeight: FontWeight.bold,
-          //                   fontStyle: FontStyle.normal),
-          //             ),
-          //             Container(
-          //               margin: EdgeInsets.only(top: 5),
-          //               height: 5,
-          //               width: 35,
-          //               decoration: BoxDecoration(
-          //                   color: postschanges.isnews
-          //                       ? Colors.white
-          //                       : darkish_green,
-          //                   borderRadius: BorderRadius.circular(30)),
-          //             )
-          //           ],
-          //         ))
-          //   ],
-          // ),
-          // SizedBox(
-          //   height: 10,
-          // ),
-          // postschanges.isnews
-          //     ? Expanded(
-          //         child: GridView.builder(
-          //             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //                 crossAxisCount: 2),
-          //             itemCount: 10,
-          //             itemBuilder: (context, index) => Padding(
-          //                   padding: const EdgeInsets.symmetric(
-          //                       horizontal: 8, vertical: 5),
-          //                   child: Container(
-          //                     decoration: BoxDecoration(
-          //                         borderRadius: BorderRadius.circular(20),
-          //                         boxShadow: [
-          //                           BoxShadow(
-          //                               color: const Color(0x1a000000),
-          //                               offset: Offset(0, 3),
-          //                               blurRadius: 6,
-          //                               spreadRadius: 0)
-          //                         ]),
-          //                     child: Padding(
-          //                       padding:
-          //                           const EdgeInsets.symmetric(horizontal: 5),
-          //                       child: Column(
-          //                         children: [
-          //                           Image.asset(
-          //                             "assets/images/splash_view/logo.png",
-          //                             scale: 3,
-          //                           ),
-          //                           SizedBox(
-          //                             height: 5,
-          //                           ),
-          //                           Container(
-          //                             decoration: BoxDecoration(
-          //                                 borderRadius:
-          //                                     BorderRadius.circular(20),
-          //                                 color:
-          //                                     darkish_green.withOpacity(0.8)),
-          //                             child: Padding(
-          //                               padding: const EdgeInsets.symmetric(
-          //                                   vertical: 0, horizontal: 10),
-          //                               child: Row(
-          //                                 mainAxisAlignment:
-          //                                     MainAxisAlignment.center,
-          //                                 children: [
-          //                                   Text("مشاركة"),
-          //                                   SizedBox(
-          //                                     width: 8,
-          //                                   ),
-          //                                   SvgPicture.asset(
-          //                                       'assets/icons/path_514.svg')
-          //                                 ],
-          //                               ),
-          //                             ),
-          //                           ),
-          //                         ],
-          //                       ),
-          //                     ),
-          //                   ),
-          //                 )))
-          //     :
-          Container(
-            width: width * 0.90,
-            height: 40,
-            decoration: BoxDecoration(
-                color: light_grey, borderRadius: BorderRadius.circular(20)),
-            child: Padding(
-              padding: const EdgeInsetsDirectional.only(end: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 70,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        color: darkish_green,
-                        borderRadius: BorderRadius.circular(28)),
-                    child: Center(
-                      child: Text(
-                        "نشر",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 5,
-                  ),
-                  Expanded(
-                      child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: TextField(
-                      textDirection: TextDirection.rtl,
-                      readOnly: true,
-                      onTap: () => showBottomsheetOptions(context),
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText:
-                              " كن داعيا للخير و ادعو بحديث او اية او دعاء....  ",
-                          hintStyle:
-                              TextStyle(fontSize: 13, color: light_grey_Two)),
-                    ),
-                  ))
-                ],
+    return MyApp.loading
+        ? Container(
+            child: Center(
+              child: Loading(
+                indicator: BallBeatIndicator(),
+                size: 70.0,
+                color:
+                Constants.PRIMARY_DARK_COLOR,
               ),
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
 
-          Expanded(
-            child: postschanges.isloading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : ListView.builder(
-                    padding: EdgeInsets.all(0),
-                    itemCount: postschanges.posts.length,
-                    itemBuilder: (ctx, index) =>
-                        buildPostItem(postschanges.posts[index]),
+              // CircularProgressIndicator(
+              //     valueColor: AlwaysStoppedAnimation<Color>(Colors.blue[800])),
+            ),
+          )
+        : SafeArea(
+            child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                AzanHomeWidget(),
+                buildTitle(tr(context, "MainSections")),
+                Container(
+                    height: 110,
+                    width: MediaQuery.of(context).size.width,
+                    child: CategoriesHorizontalHomeWidget()),
+                buildTitle("الاخبار"),
+                Container(
+                  width: width * 0.90,
+                  height: 40,
+                  decoration: BoxDecoration(
+                      color: light_grey,
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.only(end: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 70,
+                          height: 40,
+                          decoration: BoxDecoration(
+                              color: darkish_green,
+                              borderRadius: BorderRadius.circular(28)),
+                          child: Center(
+                            child: Text(
+                              "نشر",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                            child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          child: TextField(
+                            textDirection: TextDirection.rtl,
+                            readOnly: true,
+                            onTap: () => showBottomsheetOptions(context),
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText:
+                                    " كن داعيا للخير و ادعو بحديث او اية او دعاء....  ",
+                                hintStyle: TextStyle(
+                                    fontSize: 13, color: light_grey_Two)),
+                          ),
+                        ))
+                      ],
+                    ),
                   ),
-          ),
-        ],
-      ),
-    ));
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  child: postschanges.isloading
+                      ? Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          padding: EdgeInsets.all(0),
+                          itemCount: postschanges.posts.length,
+                          itemBuilder: (ctx, index) =>
+                              buildPostItem(postschanges.posts[index]),
+                        ),
+                ),
+              ],
+            ),
+          ));
   }
 
   Widget buildPostItem(Post _post) {

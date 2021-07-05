@@ -64,6 +64,9 @@ class _HomeViewState extends State<HomeView> {
           // ),
           InkWell(
             onTap: () {
+              setState(() {
+                MyApp.loading = true;
+              });
               Locale _activeLocale = Localizations.localeOf(context);
               _changeLanguage(_activeLocale.languageCode == 'en' ? 'ar' : 'en');
             },
@@ -86,8 +89,7 @@ class _HomeViewState extends State<HomeView> {
           ),
           InkWell(
             onTap: () {
-              Locale _activeLocale = Localizations.localeOf(context);
-              _changeLanguage(_activeLocale.languageCode == 'en' ? 'ar' : 'en');
+              Navigator.pushNamed(context, '/settings');
             },
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 5),
@@ -95,7 +97,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
           SizedBox(
-            width: 5,
+            width: 15,
           )
         ],
         centerTitle: true,
@@ -134,8 +136,13 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void _changeLanguage(String language) async {
-    Locale _locale = await setLocale(language);
-    MyApp.setLocale(context, _locale);
+    MyApp.setLocale(context, Locale(language));
+    await setLocale(language);
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        MyApp.loading = false;
+      });
+    });
   }
 
   old() {

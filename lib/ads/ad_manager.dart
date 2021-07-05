@@ -5,11 +5,9 @@ import 'package:base_app/models/banner_names_enum.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'admob_rectangle.dart';
-
 class AdManager {
   static RemoteConfig remoteConfig;
-  static  Widget  exsitBanner;
+  static Widget exsitBanner;
   static Widget boslaBanner;
 
   static String get appId {
@@ -49,11 +47,5 @@ class AdManager {
         return remoteConfig.getString('The_middle_of_the_competition');
         break;
     }
-  }
-
-  static loadAdds(){
-    exsitBanner = AdMobRectangle(
-        BannerName.DownEditAzan);
-    boslaBanner =AdMobRectangle(BannerName.BOSLA);
   }
 }

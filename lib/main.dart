@@ -48,15 +48,11 @@ const String LAGUAGE_CODE = 'languageCode';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Constants.platform.invokeMethod("fireAzan");
-  await Constants.platform.invokeMethod("fireCannonRamadan");
-  await Constants.platform.invokeMethod("fireMshartRamadan");
+//  await Constants.platform.invokeMethod("fireCannonRamadan");
+  // await Constants.platform.invokeMethod("fireMshartRamadan");
   _initAdMob();
-
   await AndroidAlarmManager.initialize();
   AdManager.remoteConfig = await setupRemoteConfig();
-
-  AdManager.loadAdds();
-
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   Routes.createRoutes();
   setupLocator();
@@ -110,6 +106,7 @@ class MyApp extends StatefulWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
+  static bool loading = false;
   static void setLocale(BuildContext context, Locale newLocale) {
     _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
     state.setLocale(newLocale);
@@ -231,7 +228,7 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
-  Locale _locale;
+  Locale _locale = Locale("ar");
   setLocale(Locale locale) {
     setState(() {
       _locale = locale;
@@ -311,7 +308,6 @@ class _MyAppState extends State<MyApp> {
             const Locale("en"),
           ],
           locale: _locale,
-          //  locale:AppLocalizations.delegate. ,
           navigatorObservers: <NavigatorObserver>[MyApp.observer],
           localizationsDelegates: [
             AppLocalizations.delegate, // Add this line
