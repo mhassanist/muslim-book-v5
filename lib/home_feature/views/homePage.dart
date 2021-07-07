@@ -4,7 +4,6 @@ import 'package:base_app/home_feature/domian/model/post_model.dart';
 import 'package:base_app/home_feature/domian/repository_home.dart';
 import 'package:base_app/home_feature/widgets/azan_home_widget.dart';
 import 'package:base_app/home_feature/widgets/categories_horisontal_home_widget.dart';
-import 'package:base_app/language_constants.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/main.dart';
 import 'package:base_app/utils/Constants.dart';
@@ -26,27 +25,24 @@ class HomePage extends ConsumerWidget {
     if (postschanges.posts.isEmpty || postschanges.isloading == true) {
       postschanges.getPosts();
     }
-    return
-       //MyApp.loading
-        // ? Container(
-        //     child: Center(
-        //       child: Loading(
-        //         indicator: BallBeatIndicator(),
-        //         size: 70.0,
-        //         color:
-        //         Constants.PRIMARY_DARK_COLOR,
-        //       ),
-        //
-        //     ),
-        //   )
-        // :
-    SafeArea(
+    return MyApp.loading
+        ? Container(
+            child: Center(
+              child: Loading(
+                indicator: BallBeatIndicator(),
+                size: 70.0,
+                color: Constants.PRIMARY_DARK_COLOR,
+              ),
+            ),
+          )
+        : SafeArea(
             child: Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AzanHomeWidget(),
-                buildTitle(AppLocalizations.of(context).translate( "MainSections")),
+                buildTitle(
+                    AppLocalizations.of(context).translate("MainSections")),
                 Container(
                     height: 110,
                     width: MediaQuery.of(context).size.width,

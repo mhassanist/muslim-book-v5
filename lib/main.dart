@@ -45,8 +45,6 @@ import 'utils/locator.dart';
 
 const String LAGUAGE_CODE = 'languageCode';
 
-// Alice alice = Alice(showNotification: true ,navigatorKey:  Routes.sailor.navigatorKey);
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _initAdMob();
@@ -63,7 +61,8 @@ void main() async {
   runApp(
     DevicePreview(
       enabled: false,
-       builder: (context) => ProviderScope(child: MyApp(loaded)), // Wrap your app
+      builder: (context) =>
+          ProviderScope(child: MyApp(loaded)), // Wrap your app
     ),
   );
 }
@@ -101,16 +100,17 @@ Future<RemoteConfig> setupRemoteConfig() async {
 }
 
 class MyApp extends StatefulWidget {
-  Locale localeLoaded ;
+  Locale localeLoaded;
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
-  FirebaseAnalyticsObserver(analytics: analytics);
+      FirebaseAnalyticsObserver(analytics: analytics);
   static bool loading = false;
   static bool loadingAddMobe = false;
 
   MyApp(this.localeLoaded);
   static void setLocale(BuildContext context, Locale newLocale) {
     _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
+
     state.setLocale(newLocale);
   }
 
@@ -120,97 +120,96 @@ class MyApp extends StatefulWidget {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => ResponsiveBuilder(builder: (context, sizeConfig) {
-        return
-          Container(
-            height: MediaQuery.of(context).size.height * 0.55,
-            decoration: new BoxDecoration(
-              color: Colors.white,
-              borderRadius: new BorderRadius.only(
-                topLeft: const Radius.circular(25.0),
-                topRight: const Radius.circular(25.0),
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.55,
+          decoration: new BoxDecoration(
+            color: Colors.white,
+            borderRadius: new BorderRadius.only(
+              topLeft: const Radius.circular(25.0),
+              topRight: const Radius.circular(25.0),
+            ),
+          ),
+          child: Center(
+            child: Column(children: <Widget>[
+              Container(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+                width: MediaQuery.of(context).size.width,
+                decoration: new BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: new BorderRadius.only(
+                    topLeft: const Radius.circular(25.0),
+                    topRight: const Radius.circular(25.0),
+                  ),
+                ),
+                child: Text(
+                  AppLocalizations.of(context).translate("are_you_sure_exit"),
+                  style: TextStyle(
+                    fontSize: sizeConfig.blockSizeHorizontal * 5,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            child: Center(
-              child: Column(children: <Widget>[
-                Container(
-                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
-                  width: MediaQuery.of(context).size.width,
-                  decoration: new BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: new BorderRadius.only(
-                      topLeft: const Radius.circular(25.0),
-                      topRight: const Radius.circular(25.0),
-                    ),
-                  ),
-                  child: Text(
-                    AppLocalizations.of(context).translate("are_you_sure_exit"),
-                    style: TextStyle(
-                      fontSize: sizeConfig.blockSizeHorizontal * 5,
-                      color: Colors.white,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Expanded(child: Container(child: AdMobRectangle(BannerName.Top))),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: sizeConfig.blockSizeHorizontal * 30,
-                      height: sizeConfig.blockSizeVertical * 6,
-                      margin: EdgeInsets.only(top: 20, bottom: 20),
-                      decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                      child: RawMaterialButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(sizeConfig.blockSizeVertical),
-                        ),
-                        onPressed: () {
-                          SystemNavigator.pop();
-                        },
-                        fillColor: Theme.of(context).primaryColor,
-                        child: Text(
-                          AppLocalizations.of(context).translate("yes"),
-                          style: TextStyle(
-                            fontSize: sizeConfig.blockSizeHorizontal * 6,
-                            color: Constants.CANVAS_COLOR,
-                          ),
+              Expanded(child: Container(child: AdMobRectangle(BannerName.Top))),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    width: sizeConfig.blockSizeHorizontal * 30,
+                    height: sizeConfig.blockSizeVertical * 6,
+                    margin: EdgeInsets.only(top: 20, bottom: 20),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    child: RawMaterialButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(sizeConfig.blockSizeVertical),
+                      ),
+                      onPressed: () {
+                        SystemNavigator.pop();
+                      },
+                      fillColor: Theme.of(context).primaryColor,
+                      child: Text(
+                        AppLocalizations.of(context).translate("yes"),
+                        style: TextStyle(
+                          fontSize: sizeConfig.blockSizeHorizontal * 6,
+                          color: Constants.CANVAS_COLOR,
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Container(
-                      width: sizeConfig.blockSizeHorizontal * 30,
-                      height: sizeConfig.blockSizeVertical * 6,
-                      margin: EdgeInsets.only(top: 20, bottom: 20),
-                      decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                      child: RawMaterialButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(sizeConfig.blockSizeVertical),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        fillColor: Theme.of(context).accentColor,
-                        child: Text(
-                          AppLocalizations.of(context).translate("cancel"),
-                          style: TextStyle(
-                            fontSize: sizeConfig.blockSizeHorizontal * 6,
-                            color: Constants.CANVAS_COLOR,
-                          ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    width: sizeConfig.blockSizeHorizontal * 30,
+                    height: sizeConfig.blockSizeVertical * 6,
+                    margin: EdgeInsets.only(top: 20, bottom: 20),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                    child: RawMaterialButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(sizeConfig.blockSizeVertical),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      fillColor: Theme.of(context).accentColor,
+                      child: Text(
+                        AppLocalizations.of(context).translate("cancel"),
+                        style: TextStyle(
+                          fontSize: sizeConfig.blockSizeHorizontal * 6,
+                          color: Constants.CANVAS_COLOR,
                         ),
                       ),
-                    )
-                  ],
-                ),
-              ]),
-            ),
-          );
+                    ),
+                  )
+                ],
+              ),
+            ]),
+          ),
+        );
       }),
     );
   }
@@ -223,24 +222,24 @@ class _MyAppState extends State<MyApp> {
   final AzanController _azanController = Get.put(AzanController());
   final HomeController _homeController = Get.put(HomeController());
   String showCompetition, openAzkar;
-  @override
-  void initState() {
-    invokeMethod();
-    getLocale().then((value) {
-      this.widget.localeLoaded =value;
-    });
-    super.initState();
-  }
 
-
+  //Locale _locale;
   setLocale(Locale locale) {
     setState(() {
       this.widget.localeLoaded = locale;
     });
-    print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh setLocale "+ this.widget.localeLoaded.languageCode);
-
   }
 
+  @override
+  void didChangeDependencies() {
+    print("didChangeDependencies");
+    getLocale().then((locale) {
+      setState(() {
+        this.widget.localeLoaded = locale;
+      });
+    });
+    super.didChangeDependencies();
+  }
 
   Future invokeMethod() async {
     await Constants.platform.invokeMethod("fireAzan");
@@ -253,7 +252,7 @@ class _MyAppState extends State<MyApp> {
     String message = '';
     try {
       showCompetition =
-      await Constants.platform.invokeMethod(Constants.Open_Competition);
+          await Constants.platform.invokeMethod(Constants.Open_Competition);
       openAzkar = await Constants.platform.invokeMethod(Constants.open_Azkar);
     } on PlatformException catch (e) {
       message = e.message;
@@ -263,6 +262,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    getLocale().then((locale) {
+      this.widget.localeLoaded = locale;
+    });
+    print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh build " +
+        this.widget.localeLoaded.languageCode);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<UserProvider>(
@@ -313,24 +317,13 @@ class _MyAppState extends State<MyApp> {
             AppLocalizations.delegate, // Add this line
           ],
           builder: (BuildContext context, Widget child) {
-            print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh Directionality "+ this.widget.localeLoaded.languageCode);
+            print(
+                "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh Directionality " +
+                    this.widget.localeLoaded.languageCode);
             return new Directionality(
               textDirection: setTextDirection(this.widget.localeLoaded),
               child: child,
             );
-          },
-          // Returns a locale which will be used by the app
-          localeResolutionCallback: (locale, supportedLocales) {
-            // Check if the current device locale is supported
-            for (var supportedLocale in supportedLocales) {
-              if (supportedLocale.languageCode == locale.languageCode &&
-                  supportedLocale.countryCode == locale.countryCode) {
-                return supportedLocale;
-              }
-            }
-            // If the locale of the device is not supported, use the first one
-            // from the list (English, in this case).
-            return supportedLocales.first;
           },
           theme: ThemeData(
             textTheme: GoogleFonts.almaraiTextTheme(

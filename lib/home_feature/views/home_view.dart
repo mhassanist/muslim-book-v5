@@ -1,13 +1,10 @@
 import 'package:base_app/home_feature/controllers/home_controller.dart';
 import 'package:base_app/home_feature/views/homePage.dart';
-import 'package:base_app/home_feature/widgets/azan_home_widget.dart';
-import 'package:base_app/home_feature/widgets/categories_home_widget.dart';
 import 'package:base_app/language_constants.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/main.dart';
 import 'package:base_app/utils/sizing_info_extension.dart';
 import 'package:base_app/widgets/app_scaffold.dart';
-import 'package:base_app/widgets/share_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -27,7 +24,7 @@ class _HomeViewState extends State<HomeView> {
         this._locale = locale;
       });
     });
-     print("hosssssssssam " );
+    print("hosssssssssam ");
 
     super.initState();
   }
@@ -69,17 +66,19 @@ class _HomeViewState extends State<HomeView> {
               setState(() {
                 MyApp.loading = true;
               });
-             Locale local = await  getLocale();
+              Locale local = await getLocale();
               print("shaimaaaaaaaaaaaaaaaaaaaaaaaaaaa");
               print(local.languageCode);
-             _changeLanguage('ar');
+              _changeLanguage(local.languageCode == 'ar' ? 'en' : 'ar');
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  AppLocalizations.of(context).translate( "MainSections").toUpperCase(),
+                  AppLocalizations.of(context)
+                      .translate("MainSections")
+                      .toUpperCase(),
                   style: TextStyle(
                       fontSize: 15,
                       color: Colors.white,
@@ -126,22 +125,18 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
         ),
-        child:  HomePage(),
+        child: HomePage(),
       );
     });
   }
 
   void _changeLanguage(String language) async {
-
-    MyApp.setLocale(context, Locale(language));
-    AppLocalizations( Locale(language)).load();
-    await setLocale(language);
+    Locale locale = await setLocale(language);
+    MyApp.setLocale(context, locale);
     Future.delayed(Duration(seconds: 1), () {
       setState(() {
         MyApp.loading = false;
       });
     });
   }
-
-
 }
