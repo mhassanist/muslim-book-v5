@@ -3,22 +3,22 @@ import 'package:base_app/utils/Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_admob/flutter_native_admob.dart';
+import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddWidgetEdit extends StatefulWidget {
   final String title;
-
   final String buttomTitle;
   final Function exit;
-
   final bannerName;
+  final Widget mainView ;
 
   const AddWidgetEdit({
     Key key,
     this.title,
     this.bannerName,
     this.buttomTitle,
-    this.exit,
+    this.exit, this.mainView,
   }) : super(key: key);
 
   @override
@@ -33,7 +33,7 @@ class _AddWidgetEditState extends State<AddWidgetEdit> {
   @override
   void initState() {
   widgetAddMob =
-  AdMobRectangle(widget.bannerName) ;
+  AdMobRectangle(widget.bannerName  ) ;
   super.initState();
   }
 

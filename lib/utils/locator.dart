@@ -29,10 +29,8 @@ void setupLocator() async {
   locator.registerLazySingleton(() => RamadanSingleton());
   locator.registerLazySingleton(() => SettingsApis());
   locator.registerLazySingleton(() => SebhaDataBase());
-
   locator.registerLazySingleton<QuranDao>(() => QuranDao());
   await locator<QuranDao>().initHive();
-
   locator.registerFactory(() => CompetitionProvider(null));
   locator.registerFactory(() => LocationProvider());
   locator.registerFactory(() => PickAzanMethodsProvider());

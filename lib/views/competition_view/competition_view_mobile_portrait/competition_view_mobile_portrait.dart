@@ -13,6 +13,7 @@ import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -34,7 +35,7 @@ class _CompetitionViewMobilePortraitState
   @override
   void initState() {
     widgetAddMob =
-        AdMobRectangle(BannerName.COMPETITION) ;
+        AdMobRectangle(BannerName.COMPETITION ) ;
     super.initState();
   }
 

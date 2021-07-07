@@ -11,6 +11,7 @@ import 'package:base_app/utils/sizing_info_extension.dart';
 import 'package:base_app/widgets/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
@@ -39,7 +40,7 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
   var widgetAddMob;
   @override
   void initState() {
-    widgetAddMob = AdMobRectangle(BannerName.Top);
+    widgetAddMob = AdMobRectangle(BannerName.Top ) ;
     super.initState();
 
     azanValue = controller.getAzanList();

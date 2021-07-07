@@ -44,8 +44,7 @@ class _StartViewMobilePortraitViewState
   bool isAdd = false;
   RemoteConfig remoteConfig;
   static NativeAdmob _ad;
-  Locale _locale;
-  @override
+   @override
   void initState() {
     _ad = NativeAdmob(
       loading: Container(
@@ -73,11 +72,6 @@ class _StartViewMobilePortraitViewState
 
   @override
   void didChangeDependencies() {
-    getLocale().then((locale) {
-      setState(() {
-        this._locale = locale;
-      });
-    });
 
     super.didChangeDependencies();
   }
@@ -148,15 +142,7 @@ class _StartViewMobilePortraitViewState
       onWillPop: () {
         return _onWillPop();
       },
-      child: (this._locale == null)
-          ? Container(
-              child: Center(
-                child: CircularProgressIndicator(
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(Colors.blue[800])),
-              ),
-            )
-          : Scaffold(
+      child:  Scaffold(
               // appBar: AppBar(
               //   actions: [
               //
@@ -264,7 +250,7 @@ class _StartViewMobilePortraitViewState
     if (Provider.of<UserProvider>(context, listen: false).selectedPage != 2) {
       Provider.of<UserProvider>(context, listen: false).selectedPage = 2;
     } else {
-      return (MyApp.exitBottomSheet(context, _ad)) ?? false;
+      return (MyApp.exitBottomSheet(context)) ?? false;
     }
   }
 

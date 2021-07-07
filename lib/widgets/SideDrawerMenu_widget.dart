@@ -274,7 +274,6 @@ class SideDrawerMenu {
                               Icons.settings,
                               AppLocalizations.of(context)
                                   .translate("settings"), () {
-                            AppLocalizations(Locale("en")).load();
                             Navigator.of(context).pop();
 
                             // AppLocalizations(Locale("en")).load();

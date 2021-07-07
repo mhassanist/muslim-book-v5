@@ -348,7 +348,7 @@ class _RamadanViewState extends State<RamadanView>
           ),
         ),
       ),
-      Container(height: 100, child: AdMobRectangle(BannerName.BOSLA)),
+    //  Container(height: 100, child: AdMobRectangle(BannerName.BOSLA)),
       Container(
         height: 50,
       )

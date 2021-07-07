@@ -9,6 +9,7 @@ import 'package:base_app/widgets/base_widget.dart';
 import 'package:base_app/widgets/custom_expansion_panel_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -43,7 +44,7 @@ class _SettingsViewMobilePortraitState
   @override
   void initState() {
     widgetAddMob =
-        AdMobRectangle(BannerName.BOSLA) ;
+        AdMobRectangle(BannerName.BOSLA ) ;
     super.initState();
   }
 

@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 const String LAGUAGE_CODE = 'languageCode';
 
 Future<Locale> setLocale(String languageCode) async {
+
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   _prefs.setString(LAGUAGE_CODE, languageCode);
   return Locale(languageCode);
@@ -12,12 +13,12 @@ Future<Locale> setLocale(String languageCode) async {
 
 Future<Locale> getLocale() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
-  String languageCode = _prefs.getString(LAGUAGE_CODE) ?? "en";
+  String languageCode = _prefs.getString(LAGUAGE_CODE) ?? "ar";
   return Locale(languageCode);
 }
 
 TextDirection setTextDirection(Locale lang) {
-  return lang.languageCode == "ar" ? TextDirection.rtl : TextDirection.ltr;
+   return lang.languageCode == "ar" ? TextDirection.rtl : TextDirection.ltr;
 }
 
 String tr(BuildContext context, String key) {

@@ -7,6 +7,7 @@ import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/location_utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
+import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocation/geolocation.dart';
 import 'package:geolocator/geolocator.dart';
@@ -32,7 +33,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
   @override
   void initState() {
     widgetAddMob =
-        AdMobRectangle(BannerName.BOSLA) ;
+        AdMobRectangle(BannerName.BOSLA ) ;
     super.initState();
     _fetchPermissionStatus();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {

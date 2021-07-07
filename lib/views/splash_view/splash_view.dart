@@ -63,8 +63,8 @@ class _SplashViewState extends State<SplashView>
       if (locator<Prefs>().getIsFirstTime()) {
         await sendAzanFilesToTemperory();
         Get.offNamed("/azan_draw_over");
-        // } else if (!checkOverLay) {
-        //   Get.offNamed("/azan_draw_over");
+        } else if (!checkOverLay) {
+         Get.offNamed("/azan_draw_over");
         // } else if (!checkBattery)
         //   Get.dialog(AdjustBatteryView(isStart: true,));
       }else {

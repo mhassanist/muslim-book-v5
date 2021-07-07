@@ -3,6 +3,7 @@ import 'package:base_app/home_feature/views/homePage.dart';
 import 'package:base_app/home_feature/widgets/azan_home_widget.dart';
 import 'package:base_app/home_feature/widgets/categories_home_widget.dart';
 import 'package:base_app/language_constants.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/main.dart';
 import 'package:base_app/utils/sizing_info_extension.dart';
 import 'package:base_app/widgets/app_scaffold.dart';
@@ -24,9 +25,10 @@ class _HomeViewState extends State<HomeView> {
     getLocale().then((locale) {
       setState(() {
         this._locale = locale;
-        print("hosssssssssam " + _locale.languageCode);
       });
     });
+     print("hosssssssssam " );
+
     super.initState();
   }
 
@@ -63,19 +65,21 @@ class _HomeViewState extends State<HomeView> {
           //   width: 5,
           // ),
           InkWell(
-            onTap: () {
+            onTap: () async {
               setState(() {
                 MyApp.loading = true;
               });
-              Locale _activeLocale = Localizations.localeOf(context);
-              _changeLanguage(_activeLocale.languageCode == 'en' ? 'ar' : 'en');
+             Locale local = await  getLocale();
+              print("shaimaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+              print(local.languageCode);
+             _changeLanguage('ar');
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  Localizations.localeOf(context).languageCode.toUpperCase(),
+                  AppLocalizations.of(context).translate( "MainSections").toUpperCase(),
                   style: TextStyle(
                       fontSize: 15,
                       color: Colors.white,
@@ -122,21 +126,15 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
         ),
-        child: (this._locale == null)
-            ? Container(
-                child: Center(
-                  child: CircularProgressIndicator(
-                      valueColor:
-                          AlwaysStoppedAnimation<Color>(Colors.blue[800])),
-                ),
-              )
-            : HomePage(),
+        child:  HomePage(),
       );
     });
   }
 
   void _changeLanguage(String language) async {
+
     MyApp.setLocale(context, Locale(language));
+    AppLocalizations( Locale(language)).load();
     await setLocale(language);
     Future.delayed(Duration(seconds: 1), () {
       setState(() {
@@ -145,79 +143,5 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  old() {
-    return ResponsiveBuilder(builder: (context, SizingInformation sizeConfig) {
-      return AppScaffold(
-        leading: IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () {
-            Get.find<HomeController>().scaffoldKey.currentState.openDrawer();
-          },
-        ),
-        actions: [
-          InkWell(
-            onTap: () {
-              Get.dialog(ShareDialog());
-            },
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5),
-              child: Icon(Icons.share),
-            ),
-          ),
-        ],
-        centerTitle: true,
-        title: Padding(
-          padding: EdgeInsets.only(top: sizeConfig.blockSizeVertical / 2),
-          child: Container(
-            height: sizeConfig.blockSizeVertical * 6.0,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                colorFilter:
-                    new ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                image: AssetImage(
-                  "assets/images/splash_view/decoration.png",
-                ),
-              ),
-            ),
-            child: Center(
-              child: Image.asset(
-                "assets/images/splash_view/logo.png",
-                height: sizeConfig.blockSizeVertical * 5,
-              ),
-            ),
-          ),
-        ),
-        child: Container(
-            margin: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / 100 * 3),
-            child: SingleChildScrollView(
-                child: Column(
-              children: [
-                Container(
-                  child: AzanHomeWidget(),
-                ),
-                CategoriesHomeWidget()
-              ],
-            ))
 
-            // child: CustomScrollView(
-            //   slivers: [
-            //     SliverToBoxAdapter(
-            //       child: AzanHomeWidget(),
-            //     ),
-            //     // SliverToBoxAdapter(
-            //     //   child: CategoriesHomeWidget(),
-            //     // ),
-            //     SliverFillRemaining(
-            //       child:  Center(
-            //         child:  CategoriesHomeWidget(),
-            //       ),
-            //
-            //     )
-            //   ],
-            // ),
-            ),
-      );
-    });
-  }
 }

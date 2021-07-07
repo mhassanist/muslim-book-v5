@@ -9,6 +9,7 @@ import 'package:base_app/views/top_view/tasbeeh_top_view.dart';
 import 'package:base_app/widgets/app_scaffold.dart';
 import 'package:base_app/widgets/share_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -35,7 +36,7 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
   @override
   void initState() {
     widgetAddMob =
-        AdMobRectangle(BannerName.Top) ;
+        AdMobRectangle(BannerName.Top ) ;
     super.initState();
   }
 
