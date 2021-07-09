@@ -1,13 +1,14 @@
 import 'package:base_app/azan_feature/controllers/azan_controller.dart';
 import 'package:base_app/azan_feature/views/azan_view.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/locator.dart';
 import 'package:base_app/utils/prefs.dart';
+import 'package:base_app/utils/sizing_info_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:base_app/utils/sizing_info_extension.dart';
 
 class AzanHomeWidget extends StatelessWidget {
   final AzanController controller = Get.find<AzanController>();
@@ -53,14 +54,18 @@ class AzanHomeWidget extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Text("صلاة ${nextSalah.title}",
+                            Text(
+                                AppLocalizations.of(context)
+                                        .translate("salah") +
+                                    nextSalah.title,
+                                // "صلاة ${nextSalah.title}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize:
                                         sizeConfig.blockSizeHorizontal * 5)),
                             Text(
-                                "${nextSalah.time} ${int.parse(nextSalah.hours) >= 12 ? "مساءا" : "صباحا"}",
+                                "${nextSalah.time} ${int.parse(nextSalah.hours) >= 12 ? AppLocalizations.of(context).translate("evening") : AppLocalizations.of(context).translate("morning")}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
