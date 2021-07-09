@@ -45,6 +45,7 @@ import 'utils/locator.dart';
 
 const String LAGUAGE_CODE = 'languageCode';
 
+ 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _initAdMob();
@@ -110,7 +111,6 @@ class MyApp extends StatefulWidget {
   MyApp(this.localeLoaded);
   static void setLocale(BuildContext context, Locale newLocale) {
     _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
-
     state.setLocale(newLocale);
   }
 
@@ -223,7 +223,12 @@ class _MyAppState extends State<MyApp> {
   final HomeController _homeController = Get.put(HomeController());
   String showCompetition, openAzkar;
 
-  //Locale _locale;
+  @override
+  void initState() {
+    super.initState();
+    invokeMethod();
+  }
+
   setLocale(Locale locale) {
     setState(() {
       this.widget.localeLoaded = locale;
@@ -232,7 +237,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void didChangeDependencies() {
-    print("didChangeDependencies");
     getLocale().then((locale) {
       setState(() {
         this.widget.localeLoaded = locale;
@@ -262,11 +266,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    getLocale().then((locale) {
-      this.widget.localeLoaded = locale;
-    });
-    print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh build " +
-        this.widget.localeLoaded.languageCode);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<UserProvider>(
@@ -292,10 +291,6 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider<OnlineSebhaProvider>(
             create: (_) => OnlineSebhaProvider()),
-        // ChangeNotifierProxyProvider<UserProvider, OnlineSebhaProvider>(
-        // create: (_) => OnlineSebhaProvider(null),
-        // update: (_, userProvider, __) => OnlineSebhaProvider(userProvider),
-        // ),
       ],
       child: ConnectivityAppWrapper(
         app: GetMaterialApp(
@@ -308,6 +303,7 @@ class _MyAppState extends State<MyApp> {
             const Locale("ar"),
             const Locale("en"),
           ],
+
           locale: this.widget.localeLoaded,
           navigatorObservers: <NavigatorObserver>[MyApp.observer],
           localizationsDelegates: [
@@ -317,13 +313,13 @@ class _MyAppState extends State<MyApp> {
             AppLocalizations.delegate, // Add this line
           ],
           builder: (BuildContext context, Widget child) {
-            print(
-                "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh Directionality " +
-                    this.widget.localeLoaded.languageCode);
             return new Directionality(
               textDirection: setTextDirection(this.widget.localeLoaded),
               child: child,
             );
+          },
+          localeResolutionCallback: (locale, supportedLocales) {
+            return this.widget.localeLoaded;
           },
           theme: ThemeData(
             textTheme: GoogleFonts.almaraiTextTheme(

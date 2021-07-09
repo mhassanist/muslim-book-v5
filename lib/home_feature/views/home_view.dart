@@ -1,7 +1,6 @@
 import 'package:base_app/home_feature/controllers/home_controller.dart';
 import 'package:base_app/home_feature/views/homePage.dart';
 import 'package:base_app/language_constants.dart';
-import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/main.dart';
 import 'package:base_app/utils/sizing_info_extension.dart';
 import 'package:base_app/widgets/app_scaffold.dart';
@@ -67,8 +66,6 @@ class _HomeViewState extends State<HomeView> {
                 MyApp.loading = true;
               });
               Locale local = await getLocale();
-              print("shaimaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-              print(local.languageCode);
               _changeLanguage(local.languageCode == 'ar' ? 'en' : 'ar');
             },
             child: Row(
@@ -76,8 +73,9 @@ class _HomeViewState extends State<HomeView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  AppLocalizations.of(context)
-                      .translate("MainSections")
+                  (Localizations.localeOf(context).languageCode == 'en'
+                          ? 'ar'
+                          : 'en')
                       .toUpperCase(),
                   style: TextStyle(
                       fontSize: 15,
