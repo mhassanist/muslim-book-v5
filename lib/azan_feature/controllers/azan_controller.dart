@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:base_app/azan_feature/models/azan_model.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/locator.dart';
 import 'package:base_app/utils/prefs.dart';
@@ -68,7 +69,7 @@ class AzanController extends GetxController {
     }
   }
 
-  List<Azan> getAzanList() {
+  List<Azan> getAzanList(context) {
     getMutedAzanList();
     azanList = [
       {
@@ -76,7 +77,7 @@ class AzanController extends GetxController {
         "key": "alfajr",
         "hours": locator<Prefs>().getAssalahTime("1").split(":")[0],
         "volume_enable": true,
-        "title": "الفجر",
+        "title": AppLocalizations.of(context).translate("alfajr"),
         "time": getFormattedTime(locator<Prefs>().getAssalahTime("1")),
         "count":locator<Prefs>().getAssalahTime("update1") != null   ? int.parse(locator<Prefs>().getAssalahTime("update1")) :0,
         "minute":locator<Prefs>().getAssalahTime("1").split(":")[1]
@@ -86,7 +87,7 @@ class AzanController extends GetxController {
         "id": "2",
         "key": "aldahi",
         "hours": locator<Prefs>().getAssalahTime("2").split(":")[0],
-        "title": "الضحي",
+        "title": AppLocalizations.of(context).translate("aldahi"),
         "volume_enable": true,
         "time": getFormattedTime(locator<Prefs>().getAssalahTime("2")),
         "count":locator<Prefs>().getAssalahTime("update2") != null? int.parse(locator<Prefs>().getAssalahTime("update2")) :0,
@@ -97,7 +98,7 @@ class AzanController extends GetxController {
         "id": "3",
         "key": "alzuhr",
         "hours": locator<Prefs>().getAssalahTime("3").split(":")[0],
-        "title": "الظهر",
+        "title": AppLocalizations.of(context).translate("alzuhr"),
         "volume_enable": true,
         "time": getFormattedTime(locator<Prefs>().getAssalahTime("3")),
         "count":locator<Prefs>().getAssalahTime("update3") != null ? int.parse(locator<Prefs>().getAssalahTime("update3")) :0,
@@ -108,7 +109,7 @@ class AzanController extends GetxController {
         "id": "4",
         "key": "aleasr",
         "hours": locator<Prefs>().getAssalahTime("4").split(":")[0],
-        "title": "العصر",
+        "title": AppLocalizations.of(context).translate("aleasr"),
         "volume_enable": true,
         "time": getFormattedTime(locator<Prefs>().getAssalahTime("4")),
         "count":locator<Prefs>().getAssalahTime("update4") != null? int.parse(locator<Prefs>().getAssalahTime("update4")) :0,
@@ -118,7 +119,7 @@ class AzanController extends GetxController {
         "id": "5",
         "key": "almaghrib",
         "hours": locator<Prefs>().getAssalahTime("5").split(":")[0],
-        "title": "المغرب",
+        "title": AppLocalizations.of(context).translate("almaghrib"),
         "volume_enable": true,
         "time": getFormattedTime(locator<Prefs>().getAssalahTime("5")),
         "count":locator<Prefs>().getAssalahTime("update5") != null  ? int.parse(locator<Prefs>().getAssalahTime("update5")) :0,
@@ -129,7 +130,7 @@ class AzanController extends GetxController {
         "id": "6",
         "key": "aleasha",
         "hours": locator<Prefs>().getAssalahTime("6").split(":")[0],
-        "title": "العشاء",
+        "title": AppLocalizations.of(context).translate("aleasha"),
         "volume_enable": true,
         "time": getFormattedTime(locator<Prefs>().getAssalahTime("6")),
         "isha": "true",
@@ -182,6 +183,7 @@ class AzanController extends GetxController {
 
   Future<void> getCurrentDay() async {
     await initializeDateFormatting("ar_SA", null);
+
     _currentDate = DateFormat.yMMMd('ar_SA').format(DateTime.now());
     _currentDayName = DateFormat.EEEE('ar_SA').format(DateTime.now());
     update();
@@ -248,8 +250,8 @@ class AzanController extends GetxController {
     _volume = !_volume;
   }
 
-  String getHijriDate() {
-    HijriCalendar.setLocal("ar");
+  String getHijriDate(context) {
+    Localizations.localeOf(context).languageCode == 'en'? HijriCalendar.setLocal("en"):HijriCalendar.setLocal("ar");
     print(  "shimoooo     ${HijriCalendar.now().hMonth}   " +
        "${HijriCalendar.now().hYear}");
     return HijriCalendar.now().toFormat("dd MMMM yyyy");

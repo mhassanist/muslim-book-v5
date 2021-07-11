@@ -11,10 +11,11 @@ import 'package:intl/intl.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class AzanHomeWidget extends StatelessWidget {
-  final AzanController controller = Get.find<AzanController>();
 
   @override
   Widget build(BuildContext context) {
+    final AzanController controller = Get.find<AzanController>();
+
     return ResponsiveBuilder(builder: (context, sizeConfig) {
       return Container(
         height: sizeConfig.blockSizeVertical * 17,
@@ -46,8 +47,8 @@ class AzanHomeWidget extends StatelessWidget {
                     } else {
                       // return Container();
                       print(locator<Prefs>().getAssalahTime("1"));
-                      final nextSalah =
-                          controller.getAzanList()[controller.nextAzanKey - 1];
+                      var nextSalah =
+                          controller.getAzanList(context)[controller.nextAzanKey - 1];
                       return Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: sizeConfig.blockSizeVertical * 3),
@@ -57,7 +58,7 @@ class AzanHomeWidget extends StatelessWidget {
                             Text(
                                 AppLocalizations.of(context)
                                         .translate("salah") +
-                                    nextSalah.title,
+                                    " "+nextSalah.title,
                                 // "صلاة ${nextSalah.title}",
                                 style: TextStyle(
                                     color: Colors.white,
@@ -72,7 +73,8 @@ class AzanHomeWidget extends StatelessWidget {
                                     fontSize:
                                         sizeConfig.blockSizeHorizontal * 5)),
                             Text(
-                              "متبقي : ${controller.remaining.inHours > 10 ? controller.remaining.inHours : "0${controller.remaining.inHours}"}:${DateFormat("mm:ss").format(DateTime.fromMillisecondsSinceEpoch(controller.remaining.inMilliseconds))}",
+                              
+                              "${AppLocalizations.of(context).translate("left")}: ${controller.remaining.inHours > 10 ? controller.remaining.inHours : "0${controller.remaining.inHours}"}:${DateFormat("mm:ss").format(DateTime.fromMillisecondsSinceEpoch(controller.remaining.inMilliseconds))}",
                               style: TextStyle(
                                   color: Constants.PRIMARY_COLOR,
                                   fontWeight: FontWeight.bold,
@@ -90,7 +92,9 @@ class AzanHomeWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
-                  "يوم  ${controller.currentDayName}",
+                  
+                  "${AppLocalizations.of(context).translate("Day")}:${DateFormat.EEEE(Localizations.localeOf(context).languageCode).format(DateTime.now())}",
+                  locale: Locale('en'),
                   style: TextStyle(
                       color: Constants.PRIMARY_COLOR,
                       fontWeight: FontWeight.bold,
@@ -100,7 +104,7 @@ class AzanHomeWidget extends StatelessWidget {
                   height: sizeConfig.blockSizeVertical,
                 ),
                 Text(
-                  "${controller.currentDate}",
+                  "${DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(DateTime.now())}",
                   style: TextStyle(
                       color: Constants.PRIMARY_COLOR,
                       fontWeight: FontWeight.bold,
@@ -110,7 +114,7 @@ class AzanHomeWidget extends StatelessWidget {
                   height: sizeConfig.blockSizeVertical,
                 ),
                 Text(
-                  "${controller.getHijriDate()}",
+                  "${controller.getHijriDate(context)}",
                   style: TextStyle(
                       color: Constants.PRIMARY_COLOR,
                       fontWeight: FontWeight.bold,
@@ -132,7 +136,7 @@ class AzanHomeWidget extends StatelessWidget {
                         vertical: sizeConfig.blockSizeVertical * .5),
                     shape: StadiumBorder(),
                     child: Text(
-                      "مواقيت الصلاة",
+                      AppLocalizations.of(context).translate("Prayer_Timings"),
                       style: TextStyle(
                           color: Constants.PRIMARY_DARK_COLOR,
                           fontWeight: FontWeight.bold,

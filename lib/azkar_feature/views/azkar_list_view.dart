@@ -5,6 +5,7 @@ import 'package:base_app/ads/load_ui_with_add.dart';
 import 'package:base_app/azkar_feature/providers/azkar_provider.dart';
 import 'package:base_app/azkar_feature/widgets/zikr_list_widget.dart';
 import 'package:base_app/home_feature/controllers/home_controller.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/main.dart';
 import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/utils/Constants.dart';
@@ -15,6 +16,7 @@ import 'package:base_app/widgets/share_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
@@ -46,11 +48,19 @@ class _AzkarListViewState extends State<AzkarListView> {
     return ResponsiveBuilder(
       builder: (context, SizingInformation sizeConfig) {
         return AppScaffold(
-            leading: IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () {
-                Get.find<HomeController>()
-                    .scaffoldKey.currentState.openDrawer();
+            leading:   InkWell(
+              child: Container(
+                margin: EdgeInsetsDirectional.only(start: 10),
+                padding: EdgeInsets.all(5),
+                height: 20,
+                width: 20,
+                child: SvgPicture.asset(
+                    "assets/icons/iconappbar.svg",
+                    color: Colors.white
+                ),
+              ),
+              onTap: () {
+                Get.find<HomeController>().scaffoldKey.currentState.openDrawer();
               },
             ),
             actions: [
@@ -75,7 +85,7 @@ class _AzkarListViewState extends State<AzkarListView> {
                 width: 10,
               )
             ],
-            title: AppScaffoldTitleWidget(title: "الأذكار"),
+            title: AppScaffoldTitleWidget(title: AppLocalizations.of(context).translate("azkar")),
             centerTitle: true,
             child:
             LoadUiWithAdd(

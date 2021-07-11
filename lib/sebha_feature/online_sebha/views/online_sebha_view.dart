@@ -1,4 +1,5 @@
 import 'package:base_app/ads/add_widget_edit.dart';
+import 'package:base_app/ads/load_ui_with_add.dart';
 import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/sebha_feature/online_sebha/controllers/online_sebha_controller.dart';
@@ -48,7 +49,9 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
         contentPadding: EdgeInsets.all(0.0),
         shape: RoundedRectangleBorder(borderRadius:
         BorderRadius.all(Radius.circular(12))),
-        content: AddWidgetEdit( title:   "المسبحة",bannerName :BannerName.SEBHA ,buttomTitle:  "متابعه",),
+        content: Container(
+            height: 400,
+            child: LoadUiWithAdd(mainView: AddWidgetEdit( title:   "المسبحة",bannerName :BannerName.SEBHA ,buttomTitle:  "متابعه",))),
       ),
     )) ?? false;
   }

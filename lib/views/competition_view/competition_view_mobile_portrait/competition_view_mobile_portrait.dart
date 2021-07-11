@@ -1,12 +1,15 @@
 import 'package:base_app/ads/add_widget_edit.dart';
 import 'package:base_app/ads/admob_rectangle.dart';
+import 'package:base_app/ads/load_ui_with_add.dart';
 import 'package:base_app/enams/view_state_enum.dart';
 import 'package:base_app/home_feature/controllers/home_controller.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/providers/competition_provider.dart';
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/views/login_pop_up_view/login_pop_up_view.dart';
+import 'package:base_app/widgets/app_scaffold_title.dart';
 import 'package:base_app/widgets/retry_view_widget.dart';
 import 'package:base_app/widgets/share_dialog.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
@@ -14,6 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter_native_admob/native_admob_controller.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -30,12 +34,10 @@ class _CompetitionViewMobilePortraitState
     extends State<CompetitionViewMobilePortrait> {
   CompetitionUI ui;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  var   widgetAddMob  ;
 
   @override
   void initState() {
-    widgetAddMob =
-        AdMobRectangle(BannerName.COMPETITION ) ;
+
     super.initState();
   }
 
@@ -83,11 +85,21 @@ class _CompetitionViewMobilePortraitState
           child: Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
-              leading: IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {
-                  Get.find<HomeController>()
-                      .scaffoldKey.currentState.openDrawer();
+              centerTitle: true,
+              title: AppScaffoldTitleWidget(title: AppLocalizations.of(context).translate("competitions")),
+              leading:   InkWell(
+                child: Container(
+                  margin: EdgeInsetsDirectional.only(start: 10),
+                  padding: EdgeInsets.all(5),
+                  height: 20,
+                  width: 20,
+                  child: SvgPicture.asset(
+                      "assets/icons/iconappbar.svg",
+                      color: Colors.white
+                  ),
+                ),
+                onTap: () {
+                  Get.find<HomeController>().scaffoldKey.currentState.openDrawer();
                 },
               ),
               actions: [
@@ -163,7 +175,7 @@ class _CompetitionViewMobilePortraitState
       ui.questions(),
       ui.answers(),
       ui.continueButton(),
-            widgetAddMob
+            AdMobRectangle(BannerName.COMPETITION )
 //          ui.faceBookAdsWidget(
 //              locator<RemoteConfigService>().underCompetitionAdsId)
       ],
@@ -187,6 +199,6 @@ class _CompetitionViewMobilePortraitState
             .isEmpty)
       return ui.buildNoMoreQuestions();
     else
-      return buildCompetitionWidget(context);
+      return LoadUiWithAdd(mainView: buildCompetitionWidget(context));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:base_app/ads/admob_rectangle.dart';
+import 'package:base_app/ads/load_ui_with_add.dart';
 import 'package:base_app/azan_feature/controllers/azan_controller.dart';
 import 'package:base_app/azan_feature/models/azan_model.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
@@ -37,13 +38,11 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
   bool _isSaveing = false;
 
   DateTime _now = DateTime.now();
-  var widgetAddMob;
   @override
   void initState() {
-    widgetAddMob = AdMobRectangle(BannerName.Top ) ;
     super.initState();
 
-    azanValue = controller.getAzanList();
+    azanValue = controller.getAzanList(context);
   }
 
   @override
@@ -68,159 +67,161 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                     }, builder: (_, model, __) {
                       return GetBuilder<AzanController>(builder: (controller) {
                         return Container(
-                            child: CustomScrollView(slivers: <Widget>[
-                          SliverToBoxAdapter(
-                            child: Container(
-                              height: 400,
-                              child: Stack(
-                                  //alignment:new Alignment(x, y)
-                                  children: <Widget>[
-                                    Positioned.fill(
-                                      child: ListView.builder(
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemCount: azanValue.length,
-                                        itemBuilder: (context, index) {
-                                          return _buildSingleAzan(
-                                              azanValue[index],
-                                              sizeConfig,
-                                              index,
-                                              isSmall);
-                                        },
-                                      ),
-                                    ),
-                                    Positioned(
-                                      left: 0,
-                                      right: 0,
-                                      top: 160,
-                                      child: Align(
-                                        alignment: Alignment.bottomCenter,
-                                        child: Container(
-                                          // margin: EdgeInsets.only(top: 100),
-                                          child: Visibility(
-                                            visible: _isSaveing,
-                                            child: Loading(
-                                              indicator: BallBeatIndicator(),
-                                              size: 70.0,
-                                              color:
-                                                  Constants.PRIMARY_DARK_COLOR,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ]),
-                            ),
-                          ),
-                          SliverToBoxAdapter(
-                              child: Visibility(
-                            visible: widget.showAppBar,
-                            child: Container(child: widgetAddMob),
-                          )),
-                          SliverToBoxAdapter(
-                              child: SizedBox(
-                            height: 10,
-                          )),
+                            child: LoadUiWithAdd(
+                              mainView: CustomScrollView(slivers: <Widget>[
                           SliverToBoxAdapter(
                               child: Container(
-                                  padding: widget.showAppBar
-                                      ? EdgeInsets.symmetric(horizontal: 35)
-                                      : EdgeInsets.symmetric(
-                                          horizontal: 15,
-                                        ),
-                                  child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () async {
-                                            setState(() {
-                                              _isSaveing = true;
-                                            });
-                                            await saveAllData()
-                                                .whenComplete(() {
-                                              Future.delayed(
-                                                  Duration(seconds: 5), () {
-                                                setState(() {
-                                                  _isSaveing = false;
-                                                });
-                                                widget.updateAzan();
-                                                Navigator.pop(context);
-                                              });
-                                            });
+                                height: 400,
+                                child: Stack(
+                                    //alignment:new Alignment(x, y)
+                                    children: <Widget>[
+                                      Positioned.fill(
+                                        child: ListView.builder(
+                                          physics: NeverScrollableScrollPhysics(),
+                                          itemCount: azanValue.length,
+                                          itemBuilder: (context, index) {
+                                            return _buildSingleAzan(
+                                                azanValue[index],
+                                                sizeConfig,
+                                                index,
+                                                isSmall);
                                           },
+                                        ),
+                                      ),
+                                      Positioned(
+                                        left: 0,
+                                        right: 0,
+                                        top: 160,
+                                        child: Align(
+                                          alignment: Alignment.bottomCenter,
                                           child: Container(
-                                            width: !isSmall ? 150 : 130,
-                                            height: 50,
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  Constants.PRIMARY_DARK_COLOR,
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black12,
-                                                  offset: Offset(5, 5),
-                                                  blurRadius: 10,
-                                                )
-                                              ],
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                'حفظ',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                                            // margin: EdgeInsets.only(top: 100),
+                                            child: Visibility(
+                                              visible: _isSaveing,
+                                              child: Loading(
+                                                indicator: BallBeatIndicator(),
+                                                size: 70.0,
+                                                color:
+                                                    Constants.PRIMARY_DARK_COLOR,
                                               ),
                                             ),
                                           ),
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Container(
-                                            width: !isSmall ? 150 : 130,
-                                            height: 50,
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                width: 2.5,
-                                                color: Constants
-                                                    .PRIMARY_DARK_COLOR,
+                                      )
+                                    ]),
+                              ),
+                          ),
+                          SliverToBoxAdapter(
+                                child: Visibility(
+                              visible: widget.showAppBar,
+                              child: Container(child: AdMobRectangle(BannerName.Top )),
+                          )),
+                          SliverToBoxAdapter(
+                                child: SizedBox(
+                              height: 10,
+                          )),
+                          SliverToBoxAdapter(
+                                child: Container(
+                                    padding: widget.showAppBar
+                                        ? EdgeInsets.symmetric(horizontal: 35)
+                                        : EdgeInsets.symmetric(
+                                            horizontal: 15,
+                                          ),
+                                    child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () async {
+                                              setState(() {
+                                                _isSaveing = true;
+                                              });
+                                              await saveAllData()
+                                                  .whenComplete(() {
+                                                Future.delayed(
+                                                    Duration(seconds: 5), () {
+                                                  setState(() {
+                                                    _isSaveing = false;
+                                                  });
+                                                  widget.updateAzan();
+                                                  Navigator.pop(context);
+                                                });
+                                              });
+                                            },
+                                            child: Container(
+                                              width: !isSmall ? 150 : 130,
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                color:
+                                                    Constants.PRIMARY_DARK_COLOR,
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black12,
+                                                    offset: Offset(5, 5),
+                                                    blurRadius: 10,
+                                                  )
+                                                ],
                                               ),
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black12,
-                                                  offset: Offset(5, 5),
-                                                  blurRadius: 7,
-                                                )
-                                              ],
+                                              child: Center(
+                                                child: Text(
+                                                  'حفظ',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
                                             ),
-                                            child: Center(
-                                              child: Text(
-                                                "إلغاء",
-                                                style: TextStyle(
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Container(
+                                              width: !isSmall ? 150 : 130,
+                                              height: 50,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                  width: 2.5,
                                                   color: Constants
                                                       .PRIMARY_DARK_COLOR,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black12,
+                                                    offset: Offset(5, 5),
+                                                    blurRadius: 7,
+                                                  )
+                                                ],
+                                              ),
+                                              child: Center(
+                                                child: Text(
+                                                  "إلغاء",
+                                                  style: TextStyle(
+                                                    color: Constants
+                                                        .PRIMARY_DARK_COLOR,
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ]))),
+                                        ]))),
                           SliverToBoxAdapter(
-                              child: SizedBox(
-                            height: 20,
+                                child: SizedBox(
+                              height: 20,
                           ))
-                        ]));
+                        ]),
+                            ));
                       });
                     });
             })));

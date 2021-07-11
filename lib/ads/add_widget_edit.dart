@@ -29,11 +29,9 @@ class AddWidgetEdit extends StatefulWidget {
 
 class _AddWidgetEditState extends State<AddWidgetEdit> {
 
-  var  widgetAddMob  ;
-  @override
+   @override
   void initState() {
-  widgetAddMob =
-  AdMobRectangle(widget.bannerName  ) ;
+
   super.initState();
   }
 
@@ -63,11 +61,10 @@ class _AddWidgetEditState extends State<AddWidgetEdit> {
               SizedBox(
                 height: 10,
               ),
+
               Expanded(
                   child:
-                      Container(child: widgetAddMob)),
-
-              // SizedBox(width: 3,),
+                      Container(child:AdMobRectangle(widget.bannerName  ))),
               Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 5,

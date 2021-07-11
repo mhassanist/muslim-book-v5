@@ -20,8 +20,7 @@ class _LoadUiWithAddState extends State<LoadUiWithAdd> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds:   2), () {
-       //print(MyApp.loadingAddMobe);
-      setState(() {
+       setState(() {
         loadingAddMobe = false;
       });
      });

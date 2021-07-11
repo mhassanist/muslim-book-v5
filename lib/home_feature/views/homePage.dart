@@ -47,7 +47,7 @@ class HomePage extends ConsumerWidget {
                     height: 110,
                     width: MediaQuery.of(context).size.width,
                     child: CategoriesHorizontalHomeWidget()),
-                buildTitle("الاخبار"),
+                buildTitle(AppLocalizations.of(context).translate("news")),
                 Container(
                   width: width * 0.90,
                   height: 40,
@@ -67,7 +67,7 @@ class HomePage extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(28)),
                           child: Center(
                             child: Text(
-                              "نشر",
+                             AppLocalizations.of(context).translate("Post"),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 13,
@@ -264,6 +264,7 @@ class HomePage extends ConsumerWidget {
       ),
     );
   }
+
 
   Widget buildTitle(String title) {
     return Padding(

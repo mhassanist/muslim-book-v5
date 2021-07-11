@@ -18,11 +18,11 @@ class CategoriesHomeWidget extends StatelessWidget {
           padding: EdgeInsets.symmetric(
               vertical: sizeConfig.blockSizeHorizontal * 3),
           crossAxisCount: 4,
-          itemCount: controller.categories.length,
+          itemCount: controller.getCategories(context).length,
           itemBuilder: (BuildContext context, int index) =>
               SingleCategoryWidget(
                   sizeConfig: sizeConfig,
-                  categoryDetails: controller.categories[index]),
+                  categoryDetails: controller.getCategories(context)[index]),
           staggeredTileBuilder: (int index) => new StaggeredTile.count(2, 2),
         );
       });

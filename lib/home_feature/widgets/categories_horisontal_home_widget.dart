@@ -17,9 +17,9 @@ class CategoriesHorizontalHomeWidget extends StatelessWidget {
             mainAxisSpacing: 4.0,
             childAspectRatio: (1 / .4),
             crossAxisSpacing: 4.0,
-            children: controller.categories.map((Map<String, dynamic> item) {
+            children: controller.getCategories(context).map((Map<String, dynamic> item) {
               return InkWell(
-                  onTap: item["onTap"], child: buildItem(sizeConfig, item));
+                  onTap: item["onTap"], child: buildItem(sizeConfig, item,context));
             }).toList());
         // ListView.builder(
         //     itemCount: controller.categories.length,
@@ -34,7 +34,7 @@ class CategoriesHorizontalHomeWidget extends StatelessWidget {
   }
 
   Widget buildItem(SizingInformation sizeConfig,
-      final Map<String, dynamic> categoryDetails) {
+      final Map<String, dynamic> categoryDetails,BuildContext context) {
     return Container(
       height: 50,
       margin: EdgeInsets.symmetric(horizontal: 4),
@@ -91,19 +91,31 @@ class CategoriesHorizontalHomeWidget extends StatelessWidget {
               )
             ],
           ),
-          Positioned(
-            left: 3,
-            bottom: 2,
-            child: Container(
-              height: 20,
-              width: 35,
-              child: SvgPicture.asset(
-                categoryDetails["icon"],
-                color: Colors.black12,
-                fit: BoxFit.contain,
-              ),
-            ),
-          )
+    Localizations.localeOf(context).languageCode == 'en'? Positioned(
+        right: 3,
+    bottom: 2,
+    child: Container(
+    height: 20,
+    width: 35,
+    child: SvgPicture.asset(
+    categoryDetails["icon"],
+    color: Colors.black12,
+    fit: BoxFit.contain,
+    ),
+    ),
+    ): Positioned(
+        left: 3,
+    bottom: 2,
+    child: Container(
+    height: 20,
+    width: 35,
+    child: SvgPicture.asset(
+    categoryDetails["icon"],
+    color: Colors.black12,
+    fit: BoxFit.contain,
+    ),
+    ),
+    )
         ],
       ),
     );

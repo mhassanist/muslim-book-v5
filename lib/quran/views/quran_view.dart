@@ -12,6 +12,7 @@ import 'package:base_app/widgets/share_dialog.dart';
 import 'package:facebook_audience_network/ad/ad_interstitial.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -60,12 +61,19 @@ class _QuranViewState extends State<QuranView> {
           iconTheme: IconThemeData(
             color: Theme.of(context).primaryColor,
           ),
-          leading: IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              Get
-                  .find<HomeController>()
-                  .scaffoldKey.currentState.openDrawer();
+          leading:   InkWell(
+            child: Container(
+              margin: EdgeInsetsDirectional.only(start: 10),
+              padding: EdgeInsets.all(5),
+              height: 20,
+              width: 20,
+              child: SvgPicture.asset(
+                  "assets/icons/iconappbar.svg",
+                  color: Theme.of(context).primaryColor
+              ),
+            ),
+            onTap: () {
+              Get.find<HomeController>().scaffoldKey.currentState.openDrawer();
             },
           ),
           actions: <Widget>[

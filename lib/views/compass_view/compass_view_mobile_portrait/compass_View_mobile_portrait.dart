@@ -1,13 +1,16 @@
 import 'dart:math' as math;
 
 import 'package:base_app/ads/admob_rectangle.dart';
+import 'package:base_app/ads/load_ui_with_add.dart';
 import 'package:base_app/home_feature/controllers/home_controller.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/location_utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_native_admob/native_admob_controller.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocation/geolocation.dart';
 import 'package:geolocator/geolocator.dart';
@@ -28,12 +31,10 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
   double currentLocLat, currentLocLng;
   double degToKaabaBaring = 0;
   bool _gettingLocation;
- var  widgetAddMob ;
 
   @override
   void initState() {
-    widgetAddMob =
-        AdMobRectangle(BannerName.BOSLA ) ;
+
     super.initState();
     _fetchPermissionStatus();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -70,15 +71,21 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
       child: Scaffold(
         appBar: AppBar(
             elevation: 0,
-          iconTheme: IconThemeData(
-            color: Theme.of(context).primaryColor,
-          ),
-          leading: IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              Get
-                  .find<HomeController>()
-                  .scaffoldKey.currentState.openDrawer();
+
+          leading:
+          InkWell(
+            child: Container(
+              margin: EdgeInsetsDirectional.only(start: 10),
+              padding: EdgeInsets.all(5),
+              height: 20,
+              width: 20,
+              child: SvgPicture.asset(
+                "assets/icons/iconappbar.svg",
+                color: Theme.of(context).primaryColor
+              ),
+            ),
+            onTap: () {
+              Get.find<HomeController>().scaffoldKey.currentState.openDrawer();
             },
           ),
           backgroundColor:
@@ -107,7 +114,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
 //          return Text('Error reading heading: ${snapshot.error}');
-          return Text('حدث خطأ في إيجاد الإتجاه');
+          return Text(AppLocalizations.of(context).translate("error_direction"));
         }
 
         if (!snapshot.hasData) {
@@ -144,129 +151,137 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
 //        });
 //  print( "_hasPermissions   $_hasPermissions    currentLocLatLong   $currentLocLatLong    " );
         return Container(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                child: Text(
-                  "معايرة البوصلة  الخاصه بك ، قم بإماله الهاتف",
-                  style: TextStyle(fontSize: unitSize * 2),
+
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Text(
+                    AppLocalizations.of(context).translate("Calibrate_your_compass"),
+                    style: TextStyle(fontSize: unitSize * 2),
+                  ),
                 ),
-              ),
-              Container(
-                alignment: Alignment.topCenter,
-                margin: EdgeInsets.only(left: 20, right: 20),
-                height: unitSize * 45,
-                child: Transform.rotate(
-                  angle: currentLocLatLong != null
-                      ? ((degToKaabaBaring - direction) * (math.pi / 180))
-                      : 0,
+                Container(
+                  alignment: Alignment.topCenter,
+                  margin: EdgeInsets.only(left: 20, right: 20),
+                  height: unitSize * 45,
+                  child: Transform.rotate(
+                    angle: currentLocLatLong != null
+                        ? ((degToKaabaBaring - direction) * (math.pi / 180))
+                        : 0,
 //                angle: (((direction ?? 0) * (math.pi / 180) * -1) + (degToKaabaBaring ?? 0)) % 360,
 //                angle: ((direction ?? 0) * (math.pi / 180) * -1),
-                  child: Image.asset('assets/images/general/compass.png'),
+                    child: Image.asset('assets/images/general/compass.png'),
+                  ),
                 ),
-              ),
-              _hasPermissions
-                  ? AnimatedCrossFade(
-                      firstChild: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.only(top: unitSize * 2),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "${currentLocLatLong != null ? currentLocLatLong : ""}",
-                              textAlign: TextAlign.center,
+                _hasPermissions
+                    ? AnimatedCrossFade(
+                        firstChild: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: EdgeInsets.only(top: unitSize * 2),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "${currentLocLatLong != null ? currentLocLatLong : ""}",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Theme.of(context).primaryColorDark,
+                                    fontSize: unitSize * 2,
+                                    fontWeight: FontWeight.w800),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: unitSize * 2),
+                            ),
+                            Text(
+                              "القبلة",
                               style: TextStyle(
-                                  color: Theme.of(context).primaryColorDark,
-                                  fontSize: unitSize * 2,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: unitSize * 2),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: unitSize * 1),
+                            ),
+                            Text(
+                              "من الشمال",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: unitSize * 2),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(top: unitSize * 1),
+                            ),
+                            Text(
+                              "${degToKaabaBaring.toStringAsFixed(3)}",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: unitSize * 3,
                                   fontWeight: FontWeight.w800),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: unitSize * 2),
-                          ),
-                          Text(
-                            "القبلة",
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                fontSize: unitSize * 2),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: unitSize * 1),
-                          ),
-                          Text(
-                            "من الشمال",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: unitSize * 2),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: unitSize * 1),
-                          ),
-                          Text(
-                            "${degToKaabaBaring.toStringAsFixed(3)}",
-                            style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: unitSize * 3,
-                                fontWeight: FontWeight.w800),
-                          ),
-                          widgetAddMob
-                         // .. AdMobRectangle(BannerName.BOSLA)
-                        ],
-                      ),
-                      secondChild: Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.all(5),
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              Constants.PRIMARY_COLOR),
+                            AdMobRectangle(BannerName.BOSLA )
+                            // .. AdMobRectangle(BannerName.BOSLA)
+                          ],
                         ),
-                      ),
-                      crossFadeState:
-                          _gettingLocation != null && _gettingLocation
-                              ? CrossFadeState.showSecond
-                              : CrossFadeState.showFirst,
-                      duration: Duration(milliseconds: 200),
-                    )
-                : Container(),
-              if(!snapshot.hasData)
-              if ( !_hasPermissions || currentLocLatLong == null )
-                Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: Text(
-                        "يجب إعطاء الصلاحية لل GPS لإيجاد اتجاه القبلة",
-                        style: TextStyle(fontSize: unitSize * 2),
-                      ),
-                    ),
-                    Container(
-                      height: unitSize * 7,
-                      child: FlatButton(
-                        onPressed: () async {
-                          _fetchPermissionStatus();
-                        },
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(5))),
-                        color: Theme.of(context).primaryColor,
-                        child: Text(
-                          "إعطاء الصلاحية",
-                          style: TextStyle(
-                              color: Constants.CANVAS_COLOR,
-                              fontSize: unitSize * 3),
+                        secondChild: Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.all(5),
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                                Constants.PRIMARY_COLOR),
+                          ),
                         ),
-                      ),
-                    ),
-                    SizedBox(height: 10,),
-        widgetAddMob
+                        crossFadeState:
+                            _gettingLocation != null && _gettingLocation
+                                ? CrossFadeState.showSecond
+                                : CrossFadeState.showFirst,
+                        duration: Duration(milliseconds: 200),
+                      )
+                  : Container(),
+                if(!snapshot.hasData)
+                if ( !_hasPermissions || currentLocLatLong == null )
+                  Column(
+                    children: <Widget>[
 
-                  ],
-                )
-            ],
-          ),
+                      LoadUiWithAdd(
+                        mainView: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 20),
+                              child: Text(
+                                "يجب إعطاء الصلاحية لل GPS لإيجاد اتجاه القبلة",
+                                style: TextStyle(fontSize: unitSize * 2),
+                              ),
+                            ),
+                            Container(
+                              height: unitSize * 7,
+                              child: FlatButton(
+                                onPressed: () async {
+                                  _fetchPermissionStatus();
+                                },
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(5))),
+                                color: Theme.of(context).primaryColor,
+                                child: Text(
+                                  "إعطاء الصلاحية",
+                                  style: TextStyle(
+                                      color: Constants.CANVAS_COLOR,
+                                      fontSize: unitSize * 3),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10,),
+                            AdMobRectangle(BannerName.BOSLA )
+
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+              ],
+            ),
         );
       },
     );

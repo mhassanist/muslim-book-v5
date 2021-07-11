@@ -34,7 +34,7 @@ class _AzanViewState extends State<AzanView> {
     final size = MediaQuery.of(context).size;
     final isSmall = size.width <= 450;
     return ResponsiveBuilder(builder: (context, sizeConfig) {
-      return controller.getAzanList() == null
+      return controller.getAzanList(context) == null
           ? Container()
           : BaseView<PickAzanMethodsProvider>(onModelReady: (model) {
               _provider = model;
@@ -125,7 +125,7 @@ class _AzanViewState extends State<AzanView> {
                                   height: sizeConfig.blockSizeVertical,
                                 ),
                                 Text(
-                                  "${controller.getHijriDate()}",
+                                  "${controller.getHijriDate(context)}",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -136,10 +136,10 @@ class _AzanViewState extends State<AzanView> {
                             ),
                           ),
                           for (int i = 0;
-                          i < controller.getAzanList().length;
+                          i < controller.getAzanList(context).length;
                           i++)
                             buildSingleAzan(
-                                controller.getAzanList()[i], sizeConfig, i)
+                                controller.getAzanList(context)[i], sizeConfig, i)
                           ,
 
                           Container(

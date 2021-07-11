@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:base_app/ads/add_widget_edit.dart';
 import 'package:base_app/ads/admob_rectangle.dart';
+import 'package:base_app/ads/load_ui_with_add.dart';
 import 'package:base_app/enams/view_state_enum.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/models/banner_names_enum.dart';
@@ -260,11 +261,16 @@ class CompetitionUI {
                               shape: RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(12))),
-                              content: AddWidgetEdit(
-                                title: "المسابقه",
-                                bannerName: BannerName.COMPETITION,
-                                buttomTitle: "متابعه",
-                                exit: go,
+                              content: Container(
+                                height: 400,
+                                child: LoadUiWithAdd(
+                                  mainView: AddWidgetEdit(
+                                    title: "المسابقه",
+                                    bannerName: BannerName.COMPETITION,
+                                    buttomTitle: "متابعه",
+                                    exit: go,
+                                  ),
+                                ),
                               ),
                             ),
                           );

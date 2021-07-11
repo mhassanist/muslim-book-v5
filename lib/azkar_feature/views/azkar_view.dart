@@ -2,6 +2,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:base_app/ads/ad_manager.dart';
 import 'package:base_app/ads/admob_rectangle.dart';
+import 'package:base_app/ads/load_ui_with_add.dart';
 import 'package:base_app/azkar_feature/models/azkar_model.dart';
 import 'package:base_app/ads/add_widget_edit.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
@@ -39,12 +40,10 @@ class _AzkarViewState extends State<AzkarView> {
   int currentIndex = 0;
   final CarouselController controller = CarouselController();
   AudioCache _audioCache;
-  var   widgetAddMob  ;
 
   @override
   void initState() {
-    widgetAddMob =
-        AdMobRectangle(BannerName.BOSLA ) ;
+
     super.initState();
     _audioCache = AudioCache(
         prefix: "audio/",
@@ -56,11 +55,15 @@ class _AzkarViewState extends State<AzkarView> {
   Future<bool> _onWillPop() async {
     return (await showDialog(
       context: context,
-      builder: (context) => new AlertDialog(
-        contentPadding: EdgeInsets.all(0.0),
-        shape: RoundedRectangleBorder(borderRadius:
-        BorderRadius.all(Radius.circular(12))),
-        content: AddWidgetEdit(title:   "أذكار",bannerName :BannerName.AZKAR ,buttomTitle:  "متابعه",),
+      builder: (context) =>  new AlertDialog(
+          contentPadding: EdgeInsets.all(0.0),
+          shape: RoundedRectangleBorder(borderRadius:
+          BorderRadius.all(Radius.circular(12))),
+          content:Container(
+            height: 400,
+            child:LoadUiWithAdd(mainView: AddWidgetEdit(title:   "أذكار",bannerName :BannerName.AZKAR ,buttomTitle:  "متابعه",)) ,
+          )  ,
+        
       ),
     )) ?? false;
   }
@@ -80,70 +83,49 @@ class _AzkarViewState extends State<AzkarView> {
               transparentBackground: true,
               child: azkar == null
                   ? Container()
-                  : ListView(
-                      children: [
-                        CarouselSlider(
-                          carouselController: controller,
-                          options: CarouselOptions(
-                              enableInfiniteScroll: false,
-                              scrollPhysics: NeverScrollableScrollPhysics(),
-                              initialPage: currentIndex,
-                              onPageChanged: (index, _) {
-                                setState(() {
-                                  currentIndex = index;
-                                  currentZikr = azkar[index];
-                                });
-                              },
-                              viewportFraction: 0.9,
-                              aspectRatio: 2.0,
-                              height: sizeConfig.blockSizeVertical * 50),
-                          items: azkar.map((zikr) {
-                            return Builder(
-                              builder: (BuildContext context) {
-                                return Container(
-                                  child: Column(
-                                    children: [
-                                      buildContentStack(sizeConfig, zikr),
-                                    ],
-                                  ),
-                                );
-                              },
-                            );
-                          }).toList(),
-                        ),
-                        buildControllesWidget(sizeConfig, currentZikr),
-                        Spacer(),
-                        Container(
-                            height: 100,
-                            child: widgetAddMob),
+                  : LoadUiWithAdd(
+                    mainView: ListView(
+                        children: [
+                          CarouselSlider(
+                            carouselController: controller,
+                            options: CarouselOptions(
+                                enableInfiniteScroll: false,
+                                scrollPhysics: NeverScrollableScrollPhysics(),
+                                initialPage: currentIndex,
+                                onPageChanged: (index, _) {
+                                  setState(() {
+                                    currentIndex = index;
+                                    currentZikr = azkar[index];
+                                  });
+                                },
+                                viewportFraction: 0.9,
+                                aspectRatio: 2.0,
+                                height: sizeConfig.blockSizeVertical * 50),
+                            items: azkar.map((zikr) {
+                              return Builder(
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    child: Column(
+                                      children: [
+                                        buildContentStack(sizeConfig, zikr),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            }).toList(),
+                          ),
+                          buildControllesWidget(sizeConfig, currentZikr),
+                          Spacer(),
 
-                        //FacebookBannerAd
-                        // Container(
-                        //   color: Colors.white,
-                        //   alignment: Alignment(0.5, 1),
-                        //   child: FacebookBannerAd(
-                        //     placementId: locator<RemoteConfigService>().belowAzkar,
-                        //     bannerSize: BannerSize.STANDARD,
-                        //     listener: (result, value) {
-                        //       switch (result) {
-                        //         case BannerAdResult.ERROR:
-                        //           print("Error: $value");
-                        //           break;
-                        //         case BannerAdResult.LOADED:
-                        //           print("Loaded: $value");
-                        //           break;
-                        //         case BannerAdResult.CLICKED:
-                        //           print("Clicked: $value");
-                        //           break;
-                        //         case BannerAdResult.LOGGING_IMPRESSION:
-                        //           print("Logging Impression: $value");
-                        //           break;
-                        //       }
-                        //     },
-                        //   ),
-                        // )
-                      ],
-                    ),
+                          Container(
+                              height: 100,
+                              child: AdMobRectangle(BannerName.BOSLA )),
+
+
+                        ],
+                      ),
+                  ),
             ));
       },
     );

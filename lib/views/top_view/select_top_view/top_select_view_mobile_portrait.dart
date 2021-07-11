@@ -1,4 +1,5 @@
 import 'package:base_app/ads/admob_rectangle.dart';
+import 'package:base_app/ads/load_ui_with_add.dart';
 import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/providers/tasbeeh_top_provider.dart';
 import 'package:base_app/providers/top_provider.dart';
@@ -26,7 +27,6 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
     "assets/images/start_view/leaderboard_icon.svg",
     "assets/images/start_view/azkar.svg"
   ];
-  var   widgetAddMob  ;
 
   @override
   void didChangeDependencies() {
@@ -35,8 +35,7 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
 
   @override
   void initState() {
-    widgetAddMob =
-        AdMobRectangle(BannerName.Top ) ;
+    
     super.initState();
   }
 
@@ -70,34 +69,36 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
       padding: EdgeInsets.zero,
       backGroundColor: Colors.white,
       child: ResponsiveBuilder(builder: (context, sizeConfig) {
-     return CustomScrollView(
+     return LoadUiWithAdd(
+       mainView: CustomScrollView(
 
-       slivers: <Widget>[
-     SliverToBoxAdapter(
-     child:
-          StaggeredGridView.countBuilder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(vertical: 10),
-          crossAxisCount: 4,
-          itemCount: 2,
-          itemBuilder: (BuildContext context, int index) => _buildItem(index),
-          staggeredTileBuilder: (int index) => new StaggeredTile.count(2, 2),
-        )),
+         slivers: <Widget>[
+       SliverToBoxAdapter(
+       child:
+            StaggeredGridView.countBuilder(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(vertical: 10),
+            crossAxisCount: 4,
+            itemCount: 2,
+            itemBuilder: (BuildContext context, int index) => _buildItem(index),
+            staggeredTileBuilder: (int index) => new StaggeredTile.count(2, 2),
+          )),
 
-         SliverToBoxAdapter(
-             child:
-             Container(
-                 child: widgetAddMob
-             //  ..  AdMobRectangle(BannerName.Top)
-             )),
-         SliverToBoxAdapter(
-             child:
-             SizedBox(
-               height: 10,
-             )),
-        ],
-        );
+           SliverToBoxAdapter(
+               child:
+               Container(
+                   child: AdMobRectangle(BannerName.Top )
+               //  ..  AdMobRectangle(BannerName.Top)
+               )),
+           SliverToBoxAdapter(
+               child:
+               SizedBox(
+                 height: 10,
+               )),
+          ],
+          ),
+     );
       }),
     );
   }

@@ -1,9 +1,29 @@
 {
   "MainSections": "Main Sections",
   "salah": "Prayer",
+
+  "alfajr": "Alfajr",
+  "aldahi": "Aldahi",
+  "alzuhr": "Alzuhr",
+  "aleasr": "Aleasr",
+  "almaghrib": "Almaghrib",
+  "aleasha": "Aleasha",
+  "competitions": "competitions",
   "competition_rank": "Competition Rank",
   "remind_points": "Tasbeeh Points",
   "remind_rank": "Tasbeeh Rank",
+  "news": "News",
+  "azkar": "Azkar ",
+  "rosary": "Rosary",
+  "quran": "َQuran",
+  "Qiblah": "Qiblah",
+  "more": "More",
+  "left": "left",
+  "Day": "Day",
+  "Calibrate_your_compass": "Calibrate your compass, tilt the phone",
+  "error_direction": "There was an error finding the direction",
+  "Post":  "Post",
+  "Prayer_Timings": "Prayer Timings",
   "select_fajr_shiekh": "Pick Fajr Azan Sheikh",
   "general_settings": "General Settings",
   "azan_shiekh_fajr": "Fajr Azan Shiekh",
@@ -181,8 +201,6 @@
   "no_more_questions_come_back_later": "لقد انتهيت من الاسئلة .\n أنتظرونا بعد ساعات قليله للاسئلة القادمه ان شاء الله",
   "share_competition": "من فضلك شارك المسابقة الدينية مع الاصدقاء",
   "share_your_profile": "شارك ملفك الشخصي مع الأصدقاء",
-  "retry_quran": "أعد المحاولة لتشغيل المصحف ",
-  "azkar":"الأذكار"
-
+  "retry_quran": "أعد المحاولة لتشغيل المصحف "
 
 }
