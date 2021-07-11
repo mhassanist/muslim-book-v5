@@ -5,7 +5,7 @@ import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/azan_feature/controllers/azan_controller.dart';
 import 'package:base_app/azkar_feature/providers/azkar_provider.dart';
 import 'package:base_app/home_feature/controllers/home_controller.dart';
-import 'package:base_app/language_constants.dart';
+import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/providers/azan_fajr_sounds_provider.dart';
 import 'package:base_app/providers/azan_sounds_provider.dart';
 import 'package:base_app/providers/user_provider.dart';
@@ -45,7 +45,7 @@ import 'utils/locator.dart';
 
 const String LAGUAGE_CODE = 'languageCode';
 
- 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _initAdMob();

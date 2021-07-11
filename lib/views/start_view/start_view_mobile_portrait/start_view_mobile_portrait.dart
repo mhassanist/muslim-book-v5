@@ -4,7 +4,7 @@ import 'package:base_app/ads/ad_manager.dart';
 import 'package:base_app/azkar_feature/views/azkar_list_view.dart';
 import 'package:base_app/home_feature/controllers/home_controller.dart';
 import 'package:base_app/home_feature/views/home_view.dart';
-import 'package:base_app/language_constants.dart';
+import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/main.dart';
 import 'package:base_app/models/banner_names_enum.dart';

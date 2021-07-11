@@ -1,6 +1,6 @@
 import 'package:base_app/home_feature/controllers/home_controller.dart';
 import 'package:base_app/home_feature/views/homePage.dart';
-import 'package:base_app/language_constants.dart';
+import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/main.dart';
 import 'package:base_app/utils/sizing_info_extension.dart';
 import 'package:base_app/widgets/app_scaffold.dart';
