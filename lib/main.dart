@@ -46,7 +46,6 @@ import 'utils/locator.dart';
 
 const String LAGUAGE_CODE = 'languageCode';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   _initAdMob();
@@ -110,6 +109,7 @@ class MyApp extends StatefulWidget {
   static bool loadingAddMobe = false;
 
   MyApp(this.localeLoaded);
+
   static void setLocale(BuildContext context, Locale newLocale) {
     _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
     state.setLocale(newLocale);
@@ -152,7 +152,8 @@ class MyApp extends StatefulWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                Expanded(child: Container(child: AdMobRectangle(BannerName.Top))),
+                Expanded(
+                    child: Container(child: AdMobRectangle(BannerName.Top))),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -160,12 +161,12 @@ class MyApp extends StatefulWidget {
                       width: sizeConfig.blockSizeHorizontal * 30,
                       height: sizeConfig.blockSizeVertical * 6,
                       margin: EdgeInsets.only(top: 20, bottom: 20),
-                      decoration:
-                          BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10)),
                       child: RawMaterialButton(
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(sizeConfig.blockSizeVertical),
+                          borderRadius: BorderRadius.circular(
+                              sizeConfig.blockSizeVertical),
                         ),
                         onPressed: () {
                           SystemNavigator.pop();
@@ -187,12 +188,12 @@ class MyApp extends StatefulWidget {
                       width: sizeConfig.blockSizeHorizontal * 30,
                       height: sizeConfig.blockSizeVertical * 6,
                       margin: EdgeInsets.only(top: 20, bottom: 20),
-                      decoration:
-                          BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10)),
                       child: RawMaterialButton(
                         shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(sizeConfig.blockSizeVertical),
+                          borderRadius: BorderRadius.circular(
+                              sizeConfig.blockSizeVertical),
                         ),
                         onPressed: () {
                           Navigator.of(context).pop();
@@ -225,6 +226,7 @@ class _MyAppState extends State<MyApp> {
   final AzanController _azanController = Get.put(AzanController());
   final HomeController _homeController = Get.put(HomeController());
   String showCompetition, openAzkar;
+  var checkOverLay  ;
 
   @override
   void initState() {
@@ -261,6 +263,7 @@ class _MyAppState extends State<MyApp> {
       showCompetition =
           await Constants.platform.invokeMethod(Constants.Open_Competition);
       openAzkar = await Constants.platform.invokeMethod(Constants.open_Azkar);
+      checkOverLay = await Constants.platform.invokeMethod("checkOverlay");
     } on PlatformException catch (e) {
       message = e.message;
     }
@@ -334,8 +337,10 @@ class _MyAppState extends State<MyApp> {
             primaryColorDark: Constants.PRIMARY_DARK_COLOR,
             canvasColor: Constants.CANVAS_COLOR,
           ),
-          home: showCompetition != null || openAzkar != null
-              ? StartView()
+          home: checkOverLay != null
+              ? showCompetition != null || openAzkar != null
+                  ? StartView()
+                  : SplashView()
               : SplashView(),
           navigatorKey: Routes.sailor.navigatorKey,
           onGenerateRoute: Routes.sailor.generator(),
