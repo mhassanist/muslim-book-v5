@@ -50,7 +50,7 @@ class _ZikrListWidgetState extends State<ZikrListWidget> {
             height: 10,
           ),
           Text(
-            "أذكار ${widget.zikrDetails["name"]}",
+            "${widget.zikrDetails["name"]}",
             textAlign: TextAlign.center,
           )
         ],

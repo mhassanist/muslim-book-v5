@@ -68,7 +68,7 @@ class TopUI {
                 horizontal: sizeConfig.blockSizeHorizontal * 6,
                 vertical: sizeConfig.blockSizeVertical * 2),
             child: Text(
-              "الرتب الإسبوعية",
+              AppLocalizations.of(context).translate("rank_weekly"),
               style: TextStyle(
                   color: prymaryColor,
                   fontWeight: FontWeight.bold,

@@ -187,12 +187,12 @@ class SideDrawerMenu {
                           //   Navigator.pushNamed(context, '/RamadanView');
                           // }, true, "assets/images/slider_view/antern.svg"),
                           _buildDivider(),
-                          _buildRow(null, "مواقيت الصلاة", () {
+                          _buildRow(null, AppLocalizations.of(context).translate("Prayer_Timings"), () {
                             Navigator.of(context).pop();
                             Get.to(AzanView());
                           }, true, "assets/images/slider_view/prayer.svg"),
                           _buildDivider(),
-                          _buildRow(null, "إتجاه القبلة", () {
+                          _buildRow(null, AppLocalizations.of(context).translate("Qiblah"), () {
                             Navigator.of(context).pop();
                             Provider.of<UserProvider>(
                                     Get.find<HomeController>()
@@ -202,7 +202,7 @@ class SideDrawerMenu {
                                 .selectedPage = 1;
                           }, true, "assets/images/start_view/compass_icon.svg"),
                           _buildDivider(),
-                          _buildRow(null, "القرآن الكريم", () {
+                          _buildRow(null, AppLocalizations.of(context).translate("quran"), () {
                             Navigator.of(context).pop();
                             Provider.of<UserProvider>(
                                     Get.find<HomeController>()
@@ -212,13 +212,13 @@ class SideDrawerMenu {
                                 .selectedPage = 0;
                           }, true, "assets/images/slider_view/koran.svg"),
                           _buildDivider(),
-                          _buildRow(null, "السبحة", () {
+                          _buildRow(null, AppLocalizations.of(context).translate("rosary"), () {
                             Navigator.of(context).pop();
                             // await
                             Get.to(SebhaView());
                           }, true, "assets/images/sebha_view/sebha_icon.svg"),
                           _buildDivider(),
-                          _buildRow(null, "الأذكار", () {
+                          _buildRow(null,AppLocalizations.of(context).translate("azkar"), () {
                             Navigator.of(context).pop();
                             Provider.of<UserProvider>(
                                     Get.find<HomeController>()
@@ -228,7 +228,7 @@ class SideDrawerMenu {
                                 .selectedPage = 4;
                           }, true, "assets/images/start_view/azkar.svg"),
                           _buildDivider(),
-                          _buildRow(null, "المسابقات", () {
+                          _buildRow(null, AppLocalizations.of(context).translate("competitions"), () {
                             Navigator.of(context).pop();
                             Provider.of<UserProvider>(
                                     Get.find<HomeController>()
@@ -238,7 +238,7 @@ class SideDrawerMenu {
                                 .selectedPage = 3;
                           }, true, "assets/images/start_view/quizes_icon.svg"),
                           _buildDivider(),
-                          _buildRow(Icons.wine_bar, "الأوائل", () {
+                          _buildRow(Icons.wine_bar, AppLocalizations.of(context).translate("best"), () {
                             Navigator.of(context).pop();
                             Navigator.pushNamed(context, "/SelectTopView");
                           }, false, ""),
@@ -269,17 +269,7 @@ class SideDrawerMenu {
                             Navigator.pushNamed(context, '/settings');
                           }, false, ""),
 
-                          _buildDivider(),
-                          _buildRow(
-                              Icons.settings,
-                              AppLocalizations.of(context)
-                                  .translate("settings"), () {
-                            Navigator.of(context).pop();
 
-                            // AppLocalizations(Locale("en")).load();
-
-                            // Navigator.pushNamed(context, '/settings');
-                          }, false, ""),
                           Container(
                             height: 20,
                           )

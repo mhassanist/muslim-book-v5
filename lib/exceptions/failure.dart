@@ -39,7 +39,7 @@ class Failure {
   }
 
   Map<String, String> _noConnectionException() {
-    return {"en": "There Is No Connection", "ar": "لا يود إنترنت"};
+    return {"en": "There Is No Connection", "ar": "لا يوجد إنترنت"};
   }
 
   @override

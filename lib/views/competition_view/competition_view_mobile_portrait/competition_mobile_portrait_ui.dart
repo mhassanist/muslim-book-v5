@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:base_app/ads/add_widget_edit.dart';
-import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/ads/load_ui_with_add.dart';
 import 'package:base_app/enams/view_state_enum.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';

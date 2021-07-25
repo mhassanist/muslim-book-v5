@@ -223,8 +223,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final AzanController _azanController = Get.put(AzanController());
-  final HomeController _homeController = Get.put(HomeController());
+   AzanController _azanController = Get.put(AzanController());
+   HomeController _homeController = Get.put(HomeController());
   String showCompetition, openAzkar;
   var checkOverLay  ;
 
@@ -237,6 +237,7 @@ class _MyAppState extends State<MyApp> {
   setLocale(Locale locale) {
     setState(() {
       this.widget.localeLoaded = locale;
+
     });
   }
 
@@ -272,6 +273,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<UserProvider>(

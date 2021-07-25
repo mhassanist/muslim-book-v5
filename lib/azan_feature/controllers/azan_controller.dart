@@ -71,6 +71,7 @@ class AzanController extends GetxController {
 
   List<Azan> getAzanList(context) {
     getMutedAzanList();
+
     azanList = [
       {
         "id": "1",
@@ -164,11 +165,7 @@ class AzanController extends GetxController {
       return null;
     }
   }
- // null getrecorde(){
- //    for (var i = 0; i < 10; i++) {
- //      children.add(new ListTile());
- //    }
- //  }
+
 
   String getFormattedTime(time) {
     var timeOfDay = TimeOfDay(
@@ -258,13 +255,11 @@ class AzanController extends GetxController {
   }
 
   getMutedAzanList() {
-
     var str = locator<Prefs>().getMutedAzanList();
     if(str != null){
        mutedAzanList =str.runes
           .map((rune) => new String.fromCharCode(rune))
           .toList();
-
     }
   }
 

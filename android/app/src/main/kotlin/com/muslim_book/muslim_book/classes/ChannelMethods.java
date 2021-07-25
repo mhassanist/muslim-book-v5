@@ -23,6 +23,7 @@ import com.muslim_book.muslim_book.classes.ramdan.RamadanMshartUtils;
 import com.muslim_book.muslim_book.recievers.azkar.AzkarAlarm;
  import com.muslim_book.muslim_book.recievers.FastingAlertsReceiver;
 import com.muslim_book.muslim_book.recievers.competition.CompetitionsAlarmReceiver;
+import com.muslim_book.muslim_book.services.azan.OverLayService;
 //import com.muslim_book.muslim_book.services.azan.OverLayService;
 
 import java.lang.reflect.Method;
@@ -84,10 +85,10 @@ public class ChannelMethods {
                                 break;
                             }
                         case "askOverlay":
-                          //  Intent intentOverLayService = new Intent(mContext, OverLayService.class);
-                           //  ContextCompat.startForegroundService(mContext, intentOverLayService);
+                            Intent intentOverLayService = new Intent(mContext, OverLayService.class);
+                            Constants.SETBOOTAZANRECIEVER(mContext);
+                            ContextCompat.startForegroundService(mContext, intentOverLayService);
                             boolean value = canDrawOverLays();
-
                             result.success(value);
                             break;
                         case "checkOverlay":

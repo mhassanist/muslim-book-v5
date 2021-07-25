@@ -103,13 +103,13 @@ class _AzkarListViewState extends State<AzkarListView> {
                               vertical: sizeConfig.blockSizeHorizontal * 3),
                           crossAxisCount: 6,
                           itemCount: Provider.of<AzkarProvider>(context)
-                              .azkarList
+                              .azkarList(context)
                               .length,
                           itemBuilder: (BuildContext context, int index) =>
                               ZikrListWidget(
                                   sizeConfig: sizeConfig,
                                   zikrDetails: Provider.of<AzkarProvider>(context)
-                                      .azkarList[index]),
+                                      .azkarList(context)[index]),
                           staggeredTileBuilder: (int index) =>
                           new StaggeredTile.count(2, 2),
                         ),

@@ -1,4 +1,5 @@
 import 'package:base_app/ads/admob_rectangle.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,7 @@ class _AddWidgetEditState extends State<AddWidgetEdit> {
               Container(
                 alignment: Alignment.center,
                 child: Text(
-                  "الخروج من " + this.widget.title,
+                  AppLocalizations.of(context).translate("Exit") + this.widget.title,
                   style: GoogleFonts.almarai(
                       color: Constants.PRIMARY_DARK_COLOR,
                       fontWeight: FontWeight.bold,
@@ -142,7 +143,7 @@ class _AddWidgetEditState extends State<AddWidgetEdit> {
                             ),
                             child: Center(
                               child: Text(
-                                "خروج",
+                                AppLocalizations.of(context).translate("Exit_from"),
                                 style: TextStyle(
                                   color: Constants.PRIMARY_DARK_COLOR,
                                   fontSize: 20,

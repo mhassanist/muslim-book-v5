@@ -41,11 +41,11 @@ class TasbeehTopUI {
                         child: Column(
                       children: [
                         buildDailyRankWidget(sizeConfig,
-                            titel: "الرتبة الإسبوعية",
+                            titel: AppLocalizations.of(context).translate("Weekly_Achievement"),
                             number: "${provider.userScore.rank}",
                             image: "rank_medal.png"),
                         buildDailyRankWidget(sizeConfig,
-                            titel: "الإنجاز الإسبوعي",
+                            titel: AppLocalizations.of(context).translate("Weekly_Achievement"),
                             number: "${provider.userScore.points}",
                             image: "flag_medal.png"),
                       ],
@@ -69,7 +69,7 @@ class TasbeehTopUI {
                 horizontal: sizeConfig.blockSizeHorizontal * 6,
                 vertical: sizeConfig.blockSizeVertical * 2),
             child: Text(
-              "الرتب الإسبوعية",
+              AppLocalizations.of(context).translate("rank_weekly"),
               style: TextStyle(
                   color: prymaryColor,
                   fontWeight: FontWeight.bold,
@@ -257,7 +257,7 @@ class TasbeehTopUI {
                               Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: Text(
-                                  "عدد التسبيحات",
+                                  AppLocalizations.of(context).translate("numberPraises"),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,

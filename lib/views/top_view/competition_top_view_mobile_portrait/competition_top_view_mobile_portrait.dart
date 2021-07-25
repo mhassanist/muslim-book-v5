@@ -75,14 +75,7 @@ class _CompetitionTopPageState extends State<CompetitionTopPage> {
                         child: Stack(
                           children: <Widget>[
                             ui.topWinners(),
-                            // Align(
-                            //   alignment: Alignment.topCenter,
-                            //   child: ui.firstTopItem(),
-                            // ),
-                            // Align(
-                            //   alignment: Alignment.bottomCenter,
-                            //   child: ui.myItem(),
-                            // )
+
                           ],
                         ),
                       )

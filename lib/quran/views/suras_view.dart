@@ -1,4 +1,5 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/quran/models/quran_model.dart';
 import 'package:base_app/quran/provider/quran_provider.dart';
 import 'package:base_app/quran/widgets/surah_widget.dart';
@@ -110,8 +111,7 @@ class _SurasViewState extends State<SurasView> {
                                         margin: EdgeInsets.symmetric(
                                             horizontal:
                                                 ScreenUtil().setWidth(15)),
-                                        child: Text(
-                                          'آخر قراءة',
+                                        child: Text("${AppLocalizations.of(context).translate("last_read")}",
                                           style:
                                               TextStyle(color: Colors.white60),
                                           textAlign: TextAlign.start,

@@ -1,3 +1,4 @@
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -17,7 +18,7 @@ class AyatViewBottomSheet extends StatelessWidget {
             leading: Icon(Icons.history),
             onTap: saveProgress,
             title: Text(
-              "إحفظها كآخر آية",
+              AppLocalizations.of(context).translate("saveAyah"),
               style: TextStyle(color: Colors.black),
             ),
           )

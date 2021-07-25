@@ -1,6 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/quran/models/quran_model.dart';
 import 'package:base_app/quran/provider/quran_provider.dart';
 import 'package:base_app/quran/widgets/ayah_widget.dart';
@@ -97,7 +98,7 @@ class _AyatViewState extends State<AyatView> {
                       child: DropdownButton(
                     iconEnabledColor: Colors.white,
                     hint: Text(
-                      "الذهاب للآية",
+                      AppLocalizations.of(context).translate("go_to_ayah"),
                       style: TextStyle(color: Colors.white),
                     ),
                     onChanged: (Ayah val) async {

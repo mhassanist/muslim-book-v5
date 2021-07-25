@@ -197,7 +197,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
                               padding: EdgeInsets.only(top: unitSize * 2),
                             ),
                             Text(
-                              "القبلة",
+                              AppLocalizations.of(context).translate("Qiblah"),
                               style: TextStyle(
                                   fontWeight: FontWeight.normal,
                                   fontSize: unitSize * 2),
@@ -206,7 +206,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
                               padding: EdgeInsets.only(top: unitSize * 1),
                             ),
                             Text(
-                              "من الشمال",
+                              AppLocalizations.of(context).translate("from_left"),
                               style: TextStyle(
                                   fontWeight: FontWeight.w500,
                                   fontSize: unitSize * 2),
@@ -251,7 +251,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20),
                               child: Text(
-                                "يجب إعطاء الصلاحية لل GPS لإيجاد اتجاه القبلة",
+                                AppLocalizations.of(context).translate("give_Gps_perm"),
                                 style: TextStyle(fontSize: unitSize * 2),
                               ),
                             ),
@@ -265,7 +265,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
                                     borderRadius: BorderRadius.all(Radius.circular(5))),
                                 color: Theme.of(context).primaryColor,
                                 child: Text(
-                                  "إعطاء الصلاحية",
+                                  AppLocalizations.of(context).translate("give_perm"),
                                   style: TextStyle(
                                       color: Constants.CANVAS_COLOR,
                                       fontSize: unitSize * 3),

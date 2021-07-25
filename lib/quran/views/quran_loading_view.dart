@@ -1,3 +1,4 @@
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/quran/provider/quran_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -29,7 +30,7 @@ class _QuranLoadingViewState extends State<QuranLoadingView>
           Padding(
             padding: EdgeInsets.symmetric(vertical: 30),
             child: Text(
-              'جاري تحميل القرآن من فضلك إنتظر قليلا',
+              AppLocalizations.of(context).translate("Loading_quran"),
               style:
                   TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
             ),

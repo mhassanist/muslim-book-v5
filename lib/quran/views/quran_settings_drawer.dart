@@ -1,3 +1,4 @@
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/quran/provider/quran_provider.dart';
 import 'package:base_app/quran/views/quran_settings_generated_list.dart';
 import 'package:base_app/utils/locator.dart';
@@ -55,7 +56,7 @@ class _QuranSettingsDrawerState extends State<QuranSettingsDrawer> {
                     EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(20)),
                 width: double.infinity,
                 child: Text(
-                  "إعدادات القرآن",
+                  AppLocalizations.of(context).translate("quran_setting"),
                   style: GoogleFonts.almarai(
                       color: Theme.of(context).primaryColorDark,
                       fontWeight: FontWeight.bold,
@@ -73,7 +74,7 @@ class _QuranSettingsDrawerState extends State<QuranSettingsDrawer> {
             SliverToBoxAdapter(
               child: ListTile(
                 title: Text(
-                  "تفعيل الترجمة",
+                  AppLocalizations.of(context).translate("activa_translate"),
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
@@ -92,7 +93,7 @@ class _QuranSettingsDrawerState extends State<QuranSettingsDrawer> {
             SliverToBoxAdapter(
               child: ListTile(
                 title: Text(
-                  "تفعيل الترجمة الحرفية",
+                  AppLocalizations.of(context).translate("active_translate_word"),
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
@@ -112,7 +113,7 @@ class _QuranSettingsDrawerState extends State<QuranSettingsDrawer> {
             SliverToBoxAdapter(
               child: ListTile(
                 title: Text(
-                  "تفعيل تكرار الآية",
+                  AppLocalizations.of(context).translate("active_reapet_ayah"),
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
@@ -131,7 +132,7 @@ class _QuranSettingsDrawerState extends State<QuranSettingsDrawer> {
             SliverToBoxAdapter(
               child: ListTile(
                 title: Text(
-                  "عدد تكرار الآية",
+                  AppLocalizations.of(context).translate("number_reapet_ayah"),
                   style: TextStyle(
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
@@ -199,13 +200,13 @@ class _QuranSettingsDrawerState extends State<QuranSettingsDrawer> {
       );
   Widget buildRecitersWidget(BuildContext context) {
     return SliverToBoxAdapter(
-        child: buildListTile("إختر إسم الشيخ", () {
+        child: buildListTile(AppLocalizations.of(context).translate("Chosse_sheikh"), () {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) => QuranSettingsGeneratedListView(
             provider: Provider.of<QuranProvider>(context, listen: false),
-            title: "إختر إسم الشيخ",
+            title: AppLocalizations.of(context).translate("Chosse_sheikh"),
             groupValue: _recitersGroupValue,
             generatedList: Provider.of<QuranProvider>(context).allReciters,
             onChange: (val) {
@@ -219,13 +220,13 @@ class _QuranSettingsDrawerState extends State<QuranSettingsDrawer> {
   }
 
   Widget buildTranslationsWidget(BuildContext context) {
-    return buildListTile("إختر الترجمة", () {
+    return buildListTile(AppLocalizations.of(context).translate("Chosse_translate"), () {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) => QuranSettingsGeneratedListView(
             provider: Provider.of<QuranProvider>(context, listen: false),
-            title: "إختر الترجمة",
+            title:AppLocalizations.of(context).translate("Chosse_translate"),
             downloadedMap:
                 Provider.of<QuranProvider>(context).downloadedTranslation,
             groupValue: _translationGroupValue,
@@ -298,13 +299,13 @@ class _QuranSettingsDrawerState extends State<QuranSettingsDrawer> {
   }
 
   Widget buildTransliterationWidget(BuildContext context) {
-    return buildListTile("إختر الترجمة الحرفية", () {
+    return buildListTile(AppLocalizations.of(context).translate("Chosse_translate_word"), () {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (_) => QuranSettingsGeneratedListView(
             provider: Provider.of<QuranProvider>(context, listen: false),
-            title: "إختر الترجمة الحرفية",
+            title: AppLocalizations.of(context).translate("Chosse_translate_word"),
             downloadedMap:
                 Provider.of<QuranProvider>(context).downloadedTranslation,
             groupValue: _transliterationGroupValue,

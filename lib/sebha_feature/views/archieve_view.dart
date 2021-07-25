@@ -1,3 +1,4 @@
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/network_utils/api_service.dart';
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/sebha_feature/models/sebha_top_model.dart';
@@ -66,7 +67,7 @@ class _ArchieveViewState extends State<ArchieveView> {
                         horizontal: sizeConfig.blockSizeHorizontal * 6,
                       ),
                       child: Text(
-                        "الرتب الإسبوعية",
+                        AppLocalizations.of(context).translate("rank_weekly"),
                         style: TextStyle(
                             color: prymaryColor,
                             fontWeight: FontWeight.bold,
@@ -134,11 +135,11 @@ class _ArchieveViewState extends State<ArchieveView> {
                         child: Column(
                       children: [
                         buildDailyRankWidget(sizeConfig,
-                            titel: "الرتبة الإسبوعية",
+                            titel:AppLocalizations.of(context).translate("rank_weekly"),
                             number: "${snapshot.data.rank}",
                             image: "rank_medal.png"),
                         buildDailyRankWidget(sizeConfig,
-                            titel: "الإنجاز الإسبوعي",
+                            titel: AppLocalizations.of(context).translate("Weekly_Achievement"),
                             number: "${snapshot.data.total}",
                             image: "flag_medal.png"),
                       ],

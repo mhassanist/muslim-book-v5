@@ -58,7 +58,7 @@ class AzanHomeWidget extends StatelessWidget {
                             Text(
                                 AppLocalizations.of(context)
                                         .translate("salah") +
-                                    " "+nextSalah.title,
+                                    " "+AppLocalizations.of(context).translate(nextSalah.key),
                                 // "صلاة ${nextSalah.title}",
                                 style: TextStyle(
                                     color: Colors.white,

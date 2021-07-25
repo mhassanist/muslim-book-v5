@@ -1,6 +1,7 @@
 import 'package:admob_flutter/admob_flutter.dart';
 import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/ads/load_ui_with_add.dart';
+import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/providers/location_provider.dart';
 import 'package:base_app/providers/settings_provider.dart';
@@ -46,6 +47,7 @@ class _SettingsViewMobilePortraitState
     
     super.initState();
   }
+
 
   List<ExpansionpanelItem> items = [
     ExpansionpanelItem(
@@ -138,9 +140,9 @@ class _SettingsViewMobilePortraitState
             ExpansionpanelItem(
                 isExpanded: false,
                 title:
-                    AppLocalizations.of(context).translate("general_settings"),
+                AppLocalizations.of(context).translate("general_settings"),
                 content: ui.generalSettingsPart(),
-                leading: Icon(Icons.arrow_back_ios)),
+                leading: Icon(Icons.arrow_back_ios))
           ];
           return SafeArea(
             child: Scaffold(

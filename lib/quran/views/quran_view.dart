@@ -1,6 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:base_app/enams/view_state_enum.dart';
 import 'package:base_app/home_feature/controllers/home_controller.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/network_utils/remote_config.dart';
 import 'package:base_app/quran/provider/quran_provider.dart';
 import 'package:base_app/quran/views/quran_loading_view.dart';
@@ -43,7 +44,7 @@ class _QuranViewState extends State<QuranView> {
           title:
               Provider.of<QuranProvider>(context).viewState != ViewState.Loading
                   ? Text(
-                      "المصحف الشريف",
+                      AppLocalizations.of(context).translate("moshaf"),
                       style: GoogleFonts.almarai(
                         fontSize: ScreenUtil().setSp(25),
                         color: Colors.black,
@@ -51,7 +52,7 @@ class _QuranViewState extends State<QuranView> {
                       ),
                     )
                   : Text(
-                      "جاري تحميل المصحف",
+                      AppLocalizations.of(context).translate("Loading_moshaf"),
                       style: GoogleFonts.almarai(
                         fontSize: ScreenUtil().setSp(25),
                         color: Colors.white,

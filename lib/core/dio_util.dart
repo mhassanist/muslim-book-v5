@@ -51,7 +51,8 @@ class DioUtil {
         errorDescription = "timeout";
         break;
       case DioErrorType.DEFAULT:
-        errorDescription = "checkout_internet";
+        errorDescription =   "checkout_internet";
+    ;
         break;
       case DioErrorType.RECEIVE_TIMEOUT:
         errorDescription = "timeout";

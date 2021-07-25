@@ -3,6 +3,7 @@ import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/azan_feature/controllers/azan_controller.dart';
 import 'package:base_app/azan_feature/models/azan_model.dart';
 import 'package:base_app/local_storage/local_storage_manager.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/models/azan_sound.dart';
 import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/providers/pick_azan_methods_provider.dart';
@@ -25,12 +26,17 @@ class AzanView extends StatefulWidget {
 }
 
 class _AzanViewState extends State<AzanView> {
-  final AzanController controller = Get.find<AzanController>();
+   AzanController controller ;
 
   PickAzanMethodsProvider _provider;
-
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    controller= Get.find<AzanController>();
     final size = MediaQuery.of(context).size;
     final isSmall = size.width <= 450;
     return ResponsiveBuilder(builder: (context, sizeConfig) {
@@ -55,7 +61,7 @@ class _AzanViewState extends State<AzanView> {
                       backgroundColor: Colors.transparent,
                       elevation: 0,
                       title: Text(
-                        "مواقيت الصلاة",
+                        AppLocalizations.of(context).translate("Prayer_Timings"),
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -103,7 +109,7 @@ class _AzanViewState extends State<AzanView> {
                             child: Column(
                               children: [
                                 Text(
-                                  "يوم  ${controller.currentDayName}",
+                                  "${AppLocalizations.of(context).translate("Day")}:${DateFormat.EEEE(Localizations.localeOf(context).languageCode).format(DateTime.now())}",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -114,7 +120,7 @@ class _AzanViewState extends State<AzanView> {
                                   height: sizeConfig.blockSizeVertical,
                                 ),
                                 Text(
-                                  "${controller.currentDate}",
+                                  "${DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(DateTime.now())}",
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -228,7 +234,7 @@ class _AzanViewState extends State<AzanView> {
                         width: sizeConfig.blockSizeHorizontal,
                       ),
                       Text(
-                        controller.azanValue[index].title,
+                        AppLocalizations.of(context).translate(controller.azanValue[index].key),
                         style: TextStyle(
                             color: Constants.PRIMARY_DARK_COLOR,
                             fontWeight: FontWeight.bold,

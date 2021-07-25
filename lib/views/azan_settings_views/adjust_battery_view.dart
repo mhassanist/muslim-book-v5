@@ -89,7 +89,7 @@ class _AdjustBatteryViewState extends State<AdjustBatteryView>
                                     horizontal:
                                         sizeConfig.blockSizeHorizontal * 15),
                                 child: Text(
-                                  "لكي يعمل الاذان بشكل صحيح قم بالضغط علي السماح بتفعيل التنبيهات",
+                                  AppLocalizations.of(context).translate("toOpenNotification"),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
@@ -114,7 +114,7 @@ class _AdjustBatteryViewState extends State<AdjustBatteryView>
                           shape: StadiumBorder(),
                           fillColor: Colors.white,
                           child: Text(
-                            "السماح بالتنبيهات",
+                            AppLocalizations.of(context).translate("allow_notification"),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,

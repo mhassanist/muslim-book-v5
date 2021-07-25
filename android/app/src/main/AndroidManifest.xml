@@ -30,7 +30,8 @@
             android:name=".services.azan.AzanService"
             android:enabled="true"
             android:exported="true" />
-<!--        <service android:name=".services.azan.OverLayService" />-->
+   <service android:name=".services.azan.OverLayService"  android:enabled="true"
+       android:exported="true" />
         <service
             android:name=".services.ramadan.ramadan_cannon.RamadanCannonService"
             android:enabled="true"
@@ -120,6 +121,14 @@
         </receiver>
         <receiver
             android:name=".recievers.competition.CompetitionsAlarmReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.NOTIFY" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name=".recievers.azan.OverLayReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

@@ -1,6 +1,4 @@
-import 'package:admob_flutter/admob_flutter.dart';
-import 'package:base_app/ads/ad_manager.dart';
-import 'package:base_app/ads/admob_rectangle.dart';
+
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/utils/Constants.dart';

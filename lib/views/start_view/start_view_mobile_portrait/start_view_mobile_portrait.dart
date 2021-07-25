@@ -380,12 +380,12 @@ class _StartViewMobilePortraitViewState
     }
   }
 
-  List<String> _pagesNames = [
-    "المصحف",
-    "القبلة",
-    "الرئيسية",
-    "المسابقات",
-    "الأذكار"
+  List<String> _pagesNames(context) => [
+    AppLocalizations.of(context).translate("quran"),
+    AppLocalizations.of(context).translate("Qiblah"),
+    AppLocalizations.of(context).translate("home"),
+    AppLocalizations.of(context).translate("competitions"),
+    AppLocalizations.of(context).translate("azkar")
   ];
 
   List<Color> getPageColor(context) => [
@@ -402,7 +402,7 @@ class _StartViewMobilePortraitViewState
       context, SizingInformation sizeConfig) {
     return [
       BottomNavigationBarItem(
-        label: _pagesNames[0],
+        label: _pagesNames(context)[0],
         icon: SvgPicture.asset(
           "assets/images/start_view/mushaf.svg",
           width: sizeConfig.blockSizeHorizontal * 7,
@@ -415,7 +415,7 @@ class _StartViewMobilePortraitViewState
         ),
       ),
       BottomNavigationBarItem(
-        label: _pagesNames[1],
+        label: _pagesNames(context)[1],
         icon: SvgPicture.asset(
           "assets/images/start_view/compass_icon.svg",
           width: sizeConfig.blockSizeHorizontal * 6,
@@ -428,7 +428,7 @@ class _StartViewMobilePortraitViewState
         ),
       ),
       BottomNavigationBarItem(
-        label: _pagesNames[2],
+        label: _pagesNames(context)[2],
         icon: Icon(
           Icons.home,
           size: sizeConfig.blockSizeHorizontal * 8,
@@ -441,7 +441,7 @@ class _StartViewMobilePortraitViewState
         ),
       ),
       BottomNavigationBarItem(
-        label: _pagesNames[3],
+        label: _pagesNames(context)[3],
         icon: SvgPicture.asset(
           "assets/images/start_view/quizes_icon.svg",
           width: sizeConfig.blockSizeHorizontal * 8,
@@ -454,7 +454,7 @@ class _StartViewMobilePortraitViewState
         ),
       ),
       BottomNavigationBarItem(
-        label: _pagesNames[4],
+        label: _pagesNames(context)[4],
         icon: SvgPicture.asset(
           "assets/images/start_view/azkar.svg",
           width: sizeConfig.blockSizeHorizontal * 6,

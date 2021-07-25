@@ -1,6 +1,7 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:base_app/enams/view_state_enum.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/providers/tasbeeh_top_provider.dart';
 import 'package:base_app/providers/top_provider.dart';
 import 'package:base_app/providers/user_provider.dart';
@@ -42,7 +43,7 @@ class _TasbeehTopPageState extends State<TasbeehTopPage> {
   Widget build(BuildContext context) {
     return Consumer<TasbeehTopProvider>(builder: (context, model, _) {
       return AppScaffold(
-        title: Text("رتبة التسبيح الإسبوعية"),
+        title: Text(AppLocalizations.of(context).translate("tasbehRank")),
         centerTitle: true,
         padding: EdgeInsets.zero,
         backGroundColor: Colors.white,

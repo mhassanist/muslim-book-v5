@@ -1,5 +1,6 @@
 // import 'package:azan_app/Screens/Home/domian/model/post_model.dart';
 // import 'package:azan_app/Screens/Home/domian/repository_home.dart';
+import 'package:base_app/core/dio_util.dart';
 import 'package:base_app/home_feature/domian/repository_home.dart';
 import 'package:flutter/cupertino.dart';
  import 'package:base_app/home_feature/domian/model/post_model.dart';
@@ -12,6 +13,7 @@ class PostsNotifier extends ChangeNotifier {
   HomeRepository homeRepository = HomeRepository();
   List<Post> posts = [];
 String message;
+String errormessage;
   bool isloading = true;
   bool isnews=false;
 
@@ -20,12 +22,19 @@ String message;
     notifyListeners();
   }
 
- 
+
 
   getPosts() async {
-    posts = await homeRepository.getPosts();
-    posts=posts.reversed.toList();
-    isloading = false;
+    try {
+      posts = await homeRepository.getPosts();
+      posts=posts.reversed.toList();
+      errormessage=null;
+      isloading = false;
+    } catch(e){
+
+     errormessage= DioUtil.handleDioError(e);
+      isloading = false;
+    }
     notifyListeners();
   }
 

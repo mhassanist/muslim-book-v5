@@ -61,7 +61,7 @@ class _AzkarViewState extends State<AzkarView> {
           BorderRadius.all(Radius.circular(12))),
           content:Container(
             height: 400,
-            child:LoadUiWithAdd(mainView: AddWidgetEdit(title:   "أذكار",bannerName :BannerName.AZKAR ,buttomTitle:  "متابعه",)) ,
+            child:LoadUiWithAdd(mainView: AddWidgetEdit(title:   AppLocalizations.of(context).translate("azkar"),bannerName :BannerName.AZKAR ,buttomTitle: AppLocalizations.of(context).translate("follow"),)) ,
           )  ,
         
       ),
@@ -78,7 +78,7 @@ class _AzkarViewState extends State<AzkarView> {
             child: AppScaffold(
               padding: EdgeInsets.symmetric(vertical: 20),
               title:
-                  AppScaffoldTitleWidget(title: "أذكار ${widget.zikr["name"]}"),
+                  AppScaffoldTitleWidget(title: "${widget.zikr["name"]}"),
               centerTitle: true,
               transparentBackground: true,
               child: azkar == null
@@ -235,7 +235,7 @@ class _AzkarViewState extends State<AzkarView> {
                       child: Row(
                         children: [
                           Text(
-                            "التكرار",
+                            AppLocalizations.of(context).translate("repet"),
                             style: TextStyle(
                                 color: Constants.PRIMARY_DARK_COLOR,
                                 fontSize: sizeConfig.blockSizeHorizontal * 5.5,

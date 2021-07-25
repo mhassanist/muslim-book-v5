@@ -4,7 +4,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/providers/myProfile_provider.dart';
 import 'package:base_app/utils/Constants.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';

@@ -48,25 +48,17 @@ class _HomeViewState extends State<HomeView> {
           },
         ),
         actions: [
-          // InkWell(
-          //   onTap: () {
-          //     Get.dialog(ShareDialog());
-          //   },
-          //   child: Padding(
-          //     padding: EdgeInsets.symmetric(horizontal: 5),
-          //     child: Icon(Icons.share),
-          //   ),
-          // ),
-          // SizedBox(
-          //   width: 5,
-          // ),
+
           InkWell(
             onTap: () async {
               setState(() {
                 MyApp.loading = true;
               });
-              Locale local = await getLocale();
-              _changeLanguage(local.languageCode == 'ar' ? 'en' : 'ar');
+
+
+                Locale local = await getLocale();
+                _changeLanguage(local.languageCode == 'ar' ? 'en' : 'ar');
+
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,

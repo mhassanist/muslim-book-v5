@@ -75,7 +75,7 @@ class _ShareDialogState extends State<ShareDialog> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                " صدقة جارية",
+                              AppLocalizations.of(context).translate("chairty"),
                                 textAlign: TextAlign.center,
                                 style: textStyle(
                                     const Color(0XFFFFAA3F),
@@ -88,7 +88,7 @@ class _ShareDialogState extends State<ShareDialog> {
                                     horizontal:
                                         sizeConfig.blockSizeHorizontal * 15),
                                 child: Text(
-                                  "ساعد في نشرالتطبيق \n ليكون صدقة جارية لك يوم القيامة",
+                                  AppLocalizations.of(context).translate("help_spearding"),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
@@ -117,7 +117,7 @@ class _ShareDialogState extends State<ShareDialog> {
                             shape: StadiumBorder(),
                             fillColor: Colors.white,
                             child: Text(
-                              "نشر التطبيق",
+                              AppLocalizations.of(context).translate("spearding_app"),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,

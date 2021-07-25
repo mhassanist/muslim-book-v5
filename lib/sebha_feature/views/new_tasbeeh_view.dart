@@ -1,3 +1,4 @@
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/sebha_feature/offline_sebha/database/sebha_database.dart';
 import 'package:base_app/sebha_feature/online_sebha/controllers/online_sebha_controller.dart';
 import 'package:base_app/utils/Constants.dart';
@@ -177,7 +178,7 @@ class _NewTasbeehViewState extends State<NewTasbeehView> {
                           await saveZikr();
                         },
                         child: Text(
-                          "إضافة الذكر",
+                          AppLocalizations.of(context).translate("addZekr"),
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -253,7 +254,7 @@ class _NewTasbeehViewState extends State<NewTasbeehView> {
   }
 
   void showSnackBar() {
-    Get.snackbar("برجاء ملئ جميع الحفول", "برجاء ملئ جميع الحفول",
+    Get.snackbar(AppLocalizations.of(context).translate("fillAllField"), AppLocalizations.of(context).translate("fillAllField"),
         backgroundColor: Constants.PRIMARY_COLOR,
         colorText: Colors.white,
         borderRadius: 0,

@@ -1,5 +1,6 @@
 import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/ads/load_ui_with_add.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/providers/tasbeeh_top_provider.dart';
 import 'package:base_app/providers/top_provider.dart';
@@ -22,7 +23,7 @@ class TopSelectionPage extends StatefulWidget {
 }
 
 class _TopSelectionPageState extends State<TopSelectionPage> {
-  var tops = ["أوائل المسابقات", "أوائل التسبيح"];
+  var tops = ["comp_first", "tasbeh_first"];
   var _images = [
     "assets/images/start_view/leaderboard_icon.svg",
     "assets/images/start_view/azkar.svg"
@@ -35,7 +36,7 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
 
   @override
   void initState() {
-    
+
     super.initState();
   }
 
@@ -64,7 +65,7 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
           width: 10,
         )
       ],
-      title: Text("الأوائل"),
+      title: Text("${AppLocalizations.of(context).translate("best")}"),
       centerTitle: true,
       padding: EdgeInsets.zero,
       backGroundColor: Colors.white,
@@ -168,7 +169,7 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
                     Container(
                       width: double.infinity,
                       child: Text(
-                        tops[index],
+                       AppLocalizations.of(context).translate(tops[index]),
                         style: TextStyle(
                             color: const Color(0XFF347D53),
                             fontWeight: FontWeight.bold,

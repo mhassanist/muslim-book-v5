@@ -1,5 +1,6 @@
 import 'package:base_app/local_storage/local_storage_manager.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
+import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/models/azan_sound.dart';
 import 'package:base_app/network_utils/azan_apis.dart';
 import 'package:base_app/providers/view_state_provider.dart';
@@ -10,7 +11,11 @@ import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 
+import '../main.dart';
+
 class SettingsProvider extends ViewStateProvider {
+
+
   BuildContext _context;
   bool _azanAlert,
       _mondaysAndThursdaysFastingAlert,
@@ -28,6 +33,10 @@ class SettingsProvider extends ViewStateProvider {
   Map<String, dynamic> _pickedMazhab;
   Map<String, dynamic> _latitudeAdjustmentMethod;
 
+
+void change(){
+  notifyListeners();
+}
 
   // static Map<String, dynamic> _pickedAzanShiekh;
   static Map<String, dynamic> _pickedAzanShiekhMain ={

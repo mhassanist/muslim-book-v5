@@ -1,6 +1,7 @@
 import 'package:base_app/enams/view_state_enum.dart';
 import 'package:base_app/local_storage/local_storage_manager.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
+import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/models/azan_sound.dart';
 import 'package:base_app/network_utils/azan_apis.dart';
 import 'package:base_app/providers/location_provider.dart';
@@ -17,6 +18,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:search_map_place/search_map_place.dart';
+import '../../../main.dart';
 import '../../../utils/sizing_info_extension.dart';
 
 class SettingsMobilePortraitUi {
@@ -67,6 +69,7 @@ class SettingsMobilePortraitUi {
       ),
     );
   }
+
 
   Widget azanMethodSelectionPart() {
     return Container(
@@ -382,16 +385,7 @@ class SettingsMobilePortraitUi {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          // Container(
-          //   margin: EdgeInsets.only(top: 20, left: 30, right: 30),
-          //   child: Text(
-          //     AppLocalizations.of(context).translate("azan_shiekh"),
-          //     style: TextStyle(
-          //         fontSize: sizeConfig.blockSizeHorizontal * 5,
-          //         fontWeight: FontWeight.w700,
-          //         color: Theme.of(context).primaryColor),
-          //   ),
-          // ),
+
           alertItem(
               AppLocalizations.of(context).translate("voice_reminder_before_praying"),
               provider.isRemmberActive,
@@ -400,20 +394,18 @@ class SettingsMobilePortraitUi {
               AppLocalizations.of(context).translate("activating_al_shaarawi_voice"),
               provider.isActivatingShaarawiVoice,
               provider.isActivatingShaarawiVoiceFlagChanged),
-          /*LoadingButton(
-            firstWidget: Center(
-              child: standardButton(
-                  context: context,
-                  sizeConfig: sizeConfig,
-                  color: Theme.of(context).primaryColorDark,
-                  title:
-                      AppLocalizations.of(context).translate("save_settings"),
-                  onPressed: () async => saveSettings()),
-            ),
-            state: provider.viewState == ViewState.Loading
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
-          )*/
+          alertItem(
+              "EN",
+              Localizations.localeOf(context).languageCode == 'en'
+                  ? true
+                  : false,
+                  (value)async{
+                Locale locale = await setLocale(value?"en":"ar");
+                MyApp.setLocale(context, locale);
+              }
+                   )
+
+
         ],
       ),
     );
@@ -744,7 +736,7 @@ class SettingsMobilePortraitUi {
         duration: Duration(milliseconds: 200));
   }
 
-  Widget alertItem(String title, bool value, Function function) {
+  Widget alertItem(String title, bool value, dynamic function) {
     return Column(
       children: <Widget>[
         Container(

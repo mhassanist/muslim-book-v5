@@ -110,7 +110,7 @@ class _SplashViewState extends State<SplashView>
                 child: Container(
                   margin: EdgeInsets.only(
                       bottom: sizeConfig.blockSizeVertical * 10),
-                  child: Text("أكبر تجمع للمسلمين",
+                  child: Text(AppLocalizations.of(context).translate("Largestmuslim"),
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
