@@ -1,11 +1,9 @@
 import 'package:base_app/ads/ad_manager.dart';
-import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/azan_feature/controllers/azan_controller.dart';
 import 'package:base_app/azan_feature/models/azan_model.dart';
 import 'package:base_app/local_storage/local_storage_manager.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/models/azan_sound.dart';
-import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/providers/pick_azan_methods_provider.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/sizing_info_extension.dart';
@@ -354,7 +352,7 @@ class _AzanViewState extends State<AzanView> {
       _provider.pickedAzanShiekh = sounds[newShiekhIndex].toJSON();
     }
     if (sounds == null && newShiekhIndex != null) {
-      _provider.pickedAzanShiekh = Constants.SHIEKH_NAMES[newShiekhIndex];
+      _provider.pickedAzanShiekh =AppLocalizations.of(context).isEnglish()? Constants.EN_SHIEKH_NAMES[newShiekhIndex]:Constants.AR_SHIEKH_NAMES[newShiekhIndex];
     }
   }
 

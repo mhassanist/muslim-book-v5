@@ -40,7 +40,7 @@ class _ArchieveViewState extends State<ArchieveView> {
       builder: (context, SizingInformation sizeConfig) {
         return AppScaffold(
           padding: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 4),
-          title: AppScaffoldTitleWidget(title: "الإرشيف"),
+          title: AppScaffoldTitleWidget(title: AppLocalizations.of(context).translate("archiv")),
           centerTitle: true,
           child: ListView(
             children: [

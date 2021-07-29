@@ -1,13 +1,10 @@
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
+
 import 'package:base_app/enams/view_state_enum.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/providers/tasbeeh_top_provider.dart';
-import 'package:base_app/providers/top_provider.dart';
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/views/login_pop_up_view/login_pop_up_view.dart';
-import 'package:base_app/views/top_view/competition_top_view_mobile_portrait/competition_top_mobile_portrait_ui.dart';
 import 'package:base_app/views/top_view/tabspeeh_top_view_mobile_portrait/tasbeeh_top_mobile_portrait_ui.dart';
 import 'package:base_app/widgets/app_scaffold.dart';
 import 'package:base_app/widgets/retry_view_widget.dart';

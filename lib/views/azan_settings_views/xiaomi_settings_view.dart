@@ -1,3 +1,4 @@
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:package_info/package_info.dart';
@@ -46,7 +47,7 @@ class _XiaomiSettingsViewState extends State<XiaomiSettingsView>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "برجاء قم بالدخول علي قسم أذونات أخرى  الخاص بالتطبيق\n وقم بالتفعيل الاذونات حتي يعمل الاذان بطريقه صحيحه",
+                  AppLocalizations.of(context).translate("please_enter_other_Permission"),
                   style: TextStyle(
                       height: 1.5,
                       color: const Color(0XFFFFAA3F),
@@ -80,7 +81,7 @@ class _XiaomiSettingsViewState extends State<XiaomiSettingsView>
       shape: StadiumBorder(),
       fillColor: Colors.white,
       child: Text(
-        "تفعيل الأذونات",
+        AppLocalizations.of(context).translate("activate_permissions"),
         textAlign: TextAlign.center,
         style: TextStyle(
             fontWeight: FontWeight.bold,

@@ -30,7 +30,12 @@ class HomePage extends ConsumerWidget {
     postschanges = watch(getPosts);
     if (postschanges.posts.isEmpty || postschanges.isloading == true) {
       postschanges.getPosts();
+
     }
+    if (postschanges.categories.isEmpty || postschanges.isloading == true) {
+      postschanges.getcategories();
+    }
+
     return MyApp.loading
         ? Container(
             child: Center(
@@ -91,18 +96,20 @@ class HomePage extends ConsumerWidget {
                             textDirection: TextDirection.rtl,
                             readOnly: true,
                             onTap: () async {
-
                               ProviderUser.Provider.of<UserProvider>(context,listen: false).isLoggedIn
                                   ? showBottomsheetOptions(context)
-                                  : await showDialog(
+                                  : showBottomSheet(
                                 context: context,
-                                builder: (context) =>  AlertDialog(
-                                  contentPadding: EdgeInsets.all(0.0),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(Radius.circular(12))),
-                                  content:
+
+                                builder: (context) =>
                                   Container(
-                                    height: 100,
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(40),
+                                        topRight: Radius.circular(40)
+                                      )
+                                    ),
                                     child: Padding(
                                       padding: const EdgeInsets.symmetric(vertical: 15),
                                       child: Column(
@@ -120,36 +127,44 @@ class HomePage extends ConsumerWidget {
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: [
-                                              Container(
-                                                width: 80,
-                                                height: 30,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(20),
-                                                  color: Colors.green,
-                                                ),
-                                                child: Center(
-                                                  child: InkWell(
-                                                    onTap: (){
+
+
+                                                Container(
+                                                  width: 120,
+                                                  height: 30,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(10)),
+                                                  child: RawMaterialButton(
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(
+                                                          30),
+                                                    ),
+                                                    onPressed: () {
                                                       Navigator.pop(context);
                                                       Navigator.
                                                       push(context, MaterialPageRoute(builder: (context)=>LoginPopUpView()));
+
                                                     },
-                                                    child: Text(AppLocalizations.of(context).translate("Login_key"),
-                                                    style: TextStyle(
-                                                      fontSize: 15,
-                                                      color: Constants.CANVAS_COLOR,
-                                                    ),
+                                                    fillColor: Theme.of(context).primaryColor,
+                                                    child: Text(
+                                                      AppLocalizations.of(context).translate("Login_key"),
+                                                      style: TextStyle(
+                                                        fontSize: 15,
+                                                        color: Constants.CANVAS_COLOR,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              )
+
+
+
                                             ],
                                           )
                                         ],
                                       ),
                                     ),
                                   ),
-                                ),
+
                               );
 
                             },
@@ -262,8 +277,8 @@ class HomePage extends ConsumerWidget {
                       Expanded(
                         flex: 1,
                         child: InkWell(
-                          onTap: ()async{
-                            await Share.share(
+                          onTap: (){
+                             Share.share(
                               _post.content+"\n \n "+"ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://app.muslim-book.net/open"
                             );
                           },
@@ -303,8 +318,10 @@ class HomePage extends ConsumerWidget {
                               _post.liked
                                   ? postschanges.unlikePost(_post.id)
                                   : postschanges.likePost(_post.id);
+
                               _post.liked = !_post.liked;
                             });
+
                           },
                           child: Container(
                             child: Row(

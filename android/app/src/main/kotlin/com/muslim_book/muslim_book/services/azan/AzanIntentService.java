@@ -17,11 +17,13 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
@@ -92,14 +94,14 @@ public class AzanIntentService extends Service {
         super.onCreate();
         if (Build.VERSION.SDK_INT >= 26) {
             NotificationChannel channel = new NotificationChannel(
-                    AZAN_NOTIFICATION_CHANNEL_ID, 
+                    AZAN_NOTIFICATION_CHANNEL_ID,
                     AZAN_CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_DEFAULT);
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
                     .createNotificationChannel(channel);
             Notification notification = new
                     NotificationCompat.Builder(
-                            this, AZAN_NOTIFICATION_CHANNEL_ID)
+                    this, AZAN_NOTIFICATION_CHANNEL_ID)
                     .setContentTitle("")
                     .setSmallIcon(R.mipmap.launcher_icon)
                     .setContentText("").build();
@@ -112,9 +114,9 @@ public class AzanIntentService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("hossssssssssam  " ,"onStartCommand");
+        Log.i("hossssssssssam  ", "onStartCommand");
 
-         if (intent != null) {
+        if (intent != null) {
             beforeAzan = intent.getBooleanExtra(Constants.BEFORE_AZAN, false);
             showNotification(
                     intent.getStringExtra(Constants.NEXT_AZAN_KEY));
@@ -130,15 +132,17 @@ public class AzanIntentService extends Service {
                 MODE_PRIVATE);
         String json = prefs.getString(Constants.MUTED_AZAN, null);
         boolean Activating_Al_Shaarawi_Voice_FLAG = prefs.getBoolean(Constants.Activating_Al_Shaarawi_Voice_FLAG, true);
+        boolean Switch_Silent_Mode_After_Residence = prefs.getBoolean(Constants.Switch_Silent_Mode_After_Residence, false);
         boolean FASTING_MONDAYS_AND_THURSDAYS_ALERT_FLAG = prefs.getBoolean(Constants.FASTING_MONDAYS_AND_THURSDAYS_ALERT_FLAG, true);
-        if (beforeAzan ) {
+
+
+        if (beforeAzan) {
             playBeforeAzanSound(key);
         } else {
             if (key.equalsIgnoreCase("1")) { //fajr prayer , play fajr prayer logic
                 mMediaPlayer = MediaPlayer.create(this,
                         Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/azan_" + getFajrMuazenName() + ".mp3")));
             } else {
-                Log.i("shaimaaaaaaaaaaaaaa" , "  AZAN  " +getApplicationInfo().dataDir + "/app_flutter/azan_" + getMuazenName(key) + ".mp3");
 
                 mMediaPlayer = MediaPlayer.create(this,
                         Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/azan_" + getMuazenName(key) + ".mp3")));
@@ -149,7 +153,7 @@ public class AzanIntentService extends Service {
                 scheduleNext(60 * 3 * 1000); // time in m seconds 10
 
             } else {
-//
+
                 mAfterAzanMediaPlayer = MediaPlayer.create(this,
                         Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/after_azan.mp3")));
                 mMediaPlayer.start();
@@ -157,11 +161,18 @@ public class AzanIntentService extends Service {
                     if (Activating_Al_Shaarawi_Voice_FLAG) {
                         if (mAfterAzanMediaPlayer != null) {
                             mAfterAzanMediaPlayer.start();
-                            mAfterAzanMediaPlayer.setOnCompletionListener(mediaPlayer -> onDestroy());
+                            mAfterAzanMediaPlayer.setOnCompletionListener(mediaPlayer ->{
+                                /// add silent mode after do3aa sound
+                                setSilentMode(true);
+                               // onDestroy();
+
+                            });
                         }
+                    }else {
+                        setSilentMode(false);
                     }
                 });
-//                }
+
             }
 
 
@@ -178,17 +189,47 @@ public class AzanIntentService extends Service {
             public void run() {
                 handler.post(new Runnable() {
                     public void run() {
-                        try {
-                            onDestroy();
-                            //your method here
-                        } catch (Exception e) {
-                        }
+                        onDestroy();
+
                     }
                 });
             }
         };
         timer.schedule(doAsynchronousTask, 0, time); //execute in every 10 minutes
 
+
+    }
+
+    private void setSilentMode(boolean onDestroy) {
+    
+        AudioManager mgr = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+        int streamType = AudioManager.STREAM_SYSTEM;
+        mgr.setStreamSolo(streamType, true);
+        mgr.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+        mgr.setStreamMute(streamType, true);
+
+
+
+        new CountDownTimer(300000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+              }
+
+            public void onFinish() {
+                int streamType = AudioManager.STREAM_SYSTEM;
+                mgr.setStreamSolo(streamType, false);
+                mgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                mgr.setStreamMute(streamType, false);
+                if(onDestroy){
+                    onDestroy();
+                }
+            }
+
+        }.start();
+       // final Handler handler = new Handler();
+
+
+//        timer.schedule(doAsynchronousTask, 0, 600000); //execute in every 10 minutes
 
     }
 
@@ -353,7 +394,10 @@ public class AzanIntentService extends Service {
             if (mWindowManager != null && mView.getWindowToken() != null) {
                 mWindowManager.removeView(mView);
             }
-            onDestroy();
+            mMediaPlayer.stop();
+            setSilentMode(false);
+            //here
+           // onDestroy();
         });
 
     }

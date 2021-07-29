@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/models/answer_model.dart' as answer;
 import 'package:base_app/models/countries_model.dart';
 import 'package:base_app/models/score_model.dart';
@@ -167,11 +168,12 @@ class ApiService {
     return model;
   }
 
-  Future getCountries() async {
+  Future getCountries(String code) async {
     try {
+
       http.Response response = await http.get(
           Constants.BASE_URL + "countries/list",
-          headers: {"X-localization": "ar"});
+          headers: {"X-localization": code});
       if (response != null && response.statusCode == 200) {
         CountriesModel model =
             CountriesModel.fromJson(utf8.decode(response.bodyBytes));

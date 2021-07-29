@@ -5,9 +5,11 @@ import static android.content.Context.POWER_SERVICE;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Build.VERSION;
@@ -139,6 +141,10 @@ public class ChannelMethods {
                             openXiaomiSettings();
                             result.success(true);
                             break;
+                      case "SwitchSilentMode":
+                          requestMutePermissions();
+                            result.success(true);
+                            break;
                         case "fireAzkarPopUp":
                             mContext.sendBroadcast(new Intent(mContext, AzkarAlarm.class));
                             result.success(true);
@@ -227,7 +233,34 @@ public class ChannelMethods {
         return true;
     }
 
+    private void requestMutePermissions() {
+        requestForDoNotDisturbPermissionOrSetDoNotDisturbForApi23AndUp();
+//        try {
+//            if (Build.VERSION.SDK_INT < 23) {
+//                AudioManager audioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
+//                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+//            } else if( Build.VERSION.SDK_INT >= 23 ) {
+//                this.requestForDoNotDisturbPermissionOrSetDoNotDisturbForApi23AndUp();
+//            }
+//        } catch ( SecurityException e ) {
+//
+//        }
+    }
+    private void requestForDoNotDisturbPermissionOrSetDoNotDisturbForApi23AndUp() {
 
+        NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+        // if user granted access else ask for permission
+        if (VERSION.SDK_INT >= VERSION_CODES.M) {
+            if ( notificationManager.isNotificationPolicyAccessGranted()) {
+                AudioManager audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+            } else{
+                // Open Setting screen to ask for permisssion
+                Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                myMainActivity.startActivityForResult( intent, 9098 );
+            }
+        }
+    }
     private boolean allowBatteryEditing() {
 
         if (VERSION.SDK_INT >= VERSION_CODES.M) {

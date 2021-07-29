@@ -190,10 +190,18 @@ class Prefs {
   void setActivatingAlShaarawiVoiceFlag(bool value) async {
     await prefs.setBool(Constants.Activating_Al_Shaarawi_Voice_FLAG, value);
   }
+  void setSwitchSilentModeAfterResidenceFlag(bool value) async {
+    await prefs.setBool(Constants.Switch_Silent_Mode_After_Residence, value);
+  }
 
   bool getActivatingAlShaarawiVoiceFlag() =>
       prefs.getBool(Constants.Activating_Al_Shaarawi_Voice_FLAG) == null ||
       prefs.getBool(Constants.Activating_Al_Shaarawi_Voice_FLAG);
+
+
+  bool getSwitchSilentModeAfterResidenceFlag() =>
+      prefs.getBool(Constants.Switch_Silent_Mode_After_Residence) == null ? false   :
+          prefs.getBool(Constants.Switch_Silent_Mode_After_Residence);
 
   void setMondaysAndThursdaysFastingAlertFlag(bool value) async {
     await prefs.setBool(

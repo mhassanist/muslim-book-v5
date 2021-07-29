@@ -194,7 +194,7 @@ class _PickAzanMethodViewState extends State<PickAzanMethodView> {
                 margin: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 2),
                 child: Center(
                   child: Text(
-                    "${_provider.pickedAzanShiekh != null ? _provider.pickedAzanShiekh["name"] : Constants.SHIEKH_NAMES[1]["name"]}",
+                    "${_provider.pickedAzanShiekh != null ? _provider.pickedAzanShiekh["name"] :AppLocalizations.of(context).isEnglish()? Constants.EN_SHIEKH_NAMES[1]["name"]:Constants.AR_SHIEKH_NAMES[1]["name"]}",
                     style: TextStyle(
                         color: Constants.PRIMARY_DARK_COLOR,
                         fontWeight: FontWeight.w700,
@@ -219,7 +219,7 @@ class _PickAzanMethodViewState extends State<PickAzanMethodView> {
                       }
                       if (sounds == null && newShiekhIndex != null) {
                         _provider.pickedAzanShiekh =
-                            Constants.SHIEKH_NAMES[newShiekhIndex];
+                        AppLocalizations.of(context).isEnglish()?  Constants.EN_SHIEKH_NAMES[newShiekhIndex]:Constants.AR_SHIEKH_NAMES[newShiekhIndex];
                       }
                     },
                     shape: RoundedRectangleBorder(

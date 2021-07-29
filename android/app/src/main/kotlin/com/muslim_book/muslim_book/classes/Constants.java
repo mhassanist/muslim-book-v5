@@ -26,6 +26,7 @@ public class Constants {
   public static final String AZAN_ON_PRAY_TIME_FLAG = "flutter.azan_on_pray_time";
    public static final String Voice_Reminder_Before_Praying_FLAG = "flutter.voice_reminder_before_praying";
   public static final String Activating_Al_Shaarawi_Voice_FLAG = "flutter.activating_al_shaarawi_voice";
+  public static final String Switch_Silent_Mode_After_Residence = "flutter.switch_silent_mode_after_residence";
   public static final String RAMADAN_CONNAN_FLAG = "flutter.ramadan_connan_flag";
   public static final String RAMADAN_MASHRAAT_FLAG = "flutter.ramadan_mashraat_flag";
   public static final String FASTING_MONDAYS_AND_THURSDAYS_ALERT_FLAG = "flutter.mondays_and_thursdays_fasting_alert";

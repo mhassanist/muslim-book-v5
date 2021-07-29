@@ -10,9 +10,7 @@ import 'package:base_app/widgets/on_boarding_view/azan_methods_drop_down.dart';
 import 'package:base_app/widgets/on_boarding_view/save_settings_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:search_map_place/search_map_place.dart';
 import '../../utils/sizing_info_extension.dart';
 
 class PickCountryView extends StatefulWidget {

@@ -10,6 +10,7 @@ import 'package:base_app/utils/prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
 
@@ -22,6 +23,7 @@ class SettingsProvider extends ViewStateProvider {
       _whiteDaysFastingAlert,
       _fajrIbtehal ,
   _isActivatingShaarawiVoice,
+  _isSwitchSilentModeAfterResidence,
   _isRemmberActive
   ;
   bool _saveLocation  = false;
@@ -38,18 +40,21 @@ void change(){
   notifyListeners();
 }
 
-  // static Map<String, dynamic> _pickedAzanShiekh;
-  static Map<String, dynamic> _pickedAzanShiekhMain ={
+   static Map<String, dynamic> _pickedAzanShiekhMain ={
     '1':"", '2':"", '3':"", '4':"", '5':"", '6':"",
   };
   static Map<String, dynamic> _pickedFajrAzanShiekh;
 
   bool alreadyFilledData = false;
 
-  fillTheSettingsData() {
+  fillTheSettingsData()  async{
 
     if (!alreadyFilledData) {
       _isActivatingShaarawiVoice = locator<Prefs>().getActivatingAlShaarawiVoiceFlag() ;
+      _isSwitchSilentModeAfterResidence = locator<Prefs>().getSwitchSilentModeAfterResidenceFlag() ;
+      SharedPreferences pprefs = await SharedPreferences.getInstance();
+
+       print("hossssssssssssssssssssam   " +_isSwitchSilentModeAfterResidence.toString() + "  "+pprefs.getBool(Constants.Switch_Silent_Mode_After_Residence).toString());
       _isRemmberActive = locator<Prefs>().getVoiceReminderBeforePrayingFlag() ;
       _azanAlert = locator<Prefs>().getAzanOnPrayTimeFlag();
       _fajrIbtehal = locator<Prefs>().getFajrIbtehalFlag();
@@ -79,7 +84,7 @@ void change(){
         if (savedShiekLocalJSON == null) {
           String savedShiekhId = locator<Prefs>().getAzanShiekh(i.toString());
           if (savedShiekhId != null) {
-            for (Map<String, dynamic> shiekh in Constants.SHIEKH_NAMES) {
+            for (Map<String, dynamic> shiekh in AppLocalizations.of(_context).isEnglish()? Constants.EN_SHIEKH_NAMES: Constants.AR_SHIEKH_NAMES) {
               if (shiekh["id"] == savedShiekhId) {
                 // _pickedAzanShiekh = shiekh;
                 _pickedAzanShiekhMain[i.toString()] = shiekh;
@@ -88,7 +93,7 @@ void change(){
             }
           } else {
             // _pickedAzanShiekh = Constants.SHIEKH_NAMES[0];
-            _pickedAzanShiekhMain[i.toString()] = Constants.SHIEKH_NAMES[0];
+            _pickedAzanShiekhMain[i.toString()] = AppLocalizations.of(_context).isEnglish()?Constants.EN_SHIEKH_NAMES[0]:Constants.AR_SHIEKH_NAMES[0];
           }
           alreadyFilledData = true;
         } else {
@@ -102,7 +107,7 @@ void change(){
       if (savedFajrShiekLocalJSON == null) {
         String savedShiekhId = locator<Prefs>().getFajrAzanShiekh();
         if (savedShiekhId != null) {
-          for (Map<String, dynamic> shiekh in Constants.SHIEKH_NAMES) {
+          for (Map<String, dynamic> shiekh in AppLocalizations.of(_context).isEnglish()? Constants.EN_SHIEKH_NAMES:Constants.AR_SHIEKH_NAMES) {
             if (shiekh["id"] == savedShiekhId) {
               _pickedFajrAzanShiekh = shiekh;
               break;
@@ -132,6 +137,7 @@ void change(){
   bool get saveLocation => _saveLocation;
   bool get saveSetting => _saveSetting;
   bool get isActivatingShaarawiVoice => _isActivatingShaarawiVoice;
+  bool get isSwitchSilentModeAfterResidence => _isSwitchSilentModeAfterResidence;
   bool get isRemmberActive => _isRemmberActive;
 
   set isRemmberActive(bool value) {
@@ -140,6 +146,9 @@ void change(){
   }
   set isActivatingShaarawiVoice(bool value) {
     _isActivatingShaarawiVoice = value;
+    notifyListeners();
+  }  set isSwitchSilentModeAfterResidence(bool value) {
+    _isSwitchSilentModeAfterResidence = value;
     notifyListeners();
   }
   set saveLocation(bool value) {
@@ -221,8 +230,14 @@ void change(){
     _isActivatingShaarawiVoice = newVal;
     locator<Prefs>().setActivatingAlShaarawiVoiceFlag(newVal);
     notifyListeners();
-    // if (newVal) await Constants.platform.invokeMethod("fireAzan");
-  }
+   }
+  isSwitchSilentModeAfterResidenceChanged(bool newVal) async {
+    _isSwitchSilentModeAfterResidence = newVal;
+    locator<Prefs>().setSwitchSilentModeAfterResidenceFlag(newVal);
+    await Constants.platform.invokeMethod("SwitchSilentMode");
+
+    notifyListeners();
+   }
 
   isRemmberActiveFlagChanged(bool newVal) async {
     _isRemmberActive = newVal;

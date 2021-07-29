@@ -133,7 +133,7 @@ class _SplashViewState extends State<SplashView>
         data2.buffer.asUint8List(data2.offsetInBytes, data2.lengthInBytes);
     var afterAzan = await File(dbPath2).writeAsBytes(bytes2);
     print("after azan is ${afterAzan.path}");
-    for (var item in Constants.SHIEKH_NAMES) {
+    for (var item in AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES: Constants.AR_SHIEKH_NAMES) {
       var dbPath = join(tempPath, "azan_${item["id"]}.mp3");
       ByteData data =
           await rootBundle.load("assets/audio/azan_${item["id"]}.mp3");

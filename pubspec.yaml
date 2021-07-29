@@ -136,8 +136,9 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
-    - assets/langs/ar.json
-    - assets/langs/en.json
+    - assets/langs/
+   # - assets/langs/en.json
+    #- assets/langs/fr.json
     - assets/images/onboarding/
     - assets/images/start_view/
     - assets/images/compass_view/

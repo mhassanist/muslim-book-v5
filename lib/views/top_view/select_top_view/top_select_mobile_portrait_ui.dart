@@ -40,11 +40,11 @@ class TopUI {
                         child: Column(
                       children: [
                         buildDailyRankWidget(sizeConfig,
-                            titel: "الرتبة الإسبوعية",
+                            titel: AppLocalizations.of(context).translate("rank_weekly"),
                             number: "${provider.userScore.rank}",
                             image: "rank_medal.png"),
                         buildDailyRankWidget(sizeConfig,
-                            titel: "الإنجاز الإسبوعي",
+                            titel: AppLocalizations.of(context).translate("Weekly_Achievement"),
                             number: "${provider.userScore.points}",
                             image: "flag_medal.png"),
                       ],

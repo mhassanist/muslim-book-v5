@@ -75,7 +75,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
       },
       child: BaseView<PickAzanShiekhProvider>(onModelReady: (model) {
         _azanSoundFromAssetsProvider = model;
-        _azanSoundFromAssetsProvider.loadSelectedShiekh(widget.azanId);
+        _azanSoundFromAssetsProvider.loadSelectedShiekh(widget.azanId,context);
       }, builder: (_, model, __) {
         return SafeArea(
           child: Scaffold(
@@ -190,7 +190,10 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
   _buildAzanSoundsListFromAssets(sizeConfig) {
     displayingFromAssets = true;
 
-    Constants.SHIEKH_NAMES.forEach((f) {
+    AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES.forEach((f) {
+      animationList.add(AnimationController(
+          vsync: this, duration: Duration(milliseconds: 300)));
+    }) :Constants.AR_SHIEKH_NAMES.forEach((f) {
       animationList.add(AnimationController(
           vsync: this, duration: Duration(milliseconds: 300)));
     });
@@ -200,7 +203,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
         children: [
           Expanded(
             child: ListView.builder(
-                itemCount: Constants.SHIEKH_NAMES.length,
+                itemCount:AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES.length: Constants.AR_SHIEKH_NAMES.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     selected:
@@ -209,32 +212,38 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
                     onTap: () {
                       _azanSoundFromAssetsProvider.pickedAzanShiekhIndex =
                           index;
-                      if (Constants.SHIEKH_NAMES[index]["id"] ==
+                      if (AppLocalizations.of(context).isEnglish()?
+                      Constants.EN_SHIEKH_NAMES[index]["id"]:Constants.AR_SHIEKH_NAMES[index]["id"] ==
                           currentPlayingItemId) {
                         audioPlayer.stop();
                         currentPlayingItemId = null;
                         animationList[index].reverse();
                       } else {
-                        playAzan(Constants.SHIEKH_NAMES[index]["id"], index);
+                        playAzan(AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES[index]["id"]:Constants.AR_SHIEKH_NAMES[index]["id"], index);
                       }
                     },
                     title: Text(
-                      Constants.SHIEKH_NAMES[index]["name"],
+                      AppLocalizations.of(context).isEnglish()? Constants.EN_SHIEKH_NAMES[index]["name"]: Constants.AR_SHIEKH_NAMES[index]["name"],
                       overflow: TextOverflow.ellipsis,
                     ),
-                    leading: Constants.SHIEKH_NAMES[index]["id"] ==
+                    leading:AppLocalizations.of(context).isEnglish()? Constants.EN_SHIEKH_NAMES[index]["id"]:Constants.AR_SHIEKH_NAMES[index]["id"] ==
                             currentPlayingItemId
                         ? Icon(Icons.check)
                         : null,
                     trailing: IconButton(
                       onPressed: () {
-                        if (Constants.SHIEKH_NAMES[index]["id"] ==
+                        if (AppLocalizations.of(context).isEnglish()?
+                        Constants.EN_SHIEKH_NAMES[index]["id"]
+                            :
+                        Constants.AR_SHIEKH_NAMES[index]["id"] ==
                             currentPlayingItemId) {
                           audioPlayer.stop();
                           currentPlayingItemId = null;
                           animationList[index].reverse();
                         } else {
-                          playAzan(Constants.SHIEKH_NAMES[index]["id"], index);
+                          playAzan(AppLocalizations.of(context).isEnglish()?
+                          Constants.EN_SHIEKH_NAMES[index]["id"]
+                              :Constants.AR_SHIEKH_NAMES[index]["id"], index);
                         }
                       },
                       icon: AnimatedIcon(

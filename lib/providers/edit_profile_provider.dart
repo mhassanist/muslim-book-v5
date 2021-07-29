@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:base_app/enams/view_state_enum.dart';
 import 'package:base_app/exceptions/failure.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
+import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/models/countries_model.dart';
 import 'package:base_app/models/edit_profile_model.dart';
 import 'package:base_app/models/user_model.dart';
@@ -109,8 +110,11 @@ class EditProfileProvider extends ViewStateProvider {
   }
 
   void getCountries() async {
+    String code="ar";
     setViewState(ViewState.Loading);
-    CountriesModel model = await locator<ApiService>().getCountries();
+    var local=await getLocale();
+    code=local.languageCode;
+    CountriesModel model = await locator<ApiService>().getCountries(code);
     if (model != null) {
       _countries = model.data;
       if (_userProvider.user.countryId != 0) {

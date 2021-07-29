@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:audio_service/audio_service.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/quran/models/quran_model.dart';
 import 'package:base_app/quran/provider/quran_provider.dart';
 import 'package:base_app/quran/views/ayat_view.dart';
@@ -83,7 +84,7 @@ class _BuildAyahWidgetState extends State<BuildAyahWidget> {
                     width: double.infinity,
                     color: Theme.of(context).primaryColor.withOpacity(.9),
                     child: Text(
-                      "الجزء رقم : ${widget.ayah.juz}",
+                      "${AppLocalizations.of(context).translate("part_no")} ${widget.ayah.juz}",
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: ScreenUtil().setSp(20)),

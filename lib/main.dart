@@ -237,7 +237,6 @@ class _MyAppState extends State<MyApp> {
   setLocale(Locale locale) {
     setState(() {
       this.widget.localeLoaded = locale;
-
     });
   }
 
@@ -303,13 +302,13 @@ class _MyAppState extends State<MyApp> {
       child: ConnectivityAppWrapper(
         app: GetMaterialApp(
           onGenerateTitle: (context) {
-            return 'مسلم بوك';
+            return AppLocalizations.of(context).translate("muslim_book");
           },
-          // title: 'مسلم بوك',
           debugShowCheckedModeBanner: false,
           supportedLocales: [
             const Locale("ar"),
             const Locale("en"),
+            const Locale("fr")
           ],
 
           locale: this.widget.localeLoaded,

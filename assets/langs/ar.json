@@ -4,9 +4,10 @@
   "competition_rank": "ترتيب المسابقات",
   "remind_points": "نقاط التسبيح",
   "remind_rank": "ترتيب التسبيح",
-  "competitions": "المسابقات",
   "news": "الاخبار",
-"fillAllField":"برجاء ملئ جميع الحفول"   ,
+  "competitions": "المسابقات",
+
+  "fillAllField":"برجاء ملئ جميع الحفول"   ,
   "chairty": " صدقة جارية",
   "toOpenNotification":"لكي يعمل الاذان بشكل صحيح قم بالضغط علي السماح بتفعيل التنبيهات" ,
   "saveAyah": "إحفظها كآخر آية",
@@ -89,6 +90,7 @@
   "app_settings": "اعدادت التطبيق",
   "alerts": "التنبيهات",
   "azan_on_pray_time_alert": "تفعيل الأذان وقت الصلاة",
+  "Switch_to_silent_mode_after_residence": "تحويل للوضع الصامت بعد الإقامه",
   "activation": "تفعيل",
   "activating_al_shaarawi_voice": " تفعيل صوت الشعراوي بعد الآذان",
   "voice_reminder_before_praying": "تذكير صوتي قبل الصلاة  ب ١٠  دقائق",
@@ -209,7 +211,7 @@
   "points_in_Muslim-Book_competition": " نقطة في مسابقة مسلم بوك ",
   "are_you_sure_exit": "هل انت متأكد انك تريد الخروج من التطبيق؟",
   "invite_to_download_app": "ادعوا اصدقائي للاشتراك في تطبيق مسلم بوك من هنا \n 👇👇👇\n https://t.co/kNVndJHJkP?amp=1",
-  "rating_muslim_book?": "هل تريد تقييم مسلم بوك ؟",
+  "rating_muslim_book": "هل تريد تقييم مسلم بوك ؟",
   "rate_app_in_google_play": "هل تريد تقييم مسلم بوك علي جوجل بلاي ؟",
   "or": "أو",
   "country_name": "إسم بلدك",
@@ -253,7 +255,22 @@
   "wake_up": "اذكار الإستيقاظ من النوم",
   "be_goodness":  "كن داعيا للخير و ادعو بحديث او اية او دعاء...  ",
   "help_spearding": "ساعد في نشر التطبيق \n ليكون صدقة جارية لك يوم القيامة",
-  "spearding_app": "نشر التطبيق"
+  "spearding_app": "نشر التطبيق",
+  "universty_islamic": "جامعة العلوم الإسلامية ، كراتشي",
+  "mazhab_depends": "المذهب المستخدم يعتمد علي بلدك وهو يساهم في ضبط وقت صلاه العصر بدقه",
+  "settings_of_heights": "إعداد المرتفعات  اذا كنت تسكن في منطقه مرتفعه نسبيا عن سطح البحر ",
+  "please_enter_other_Permission": "برجاء قم بالدخول علي قسم أذونات أخرى  الخاص بالتطبيق\n وقم بالتفعيل الاذونات حتي يعمل الاذان بطريقه صحيحه",
+  "archiv": "الإرشيف",
+  "English": "الانجليزية",
+  "France": "الفرنسية",
+  "Arabic": "العربية",
+  "muslim_book": "مسلم بوك",
+  "activate_azan": "تفعيل الآذان",
+  "store": "قصة ",
+  "activate_permissions": "تفعيل الأذونات",
+  "competition": "المسابقة",
+  "part_no": "الجزء رقم :"
+
+
 
 }
- 

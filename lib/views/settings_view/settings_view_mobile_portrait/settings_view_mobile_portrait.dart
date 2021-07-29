@@ -244,14 +244,14 @@ class _SettingsViewMobilePortraitState
                           child:
                           AdMobRectangle(BannerName.BOSLA )
                         //   AdMobRectangle(BannerName.BOSLA)
-              )),
+              ),),
                           SliverToBoxAdapter(
                               child:
                               SizedBox(
                                 height: 10,
                               )),
                     ]),
-                  )),
+                  ),),
 
             ),
           );

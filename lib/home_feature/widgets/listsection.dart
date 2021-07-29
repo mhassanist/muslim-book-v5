@@ -1,4 +1,5 @@
 import 'package:base_app/home_feature/const/color.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -35,12 +36,12 @@ class ListSection extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemBuilder: (ctx, index) {
             return buildItem(items[index]['icon'], items[index]['title'],
-                items[index]['selected']);
+                items[index]['selected'],context);
           }),
     );
   }
 
-  Widget buildItem(String icon, String title, bool selected) {
+  Widget buildItem(String icon, String title, bool selected,context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 4),
       width: 115,
@@ -93,7 +94,7 @@ class ListSection extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              "قصة ",
+                              AppLocalizations.of(context).translate("store"),
                               style:
                                   TextStyle(color: Colors.grey, fontSize: 10),
                             ),

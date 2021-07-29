@@ -1,7 +1,6 @@
 {
   "MainSections": "Main Sections",
   "salah": "Prayer",
-
   "alfajr": "Alfajr",
   "aldahi": "Aldahi",
   "alzuhr": "Alzuhr",
@@ -86,6 +85,7 @@
   "activation": "Activation",
   "azan_on_pray_time_alert": "Activate the Azan to prayer time",
   "activating_al_shaarawi_voice": "Activating Al-Shaarawi's voice after the call to prayer",
+  "Switch_to_silent_mode_after_residence": "Switch to silent mode after residence",
   "voice_reminder_before_praying": "Voice reminder 10 minutes before prayer",
   "mondays_and_thursdays_fasting_alert": "Mondays & Thursdays fasting alert",
   "white_days_fasting_alert": "White days fasting alert",
@@ -258,5 +258,23 @@
   "follow":"Continue",
   "allow_notification": "Allow Notification",
 
-  "last_read": "last read"
+  "last_read": "last read",
+  "universty_islamic": "University of Islamic Sciences, Karachi",
+  "mazhab_depends": "The madhhab used depends on your country, and it contributes to setting the exact time of the afternoon prayer.",
+  "settings_of_heights": "Preparation of heights if you live in a relatively high area above sea level",
+  "please_enter_other_Permission": "Please enter the other permissions section of the application\n and activate the permissions so that the permission works properly",
+  "archiv": "Archive",
+  "English": "English",
+  "France": "France",
+  "Arabic": "Arabic",
+  "muslim_book": "Muslim Book",
+  "activate_azan": "Activate the Azan",
+
+  "store": "Store ",
+  "activate_permissions":  "Activate Permissions",
+  "competition": "Competition",
+  "part_no": "Part No:"
+
+
+
 }

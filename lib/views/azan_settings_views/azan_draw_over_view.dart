@@ -1,3 +1,4 @@
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/locator.dart';
 import 'package:base_app/utils/prefs.dart';
@@ -48,7 +49,7 @@ class _AzanDrawOverViewState extends State<AzanDrawOverView>
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
-                  "قم بتفعيل تنبيهات الآذان",
+                 "",
                   style: TextStyle(
                       color: const Color(0XFFFFAA3F),
                       fontWeight: FontWeight.bold,
@@ -72,7 +73,7 @@ class _AzanDrawOverViewState extends State<AzanDrawOverView>
 
 
   Future saveSelectedShiekh() async {
-    locator<Prefs>().setAzanShiekh(Constants.SHIEKH_NAMES[0]["id"] ,"");
+    locator<Prefs>().setAzanShiekh(Constants.AR_SHIEKH_NAMES[0]["id"] ,"");
     // locator<Prefs>().setAzanShiekh(Constants.SHIEKH_NAMES[1]["name"] ,azanId);
   }
   Widget buttonsRow(SizingInformation sizeConfig, context) {
@@ -86,7 +87,7 @@ class _AzanDrawOverViewState extends State<AzanDrawOverView>
       shape: StadiumBorder(),
       fillColor: Colors.white,
       child: Text(
-        "تفعيل الآذان",
+        AppLocalizations.of(context).translate("activate_azan"),
         textAlign: TextAlign.center,
         style: TextStyle(
             fontWeight: FontWeight.bold,

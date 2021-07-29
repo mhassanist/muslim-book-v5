@@ -1,3 +1,4 @@
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
@@ -60,12 +61,13 @@ class Constants {
   static const String RAMADAN_MASHRAAT_TIME = "ramadan_mashraat_time";
   static const String Voice_Reminder_Before_Praying_FLAG = "voice_reminder_before_praying";
   static const String Activating_Al_Shaarawi_Voice_FLAG = "activating_al_shaarawi_voice";
+  static const String Switch_Silent_Mode_After_Residence = "switch_silent_mode_after_residence";
   static const String MONDAYS_AND_THURSDAYS_FASTING_ALERT_FLAG =
       "mondays_and_thursdays_fasting_alert";
   static const String WHITE_DAYS_FASTING_ALERT_FLAG =
       "white_days_fasting_alert";
 
-  static const List<Map<String, dynamic>> AR_AZAN_METHODS = [
+  static const List<Map<String, dynamic>> AR_AZAN_METHODS=[
     {"title": "جامعة العلوم الإسلامية ، كراتشي", "id": "1"},
     {"title": 'الجمعية الإسلامية لأمريكا الشمالية', "id": "2"},
     {"title": 'رابطة العالم الإسلامي', "id": "3"},
@@ -80,18 +82,18 @@ class Constants {
     {"title": 'الإدارة الروحية لمسلمي روسيا', "id": "14"},
   ];
   static const List<Map<String, dynamic>> EN_AZAN_METHODS = [
-    {"title": "جامعة العلوم الإسلامية ، كراتشي", "id": "1"},
-    {"title": 'الجمعية الإسلامية لأمريكا الشمالية', "id": "2"},
-    {"title": 'رابطة العالم الإسلامي', "id": "3"},
-    {"title": 'جامعة أم القرى بمكة المكرمة', "id": "4"},
-    {"title": 'الهيئة المصرية العامة للمساحة', "id": "5"},
-    {"title": 'منطقة الخليج', "id": "8"},
-    {"title": 'دولة الكويت', "id": "9"},
-    {"title": 'دولة قطر', "id": "10"},
-    {"title": 'مجلس أوجاما إسلام سنغافورا ، سنغافورة', "id": "11"},
-    {"title": 'منظمة الاتحاد الإسلامي في فرنسا', "id": "12"},
-    {"title": 'رئاسة الشؤون الدينية ، تركيا', "id": "13"},
-    {"title": 'الإدارة الروحية لمسلمي روسيا', "id": "14"},
+    {"title": "University of Islamic Sciences, Karachi", "id": "1"},
+    {"title": "'Islamic Society of North America'", "id": "2"},
+    {"title": 'Islamic world Union', "id": "3"},
+    {"title":"Umm Al-Qura University in Makkah Al-Mukarramah" , "id": "4"},
+    {"title": 'Egyptian General Authority for Survey', "id": "5"},
+    {"title": 'Gulf area', "id": "8"},
+    {"title": 'Kuwait', "id": "9"},
+    {"title": 'Qatar', "id": "10"},
+    {"title": 'Ojama Council of Islam Singapore, Singapore', "id": "11"},
+    {"title": 'Organization of the Islamic Union in France', "id": "12"},
+    {"title": 'Presidency of Religious Affairs, Turkey', "id": "13"},
+    {"title": 'Spiritual management of the Muslims of Russia', "id": "14"},
   ];
 
 
@@ -108,12 +110,22 @@ class Constants {
     {"title": 'Seventh of night', "id": "2"},
     {"title": 'Angle Based', "id": "3"},
   ];
-  static const List<Map<String, dynamic>> SHIEKH_NAMES = [
-    {"name": 'مشاري بن راشد العفاسي', "id": "2"},
+  static const List<Map<String, dynamic>> AR_SHIEKH_NAMES = [
     {"name": "عبدالباسط عبدالصمد", "id": "1"},
+
+    {"name": 'مشاري بن راشد العفاسي', "id": "2"},
     {"name": 'الحرم المكي', "id": "3"},
     {"name": 'مصطفي إسماعيل', "id": "4"},
     {"name": 'المسجد الأقصي (ناجي قزاز)', "id": "5"},
+  ];
+
+  static const List<Map<String, dynamic>> EN_SHIEKH_NAMES = [
+    {"name": "Abdul Basit Abdul Samad", "id": "1"},
+
+    {"name": 'Mishary bin Rashid Al-Afasy', "id": "2"},
+    {"name": 'Grand Mosque in Mecca', "id": "3"},
+    {"name": 'Mustafa Ismael', "id": "4"},
+    {"name": 'Al-Aqsa Mosque (Naji Qazzaz)', "id": "5"},
   ];
 
   static const List<Map<String, dynamic>> FAJR_SHIEKH_NAMES = [
@@ -126,8 +138,10 @@ class Constants {
   ];
 
   static const List<Map<String, dynamic>> EN_AZAN_Mazhabs = [
-    {"title": 'الشافعي - الحنبلي - المالكي', "id": "0"},
-    {"title": 'الحنفي', "id": "1"},
+
+
+    {"title": "Shafi'i - Hanbali - Maliki", "id": "0"},
+   {"title": 'Hanafi', "id": "1"},
   ];
 
   static const String AZAN_MODEL = "azanModel";

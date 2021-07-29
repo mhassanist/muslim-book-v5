@@ -279,7 +279,7 @@ class SignupMobilePortraitUi {
   }
 
   void getCountries() async {
-    CountriesModel model = await locator<ApiService>().getCountries();
+    CountriesModel model = await locator<ApiService>().getCountries(AppLocalizations.of(context).locale.languageCode);
     userProvider.countries = model?.data;
   }
 

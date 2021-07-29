@@ -1,5 +1,7 @@
+import 'package:base_app/home_feature/const/color.dart';
 import 'package:base_app/home_feature/controllers/home_controller.dart';
 import 'package:base_app/home_feature/views/homePage.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/main.dart';
 import 'package:base_app/utils/sizing_info_extension.dart';
@@ -13,17 +15,37 @@ class HomeView extends StatefulWidget {
   @override
   _HomeViewState createState() => _HomeViewState();
 }
+enum Language { english, france,Arabic }
 
 class _HomeViewState extends State<HomeView> {
   Locale _locale;
+  Language lang;
+
+
+
+
+
   @override
   void initState() {
     getLocale().then((locale) {
+      if(locale.languageCode == 'ar'){
+        lang=Language.Arabic;
+
+      }else if(locale.languageCode == 'en'){
+        lang=Language.english;
+
+
+      }else{
+        lang=Language.france;
+
+
+      }
       setState(() {
         this._locale = locale;
       });
     });
     print("hosssssssssam ");
+
 
     super.initState();
   }
@@ -57,23 +79,86 @@ class _HomeViewState extends State<HomeView> {
 
 
                 Locale local = await getLocale();
-                _changeLanguage(local.languageCode == 'ar' ? 'en' : 'ar');
+
 
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  (Localizations.localeOf(context).languageCode == 'en'
-                          ? 'ar'
-                          : 'en')
-                      .toUpperCase(),
-                  style: TextStyle(
-                      fontSize: 15,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600),
-                )
+               IconButton(onPressed: ()async{
+                await showDialog(
+                   context: context,
+                   builder: (context) =>  new AlertDialog(
+                     contentPadding: EdgeInsets.all(0.0),
+                     shape: RoundedRectangleBorder(borderRadius:
+                     BorderRadius.all(Radius.circular(12))),
+                     content:Container(
+                       height: 200,
+                       child:Column(
+                         children: [
+                           ListTile(
+                             title:  Text(AppLocalizations.of(context).translate("Arabic")),
+                             leading: Radio<Language>(
+                               value: Language.Arabic,
+                               groupValue: lang,
+                               activeColor: darkish_green,
+                               onChanged: (Language value) {
+                                 setState(() {
+                                   lang = value;
+                                   _changeLanguage("ar");
+                                 });
+                                 Navigator.pop(context);
+                               },
+                             ),
+                           ),
+                           ListTile(
+                             title:  Text(AppLocalizations.of(context).translate("English")),
+                             leading: Radio<Language>(
+                               value: Language.english,
+                               activeColor: darkish_green,
+                               groupValue: lang,
+                               onChanged: (Language value) {
+                                 setState(() {
+                                   lang = value;
+                                   _changeLanguage("en");
+                                 });
+                                 Navigator.pop(context);
+
+                               },
+                             ),
+                           ),
+                           ListTile(
+                             title:  Text(AppLocalizations.of(context).translate("France")),
+                             leading: Radio<Language>(
+                               value: Language.france,
+                               groupValue: lang,
+                               activeColor: darkish_green,
+
+                               onChanged: (Language value) {
+                                 setState(() {
+                                   lang = value;
+                                   _changeLanguage("fr");
+                                 });
+                                 Navigator.pop(context);
+
+                               },
+                             ),
+                           ),
+
+
+
+                         ],
+                       )
+                     )  ,
+
+                   ),
+                 );
+               }, icon: Icon(
+                 Icons.language
+
+
+               ))
               ],
             ),
           ),

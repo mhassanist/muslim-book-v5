@@ -264,9 +264,9 @@ class CompetitionUI {
                                 height: 400,
                                 child: LoadUiWithAdd(
                                   mainView: AddWidgetEdit(
-                                    title: "المسابقه",
+                                    title: AppLocalizations.of(context).translate("competition"),
                                     bannerName: BannerName.COMPETITION,
-                                    buttomTitle: "متابعه",
+                                    buttomTitle: AppLocalizations.of(context).translate("follow"),
                                     exit: go,
                                   ),
                                 ),

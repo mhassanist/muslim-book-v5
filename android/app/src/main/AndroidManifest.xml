@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.muslim_book.muslim_book">
+
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -13,25 +14,30 @@
     <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.VIBRATE" android:maxSdkVersion="18"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
+    <uses-permission
+        android:name="android.permission.VIBRATE"
+        android:maxSdkVersion="18" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".Application"
+        android:allowBackup="false"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/launcher_icon"
         android:label="@string/app_name"
-        tools:replace="android:hardwareAccelerated"
         android:largeHeap="true"
-        android:hardwareAccelerated="true"
         tools:ignore="GoogleAppIndexingWarning,HardcodedDebugMode,Instantiatable"
-        android:allowBackup="false">
+        tools:replace="android:hardwareAccelerated">
         <service
             android:name=".services.azan.AzanService"
             android:enabled="true"
             android:exported="true" />
-   <service android:name=".services.azan.OverLayService"  android:enabled="true"
-       android:exported="true" />
+        <service
+            android:name=".services.azan.OverLayService"
+            android:enabled="true"
+            android:exported="true" />
         <service
             android:name=".services.ramadan.ramadan_cannon.RamadanCannonService"
             android:enabled="true"
@@ -59,16 +65,18 @@
             <intent-filter>
                 <action android:name="intent.my.action" />
                 <action android:name="FLUTTER_NOTIFICATION_CLICK" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="muslim-book.net"
-                    android:scheme="https"
-                    />
+                    android:scheme="https" />
 
             </intent-filter>
 
@@ -84,8 +92,7 @@
 
             <meta-data
                 android:name="io.flutter.embedding.android.SplashScreenDrawable"
-                android:resource="@drawable/launch_background"
-                />
+                android:resource="@drawable/launch_background" />
         </activity>
 
         <meta-data
@@ -109,6 +116,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.NOTIFY" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".PhoneStateBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE"/>
             </intent-filter>
         </receiver>
         <receiver
@@ -156,11 +168,12 @@
 
         <service
             android:name="dev.fluttercommunity.plus.androidalarmmanager.AlarmService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            android:exported="false"/>
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
         <receiver
             android:name="dev.fluttercommunity.plus.androidalarmmanager.AlarmBroadcastReceiver"
-            android:exported="false"/>
+            android:exported="false" />
         <receiver
             android:name="dev.fluttercommunity.plus.androidalarmmanager.RebootBroadcastReceiver"
             android:enabled="false">
@@ -178,6 +191,7 @@
         <service
             android:name=".services.ramadan.ramadan_mshart.RamadanMshartIntentService"
             android:exported="false" />
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

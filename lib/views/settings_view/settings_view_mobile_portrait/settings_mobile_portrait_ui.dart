@@ -107,7 +107,7 @@ class SettingsMobilePortraitUi {
           titleContainer(
               sizeConfig,
               context,
-              "المذهب المستخدم يعتمد علي بلدك وهو يساهم في ضبط وقت صلاه العصر بدقه",
+              AppLocalizations.of(context).translate("mazhab_depends"),
 
         ),
           mazhabPart(),
@@ -125,7 +125,7 @@ class SettingsMobilePortraitUi {
           titleContainer(
             sizeConfig,
             context,
-            "إعداد المرتفعات  اذا كنت تسكن في منطقه مرتفعه نسبيا عن سطح البحر ",
+            AppLocalizations.of(context).translate("settings_of_heights"),
 
           ),
 
@@ -200,8 +200,8 @@ class SettingsMobilePortraitUi {
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    "${provider.pickedFajrAzanShiekh["name"]}",
+                  child: Text(provider.pickedFajrAzanShiekh != null && provider.pickedFajrAzanShiekh.isNotEmpty ?
+                    "${provider.pickedFajrAzanShiekh["name"]}":"شيخ اذان الفجر",
                     style: TextStyle(
                         color: Constants.PRIMARY_DARK_COLOR,
                         fontWeight: FontWeight.w700,
@@ -336,7 +336,10 @@ class SettingsMobilePortraitUi {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    "${ Constants.SHIEKH_NAMES[0]["name"]}",
+                    "${ AppLocalizations.of(context).isEnglish()?
+                    Constants.EN_SHIEKH_NAMES[0]["name"]
+                        :
+                    Constants.AR_SHIEKH_NAMES[0]["name"]}",
 
                     // "${provider.pickedAzanShiekhMain["2"]["name"]}",
                     style: TextStyle(
@@ -394,6 +397,11 @@ class SettingsMobilePortraitUi {
               AppLocalizations.of(context).translate("activating_al_shaarawi_voice"),
               provider.isActivatingShaarawiVoice,
               provider.isActivatingShaarawiVoiceFlagChanged),
+
+          alertItem(
+              AppLocalizations.of(context).translate("Switch_to_silent_mode_after_residence"),
+              provider.isSwitchSilentModeAfterResidence,
+              provider.isSwitchSilentModeAfterResidenceChanged),
           alertItem(
               "EN",
               Localizations.localeOf(context).languageCode == 'en'
@@ -436,7 +444,7 @@ class SettingsMobilePortraitUi {
     if (newShiekhIndex != null && sounds != null && sounds.length > 0) {
       provider.pickedAzanShiekhMain[azanId] = sounds[newShiekhIndex].toJSON();
     } else if (newShiekhIndex != null) {
-      provider.pickedAzanShiekhMain[azanId]  = Constants.SHIEKH_NAMES[newShiekhIndex];
+      provider.pickedAzanShiekhMain[azanId]  = AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES[newShiekhIndex]:Constants.AR_SHIEKH_NAMES[newShiekhIndex];
     }
   }
 
@@ -650,7 +658,7 @@ class SettingsMobilePortraitUi {
                   Text(
                     AppLocalizations.of(context).translate("auto_detect"),
                     style: TextStyle(
-                      fontSize: sizeConfig.blockSizeHorizontal * 5,
+                      fontSize: sizeConfig.blockSizeHorizontal * 4.3,
                       color: Constants.CANVAS_COLOR,
                       fontWeight: FontWeight.w900,
                     ),

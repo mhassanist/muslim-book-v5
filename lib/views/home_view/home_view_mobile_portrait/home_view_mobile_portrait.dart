@@ -1,6 +1,5 @@
 import 'package:base_app/azkar_feature/views/azkar_list_view.dart';
-import 'package:base_app/home_feature/controllers/home_controller.dart';
-import 'package:base_app/network_utils/azan_apis.dart';
+
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/quran/views/quran_view.dart';
 import 'package:base_app/utils/Constants.dart';
@@ -124,7 +123,7 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                               Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: Text(
-                                  "القرآن الكريم",
+                                  AppLocalizations.of(context).translate("quran"),
                                   style: TextStyle(
                                     fontSize:
                                         sizeConfig.blockSizeHorizontal * 6,

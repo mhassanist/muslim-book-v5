@@ -1,4 +1,5 @@
 import 'package:base_app/local_storage/local_storage_manager.dart';
+import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/models/azan_sound.dart';
 import 'package:base_app/providers/view_state_provider.dart';
 import 'package:base_app/utils/Constants.dart';
@@ -24,24 +25,23 @@ class PickAzanShiekhProvider extends ViewStateProvider {
     _pickedAzanShiekhIndex = value;
     notifyListeners();
   }
-
   Future saveSelectedShiekh(context ,String azanId) async {
-    locator<Prefs>().setAzanShiekh(Constants.SHIEKH_NAMES[_pickedAzanShiekhIndex]["id"] ,azanId);
+    locator<Prefs>().setAzanShiekh( AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES[_pickedAzanShiekhIndex]["id"]:Constants.AR_SHIEKH_NAMES[_pickedAzanShiekhIndex]["id"] ,azanId);
     Navigator.pop(context, _pickedAzanShiekhIndex);
   }
 
 
-  Future loadSelectedShiekh(String azanId) async {
+  Future loadSelectedShiekh(String azanId,context) async {
 
     String savedShiekhId = locator<Prefs>().getAzanShiekh(azanId);
     if(savedShiekhId != null){
-      for(Map<String, dynamic> shiekh in Constants.SHIEKH_NAMES){
+      for(Map<String, dynamic> shiekh in AppLocalizations.of(context).isEnglish()? Constants.EN_SHIEKH_NAMES: Constants.AR_SHIEKH_NAMES){
         String check = '${shiekh["id"]}$azanId';
 
 
         if(shiekh["id"]== savedShiekhId){
-          _pickedAzanShiekhIndex = Constants.SHIEKH_NAMES.indexOf(shiekh);
-          _pickedAzanShiekh = Constants.SHIEKH_NAMES[_pickedAzanShiekhIndex];
+          _pickedAzanShiekhIndex =AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES.indexOf(shiekh): Constants.AR_SHIEKH_NAMES.indexOf(shiekh);
+          _pickedAzanShiekh = AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES[_pickedAzanShiekhIndex]:Constants.AR_SHIEKH_NAMES[_pickedAzanShiekhIndex];
 
           return;
         }
@@ -58,7 +58,7 @@ class PickAzanShiekhProvider extends ViewStateProvider {
       }
     }else{
       _pickedAzanShiekhIndex = 0;
-      _pickedAzanShiekh = Constants.SHIEKH_NAMES[_pickedAzanShiekhIndex];
+      _pickedAzanShiekh = AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES[_pickedAzanShiekhIndex]:Constants.AR_SHIEKH_NAMES[_pickedAzanShiekhIndex];
 
     }
 
