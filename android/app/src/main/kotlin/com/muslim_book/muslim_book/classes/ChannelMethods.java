@@ -25,6 +25,7 @@ import com.muslim_book.muslim_book.classes.ramdan.RamadanMshartUtils;
 import com.muslim_book.muslim_book.recievers.azkar.AzkarAlarm;
  import com.muslim_book.muslim_book.recievers.FastingAlertsReceiver;
 import com.muslim_book.muslim_book.recievers.competition.CompetitionsAlarmReceiver;
+import com.muslim_book.muslim_book.recievers.phoneState.PhoneStateBroadcastReceiver;
 import com.muslim_book.muslim_book.services.azan.OverLayService;
 //import com.muslim_book.muslim_book.services.azan.OverLayService;
 
@@ -86,6 +87,10 @@ public class ChannelMethods {
                                 result.success(false);
                                 break;
                             }
+                         case "readPhoneState":
+                             mContext.sendBroadcast(new Intent(mContext, PhoneStateBroadcastReceiver.class));
+                             result.success(true);
+                             break;
                         case "askOverlay":
                             Intent intentOverLayService = new Intent(mContext, OverLayService.class);
                             Constants.SETBOOTAZANRECIEVER(mContext);
@@ -141,7 +146,7 @@ public class ChannelMethods {
                             openXiaomiSettings();
                             result.success(true);
                             break;
-                      case "SwitchSilentMode":
+                      case "AllowPhoneState":
                           requestMutePermissions();
                             result.success(true);
                             break;

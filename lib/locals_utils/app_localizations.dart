@@ -21,7 +21,6 @@ class AppLocalizations {
     Map<String, dynamic> jsonMap = json.decode(jsonString);
     if(_localizedStrings !=null)
     _localizedStrings.clear();
-    print("Shaimaaaaaaaaaaa " + jsonString.toString());
 
     _localizedStrings = jsonMap.map((key, value) {
       return MapEntry(key, value.toString());
@@ -34,8 +33,7 @@ class AppLocalizations {
   }
 
   String translate(String key) {
-    print("locale.languageCode  " + _localizedStrings[key]);
-    return _localizedStrings[key];
+     return _localizedStrings[key];
   }
 }
 

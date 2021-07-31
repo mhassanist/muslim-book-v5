@@ -98,8 +98,7 @@ class EditProfileProvider extends ViewStateProvider {
           ? "data:image/$_fileExtension;base64,$base"
           : null,
     };
-    print("data:image/$_fileExtension;base64,$base");
-        var res = await locator<ApiService>().editProfile(body);
+         var res = await locator<ApiService>().editProfile(body);
     if (res is UserModel) {
       _userProvider.user = res;
       return true;

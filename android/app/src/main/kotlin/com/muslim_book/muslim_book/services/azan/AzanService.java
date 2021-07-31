@@ -35,10 +35,8 @@ public class AzanService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("arrived Azan","onStartCommand");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Settings.canDrawOverlays(this)) {
-                Log.i("is_canDrawOverlays","truuuuuuuuuuuuuu");
 
             }
         }else {

@@ -130,8 +130,7 @@ class _AdjustBatteryViewState extends State<AdjustBatteryView>
                           alignment: Alignment.topLeft,
                           child: InkWell(
                               onTap: () async {
-                                print("go");
-                                widget.isStart
+                                 widget.isStart
                                     ? await goToNextPage(context)
                                     : Navigator.of(context).pop();
                               },

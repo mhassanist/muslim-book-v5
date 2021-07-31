@@ -20,8 +20,7 @@ import 'package:http/http.dart' as http;
           await http.get(uri).timeout(Duration(seconds: 300)) ;
 
       if (response.statusCode == 200) {
-        print("shaimaaaaaaaaaaaaaaaa "+ response.body.toString());
-        await locator<Prefs>().setAzanModel(response.body);
+         await locator<Prefs>().setAzanModel(response.body);
         await locator<AzanSingleton>().saveAzanTimes();
       }
     } catch (_) {

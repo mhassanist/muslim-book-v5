@@ -118,7 +118,7 @@
                 <action android:name="android.intent.action.NOTIFY" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".PhoneStateBroadcastReceiver">
+        <receiver android:name=".recievers.phoneState.PhoneStateBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE"/>
             </intent-filter>

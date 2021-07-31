@@ -34,7 +34,6 @@ class _HomeViewState extends State<HomeView> {
       }else if(locale.languageCode == 'en'){
         lang=Language.english;
 
-
       }else{
         lang=Language.france;
 

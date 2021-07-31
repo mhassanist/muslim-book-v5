@@ -160,7 +160,6 @@ class SettingsMobilePortraitUi {
                         ? Constants.EN_AZAN_Mazhabs
                         : Constants.AR_AZAN_Mazhabs)
                         .indexOf(provider.pickedMazhab));
-                    print("hosaaaaaaaaaaaaaaaaaaaaaaaam  4   ");
 
                     await AzanApis().getAzan();
                     provider.setViewState(ViewState.Idle);
@@ -403,6 +402,10 @@ class SettingsMobilePortraitUi {
               provider.isSwitchSilentModeAfterResidence,
               provider.isSwitchSilentModeAfterResidenceChanged),
           alertItem(
+              AppLocalizations.of(context).translate("Turn_off_the_call_to_prayer_on_the_phone"),
+              provider.isTurnOffPrayerPhone,
+              provider.isTurnOffPrayerPhoneChanged),
+          alertItem(
               "EN",
               Localizations.localeOf(context).languageCode == 'en'
                   ? true
@@ -420,8 +423,7 @@ class SettingsMobilePortraitUi {
   }
 
   Future saveSettings() async {
-    print("arrived here");
-    provider.setViewState(ViewState.Loading);
+     provider.setViewState(ViewState.Loading);
     locator<Prefs>().setAzanMethod((AppLocalizations.of(context).isEnglish()
             ? Constants.EN_AZAN_METHODS
             : Constants.AR_AZAN_METHODS)
@@ -431,7 +433,6 @@ class SettingsMobilePortraitUi {
             ? Constants.EN_AZAN_Mazhabs
             : Constants.AR_AZAN_Mazhabs)
         .indexOf(provider.pickedMazhab));
-    print("hosaaaaaaaaaaaaaaaaaaaaaaaam  5  ");
 
     await AzanApis().getAzan();
     provider.setViewState(ViewState.Idle);

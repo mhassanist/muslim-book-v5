@@ -100,8 +100,7 @@ public class RamadanCannonIntentService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("shaimaaaaaaaaaaaaaa", "  ramadan  waqt el adan ");
-        showNotification();
+         showNotification();
         playConnan();
 
 
@@ -159,7 +158,6 @@ public class RamadanCannonIntentService extends Service {
     private String getRamadanConnanId(String key) {
         SharedPreferences prefs = getSharedPreferences(Constants.FLUTTER_SHARED_PREFERENCES,
                 MODE_PRIVATE);
-        Log.i("shaimaaaaaaaaaaaaaa", "  ramadan  " + prefs.getString(Constants.SELECTED_RAMADAN_CANNON_ID + key, "0"));
 
 
         return prefs.getString(Constants.SELECTED_RAMADAN_CANNON_ID + key, "0");

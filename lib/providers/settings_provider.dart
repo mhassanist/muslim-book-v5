@@ -23,7 +23,8 @@ class SettingsProvider extends ViewStateProvider {
       _whiteDaysFastingAlert,
       _fajrIbtehal ,
   _isActivatingShaarawiVoice,
-  _isSwitchSilentModeAfterResidence,
+      _isTurnOffPrayerPhone,
+   _isSwitchSilentModeAfterResidence,
   _isRemmberActive
   ;
   bool _saveLocation  = false;
@@ -52,10 +53,10 @@ void change(){
     if (!alreadyFilledData) {
       _isActivatingShaarawiVoice = locator<Prefs>().getActivatingAlShaarawiVoiceFlag() ;
       _isSwitchSilentModeAfterResidence = locator<Prefs>().getSwitchSilentModeAfterResidenceFlag() ;
+      _isTurnOffPrayerPhone = locator<Prefs>().getTurnOffPrayerPhoneFlag() ;
       SharedPreferences pprefs = await SharedPreferences.getInstance();
 
-       print("hossssssssssssssssssssam   " +_isSwitchSilentModeAfterResidence.toString() + "  "+pprefs.getBool(Constants.Switch_Silent_Mode_After_Residence).toString());
-      _isRemmberActive = locator<Prefs>().getVoiceReminderBeforePrayingFlag() ;
+       _isRemmberActive = locator<Prefs>().getVoiceReminderBeforePrayingFlag() ;
       _azanAlert = locator<Prefs>().getAzanOnPrayTimeFlag();
       _fajrIbtehal = locator<Prefs>().getFajrIbtehalFlag();
       _mondaysAndThursdaysFastingAlert =
@@ -138,6 +139,7 @@ void change(){
   bool get saveSetting => _saveSetting;
   bool get isActivatingShaarawiVoice => _isActivatingShaarawiVoice;
   bool get isSwitchSilentModeAfterResidence => _isSwitchSilentModeAfterResidence;
+  bool get isTurnOffPrayerPhone => _isTurnOffPrayerPhone;
   bool get isRemmberActive => _isRemmberActive;
 
   set isRemmberActive(bool value) {
@@ -147,8 +149,12 @@ void change(){
   set isActivatingShaarawiVoice(bool value) {
     _isActivatingShaarawiVoice = value;
     notifyListeners();
-  }  set isSwitchSilentModeAfterResidence(bool value) {
+  }
+  set isSwitchSilentModeAfterResidence(bool value) {
     _isSwitchSilentModeAfterResidence = value;
+    notifyListeners();
+  } set isTurnOffPrayerPhone(bool value) {
+    _isTurnOffPrayerPhone = value;
     notifyListeners();
   }
   set saveLocation(bool value) {
@@ -215,8 +221,7 @@ void change(){
   }
 
   refreshAzanTimes() async {
-    print("hosaaaaaaaaaaaaaaaaaaaaaaaam  3   ");
-    await AzanApis().getAzan();
+     await AzanApis().getAzan();
   }
 
   azanAlertFlagChanged(bool newVal) async {
@@ -234,8 +239,14 @@ void change(){
   isSwitchSilentModeAfterResidenceChanged(bool newVal) async {
     _isSwitchSilentModeAfterResidence = newVal;
     locator<Prefs>().setSwitchSilentModeAfterResidenceFlag(newVal);
-    await Constants.platform.invokeMethod("SwitchSilentMode");
+    await Constants.platform.invokeMethod("AllowPhoneState");
 
+    notifyListeners();
+   }
+  isTurnOffPrayerPhoneChanged(bool newVal) async {
+    _isTurnOffPrayerPhone = newVal;
+    locator<Prefs>().setTurnOffPrayerPhoneFlag(newVal);
+    await Constants.platform.invokeMethod("AllowPhoneState");
     notifyListeners();
    }
 

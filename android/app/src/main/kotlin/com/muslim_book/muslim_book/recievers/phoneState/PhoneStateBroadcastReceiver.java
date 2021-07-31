@@ -1,4 +1,4 @@
-package com.muslim_book.muslim_book.services.azan;
+package com.muslim_book.muslim_book.recievers.phoneState;
 
 
 import android.content.BroadcastReceiver;

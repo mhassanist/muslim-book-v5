@@ -152,8 +152,6 @@ class AzanController extends GetxController {
           }
           azan.count =locator<Prefs>().getAssalahTime("update${azan.id}") != null
               ? int.parse(locator<Prefs>().getAssalahTime("update${azan.id }")) :0;
-          print("shaimaa   getAzanList " + "   ${locator<Prefs>().getAssalahTime("update${azan.id}")}");
-          print("shaimaa   getAzanList "  +azan.id + "   ${azan.count}");
 
           azanValue.add(azan);
         }

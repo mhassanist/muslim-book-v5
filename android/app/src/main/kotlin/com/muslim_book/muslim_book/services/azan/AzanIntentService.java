@@ -1,6 +1,7 @@
 package com.muslim_book.muslim_book.services.azan;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.media.MediaExtractor.MetricsConstants.FORMAT;
 import static com.facebook.ads.CacheFlag.ALL;
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_CHANNEL_NAME;
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_CHANNEL_ID;
@@ -64,6 +65,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -114,7 +116,6 @@ public class AzanIntentService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("hossssssssssam  ", "onStartCommand");
 
         if (intent != null) {
             beforeAzan = intent.getBooleanExtra(Constants.BEFORE_AZAN, false);
@@ -133,6 +134,7 @@ public class AzanIntentService extends Service {
         String json = prefs.getString(Constants.MUTED_AZAN, null);
         boolean Activating_Al_Shaarawi_Voice_FLAG = prefs.getBoolean(Constants.Activating_Al_Shaarawi_Voice_FLAG, true);
         boolean Switch_Silent_Mode_After_Residence = prefs.getBoolean(Constants.Switch_Silent_Mode_After_Residence, false);
+        boolean Turn_Off_The_Call_To_Prayer_On_The_Phone = prefs.getBoolean(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone, false);
         boolean FASTING_MONDAYS_AND_THURSDAYS_ALERT_FLAG = prefs.getBoolean(Constants.FASTING_MONDAYS_AND_THURSDAYS_ALERT_FLAG, true);
 
 
@@ -156,27 +158,69 @@ public class AzanIntentService extends Service {
 
                 mAfterAzanMediaPlayer = MediaPlayer.create(this,
                         Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/after_azan.mp3")));
-                mMediaPlayer.start();
+                boolean _isCallActive = isCallActive(this);
+                AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+
+                switch (am.getMode()) {
+                    case AudioManager.MODE_IN_COMMUNICATION:
+                        Log.i("MyApp","Silent mode");
+                        break;
+                    case AudioManager.MODE_RINGTONE:
+                        Log.i("MyApp","Vibrate mode");
+
+                        break;
+                      case AudioManager.MODE_IN_CALL:
+                          Log.i("MyApp","MODE_RINGTONE");
+//                        break;
+                }
+                 boolean _isSilentMode = isSilentMode(this);
+                 Log.i("_isSilentMode" ,_isSilentMode+"");
+                if (!Turn_Off_The_Call_To_Prayer_On_The_Phone && !_isCallActive) {
+                    Log.i("_isSilentMode" ,"one");
+
+                    if(!_isSilentMode){
+                        mMediaPlayer.start();
+
+                    }
+
+                } else   {
+                    Log.i("_isSilentMode" ,"tow");
+
+                    if(!_isSilentMode){
+                        mMediaPlayer.start();
+
+                    }
+
+
+                }
+
                 mMediaPlayer.setOnCompletionListener(mPlayer -> {
                     if (Activating_Al_Shaarawi_Voice_FLAG) {
                         if (mAfterAzanMediaPlayer != null) {
                             mAfterAzanMediaPlayer.start();
-                            mAfterAzanMediaPlayer.setOnCompletionListener(mediaPlayer ->{
+                            mAfterAzanMediaPlayer.setOnCompletionListener(mediaPlayer -> {
                                 /// add silent mode after do3aa sound
-                                setSilentMode(true);
-                               // onDestroy();
+                                if (Switch_Silent_Mode_After_Residence) {
+                                    setSilentMode(true);
+                                } else {
+                                    onDestroy();
+                                }
+
+                                //
 
                             });
                         }
-                    }else {
-                        setSilentMode(false);
+                    } else {
+                        if (Switch_Silent_Mode_After_Residence) {
+                            setSilentMode(false);
+                        }
                     }
                 });
 
             }
 
 
-            checkAzanSlider(key);
+            checkAzanSlider(key, Switch_Silent_Mode_After_Residence);
         }
     }
 
@@ -200,36 +244,48 @@ public class AzanIntentService extends Service {
 
     }
 
+    public boolean isCallActive(Context context) {
+        AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        return manager.getMode() == AudioManager.MODE_IN_CALL;
+    }
+    public boolean isSilentMode(Context context) {
+        AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        return manager.getRingerMode() == AudioManager.RINGER_MODE_SILENT;
+    }
+
     private void setSilentMode(boolean onDestroy) {
-    
-        AudioManager mgr = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+
+        AudioManager mgr = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         int streamType = AudioManager.STREAM_SYSTEM;
         mgr.setStreamSolo(streamType, true);
         mgr.setRingerMode(AudioManager.RINGER_MODE_SILENT);
         mgr.setStreamMute(streamType, true);
 
 
-
-        new CountDownTimer(300000, 1000) {
+   new CountDownTimer(300000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-              }
+              String tttt =""+String.format("%02d:%02d:%02d",
+                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                Log.i("Seconds_remaining: " , tttt+"");
+
+            }
 
             public void onFinish() {
                 int streamType = AudioManager.STREAM_SYSTEM;
                 mgr.setStreamSolo(streamType, false);
                 mgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
                 mgr.setStreamMute(streamType, false);
-                if(onDestroy){
+                if (onDestroy) {
                     onDestroy();
                 }
             }
 
         }.start();
-       // final Handler handler = new Handler();
-
-
-//        timer.schedule(doAsynchronousTask, 0, 600000); //execute in every 10 minutes
 
     }
 
@@ -338,13 +394,13 @@ public class AzanIntentService extends Service {
 
     }
 
-    private void checkAzanSlider(String key) {
+    private void checkAzanSlider(String key, boolean Switch_Silent_Mode_After_Residence) {
         if (VERSION.SDK_INT >= VERSION_CODES.M) {
             if (Settings.canDrawOverlays(this)) {
-                showAzanSlider(key);
+                showAzanSlider(key, Switch_Silent_Mode_After_Residence);
             }
         } else {
-            showAzanSlider(key);
+            showAzanSlider(key, Switch_Silent_Mode_After_Residence);
         }
     }
 
@@ -372,7 +428,7 @@ public class AzanIntentService extends Service {
         return prefs.getString(Constants.MUAZEN_KEY + key, "1");
     }
 
-    private void showAzanSlider(String key) {
+    private void showAzanSlider(String key, boolean Switch_Silent_Mode_After_Residence) {
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         mView = inflater.inflate(R.layout.azan_slider_view, null);
@@ -395,9 +451,12 @@ public class AzanIntentService extends Service {
                 mWindowManager.removeView(mView);
             }
             mMediaPlayer.stop();
-            setSilentMode(false);
+            if (Switch_Silent_Mode_After_Residence) {
+                setSilentMode(false);
+            }
+
             //here
-           // onDestroy();
+            // onDestroy();
         });
 
     }

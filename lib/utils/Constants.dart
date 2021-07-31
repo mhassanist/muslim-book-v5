@@ -62,6 +62,7 @@ class Constants {
   static const String Voice_Reminder_Before_Praying_FLAG = "voice_reminder_before_praying";
   static const String Activating_Al_Shaarawi_Voice_FLAG = "activating_al_shaarawi_voice";
   static const String Switch_Silent_Mode_After_Residence = "switch_silent_mode_after_residence";
+  static const String Turn_Off_The_Call_To_Prayer_On_The_Phone = "turn_off_the_call_to_prayer_on_the_phone";
   static const String MONDAYS_AND_THURSDAYS_FASTING_ALERT_FLAG =
       "mondays_and_thursdays_fasting_alert";
   static const String WHITE_DAYS_FASTING_ALERT_FLAG =

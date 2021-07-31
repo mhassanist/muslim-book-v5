@@ -100,8 +100,7 @@ public class RamadanMshartIntentService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("shaimaaaaaa_mshart", "  ramadan  mshart "  +azanSoundUriString());
-        SharedPreferences mPrefs =
+         SharedPreferences mPrefs =
                 getSharedPreferences(FLUTTER_SHARED_PREFERENCES,
                         Context.MODE_PRIVATE);
         String repeated = mPrefs.getString(
@@ -184,7 +183,6 @@ public class RamadanMshartIntentService extends Service {
     private String getRamadanMASHRAATId(String key) {
         SharedPreferences prefs = getSharedPreferences(Constants.FLUTTER_SHARED_PREFERENCES,
                 MODE_PRIVATE);
-        Log.i("shaimaaaaaaaaaaaaaa", "  ramadan  " + prefs.getString(Constants.SELECTED_RAMADAN_MASHRAAT_ID + key, "0"));
 
         return prefs.getString(Constants.SELECTED_RAMADAN_MASHRAAT_ID + key, "0");
     }

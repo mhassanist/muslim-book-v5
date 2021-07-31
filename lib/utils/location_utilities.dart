@@ -12,8 +12,7 @@ class LocationUtilities {
         try {
           GeolocationResult result = await Geolocation.enableLocationServices();
           if (result.isSuccessful) {
-            print("result is Successful");
-            return await getLastKnownLocation();
+             return await getLastKnownLocation();
           }
         } catch (e) {}
       } else

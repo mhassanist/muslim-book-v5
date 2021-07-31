@@ -231,8 +231,7 @@ class RamadanProvider extends ViewStateProvider {
 
   ramadanMshartTimeChanged(DateTime newVal) async {
     _dateTime = newVal;
-    print(DateFormat("HH:mm").format(_dateTime));
-    locator<Prefs>()
+     locator<Prefs>()
         .setRamadanMashartTime(DateFormat("HH:mm").format(_dateTime));
     notifyListeners();
     await Constants.platform.invokeMethod("fireMshartRamadan");
@@ -245,8 +244,7 @@ class RamadanProvider extends ViewStateProvider {
         filesCannonStates.add(FileDownloadState.initial);
       }
       loadedCannonState = DataLoadingState.localAvailable;
-       print("from local storage");
-    } else {
+     } else {
       ramadanCannonModel = await RamadanCannonAPI().requestRamadanCannon();
       for (RamadanSoundsModel sound in ramadanCannonModel) {
         filesCannonStates.add(FileDownloadState.initial);
@@ -257,8 +255,7 @@ class RamadanProvider extends ViewStateProvider {
       loadedCannonState = DataLoadingState.localAvailable;
 
       // setViewState(ViewState.Idle);
-      print("from web");
-    }
+     }
     notifyListeners();
   }
 
@@ -267,8 +264,7 @@ class RamadanProvider extends ViewStateProvider {
     var azanList = await LocalStorageManager().loadRamadanCannonModel();
     String savedSoundCannon = locator<Prefs>().getRamadanCannonJSON(soundId);
     if (azanList != null) {
-       print(azanList.toString());
-      loadedCannonState = DataLoadingState.localAvailable;
+       loadedCannonState = DataLoadingState.localAvailable;
       ramadanCannonModel = azanList;
 
       for (RamadanSoundsModel sound in ramadanCannonModel) {
@@ -302,8 +298,7 @@ class RamadanProvider extends ViewStateProvider {
         filesMashraatStates.add(FileDownloadState.initial);
       }
       loadedMashraatState = DataLoadingState.localAvailable;
-       print("from local storage");
-    } else {
+     } else {
 
       ramadanMashraatModel =
           await RamadanMashraatAAPI().requestRamadanMashraat();

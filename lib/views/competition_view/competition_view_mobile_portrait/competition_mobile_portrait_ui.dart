@@ -252,8 +252,7 @@ class CompetitionUI {
                         if (provider.questionIndex == 2 &&
                             !provider.isExiteOpened) {
                           provider.isExiteOpened = true;
-                          print("___________________");
-                          await showDialog(
+                           await showDialog(
                             context: context,
                             builder: (context) => new AlertDialog(
                               contentPadding: EdgeInsets.all(0.0),
@@ -657,8 +656,7 @@ class CompetitionUI {
               print("FaceBookError: $value");
               break;
             case BannerAdResult.LOADED:
-              print("Loaded: $value");
-              break;
+               break;
             case BannerAdResult.CLICKED:
               break;
             case BannerAdResult.LOGGING_IMPRESSION:

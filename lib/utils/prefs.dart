@@ -193,6 +193,9 @@ class Prefs {
   void setSwitchSilentModeAfterResidenceFlag(bool value) async {
     await prefs.setBool(Constants.Switch_Silent_Mode_After_Residence, value);
   }
+  void setTurnOffPrayerPhoneFlag(bool value) async {
+    await prefs.setBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone, value);
+  }
 
   bool getActivatingAlShaarawiVoiceFlag() =>
       prefs.getBool(Constants.Activating_Al_Shaarawi_Voice_FLAG) == null ||
@@ -202,6 +205,9 @@ class Prefs {
   bool getSwitchSilentModeAfterResidenceFlag() =>
       prefs.getBool(Constants.Switch_Silent_Mode_After_Residence) == null ? false   :
           prefs.getBool(Constants.Switch_Silent_Mode_After_Residence);
+  bool getTurnOffPrayerPhoneFlag() =>
+      prefs.getBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone) == null ? false   :
+      prefs.getBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone);
 
   void setMondaysAndThursdaysFastingAlertFlag(bool value) async {
     await prefs.setBool(
@@ -383,8 +389,7 @@ class Prefs {
   }
 
   setRamadanCannonSoundJSON(String id, String azanId) async {
-    print("setRamadanCannonSoundJSON  " + id);
-    await prefs.setString('${Constants.SELECTED_RAMADAN_CANNON_ID}$azanId', id);
+     await prefs.setString('${Constants.SELECTED_RAMADAN_CANNON_ID}$azanId', id);
   }
 
   setRamadanMashraatSoundJSON(String id, String azanId) async {

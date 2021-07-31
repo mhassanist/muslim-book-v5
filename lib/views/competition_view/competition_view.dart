@@ -25,8 +25,7 @@ class _CompetitionViewState extends State<CompetitionView> {
         viewModel: CompetitionProvider(Provider.of<UserProvider>(context)),
         onModelReady: (model) {
           model.getQuestions();
-          print("shaimaaaaaaaaaaaa");
-        },
+         },
         builder: (context, _, __) {
           return ScreenTypeLayout(
             mobile: OrientationLayoutBuilder(

@@ -125,8 +125,7 @@ class _AzanDrawOverViewState extends State<AzanDrawOverView>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       _checkOverLay(context);
-      print("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-    }
+     }
   }
 
   @override

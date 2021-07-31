@@ -102,8 +102,7 @@ class _StartViewMobilePortraitViewState
   check() async {
     var showCompetition =
         await Constants.platform.invokeMethod(Constants.Open_Competition);
-    print(showCompetition);
-    List<dynamic> phoneNumbersList = await Constants.platform
+     List<dynamic> phoneNumbersList = await Constants.platform
         .invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
     if (showCompetition != null) {
       Provider.of<UserProvider>(context, listen: false).selectedPage = 3;
