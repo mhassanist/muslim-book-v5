@@ -82,6 +82,7 @@ class _HomeViewState extends State<HomeView> {
 
             },
             child: Row(
+
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
