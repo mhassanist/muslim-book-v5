@@ -58,4 +58,22 @@ return responseCreateModel.message;
     DioUtil.setDioAgain();
   }
 
+  Future likeCategoryPost(int id) async {
+    final dio = DioUtil.dio;
+    final response = await dio.post("islamics/${id}/like", data: {
+      "":""
+    });
+    print(response);
+    DioUtil.setDioAgain();
+  }
+
+  Future unlikeCategoryPost(int id) async {
+    final dio = DioUtil.dio;
+    final response = await dio.post("islamics/${id}/unlike", data: {
+      "":""
+    });
+    print(response);
+    DioUtil.setDioAgain();
+  }
+
 }

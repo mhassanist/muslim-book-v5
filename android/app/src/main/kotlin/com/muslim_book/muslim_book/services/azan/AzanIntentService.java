@@ -175,23 +175,23 @@ public class AzanIntentService extends Service {
                 }
                  boolean _isSilentMode = isSilentMode(this);
                  Log.i("_isSilentMode" ,_isSilentMode+"");
-                if (!Turn_Off_The_Call_To_Prayer_On_The_Phone && !_isCallActive) {
+                Log.i("MyApp" ,_isCallActive+"  _isCallActive");
+                if (Turn_Off_The_Call_To_Prayer_On_The_Phone){
                     Log.i("_isSilentMode" ,"one");
-
-                    if(!_isSilentMode){
-                        mMediaPlayer.start();
-
+                    if(_isCallActive){
+                        Log.i("_isSilentMode" ,"_isCallActive");
+                        mMediaPlayer.stop();
+                    }else {
+                        Log.i("_isSilentMode" ,"!_isCallActive");
+                        if(!_isSilentMode) {
+                            mMediaPlayer.start();
+                        }
                     }
-
-                } else   {
+                }else {
                     Log.i("_isSilentMode" ,"tow");
-
-                    if(!_isSilentMode){
+                    if(!_isSilentMode) {
                         mMediaPlayer.start();
-
                     }
-
-
                 }
 
                 mMediaPlayer.setOnCompletionListener(mPlayer -> {
@@ -206,7 +206,6 @@ public class AzanIntentService extends Service {
                                     onDestroy();
                                 }
 
-                                //
 
                             });
                         }
@@ -454,7 +453,6 @@ public class AzanIntentService extends Service {
             if (Switch_Silent_Mode_After_Residence) {
                 setSilentMode(false);
             }
-
             //here
             // onDestroy();
         });

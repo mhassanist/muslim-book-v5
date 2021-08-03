@@ -18,7 +18,12 @@ String message;
 String errormessage;
   bool isloading = true;
   bool isnews=false;
+  bool isPosts = true;
 
+  changeisPosts(bool value) {
+    isPosts = value;
+    notifyListeners();
+  }
   changetabBar(bool val){
     isnews=val;
     notifyListeners();
@@ -74,4 +79,14 @@ String errormessage;
    // posts=posts.reversed.toList();
     notifyListeners();
   }
+
+  likeCategoryPost(int id)async{
+    await homeRepository.likeCategoryPost(id);
+    notifyListeners();
+  }
+  unlikeCategoryPost(int id)async{
+    await homeRepository.unlikeCategoryPost(id);
+    notifyListeners();
+  }
+
 }

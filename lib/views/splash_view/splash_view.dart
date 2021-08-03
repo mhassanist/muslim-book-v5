@@ -114,7 +114,9 @@ class _SplashViewState extends State<SplashView>
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: sizeConfig.blockSizeHorizontal * 6)),
+                          fontSize: sizeConfig.blockSizeHorizontal * 6),
+                  textAlign: TextAlign.center,
+                  ),
                 ),
               )
             ],

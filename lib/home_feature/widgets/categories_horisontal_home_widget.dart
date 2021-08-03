@@ -53,8 +53,8 @@ class CategoriesHorizontalHomeWidget extends StatelessWidget {
                     padding:
                         const EdgeInsets.only(top: 10, right: 10, left: 10),
                     child: Container(
-                      width: 10,
-                      height: 10,
+                      width: 6,
+                      height: 6,
                       decoration: BoxDecoration(
                           color: darkish_green,
                           borderRadius: BorderRadius.circular(90)),

@@ -1,5 +1,6 @@
 import 'package:base_app/home_feature/const/color.dart';
 import 'package:base_app/home_feature/controllers/providers_get_post.dart';
+import 'package:base_app/home_feature/domian/model/categories_model.dart';
 import 'package:base_app/home_feature/domian/model/post_model.dart';
 import 'package:base_app/home_feature/domian/repository_home.dart';
 import 'package:base_app/home_feature/widgets/azan_home_widget.dart';
@@ -18,6 +19,7 @@ import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:share/share.dart';
 import "package:provider/provider.dart" as ProviderUser;
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomePage extends ConsumerWidget {
   HomeRepository homeRepository = HomeRepository();
@@ -51,97 +53,162 @@ class HomePage extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AzanHomeWidget(),
+
                 buildTitle(
                     AppLocalizations.of(context).translate("MainSections")),
                 Container(
                     height: 110,
                     width: MediaQuery.of(context).size.width,
                     child: CategoriesHorizontalHomeWidget()),
-                buildTitle(AppLocalizations.of(context).translate("news")),
-                InkWell(
-                    onTap: () async {
-                      ProviderUser.Provider.of<UserProvider>(context,
-                                  listen: false)
-                              .isLoggedIn
-                          ? showBottomsheetOptions(context)
-                          : showSheet(context);
-                    },
-                    child: Container(
-                      width: width * 0.90,
-                      height: 40,
-                      decoration: BoxDecoration(
-                          color: light_grey,
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Padding(
-                        padding: const EdgeInsetsDirectional.only(end: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              width: 70,
-                              height: 40,
-                              decoration: BoxDecoration(
-                                  color: darkish_green,
-                                  borderRadius: BorderRadius.circular(28)),
-                              child: Center(
-                                child: Text(
-                                  AppLocalizations.of(context)
-                                      .translate("Post"),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Expanded(
-                                child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: TextField(
-                                textDirection: TextDirection.rtl,
-                                readOnly: true,
-                                onTap: () async {
-                                  ProviderUser.Provider.of<UserProvider>(
-                                              context,
-                                              listen: false)
-                                          .isLoggedIn
-                                      ? showBottomsheetOptions(context)
-                                      : showSheet(context);
-                                },
-                                decoration: InputDecoration(
-                                    border: InputBorder.none,
-                                    hintText: AppLocalizations.of(context)
-                                        .translate("be_goodness"),
-                                    hintStyle: TextStyle(
-                                        fontSize: 13, color: light_grey_Two)),
-                              ),
-                            ))
-                          ],
-                        ),
-                      ),
-                    )),
+                // buildTitle(AppLocalizations.of(context).translate("news")),
+                //buildTabbar(postschanges),
                 SizedBox(
                   height: 10,
                 ),
-                Expanded(
-                  child: postschanges.isloading
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : postschanges.errormessage != null
-                          ? Center(
-                              child: Text(postschanges.errormessage),
-                            )
-                          : ListView.builder(
-                              padding: EdgeInsets.all(0),
-                              itemCount: postschanges.posts.length,
-                              itemBuilder: (ctx, index) =>
-                                  buildPostItem(postschanges.posts[index]),
-                            ),
+                buildTabbar(postschanges, context),
+
+                SizedBox(
+                  height: 15,
                 ),
+
+                Expanded(
+                    child: postschanges.isloading
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Container(
+                            height: 150,
+                            child: Column(
+                              children: [
+                                postschanges.isPosts
+                                    ? InkWell(
+                                        onTap: () async {
+                                          ProviderUser.Provider.of<
+                                                          UserProvider>(context,
+                                                      listen: false)
+                                                  .isLoggedIn
+                                              ? showBottomsheetOptions(context)
+                                              : showSheet(context);
+                                        },
+                                        child: Container(
+                                          width: width * 0.90,
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                              color: light_grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: Padding(
+                                            padding: const EdgeInsetsDirectional
+                                                .only(end: 20),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Container(
+                                                  width: 70,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                      color: darkish_green,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              28)),
+                                                  child: Center(
+                                                    child: Text(
+                                                      AppLocalizations.of(
+                                                              context)
+                                                          .translate("Post"),
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Expanded(
+                                                    child: Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(vertical: 5),
+                                                  child: TextField(
+                                                    textDirection:
+                                                        TextDirection.rtl,
+                                                    readOnly: true,
+                                                    onTap: () async {
+                                                      ProviderUser.Provider.of<
+                                                                      UserProvider>(
+                                                                  context,
+                                                                  listen: false)
+                                                              .isLoggedIn
+                                                          ? showBottomsheetOptions(
+                                                              context)
+                                                          : showSheet(context);
+                                                    },
+                                                    decoration: InputDecoration(
+                                                        border:
+                                                            InputBorder.none,
+                                                        hintText: AppLocalizations
+                                                                .of(context)
+                                                            .translate(
+                                                                "be_goodness"),
+                                                        hintStyle: TextStyle(
+                                                            fontSize: 13,
+                                                            color:
+                                                                light_grey_Two)),
+                                                  ),
+                                                ))
+                                              ],
+                                            ),
+                                          ),
+                                        ))
+                                    : Container(),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Expanded(
+                                    child: postschanges.errormessage != null
+                                        ? Center(
+                                            child: Text(AppLocalizations.of(
+                                                    context)
+                                                .translate(
+                                                    postschanges.errormessage)),
+                                          )
+                                        : postschanges.isPosts
+                                            ? ListView.builder(
+                                                padding: EdgeInsets.all(0),
+                                                itemCount:
+                                                    postschanges.posts.length,
+                                                itemBuilder: (ctx, index) =>
+                                                    buildPostItem(postschanges
+                                                        .posts[index]),
+                                              )
+                                            : StaggeredGridView.countBuilder(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 10),
+                                                crossAxisCount: 4,
+                                                itemCount: postschanges
+                                                    .categories.length,
+                                                itemBuilder: (BuildContext
+                                                            context,
+                                                        int index) =>
+                                                    CaregoryItem(postschanges
+                                                        .categories[index]),
+                                                staggeredTileBuilder:
+                                                    (int index) =>
+                                                        StaggeredTile.count(
+                                                            2,
+                                                            index.isEven
+                                                                ? 1.5
+                                                                : 2),
+                                                mainAxisSpacing: 4.0,
+                                                crossAxisSpacing: 4.0,
+                                              ))
+                              ],
+                            ),
+                          )),
               ],
             ),
           ));
@@ -325,76 +392,74 @@ class HomePage extends ConsumerWidget {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => Material(
-        elevation: 10,
-      shape: BeveledRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-    ),
-      child:
-
-
-          Container(
-        height: 200,
-        margin: EdgeInsets.only(top: 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
+          elevation: 10,
+          shape: BeveledRectangleBorder(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(40), topRight: Radius.circular(40))),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "${AppLocalizations.of(context).translate("Login_must")}",
-                style: TextStyle(
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Row(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+          ),
+          child: Container(
+            height: 200,
+            margin: EdgeInsets.only(top: 10),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40))),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
-                    width: MediaQuery.of(context).size.width,
-                    height: 50,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                    child: RawMaterialButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPopUpView()));
-                      },
-                      fillColor: Theme.of(context).primaryColor,
-                      child: Text(
-                        AppLocalizations.of(context).translate("Login_key"),
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Constants.CANVAS_COLOR,
-                        ),
-                      ),
+                  Text(
+                    "${AppLocalizations.of(context).translate("Login_must")}",
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 30),
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: RawMaterialButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => LoginPopUpView()));
+                          },
+                          fillColor: Theme.of(context).primaryColor,
+                          child: Text(
+                            AppLocalizations.of(context).translate("Login_key"),
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Constants.CANVAS_COLOR,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
-        ),
-      )),
+              ),
+            ),
+          )),
     );
   }
 
@@ -470,5 +535,166 @@ class HomePage extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  Widget buildTabbar(PostsNotifier postschanges, context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        InkWell(
+          onTap: () => postschanges.changeisPosts(false),
+          child: Column(
+            children: [
+              Text(
+                AppLocalizations.of(context).translate("Feeds"),
+                style: TextStyle(
+                    color: postschanges.isPosts ? warm_grey : darkish_green,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              postschanges.isPosts
+                  ? Container()
+                  : Container(
+                      height: 3.5,
+                      width: 60,
+                      decoration: BoxDecoration(
+                          color: darkish_green,
+                          borderRadius: BorderRadius.circular(30)),
+                    )
+            ],
+          ),
+        ),
+        SizedBox(
+          width: 80,
+        ),
+        InkWell(
+          onTap: () => postschanges.changeisPosts(true),
+          child: Column(
+            children: [
+              Text(
+                AppLocalizations.of(context).translate("news"),
+                style: TextStyle(
+                    color: postschanges.isPosts ? darkish_green : warm_grey,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              postschanges.isPosts
+                  ? Container(
+                      height: 3.5,
+                      width: 60,
+                      decoration: BoxDecoration(
+                          color: darkish_green,
+                          borderRadius: BorderRadius.circular(30)),
+                    )
+                  : Container()
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget CaregoryItem(Categore category) {
+    return Card(
+        elevation: 5,
+        child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            child: Column(
+              children: [
+                Expanded(
+                  child: InkWell(
+                      onTap: () {
+
+                      //   print("shaimaa_shaimaa");
+                      //   Share.share(category.name +
+                      //       "\n \n " +
+                      //       "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://app.muslim-book.net/open");
+                      //
+                      },
+                      child: Container(
+                         child:
+                      Image.asset(
+                        "assets/images/splash_view/logo.png",
+                        color: Colors.grey[100],
+                        fit: BoxFit.fill,
+                      ))),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  category.name,
+                  style: TextStyle(
+                      color: darkish_green,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  category.description,
+                  style: TextStyle(
+                    fontSize: 10,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child:
+    InkWell(
+    onTap: () {
+
+    print("shaimaa_shaimaa");
+    Share.share(category.name +
+    "\n \n " +
+    "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://app.muslim-book.net/open");
+
+    },
+    child:
+                        Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 5),
+                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/path_514.svg',
+                                  color: Colors.grey[300],
+                                  height: 15,
+                                )
+                              ],
+                            )))),
+                    Expanded(
+                        child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 5),
+                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/group_313.svg',
+                                  color: Colors.grey[300],
+                                  height: 15,
+                                )
+                              ],
+                            ))),
+                  ],
+                ),
+              ],
+            )));
   }
 }

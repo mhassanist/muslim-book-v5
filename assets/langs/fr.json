@@ -269,7 +269,11 @@
   "store": "une histoire ",
   "activate_permissions":  "Activer les autorisations",
   "competition": "Concurrence",
-  "part_no": "Numéro de pièce:"
+  "part_no": "Numéro de pièce:",
+  "categories": "catégories",
+  "Feeds": "Flux",
+
+  "checkout_internet": "Pas de connexion Internet"
 
 
 

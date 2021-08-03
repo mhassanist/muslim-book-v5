@@ -274,7 +274,12 @@
   "store": "Store ",
   "activate_permissions":  "Activate Permissions",
   "competition": "Competition",
-  "part_no": "Part No:"
+  "part_no": "Part No:",
+  "categories": "categories",
+  "Feeds": "Feeds",
+  "checkout_internet": "No internet connection"
+
+
 
 
 
