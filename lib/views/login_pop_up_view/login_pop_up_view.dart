@@ -11,6 +11,9 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:base_app/utils/sizing_info_extension.dart';
 
 class LoginPopUpView extends StatefulWidget {
+final   bool close ;
+
+  const LoginPopUpView({Key key, this.close}) : super(key: key);
   @override
   _LoginPopUpViewState createState() => _LoginPopUpViewState();
 }
@@ -22,9 +25,9 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (context != null) {
-        Provider.of<UserProvider>(context, listen: false).errorMessage = "";
-      }
+      // if (context != null) {
+      //   Provider.of<UserProvider>(context, listen: false).errorMessage = "";
+      // }
     });
   }
 
@@ -76,9 +79,19 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
               FontAwesomeIcons.facebookSquare,
               const Color(0XFF3b5998), onPressed: () async {
             LoadingUtils util = LoadingUtils();
-            util.setIsLoading(context, true);
-            await Provider.of<UserProvider>(context, listen: false)
-                .openFaceBookDialogPicker();
+           util.setIsLoading(context, true);
+            try {
+              await Provider.of<UserProvider>(context, listen: false)
+                  .openFaceBookDialogPicker().then((value) {
+                    if(
+                    this.widget.close){
+                      setState(() {});
+                      Navigator.of(context).pop();
+                    }
+              });
+            }  catch (e) {
+              print(e);
+            }
             util.setIsLoading(context, false);
           }),
           SizedBox(
@@ -92,7 +105,13 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
             LoadingUtils util = LoadingUtils();
             util.setIsLoading(context, true);
             await Provider.of<UserProvider>(context, listen: false)
-                .openGooglePickerDialog();
+                .openGooglePickerDialog().then((value) {
+              if(
+              this.widget.close){
+                Navigator.of(context).pop();
+
+              }
+            });
             util.setIsLoading(context, false);
           }),
           SizedBox(

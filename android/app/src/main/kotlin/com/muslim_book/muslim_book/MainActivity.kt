@@ -1,23 +1,27 @@
 package com.muslim_book.muslim_book
 
+ import android.content.Context
  import android.content.Intent
+ import android.content.pm.PackageInfo
+ import android.content.pm.PackageManager
 
-import android.os.Bundle
+ import android.os.Bundle
+ import android.util.Base64
+ import android.util.Log
 
-import com.muslim_book.muslim_book.classes.ChannelMethods
+ import com.muslim_book.muslim_book.classes.ChannelMethods
  import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin
-
-
-
-
+ import java.security.MessageDigest
+ import java.security.NoSuchAlgorithmException
 
 
 class MainActivity: FlutterActivity() {
 
    override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+       printHashKey(applicationContext);
    }
 
   override fun onNewIntent(intent: Intent) {
@@ -47,20 +51,20 @@ class MainActivity: FlutterActivity() {
 
 //  for hash key
 
-//  fun printHashKey(pContext: Context) {
-//    try {
-//      val info: PackageInfo = pContext.getPackageManager().getPackageInfo(pContext.getPackageName(), PackageManager.GET_SIGNATURES)
-//      for (signature in info.signatures) {
-//        val md = MessageDigest.getInstance("SHA")
-//        md.update(signature.toByteArray())
-//        val hashKey = String(Base64.encode(md.digest(), 0))
-//        Log.i("shimaaaakkkkkaaaa", "here ");
-//        Log.i("MainActivity", "import android.content.Context\n" +
-//                "\n() Hash Key: $hashKey")
-//      }
-//    } catch (e: NoSuchAlgorithmException) {
-//      Log.e("MainActivity", "printHashKey()", e)
-//    } catch (e: Exception) {
-//      Log.e("MainActivity", "printHashKey()", e)
-//    }
-//  }
+  fun printHashKey(pContext: Context) {
+    try {
+      val info: PackageInfo = pContext.getPackageManager().getPackageInfo(pContext.getPackageName(), PackageManager.GET_SIGNATURES)
+      for (signature in info.signatures) {
+        val md = MessageDigest.getInstance("SHA")
+        md.update(signature.toByteArray())
+        val hashKey = Base64.encodeToString(md.digest(), 0)
+        Log.i("shimaaaakkkkkaaaa", "here ");
+        Log.i("MainActivity", "import android.content.Context\n" +
+                "\n() Hash Key: $hashKey")
+      }
+    } catch (e: NoSuchAlgorithmException) {
+      Log.e("MainActivity", "printHashKey()", e)
+    } catch (e: Exception) {
+      Log.e("MainActivity", "printHashKey()", e)
+    }
+  }

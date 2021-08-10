@@ -242,6 +242,8 @@
   "spearding_app": "Publish the application",
   "Login_key":"Login",
   "Login_must":"You should be logged in",
+  "data_not_found":"No data found",
+
   "go_to_ayah": "Go To Ayah",
   "Loading_quran": "The Quran is loading, please wait a moment",
   "quran_setting": "Quran Settings",

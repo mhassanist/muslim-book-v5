@@ -3,6 +3,7 @@ import 'package:base_app/home_feature/controllers/providers_get_post.dart';
 import 'package:base_app/home_feature/domian/model/categories_model.dart';
 import 'package:base_app/home_feature/domian/model/post_model.dart';
 import 'package:base_app/home_feature/domian/repository_home.dart';
+import 'package:base_app/home_feature/views/create_post.dart';
 import 'package:base_app/home_feature/widgets/azan_home_widget.dart';
 import 'package:base_app/home_feature/widgets/categories_horisontal_home_widget.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
@@ -23,17 +24,16 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class HomePage extends ConsumerWidget {
   HomeRepository homeRepository = HomeRepository();
-  String content = "";
   var postschanges;
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     double width = MediaQuery.of(context).size.width;
     postschanges = watch(getPosts);
-    if (postschanges.posts.isEmpty || postschanges.isloading == true) {
+    if (postschanges.isloading == true) {
       postschanges.getPosts();
     }
-    if (postschanges.categories.isEmpty || postschanges.isloading == true) {
+    if (postschanges.isloading == true) {
       postschanges.getcategories();
     }
 
@@ -177,35 +177,71 @@ class HomePage extends ConsumerWidget {
                                                     postschanges.errormessage)),
                                           )
                                         : postschanges.isPosts
-                                            ? ListView.builder(
-                                                padding: EdgeInsets.all(0),
-                                                itemCount:
-                                                    postschanges.posts.length,
-                                                itemBuilder: (ctx, index) =>
-                                                    buildPostItem(postschanges
-                                                        .posts[index]),
-                                              )
-                                            : StaggeredGridView.countBuilder(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 10),
-                                                crossAxisCount: 4,
-                                                itemCount: postschanges
-                                                    .categories.length,
-                                                itemBuilder: (BuildContext
-                                                            context,
-                                                        int index) =>
-                                                    CaregoryItem(postschanges
-                                                        .categories[index]),
-                                                staggeredTileBuilder:
-                                                    (int index) =>
-                                                        StaggeredTile.count(
-                                                            2,
-                                                            index.isEven
-                                                                ? 1.5
-                                                                : 2),
-                                                mainAxisSpacing: 4.0,
-                                                crossAxisSpacing: 4.0,
-                                              ))
+                                            ? postschanges.posts != null &&
+                                                    postschanges.posts.isNotEmpty
+                                                ? ListView.builder(
+                                                    padding: EdgeInsets.all(0),
+                                                    itemCount: postschanges
+                                                        .posts.length,
+                                                    itemBuilder: (ctx, index) =>
+                                                        buildPostItem(
+                                                            postschanges
+                                                                .posts[index]),
+                                                  )
+                                                : Center(
+                                                    child: Container(
+                                                    child: Text(
+                                                      "${AppLocalizations.of(context).translate("data_not_found")}",
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ))
+                                            : postschanges.categories != null &&
+                                                    postschanges
+                                                        .categories.isNotEmpty
+                                                ? StaggeredGridView
+                                                    .countBuilder(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 10),
+                                                    crossAxisCount: 4,
+                                                    itemCount: postschanges
+                                                        .categories.length,
+                                                    itemBuilder: (BuildContext
+                                                                context,
+                                                            int index) =>
+                                                        CaregoryItem(
+                                                            postschanges
+                                                                    .categories[
+                                                                index]),
+                                                    staggeredTileBuilder:
+                                                        (int index) =>
+                                                            StaggeredTile.count(
+                                                                2,
+                                                                index.isEven
+                                                                    ? 1.5
+                                                                    : 2),
+                                                    mainAxisSpacing: 4.0,
+                                                    crossAxisSpacing: 4.0,
+                                                  )
+                                                : Center(
+                                                    child: Container(
+                                                    child: Text(
+                                                      "${AppLocalizations.of(context).translate("data_not_found")}",
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  )))
                               ],
                             ),
                           )),
@@ -395,7 +431,7 @@ class HomePage extends ConsumerWidget {
           elevation: 10,
           shape: BeveledRectangleBorder(
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           child: Container(
             height: 200,
@@ -442,7 +478,9 @@ class HomePage extends ConsumerWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LoginPopUpView()));
+                                    builder: (context) => LoginPopUpView( close: true,))).then((value) {
+
+                            });
                           },
                           fillColor: Theme.of(context).primaryColor,
                           child: Text(
@@ -468,72 +506,8 @@ class HomePage extends ConsumerWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-        height: MediaQuery.of(context).size.height * 0.55,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: const Radius.circular(10.0),
-            topRight: const Radius.circular(10.0),
-          ),
-        ),
-        child: Scaffold(
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                  child: TextField(
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: AppLocalizations.of(context)
-                            .translate("be_goodness"),
-                        hintStyle:
-                            TextStyle(fontSize: 13, color: Colors.black38)),
-                    maxLines: 10,
-                    onChanged: (val) {
-                      content = val;
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-          floatingActionButton: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () {
-                  postschanges.createPost(content);
+      builder: (context) => CreatePostView( postschanges: postschanges,)
 
-                  final snackBar =
-                      SnackBar(content: Text(postschanges.message));
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-                  Navigator.of(context).pop();
-                },
-                child: Container(
-                  width: 200,
-                  height: 45,
-                  decoration: BoxDecoration(
-                      color: darkish_green,
-                      borderRadius: BorderRadius.circular(30)),
-                  child: Center(
-                    child: Text(
-                      AppLocalizations.of(context).translate("Post"),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 
@@ -610,16 +584,14 @@ class HomePage extends ConsumerWidget {
                 Expanded(
                   child: InkWell(
                       onTap: () {
-
-                      //   print("shaimaa_shaimaa");
-                      //   Share.share(category.name +
-                      //       "\n \n " +
-                      //       "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://app.muslim-book.net/open");
-                      //
+                        //   print("shaimaa_shaimaa");
+                        //   Share.share(category.name +
+                        //       "\n \n " +
+                        //       "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://app.muslim-book.net/open");
+                        //
                       },
                       child: Container(
-                         child:
-                      Image.asset(
+                          child: Image.asset(
                         "assets/images/splash_view/logo.png",
                         color: Colors.grey[100],
                         fit: BoxFit.fill,
@@ -652,36 +624,31 @@ class HomePage extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                        child:
-    InkWell(
-    onTap: () {
-
-    print("shaimaa_shaimaa");
-    Share.share(category.name +
-    "\n \n " +
-    "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://app.muslim-book.net/open");
-
-    },
-    child:
-                        Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 5),
-                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/path_514.svg',
-                                  color: Colors.grey[300],
-                                  height: 15,
-                                )
-                              ],
-                            )))),
+                        child: InkWell(
+                            onTap: () {
+                               Share.share(category.name +
+                                  "\n \n " +
+                                  "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://app.muslim-book.net/open");
+                            },
+                            child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 5),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/icons/path_514.svg',
+                                      color: Colors.grey[300],
+                                      height: 15,
+                                    )
+                                  ],
+                                )))),
                     Expanded(
                         child: Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 5),
-                             child: Column(
+                            child: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [

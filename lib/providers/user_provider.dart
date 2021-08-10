@@ -8,6 +8,7 @@ import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/locator.dart';
 import 'package:base_app/utils/prefs.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../utils/locator.dart';
@@ -74,11 +75,13 @@ class UserProvider extends ViewStateProvider {
   void saveUser(UserModel res, int loginType,
       {String password, String name, String id, String imageUrl}) {
     locator<Prefs>().setEmail(res.email);
+    locator<Prefs>().setEmail(res.email);
     locator<Prefs>().setPassword(password);
     locator<Prefs>().setLoginType(loginType);
     locator<Prefs>().setName(name);
     locator<Prefs>().setId(id);
     locator<Prefs>().setImageUrl(imageUrl);
+    locator<Prefs>().setToken(res.apiToken);
     user = res;
   }
 
@@ -119,15 +122,12 @@ class UserProvider extends ViewStateProvider {
 
   Future openGooglePickerDialog() async {
     try {
-      GoogleSignInAccount res = await GoogleSignIn(
-        scopes: [
-          'email',
-        ],
-      ).signIn();
+      GoogleSignInAccount res = await GoogleSignIn().signIn();
 
       return await googleLogging(res);
     } catch (error) {
       errorMessage = error.toString();
+      print(errorMessage);
     }
   }
 
@@ -161,6 +161,7 @@ class UserProvider extends ViewStateProvider {
       "image_url": res == null ? imageUrl : res.image
     });
     if (response is UserModel) {
+      print("ammmr");
       saveUser(response, Constants.LOGIN_WITH_FACEBOOK,
           name: response.name,
           id: res == null ? locator<Prefs>().getId() : res.id,
@@ -182,12 +183,20 @@ class UserProvider extends ViewStateProvider {
     user = null;
   }
 
-  Future openFaceBookDialogPicker() async {
-    final result = await FacebookLogin().logIn(['email']);
-    if (result.status == FacebookLoginStatus.loggedIn) {
-      final facebookData = await locator<ApiService>()
-          .faceBookAccountDetails(result.accessToken.token);
-      faceBookLogging(facebookData);
+  Future<void> openFaceBookDialogPicker() async {
+    FacebookLogin facebookSignIn = new FacebookLogin();
+    try {
+       FacebookLoginResult result = await facebookSignIn.logIn(['email']);
+      print("toooooooooooooooooooooooooken"+result.accessToken.toString());
+      print("toooooooooooooooooooooooooken "+result.status.toString());
+      if (result.status == FacebookLoginStatus.loggedIn) {
+        final facebookData = await locator<ApiService>()
+            .faceBookAccountDetails(result.accessToken.token);
+        faceBookLogging(facebookData);
+      }
+    } catch (e) {
+      print(e);
     }
+
   }
 }

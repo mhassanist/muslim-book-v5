@@ -118,6 +118,8 @@
   "login": "connexion par mail",
   "Login_key":"Se connecter",
   "Login_must":"Vous devez être connecté",
+  "data_not_found":"Il n'y a pas de données",
+
   "go_to_ayah":"va vers le vers" ,
   "Loading_quran":"Le Coran est en cours de chargement, veuillez patienter un instant" ,
   "quran_setting": "Paramètres du Coran",

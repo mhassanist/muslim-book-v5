@@ -113,6 +113,11 @@ class Prefs {
     locator<RamadanSingleton>().getRamadanModel();
   }
 
+  Future setToken(value)async{
+    await prefs.setString(Constants.USER_TOKEN, value);
+  }
+  String getToken()=>
+     prefs.getString(Constants.USER_TOKEN);
   Future saveAzanTimes(
       {String fajr,
       String zuhr,

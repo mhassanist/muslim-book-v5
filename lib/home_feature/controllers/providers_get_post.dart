@@ -34,13 +34,12 @@ String errormessage;
   getPosts() async {
     try {
       posts = await homeRepository.getPosts();
-      posts=posts.reversed.toList();
+      //posts=posts.reversed.toList();
       errormessage=null;
       isloading = false;
     } catch(e){
-
-      errormessage= DioUtil.handleDioError(e);
       isloading = false;
+      errormessage= DioUtil.handleDioError(e);
     }
     notifyListeners();
   }
@@ -49,13 +48,11 @@ String errormessage;
     try {
       categories = await homeRepository.getCategories();
       errormessage=null;
-      //print(categories[0].description);
       isloading = false;
     } catch(e){
-
+      isloading = false;
       errormessage= DioUtil.handleDioError(e);
       print(errormessage);
-      isloading = false;
     }
     notifyListeners();
   }
@@ -69,14 +66,10 @@ String errormessage;
   }
   likePost(int id)async{
     await homeRepository.likePost(id);
-   //posts= await homeRepository.getPosts();
-   // posts=posts.reversed.toList();
     notifyListeners();
   }
   unlikePost(int id)async{
     await homeRepository.unlikePost(id);
-   // posts= await homeRepository.getPosts();
-   // posts=posts.reversed.toList();
     notifyListeners();
   }
 

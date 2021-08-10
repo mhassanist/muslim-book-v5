@@ -162,9 +162,15 @@ class ApiService {
 
   Future<FacebookModel> faceBookAccountDetails(token) async {
     var response = await http.get(
-        "https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=$token");
+        "https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=$token");
     FacebookModel model = FacebookModel.fromJson(response.body);
-    model.image = "https://graph.facebook.com/${model.id}/picture?type=large";
+// https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${facebookLoginResult.accessToken.token}
+    final graphResponse = await http.get(
+        'https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${token}');
+    // model.image = "https://graph.facebook.com/${model.id}/picture?type=large";
+    model.image = "https://graph.facebook.com/${model.id}/picture?e?width=9999";
+
+    print(model.image);
     return model;
   }
 

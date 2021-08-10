@@ -12,6 +12,8 @@ class HomeRepository {
     DioUtil.setDioAgain();
     final dio = DioUtil.dio;
     final response = await dio.get("posts");
+    print("shiammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmma_ttttttttttt");
+    print(response.data);
     posts = Posts.fromJson(response.data);
 
     return posts.data;

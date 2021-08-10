@@ -169,7 +169,7 @@ class MyApp extends StatefulWidget {
                               sizeConfig.blockSizeVertical),
                         ),
                         onPressed: () {
-                          SystemNavigator.pop();
+                           SystemNavigator.pop();
                         },
                         fillColor: Theme.of(context).primaryColor,
                         child: Text(

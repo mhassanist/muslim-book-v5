@@ -28,16 +28,21 @@ class DioUtil {
     options.connectTimeout = 30 * 1000; //10 sec
     options.receiveTimeout = 30 * 1000; //20 sec
     options.baseUrl = "https://muslim-book.net/api/";
+var token  =locator<Prefs>().getToken();
 
     options.headers = {
     "X-localization": "${locator<Prefs>().getLang()}",
-      'Authorization':
-          "Bearer YZsiAFPyX3O29xcyoflxArylNNRWfExs4fwnsVIgrYUg03TV4XoVYOq23FM3"
+       'Authorization':
+         "Bearer ${token!=null && token.isNotEmpty ? token:"YZsiAFPyX3O29xcyoflxArylNNRWfExs4fwnsVIgrYUg03TV4XoVYOq23FM3"}"
     };
     options.contentType = "application/json";
+    print("shiammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmma_ttttttttttt");
+    print(options.headers);
 
     return options;
   }
+
+
 
   //this just returns the language key
   static String handleDioError(DioError dioError) {
