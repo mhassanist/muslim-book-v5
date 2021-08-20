@@ -12,7 +12,6 @@ import 'package:base_app/utils/sizing_info_extension.dart';
 import 'package:base_app/widgets/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
@@ -41,12 +40,11 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
   @override
   void initState() {
     super.initState();
-
-    azanValue = controller.getAzanList(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    azanValue = controller.getAzanList(context);
     final size = MediaQuery.of(context).size;
     final isSmall = size.width <= 450;
     return new WillPopScope(
@@ -68,8 +66,8 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                       return GetBuilder<AzanController>(builder: (controller) {
                         return Container(
                             child: LoadUiWithAdd(
-                              mainView: CustomScrollView(slivers: <Widget>[
-                          SliverToBoxAdapter(
+                          mainView: CustomScrollView(slivers: <Widget>[
+                            SliverToBoxAdapter(
                               child: Container(
                                 height: 400,
                                 child: Stack(
@@ -77,7 +75,8 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                                     children: <Widget>[
                                       Positioned.fill(
                                         child: ListView.builder(
-                                          physics: NeverScrollableScrollPhysics(),
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
                                           itemCount: azanValue.length,
                                           itemBuilder: (context, index) {
                                             return _buildSingleAzan(
@@ -101,8 +100,8 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                                               child: Loading(
                                                 indicator: BallBeatIndicator(),
                                                 size: 70.0,
-                                                color:
-                                                    Constants.PRIMARY_DARK_COLOR,
+                                                color: Constants
+                                                    .PRIMARY_DARK_COLOR,
                                               ),
                                             ),
                                           ),
@@ -110,17 +109,18 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                                       )
                                     ]),
                               ),
-                          ),
-                          SliverToBoxAdapter(
+                            ),
+                            SliverToBoxAdapter(
                                 child: Visibility(
                               visible: widget.showAppBar,
-                              child: Container(child: AdMobRectangle(BannerName.Top )),
-                          )),
-                          SliverToBoxAdapter(
+                              child: Container(
+                                  child: AdMobRectangle(BannerName.Top)),
+                            )),
+                            SliverToBoxAdapter(
                                 child: SizedBox(
                               height: 10,
-                          )),
-                          SliverToBoxAdapter(
+                            )),
+                            SliverToBoxAdapter(
                                 child: Container(
                                     padding: widget.showAppBar
                                         ? EdgeInsets.symmetric(horizontal: 35)
@@ -154,8 +154,8 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                                               width: !isSmall ? 150 : 130,
                                               height: 50,
                                               decoration: BoxDecoration(
-                                                color:
-                                                    Constants.PRIMARY_DARK_COLOR,
+                                                color: Constants
+                                                    .PRIMARY_DARK_COLOR,
                                                 borderRadius:
                                                     BorderRadius.circular(15),
                                                 boxShadow: [
@@ -216,12 +216,12 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                                             ),
                                           ),
                                         ]))),
-                          SliverToBoxAdapter(
+                            SliverToBoxAdapter(
                                 child: SizedBox(
                               height: 20,
-                          ))
-                        ]),
-                            ));
+                            ))
+                          ]),
+                        ));
                       });
                     });
             })));

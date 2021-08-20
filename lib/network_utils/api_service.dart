@@ -1,23 +1,23 @@
 import 'dart:convert';
-import 'package:base_app/locals_utils/language_constants.dart';
-import 'package:base_app/models/answer_model.dart' as answer;
-import 'package:base_app/models/countries_model.dart';
-import 'package:base_app/models/score_model.dart';
-import 'package:base_app/models/top_model.dart';
-import 'package:base_app/sebha_feature/models/sebha_top_model.dart';
-import 'package:base_app/sebha_feature/online_sebha/models/tasabeeh_model.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:base_app/exceptions/failure.dart';
 import 'package:base_app/interceptors/connection_interceptor.dart';
 import 'package:base_app/interceptors/error_interceptor.dart';
+import 'package:base_app/models/answer_model.dart' as answer;
 import 'package:base_app/models/competitions_model.dart';
+import 'package:base_app/models/countries_model.dart';
 import 'package:base_app/models/facebook_model.dart';
+import 'package:base_app/models/score_model.dart';
+import 'package:base_app/models/top_model.dart';
 import 'package:base_app/models/user_model.dart';
 import 'package:base_app/providers/user_provider.dart';
+import 'package:base_app/sebha_feature/models/sebha_top_model.dart';
+import 'package:base_app/sebha_feature/online_sebha/models/tasabeeh_model.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/locator.dart';
 import 'package:base_app/utils/prefs.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 class ApiService {
   final Dio _dio = Dio(BaseOptions(
@@ -164,19 +164,22 @@ class ApiService {
     var response = await http.get(
         "https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=$token");
     FacebookModel model = FacebookModel.fromJson(response.body);
-// https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=${facebookLoginResult.accessToken.token}
     final graphResponse = await http.get(
         'https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${token}');
-    // model.image = "https://graph.facebook.com/${model.id}/picture?type=large";
-    model.image = "https://graph.facebook.com/${model.id}/picture?e?width=9999";
 
+    Map ddddv = json.decode(graphResponse.body);
+    print(graphResponse.body);
+    print("--------------");
+    print(response.body);
+    model.image = ddddv['picture']['data']['url'];
+    print(ddddv['picture']['data']['url']);
+    print("--------------");
     print(model.image);
     return model;
   }
 
   Future getCountries(String code) async {
     try {
-
       http.Response response = await http.get(
           Constants.BASE_URL + "countries/list",
           headers: {"X-localization": code});

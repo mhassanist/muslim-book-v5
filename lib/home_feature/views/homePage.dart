@@ -10,17 +10,15 @@ import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/main.dart';
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/utils/Constants.dart';
-import 'package:flutter_riverpod/all.dart';
-
 import 'package:base_app/views/login_pop_up_view/login_pop_up_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/all.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
-import 'package:share/share.dart';
 import "package:provider/provider.dart" as ProviderUser;
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:share/share.dart';
 
 class HomePage extends ConsumerWidget {
   HomeRepository homeRepository = HomeRepository();
@@ -53,24 +51,19 @@ class HomePage extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AzanHomeWidget(),
-
                 buildTitle(
                     AppLocalizations.of(context).translate("MainSections")),
                 Container(
                     height: 110,
                     width: MediaQuery.of(context).size.width,
                     child: CategoriesHorizontalHomeWidget()),
-                // buildTitle(AppLocalizations.of(context).translate("news")),
-                //buildTabbar(postschanges),
                 SizedBox(
                   height: 10,
                 ),
                 buildTabbar(postschanges, context),
-
                 SizedBox(
                   height: 15,
                 ),
-
                 Expanded(
                     child: postschanges.isloading
                         ? Center(
@@ -178,7 +171,8 @@ class HomePage extends ConsumerWidget {
                                           )
                                         : postschanges.isPosts
                                             ? postschanges.posts != null &&
-                                                    postschanges.posts.isNotEmpty
+                                                    postschanges
+                                                        .posts.isNotEmpty
                                                 ? ListView.builder(
                                                     padding: EdgeInsets.all(0),
                                                     itemCount: postschanges
@@ -204,31 +198,43 @@ class HomePage extends ConsumerWidget {
                                             : postschanges.categories != null &&
                                                     postschanges
                                                         .categories.isNotEmpty
-                                                ? StaggeredGridView
-                                                    .countBuilder(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 10),
-                                                    crossAxisCount: 4,
+                                                ? ListView.builder(
+                                                    padding: EdgeInsets.all(0),
                                                     itemCount: postschanges
                                                         .categories.length,
-                                                    itemBuilder: (BuildContext
-                                                                context,
-                                                            int index) =>
+                                                    itemBuilder: (ctx, index) =>
                                                         CaregoryItem(
                                                             postschanges
                                                                     .categories[
-                                                                index]),
-                                                    staggeredTileBuilder:
-                                                        (int index) =>
-                                                            StaggeredTile.count(
-                                                                2,
-                                                                index.isEven
-                                                                    ? 1.5
-                                                                    : 2),
-                                                    mainAxisSpacing: 4.0,
-                                                    crossAxisSpacing: 4.0,
+                                                                index],
+                                                            context),
                                                   )
+                                                // StaggeredGridView
+                                                //                 .countBuilder(
+                                                //                 padding:
+                                                //                     EdgeInsets.symmetric(
+                                                //                         vertical: 10),
+                                                //                 crossAxisCount: 4,
+                                                //                 itemCount: postschanges
+                                                //                     .categories.length,
+                                                //                 itemBuilder: (BuildContext
+                                                //                             context,
+                                                //                         int index) =>
+                                                //                     CaregoryItem(
+                                                //                         postschanges
+                                                //                                 .categories[
+                                                //                             index],
+                                                //                         context),
+                                                //                 staggeredTileBuilder:
+                                                //                     (int index) =>
+                                                //                         StaggeredTile.count(
+                                                //                             2,
+                                                //                             index.isEven
+                                                //                                 ? 2
+                                                //                                 : 2.5),
+                                                //                 mainAxisSpacing: 4.0,
+                                                //                 crossAxisSpacing: 4.0,
+                                                //               )
                                                 : Center(
                                                     child: Container(
                                                     child: Text(
@@ -478,9 +484,9 @@ class HomePage extends ConsumerWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LoginPopUpView( close: true,))).then((value) {
-
-                            });
+                                    builder: (context) => LoginPopUpView(
+                                          close: true,
+                                        ))).then((value) {});
                           },
                           fillColor: Theme.of(context).primaryColor,
                           child: Text(
@@ -503,12 +509,12 @@ class HomePage extends ConsumerWidget {
 
   showBottomsheetOptions(BuildContext context) {
     showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => CreatePostView( postschanges: postschanges,)
-
-    );
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        builder: (context) => CreatePostView(
+              postschanges: postschanges,
+            ));
   }
 
   Widget buildTabbar(PostsNotifier postschanges, context) {
@@ -574,24 +580,25 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Widget CaregoryItem(Categore category) {
+  Widget CaregoryItem(Categore category, BuildContext context) {
     return Card(
         elevation: 5,
         child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+            height: 300,
             child: Column(
               children: [
                 Expanded(
                   child: InkWell(
-                      onTap: () {
-                        //   print("shaimaa_shaimaa");
-                        //   Share.share(category.name +
-                        //       "\n \n " +
-                        //       "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://app.muslim-book.net/open");
-                        //
-                      },
-                      child: Container(
-                          child: Image.asset(
+                      onTap: () {},
+                      child:
+                          // SizedBox(
+                          //   height: 200,
+                          //   child: PostVideoView(
+                          //     url: 'https://examole.com/a.mp4',
+                          //   ),
+                          // ),
+                          Container(
+                              child: Image.asset(
                         "assets/images/splash_view/logo.png",
                         color: Colors.grey[100],
                         fit: BoxFit.fill,
@@ -600,67 +607,76 @@ class HomePage extends ConsumerWidget {
                 SizedBox(
                   height: 5,
                 ),
-                Text(
-                  category.name,
-                  style: TextStyle(
-                      color: darkish_green,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  category.description,
-                  style: TextStyle(
-                    fontSize: 10,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                        child: InkWell(
-                            onTap: () {
-                               Share.share(category.name +
-                                  "\n \n " +
-                                  "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://app.muslim-book.net/open");
-                            },
-                            child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 5),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/path_514.svg',
-                                      color: Colors.grey[300],
-                                      height: 15,
-                                    )
-                                  ],
-                                )))),
-                    Expanded(
-                        child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 5),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/group_313.svg',
-                                  color: Colors.grey[300],
-                                  height: 15,
-                                )
-                              ],
-                            ))),
-                  ],
-                ),
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    child: Column(
+                      children: [
+                        Text(
+                          category.name,
+                          style: TextStyle(
+                              color: darkish_green,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          category.description,
+                          style: TextStyle(
+                            fontSize: 10,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                                child: InkWell(
+                                    onTap: () {
+                                      Share.share(category.name +
+                                          "\n \n " +
+                                          "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://app.muslim-book.net/open");
+                                    },
+                                    child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 5),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/icons/path_514.svg',
+                                              color: Colors.grey[300],
+                                              height: 15,
+                                            )
+                                          ],
+                                        )))),
+                            Expanded(
+                                child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 5),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/icons/group_313.svg',
+                                          color: Colors.grey[300],
+                                          height: 15,
+                                        )
+                                      ],
+                                    ))),
+                          ],
+                        ),
+                      ],
+                    )),
               ],
             )));
   }

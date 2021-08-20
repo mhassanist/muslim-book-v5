@@ -9,19 +9,22 @@ class AppScaffold extends StatelessWidget {
       @required this.title,
       @required this.child,
       this.centerTitle = false,
+      this.addImageProfile = true,
       this.transparentBackground = false,
       this.padding,
       this.backGroundColor,
       this.actions,
-        this.floatingActionButton,
+      this.floatingActionButton,
       this.onProfileTap,
-      this.scaffoldKey, this.leading})
+      this.scaffoldKey,
+      this.leading})
       : super(key: key);
   final Widget title;
   final Widget leading;
   final Color backGroundColor;
   final Widget child;
   final bool centerTitle;
+  final bool addImageProfile;
   final bool transparentBackground;
   final EdgeInsets padding;
   final Function onProfileTap;
@@ -36,16 +39,16 @@ class AppScaffold extends StatelessWidget {
       child: Scaffold(
         key: scaffoldKey ?? UniqueKey(),
         appBar: AppBar(
-          leading: leading,
+            leading: leading,
             actions: [
               if (actions != null) ...actions,
-              getProfilePicture(context),
+              if (addImageProfile) getProfilePicture(context),
             ],
             centerTitle: centerTitle,
             backgroundColor: prymaryColor,
             elevation: 0,
             title: title),
-        floatingActionButton:  floatingActionButton,
+        floatingActionButton: floatingActionButton,
         body: Container(
           color: prymaryColor,
           child: Container(

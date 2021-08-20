@@ -62,8 +62,7 @@ void main() async {
   runApp(
     DevicePreview(
       enabled: false,
-      builder: (context) =>
-          ProviderScope(child: MyApp(loaded)), // Wrap your app
+      builder: (context) => ProviderScope(child: MyApp()), // Wrap your app
     ),
   );
 }
@@ -101,16 +100,16 @@ Future<RemoteConfig> setupRemoteConfig() async {
 }
 
 class MyApp extends StatefulWidget {
-  Locale localeLoaded;
+  // Locale localeLoadedd;
   static FirebaseAnalytics analytics = FirebaseAnalytics();
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
   static bool loading = false;
   static bool loadingAddMobe = false;
 
-  MyApp(this.localeLoaded);
+  // MyApp(this.localeLoadedd);
 
-  static void setLocale(BuildContext context, Locale newLocale) {
+  static Future setLocale(BuildContext context, Locale newLocale) {
     _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
     state.setLocale(newLocale);
   }
@@ -169,7 +168,7 @@ class MyApp extends StatefulWidget {
                               sizeConfig.blockSizeVertical),
                         ),
                         onPressed: () {
-                           SystemNavigator.pop();
+                          SystemNavigator.pop();
                         },
                         fillColor: Theme.of(context).primaryColor,
                         child: Text(
@@ -223,10 +222,11 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-   AzanController _azanController = Get.put(AzanController());
-   HomeController _homeController = Get.put(HomeController());
+  AzanController _azanController = Get.put(AzanController());
+  HomeController _homeController = Get.put(HomeController());
   String showCompetition, openAzkar;
-  var checkOverLay  ;
+  var checkOverLay;
+  Locale localeLoaded;
 
   @override
   void initState() {
@@ -234,17 +234,21 @@ class _MyAppState extends State<MyApp> {
     invokeMethod();
   }
 
-  setLocale(Locale locale) {
-    setState(() {
-      this.widget.localeLoaded = locale;
+  setLocale(Locale _locale) {
+    getLocale().then((locale) {
+      print("shaimmmmmmmmmmmmmmmaaaa 2  " + locale.languageCode);
+      setState(() {
+        localeLoaded = locale;
+      });
     });
   }
 
   @override
   void didChangeDependencies() {
     getLocale().then((locale) {
+      print("shaimmmmmmmmmmmmmmmaaaa 3   " + locale.languageCode);
       setState(() {
-        this.widget.localeLoaded = locale;
+        localeLoaded = locale;
       });
     });
     super.didChangeDependencies();
@@ -270,9 +274,14 @@ class _MyAppState extends State<MyApp> {
     return message;
   }
 
+  loadLocal() async {
+    Locale loaded = await getLocale();
+    localeLoaded = loaded;
+  }
+
   @override
   Widget build(BuildContext context) {
-
+    loadLocal();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<UserProvider>(
@@ -310,8 +319,7 @@ class _MyAppState extends State<MyApp> {
             const Locale("en"),
             const Locale("fr")
           ],
-
-          locale: this.widget.localeLoaded,
+          locale: localeLoaded,
           navigatorObservers: <NavigatorObserver>[MyApp.observer],
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
@@ -320,13 +328,15 @@ class _MyAppState extends State<MyApp> {
             AppLocalizations.delegate, // Add this line
           ],
           builder: (BuildContext context, Widget child) {
+            print("shaimmmmmmmmmmmmmmmaaaa 2   " + localeLoaded.languageCode);
+
             return new Directionality(
-              textDirection: setTextDirection(this.widget.localeLoaded),
+              textDirection: setTextDirection(localeLoaded),
               child: child,
             );
           },
           localeResolutionCallback: (locale, supportedLocales) {
-            return this.widget.localeLoaded;
+            return localeLoaded;
           },
           theme: ThemeData(
             textTheme: GoogleFonts.almaraiTextTheme(

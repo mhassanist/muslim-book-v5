@@ -1,17 +1,15 @@
-
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/loading_utils.dart';
-
+import 'package:base_app/utils/sizing_info_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:base_app/utils/sizing_info_extension.dart';
 
 class LoginPopUpView extends StatefulWidget {
-final   bool close ;
+  final bool close;
 
   const LoginPopUpView({Key key, this.close}) : super(key: key);
   @override
@@ -19,7 +17,6 @@ final   bool close ;
 }
 
 class _LoginPopUpViewState extends State<LoginPopUpView> {
-
   @override
   void initState() {
     super.initState();
@@ -35,6 +32,7 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
   void dispose() {
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveBuilder(
@@ -79,17 +77,17 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
               FontAwesomeIcons.facebookSquare,
               const Color(0XFF3b5998), onPressed: () async {
             LoadingUtils util = LoadingUtils();
-           util.setIsLoading(context, true);
+            util.setIsLoading(context, true);
             try {
               await Provider.of<UserProvider>(context, listen: false)
-                  .openFaceBookDialogPicker().then((value) {
-                    if(
-                    this.widget.close){
-                      setState(() {});
-                      Navigator.of(context).pop();
-                    }
+                  .openFaceBookDialogPicker()
+                  .then((value) {
+                setState(() {});
+                if (this.widget.close) {
+                  Navigator.of(context).pop();
+                }
               });
-            }  catch (e) {
+            } catch (e) {
               print(e);
             }
             util.setIsLoading(context, false);
@@ -105,11 +103,11 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
             LoadingUtils util = LoadingUtils();
             util.setIsLoading(context, true);
             await Provider.of<UserProvider>(context, listen: false)
-                .openGooglePickerDialog().then((value) {
-              if(
-              this.widget.close){
+                .openGooglePickerDialog()
+                .then((value) {
+              setState(() {});
+              if (this.widget.close) {
                 Navigator.of(context).pop();
-
               }
             });
             util.setIsLoading(context, false);
@@ -135,9 +133,10 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
               Constants.PRIMARY_DARK_COLOR, onPressed: () async {
             await Navigator.pushNamed(context, "/signup_view");
             Provider.of<UserProvider>(context, listen: false).errorMessage = "";
-          }), SizedBox(
-                height: 10,
-              ),
+          }),
+          SizedBox(
+            height: 10,
+          ),
           errorText(sizeConfig, context)
         ]),
       ),

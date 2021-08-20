@@ -1,7 +1,6 @@
 import 'package:base_app/enams/view_state_enum.dart';
 import 'package:base_app/local_storage/local_storage_manager.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
-import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/models/azan_sound.dart';
 import 'package:base_app/network_utils/azan_apis.dart';
 import 'package:base_app/providers/location_provider.dart';
@@ -17,8 +16,7 @@ import 'package:base_app/widgets/standardButton_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:search_map_place/search_map_place.dart';
-import '../../../main.dart';
+
 import '../../../utils/sizing_info_extension.dart';
 
 class SettingsMobilePortraitUi {
@@ -31,8 +29,7 @@ class SettingsMobilePortraitUi {
       {this.provider, this.sizeConfig, this.context});
 
   Widget alertsPart() {
-    return
-      Container(
+    return Container(
       width: sizeConfig.blockSizeHorizontal * 90,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,7 +67,6 @@ class SettingsMobilePortraitUi {
     );
   }
 
-
   Widget azanMethodSelectionPart() {
     return Container(
       width: sizeConfig.blockSizeHorizontal * 90,
@@ -105,11 +101,10 @@ class SettingsMobilePortraitUi {
             ),
           ),
           titleContainer(
-              sizeConfig,
-              context,
-              AppLocalizations.of(context).translate("mazhab_depends"),
-
-        ),
+            sizeConfig,
+            context,
+            AppLocalizations.of(context).translate("mazhab_depends"),
+          ),
           mazhabPart(),
           Container(
             margin: EdgeInsets.only(top: 20, left: 30, right: 30),
@@ -126,44 +121,43 @@ class SettingsMobilePortraitUi {
             sizeConfig,
             context,
             AppLocalizations.of(context).translate("settings_of_heights"),
-
           ),
 
           highAltitudesPart(),
 
-
-
           LoadingButton(
             firstWidget: Center(
               child: standardButton(
-                isGo: false,
+                  isGo: false,
                   context: context,
                   sizeConfig: sizeConfig,
                   color: Theme.of(context).primaryColorDark,
                   title:
-                  AppLocalizations.of(context).translate("save_settings"),
+                      AppLocalizations.of(context).translate("save_settings"),
                   onPressed: () async {
                     print("arrived here");
                     provider.setViewState(ViewState.Loading);
 
-                    locator<Prefs>().setLatitudeAdjustmentMethod((AppLocalizations.of(context).isEnglish()
-                        ? Constants.EN_Latitude_Adjustment_Method
-                        : Constants.AR_Latitude_Adjustment_Method)
-                        .indexOf(provider.latitudeAdjustmentMethod));
+                    locator<Prefs>().setLatitudeAdjustmentMethod(
+                        (AppLocalizations.of(context).isEnglish()
+                                ? Constants.EN_Latitude_Adjustment_Method
+                                : Constants.AR_Latitude_Adjustment_Method)
+                            .indexOf(provider.latitudeAdjustmentMethod));
 
-                    locator<Prefs>().setAzanMethod((AppLocalizations.of(context).isEnglish()
-                        ? Constants.EN_AZAN_METHODS
-                        : Constants.AR_AZAN_METHODS)
-                        .indexOf(provider.pickedMethod));
+                    locator<Prefs>().setAzanMethod(
+                        (AppLocalizations.of(context).isEnglish()
+                                ? Constants.EN_AZAN_METHODS
+                                : Constants.AR_AZAN_METHODS)
+                            .indexOf(provider.pickedMethod));
 
-                    locator<Prefs>().setAzanMazhab((AppLocalizations.of(context).isEnglish()
-                        ? Constants.EN_AZAN_Mazhabs
-                        : Constants.AR_AZAN_Mazhabs)
-                        .indexOf(provider.pickedMazhab));
+                    locator<Prefs>().setAzanMazhab(
+                        (AppLocalizations.of(context).isEnglish()
+                                ? Constants.EN_AZAN_Mazhabs
+                                : Constants.AR_AZAN_Mazhabs)
+                            .indexOf(provider.pickedMazhab));
 
                     await AzanApis().getAzan();
                     provider.setViewState(ViewState.Idle);
-
                   }),
             ),
             state: provider.viewState == ViewState.Loading
@@ -199,8 +193,11 @@ class SettingsMobilePortraitUi {
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(provider.pickedFajrAzanShiekh != null && provider.pickedFajrAzanShiekh.isNotEmpty ?
-                    "${provider.pickedFajrAzanShiekh["name"]}":"شيخ اذان الفجر",
+                  child: Text(
+                    provider.pickedFajrAzanShiekh != null &&
+                            provider.pickedFajrAzanShiekh.isNotEmpty
+                        ? "${provider.pickedFajrAzanShiekh["name"]}"
+                        : "شيخ اذان الفجر",
                     style: TextStyle(
                         color: Constants.PRIMARY_DARK_COLOR,
                         fontWeight: FontWeight.w700,
@@ -217,7 +214,6 @@ class SettingsMobilePortraitUi {
           Center(
             child: standardButton(
                 isGo: true,
-
                 context: context,
                 sizeConfig: sizeConfig,
                 color: Theme.of(context).primaryColor,
@@ -245,18 +241,13 @@ class SettingsMobilePortraitUi {
     );
   }
 
-
   Widget azanTime() {
     return Container(
-      margin: EdgeInsets.only(
-        bottom: 10
-      ),
+      margin: EdgeInsets.only(bottom: 10),
       width: sizeConfig.blockSizeHorizontal * 90,
       height: 570,
-      child:
-
-      EditTimePrayer(
-        showAppBar:  false,
+      child: EditTimePrayer(
+        showAppBar: false,
 
         // azan: azanValue,
         // updateAzan: listenToUpdate,
@@ -335,10 +326,7 @@ class SettingsMobilePortraitUi {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    "${ AppLocalizations.of(context).isEnglish()?
-                    Constants.EN_SHIEKH_NAMES[0]["name"]
-                        :
-                    Constants.AR_SHIEKH_NAMES[0]["name"]}",
+                    "${AppLocalizations.of(context).isEnglish() ? Constants.EN_SHIEKH_NAMES[0]["name"] : Constants.AR_SHIEKH_NAMES[0]["name"]}",
 
                     // "${provider.pickedAzanShiekhMain["2"]["name"]}",
                     style: TextStyle(
@@ -361,7 +349,9 @@ class SettingsMobilePortraitUi {
                 sizeConfig: sizeConfig,
                 color: Theme.of(context).primaryColor,
                 title: AppLocalizations.of(context).translate("select_shiekh"),
-                onPressed:(){ chooseSheikh("3");}),
+                onPressed: () {
+                  chooseSheikh("3");
+                }),
           ),
           /*LoadingButton(
             firstWidget: Center(
@@ -381,49 +371,59 @@ class SettingsMobilePortraitUi {
       ),
     );
   }
-  Widget generalSettingsPart() {
+
+  Widget generalSettingsPart(Widget show) {
     return Container(
       width: sizeConfig.blockSizeHorizontal * 90,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-
           alertItem(
-              AppLocalizations.of(context).translate("voice_reminder_before_praying"),
+              AppLocalizations.of(context)
+                  .translate("voice_reminder_before_praying"),
               provider.isRemmberActive,
               provider.isRemmberActiveFlagChanged),
           alertItem(
-              AppLocalizations.of(context).translate("activating_al_shaarawi_voice"),
+              AppLocalizations.of(context)
+                  .translate("activating_al_shaarawi_voice"),
               provider.isActivatingShaarawiVoice,
               provider.isActivatingShaarawiVoiceFlagChanged),
-
           alertItem(
-              AppLocalizations.of(context).translate("Switch_to_silent_mode_after_residence"),
+              AppLocalizations.of(context)
+                  .translate("Switch_to_silent_mode_after_residence"),
               provider.isSwitchSilentModeAfterResidence,
               provider.isSwitchSilentModeAfterResidenceChanged),
           alertItem(
-              AppLocalizations.of(context).translate("Turn_off_the_call_to_prayer_on_the_phone"),
+              AppLocalizations.of(context)
+                  .translate("Turn_off_the_call_to_prayer_on_the_phone"),
               provider.isTurnOffPrayerPhone,
               provider.isTurnOffPrayerPhoneChanged),
-          alertItem(
-              "EN",
-              Localizations.localeOf(context).languageCode == 'en'
-                  ? true
-                  : false,
-                  (value)async{
-                Locale locale = await setLocale(value?"en":"ar");
-                MyApp.setLocale(context, locale);
-              }
-                   )
-
-
+          Center(
+              child: standardButton(
+                  isGo: false,
+                  context: context,
+                  sizeConfig: sizeConfig,
+                  color: Theme.of(context).primaryColor,
+                  title: AppLocalizations.of(context)
+                      .translate("Change_the_language_application"),
+                  onPressed: () async {
+                    await showDialog(
+                      context: context,
+                      builder: (context) => new AlertDialog(
+                          contentPadding: EdgeInsets.all(0.0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(12))),
+                          content: show),
+                    );
+                  })),
         ],
       ),
     );
   }
 
   Future saveSettings() async {
-     provider.setViewState(ViewState.Loading);
+    provider.setViewState(ViewState.Loading);
     locator<Prefs>().setAzanMethod((AppLocalizations.of(context).isEnglish()
             ? Constants.EN_AZAN_METHODS
             : Constants.AR_AZAN_METHODS)
@@ -438,14 +438,17 @@ class SettingsMobilePortraitUi {
     provider.setViewState(ViewState.Idle);
   }
 
-  void chooseSheikh (String azanId) async {
+  void chooseSheikh(String azanId) async {
     int newShiekhIndex = await Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => PickAzanShiekhView()));
     List<AzanSound> sounds = (await LocalStorageManager().loadAzanSoundsList());
     if (newShiekhIndex != null && sounds != null && sounds.length > 0) {
       provider.pickedAzanShiekhMain[azanId] = sounds[newShiekhIndex].toJSON();
     } else if (newShiekhIndex != null) {
-      provider.pickedAzanShiekhMain[azanId]  = AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES[newShiekhIndex]:Constants.AR_SHIEKH_NAMES[newShiekhIndex];
+      provider.pickedAzanShiekhMain[azanId] =
+          AppLocalizations.of(context).isEnglish()
+              ? Constants.EN_SHIEKH_NAMES[newShiekhIndex]
+              : Constants.AR_SHIEKH_NAMES[newShiekhIndex];
     }
   }
 
@@ -459,6 +462,7 @@ class SettingsMobilePortraitUi {
       provider.pickedFajrAzanShiekh = Constants.FAJR_SHIEKH_NAMES[0];
     }
   }
+
   Widget azanMethodPart() {
     return Container(
       width: sizeConfig.blockSizeHorizontal * 85,
@@ -504,17 +508,15 @@ class SettingsMobilePortraitUi {
     );
   }
 
-
-
   Widget highAltitudesPart() {
     return Container(
       width: sizeConfig.blockSizeHorizontal * 85,
       margin: EdgeInsets.all(20),
       padding:
-      EdgeInsets.symmetric(horizontal: sizeConfig.blockSizeHorizontal * 2),
+          EdgeInsets.symmetric(horizontal: sizeConfig.blockSizeHorizontal * 2),
       decoration: BoxDecoration(
           borderRadius:
-          BorderRadius.circular(sizeConfig.blockSizeHorizontal * 2),
+              BorderRadius.circular(sizeConfig.blockSizeHorizontal * 2),
           border: Border.all(color: Constants.ACCENT_COLOR, width: 1)),
       child: DropdownButtonHideUnderline(
         child: DropdownButton(
@@ -528,8 +530,8 @@ class SettingsMobilePortraitUi {
             overflow: TextOverflow.ellipsis,
           ),
           items: (AppLocalizations.of(context).isEnglish()
-              ? Constants.EN_Latitude_Adjustment_Method
-              : Constants.AR_Latitude_Adjustment_Method)
+                  ? Constants.EN_Latitude_Adjustment_Method
+                  : Constants.AR_Latitude_Adjustment_Method)
               .map((f) {
             return DropdownMenuItem<Map<String, dynamic>>(
               child: Text(
@@ -642,10 +644,9 @@ class SettingsMobilePortraitUi {
                   borderRadius: BorderRadius.circular(
                       sizeConfig.blockSizeHorizontal * 2)),
               onPressed: () async {
-                provider.saveLocation=true;
+                provider.saveLocation = true;
                 await locationProvider.getLocation(context);
-                provider.saveLocation=false;
-
+                provider.saveLocation = false;
               },
               fillColor: Theme.of(context).accentColor,
               child: Row(
@@ -792,6 +793,5 @@ class SettingsMobilePortraitUi {
     );
   }
 
-  void listenToUpdate() {
-  }
+  void listenToUpdate() {}
 }

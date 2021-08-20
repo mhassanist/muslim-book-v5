@@ -1,6 +1,7 @@
-import 'package:admob_flutter/admob_flutter.dart';
 import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/ads/load_ui_with_add.dart';
+import 'package:base_app/home_feature/const/color.dart';
+import 'package:base_app/home_feature/views/home_view.dart';
 import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/providers/location_provider.dart';
@@ -11,12 +12,12 @@ import 'package:base_app/widgets/base_widget.dart';
 import 'package:base_app/widgets/custom_expansion_panel_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 import '../../../locals_utils/app_localizations.dart';
+import '../../../main.dart';
 import '../../../widgets/appBar_widget.dart';
 
 class ExpansionpanelItem {
@@ -26,8 +27,13 @@ class ExpansionpanelItem {
   final Icon leading;
   final String icon;
 
-  ExpansionpanelItem(
-      {this.isExpanded, this.title, this.content, this.leading, this.icon});
+  ExpansionpanelItem({
+    this.isExpanded,
+    this.title,
+    this.content,
+    this.leading,
+    this.icon,
+  });
 }
 
 class SettingsViewMobilePortrait extends StatefulWidget {
@@ -39,15 +45,12 @@ class SettingsViewMobilePortrait extends StatefulWidget {
 class _SettingsViewMobilePortraitState
     extends State<SettingsViewMobilePortrait> {
   SettingsMobilePortraitUi ui;
-  int itmeSelection;
-
+  Language lang;
 
   @override
   void initState() {
-    
     super.initState();
   }
-
 
   List<ExpansionpanelItem> items = [
     ExpansionpanelItem(
@@ -87,6 +90,66 @@ class _SettingsViewMobilePortraitState
     ),
   ];
   List<ExpansionpanelItem> contents = [];
+
+  Widget show() {
+    getLocale().then((locale) {
+      if (locale.languageCode == 'ar') {
+        lang = Language.Arabic;
+      } else if (locale.languageCode == 'en') {
+        lang = Language.english;
+      } else {
+        lang = Language.france;
+      }
+    });
+    return Container(
+        height: 200,
+        child: Column(
+          children: [
+            ListTile(
+              title: Text(AppLocalizations.of(context).translate("Arabic")),
+              leading: Radio<Language>(
+                value: Language.Arabic,
+                groupValue: lang,
+                activeColor: darkish_green,
+                onChanged: (Language value) {
+                  _changeLanguage("ar");
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            ListTile(
+              title: Text(AppLocalizations.of(context).translate("English")),
+              leading: Radio<Language>(
+                value: Language.english,
+                activeColor: darkish_green,
+                groupValue: lang,
+                onChanged: (Language value) {
+                  _changeLanguage("en");
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            ListTile(
+              title: Text(AppLocalizations.of(context).translate("France")),
+              leading: Radio<Language>(
+                value: Language.france,
+                groupValue: lang,
+                activeColor: darkish_green,
+                onChanged: (Language value) {
+                  _changeLanguage("fr");
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          ],
+        ));
+  }
+
+  void _changeLanguage(String language) async {
+    Locale locale = await setLocale(language);
+    MyApp.setLocale(context, locale);
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,8 +203,8 @@ class _SettingsViewMobilePortraitState
             ExpansionpanelItem(
                 isExpanded: false,
                 title:
-                AppLocalizations.of(context).translate("general_settings"),
-                content: ui.generalSettingsPart(),
+                    AppLocalizations.of(context).translate("general_settings"),
+                content: ui.generalSettingsPart(show()),
                 leading: Icon(Icons.arrow_back_ios))
           ];
           return SafeArea(
@@ -151,108 +214,100 @@ class _SettingsViewMobilePortraitState
                 sizeConfig,
                 AppLocalizations.of(context).translate("settings"),
               ),
-              body
-                  :
-              Container(
-                  color: Constants.CANVAS_COLOR,
-                  child:
-                  LoadUiWithAdd(
-                    mainView: CustomScrollView(
-                        slivers: <Widget>[
-                          SliverToBoxAdapter(
-                            child:  CustomExpansionPanelList(
-                            expansionCallback: (int index, bool isExpanded) {
-                              setState(() {
-                                items[index].isExpanded =
-                                    !items[index].isExpanded;
-                              });
-                            },
-                            children: [
-                              ...items.map((ExpansionpanelItem item) {
-                                return ExpansionPanel(
-                                  headerBuilder:
-                                      (BuildContext context, bool isExpanded) {
-                                    return Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Container(
-                                            alignment: Alignment.center,
-                                            margin: EdgeInsets.symmetric(
-                                              horizontal: 15,
-                                            ),
-                                            child: Row(
-                                              children: [
-                                                SvgPicture.asset(
-                                                  item.icon,
-                                                  height: 26.0,
-                                                  color: Colors.white,
-                                                  allowDrawingOutsideViewBox:
-                                                      true,
-                                                ),
-                                                SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  contents[items.indexOf(item)]
-                                                      .title,
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                )
-                                              ],
-                                            ))
-                                      ],
-                                    );
-                                  },
-                                  isExpanded: item.isExpanded,
-                                  body: Container(
-                                    margin: EdgeInsets.only(
-                                        right: 4, left: 4, bottom: 4, top: 4),
-                                    width: MediaQuery.of(context).size.width,
-                                    // height: MediaQuery.of(context).size.height,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                          // topRight: Radius.circular(12),
-                                          // topLeft: Radius.circular(12),
-                                          bottomRight: Radius.circular(12),
-                                          bottomLeft: Radius.circular(12),
-                                        ),
-                                        gradient: LinearGradient(
-                                            begin: Alignment.topCenter,
-                                            end: Alignment.bottomCenter,
-                                            colors: [
-                                              Colors.white,
-                                              Colors.white,
-                                            ])),
-                                    child: contents[items.indexOf(item)].content,
-                                  ),
-                                );
-                              }).toList(),
-                            ]),
-                      ),
-              SliverToBoxAdapter(
-                    child:
-                    SizedBox(
-                        height: 10,
-                      )),
-              SliverToBoxAdapter(
-                    child:
-                    Container(
-                          child:
-                          AdMobRectangle(BannerName.BOSLA )
-                        //   AdMobRectangle(BannerName.BOSLA)
-              ),),
-                          SliverToBoxAdapter(
-                              child:
-                              SizedBox(
-                                height: 10,
-                              )),
-                    ]),
-                  ),),
-
+              body: Container(
+                color: Constants.CANVAS_COLOR,
+                child: LoadUiWithAdd(
+                  mainView: CustomScrollView(slivers: <Widget>[
+                    SliverToBoxAdapter(
+                      child: CustomExpansionPanelList(
+                          expansionCallback: (int index, bool isExpanded) {
+                            setState(() {
+                              items[index].isExpanded =
+                                  !items[index].isExpanded;
+                            });
+                          },
+                          children: [
+                            ...items.map((ExpansionpanelItem item) {
+                              return ExpansionPanel(
+                                headerBuilder:
+                                    (BuildContext context, bool isExpanded) {
+                                  return Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                          alignment: Alignment.center,
+                                          margin: EdgeInsets.symmetric(
+                                            horizontal: 15,
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              SvgPicture.asset(
+                                                item.icon,
+                                                height: 26.0,
+                                                color: Colors.white,
+                                                allowDrawingOutsideViewBox:
+                                                    true,
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                contents[items.indexOf(item)]
+                                                    .title,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                              )
+                                            ],
+                                          ))
+                                    ],
+                                  );
+                                },
+                                isExpanded: item.isExpanded,
+                                body: Container(
+                                  margin: EdgeInsets.only(
+                                      right: 4, left: 4, bottom: 4, top: 4),
+                                  width: MediaQuery.of(context).size.width,
+                                  // height: MediaQuery.of(context).size.height,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        // topRight: Radius.circular(12),
+                                        // topLeft: Radius.circular(12),
+                                        bottomRight: Radius.circular(12),
+                                        bottomLeft: Radius.circular(12),
+                                      ),
+                                      gradient: LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Colors.white,
+                                            Colors.white,
+                                          ])),
+                                  child: contents[items.indexOf(item)].content,
+                                ),
+                              );
+                            }).toList(),
+                          ]),
+                    ),
+                    SliverToBoxAdapter(
+                        child: SizedBox(
+                      height: 10,
+                    )),
+                    SliverToBoxAdapter(
+                      child: Container(child: AdMobRectangle(BannerName.BOSLA)
+                          //   AdMobRectangle(BannerName.BOSLA)
+                          ),
+                    ),
+                    SliverToBoxAdapter(
+                        child: SizedBox(
+                      height: 10,
+                    )),
+                  ]),
+                ),
+              ),
             ),
           );
         });
