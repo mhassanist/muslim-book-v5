@@ -67,7 +67,6 @@ class _CreatePostViewState extends State<CreatePostView> {
               onTap: () {
                 FocusScope.of(context).requestFocus(FocusNode());
 
-
                 setState(() {
                   loadingHere = true;
                 });

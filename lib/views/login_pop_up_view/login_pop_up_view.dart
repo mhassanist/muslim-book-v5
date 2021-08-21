@@ -12,6 +12,7 @@ class LoginPopUpView extends StatefulWidget {
   final bool close;
 
   const LoginPopUpView({Key key, this.close}) : super(key: key);
+
   @override
   _LoginPopUpViewState createState() => _LoginPopUpViewState();
 }

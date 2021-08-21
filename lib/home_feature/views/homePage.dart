@@ -333,7 +333,7 @@ class HomePage extends ConsumerWidget {
                         onTap: () {
                           Share.share(_post.content +
                               "\n \n " +
-                              "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://app.muslim-book.net/open");
+                              "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book");
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 10),
@@ -639,7 +639,7 @@ class HomePage extends ConsumerWidget {
                                     onTap: () {
                                       Share.share(category.name +
                                           "\n \n " +
-                                          "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://app.muslim-book.net/open");
+                                          "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book");
                                     },
                                     child: Container(
                                         padding: const EdgeInsets.symmetric(

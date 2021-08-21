@@ -435,10 +435,14 @@ class CompetitionUI {
               child: RawMaterialButton(
                 onPressed: () {
                   Share.share(
-                      AppLocalizations.of(context).translate("i_have_won") +
+                      /*AppLocalizations.of(context).translate("i_have_won") +
                           '${provider.scoreModelData.points} ' +
                           AppLocalizations.of(context)
                               .translate("points_in_Muslim-Book_competition") +
+                          ' ' +*/
+                      AppLocalizations.of(context).translate("i_have_won") +
+                          AppLocalizations.of(context)
+                              .translate("in_Muslim-Book_competition") +
                           ' ' +
                           AppLocalizations.of(context)
                               .translate("invite_to_download_app"));

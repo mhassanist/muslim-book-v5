@@ -8,12 +8,11 @@ import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/locator.dart';
 import 'package:base_app/utils/prefs.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_flexible_toast/flutter_flexible_toast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
 import '../utils/locator.dart';
 import '../utils/prefs.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class UserProvider extends ViewStateProvider {
   UserProvider() {
@@ -155,8 +154,8 @@ class UserProvider extends ViewStateProvider {
 
   Future<bool> faceBookLogging(FacebookModel res,
       {name, id, email, imageUrl}) async {
-    print("haimmmmmmmmmmmaaa + " + res.image + "  ");
-    print(imageUrl);
+    //print("haimmmmmmmmmmmaaa + " + res.image + "  ");
+    //print(imageUrl);
     var response = await locator<ApiService>().faceBookLogging({
       "email": res == null ? email : res.email,
       "name": res == null ? name : res.name,
@@ -164,7 +163,7 @@ class UserProvider extends ViewStateProvider {
       "image_url": res == null ? imageUrl : res.image
     });
     FlutterFlexibleToast.showToast(
-        message: res.name + " login ...",
+        message: response.name + " login ...",
         toastLength: Toast.LENGTH_LONG,
         toastGravity: ToastGravity.BOTTOM,
         icon: ICON.LOADING,
@@ -198,23 +197,21 @@ class UserProvider extends ViewStateProvider {
   }
 
   Future<void> openFaceBookDialogPicker() async {
-    FacebookLogin facebookSignIn = new FacebookLogin();
 
     try {
-      FacebookLoginResult result =
-          await facebookSignIn.logIn(['email', 'public_profile']);
-      print("toooooooooooooooooooooooooken  " + result.accessToken.toString());
-      print(result);
-      print("toooooooooooooooooooooooooken  " +
-          result.accessToken.token.toString());
-      print("toooooooooooooooooooooooooken " + result.status.toString());
-
-      if (result.status == FacebookLoginStatus.loggedIn) {
+      /*FacebookLoginResult result =
+          await facebookSignIn.logIn(['email', 'public_profile']);*/
+      final LoginResult result = await FacebookAuth.instance.login(); // by default we request the email and the public profile
+// or FacebookAuth.i.login()
+      if (result.status == LoginStatus.success) {
+        // you are logged
+        final AccessToken accessToken = result.accessToken;
         final facebookData = await locator<ApiService>()
-            .faceBookAccountDetails(result.accessToken.token);
+            .faceBookAccountDetails(accessToken.token);
         //   errorMessage
         faceBookLogging(facebookData);
       }
+
     } catch (e) {
       print(e);
     }

@@ -6,10 +6,10 @@ import android.text.format.DateFormat;
 import android.util.Log;
 import androidx.multidex.MultiDex;
 
-import com.facebook.FacebookSdk;
+//import com.facebook.FacebookSdk;
 import com.facebook.ads.AudienceNetworkAds;
-import com.facebook.appevents.AppEventsConstants;
-import com.facebook.appevents.AppEventsLogger;
+//import com.facebook.appevents.AppEventsConstants;
+//import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -48,9 +48,9 @@ public class Application extends FlutterApplication implements PluginRegistry.Pl
     mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
     mFirebaseRemoteConfig.setConfigSettingsAsync(new FirebaseRemoteConfigSettings.Builder()
         .build());
-    AppEventsLogger.activateApp(this);
-    AppEventsLogger logger = AppEventsLogger.newLogger(this);
-    logger.logEvent(AppEventsConstants.EVENT_NAME_ACTIVATED_APP);
+    //AppEventsLogger.activateApp(this);
+    //AppEventsLogger logger = AppEventsLogger.newLogger(this);
+    //logger.logEvent(AppEventsConstants.EVENT_NAME_ACTIVATED_APP);
     JodaTimeAndroid.init(this);
     FlutterFirebaseMessagingService.setPluginRegistrant(this);
    }

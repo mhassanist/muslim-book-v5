@@ -108,7 +108,7 @@ class _ShareDialogState extends State<ShareDialog> {
                           child: RawMaterialButton(
                             onPressed: () async {
                               await Share.share(
-                                  "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\nhttps://app.muslim-book.net/open");
+                                  "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\nhttps://play.google.com/store/apps/details?id=com.muslim_book.muslim_book");
                               Navigator.pop(context);
                             },
                             padding: EdgeInsets.symmetric(

@@ -39,10 +39,11 @@ dependencies:
   auto_size_text: ^2.1.0
   flutter_flexible_toast: ^0.1.4
   facebook_audience_network: ^0.6.2
-  facebook_app_events:
+
   android_alarm_manager_plus: ^1.0.2
   dio: ^3.0.9
-  flutter_facebook_login: ^3.0.0
+  flutter_facebook_auth: ^3.3.3-no-nullsafety
+
   firebase_remote_config: ^0.6.0
   connectivity_wrapper: ^1.0.3
   flutter_localizations:
