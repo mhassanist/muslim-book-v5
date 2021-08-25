@@ -29,13 +29,16 @@ class HomeRepository {
   }
 
   Future<String> createPost(String content) async {
+
+    DioUtil.setDioAgain();
      final dio = DioUtil.dio;
+
     final response = await dio.post("posts", data: {
       "content": content,
     });
     print(response);
 
-    DioUtil.setDioAgain();
+
 ResponseCreateModel responseCreateModel =ResponseCreateModel();
 responseCreateModel=ResponseCreateModel.fromJson(response.data);
 return responseCreateModel.message;

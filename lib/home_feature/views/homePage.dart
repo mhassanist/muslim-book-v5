@@ -58,7 +58,7 @@ class HomePage extends ConsumerWidget {
                     width: MediaQuery.of(context).size.width,
                     child: CategoriesHorizontalHomeWidget()),
                 SizedBox(
-                  height: 10,
+                  height: 2,
                 ),
                 buildTabbar(postschanges, context),
                 SizedBox(
@@ -521,7 +521,7 @@ class HomePage extends ConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        InkWell(
+        /*InkWell(
           onTap: () => postschanges.changeisPosts(false),
           child: Column(
             children: [
@@ -549,13 +549,13 @@ class HomePage extends ConsumerWidget {
         ),
         SizedBox(
           width: 80,
-        ),
+        ),*/
         InkWell(
           onTap: () => postschanges.changeisPosts(true),
           child: Column(
             children: [
               Text(
-                AppLocalizations.of(context).translate("news"),
+                AppLocalizations.of(context).translate("community_share"),
                 style: TextStyle(
                     color: postschanges.isPosts ? darkish_green : warm_grey,
                     fontSize: 20,
