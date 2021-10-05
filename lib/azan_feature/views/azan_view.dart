@@ -18,6 +18,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
+//The view to edit prayer times. When clicked from home screen [mwakeet alsalah]
 class AzanView extends StatefulWidget {
   @override
   _AzanViewState createState() => _AzanViewState();
@@ -380,9 +381,9 @@ class _AzanViewState extends State<AzanView> {
   }
 
   listenToUpdate() {
-    //setState(() {
+    setState(() {
       controller.azanValue.clear();
-    //});
+    });
     controller.onStart();
     // controller.getAzanList();
     // controller.startRemainingStream();

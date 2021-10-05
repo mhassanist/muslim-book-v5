@@ -159,37 +159,37 @@ public class AzanIntentService extends Service {
                 mAfterAzanMediaPlayer = MediaPlayer.create(this,
                         Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/after_azan.mp3")));
                 boolean _isCallActive = isCallActive(this);
-                AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+                AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
                 switch (am.getMode()) {
                     case AudioManager.MODE_IN_COMMUNICATION:
-                        Log.i("MyApp","Silent mode");
+                        Log.i("MyApp", "Silent mode");
                         break;
                     case AudioManager.MODE_RINGTONE:
-                        Log.i("MyApp","Vibrate mode");
+                        Log.i("MyApp", "Vibrate mode");
 
                         break;
-                      case AudioManager.MODE_IN_CALL:
-                          Log.i("MyApp","MODE_RINGTONE");
+                    case AudioManager.MODE_IN_CALL:
+                        Log.i("MyApp", "MODE_RINGTONE");
 //                        break;
                 }
-                 boolean _isSilentMode = isSilentMode(this);
-                 Log.i("_isSilentMode" ,_isSilentMode+"");
-                Log.i("MyApp" ,_isCallActive+"  _isCallActive");
-                if (Turn_Off_The_Call_To_Prayer_On_The_Phone){
-                    Log.i("_isSilentMode" ,"one");
-                    if(_isCallActive){
-                        Log.i("_isSilentMode" ,"_isCallActive");
+                boolean _isSilentMode = isSilentMode(this);
+                Log.i("_isSilentMode", _isSilentMode + "");
+                Log.i("MyApp", _isCallActive + "  _isCallActive");
+                if (Turn_Off_The_Call_To_Prayer_On_The_Phone) {
+                    Log.i("_isSilentMode", "one");
+                    if (_isCallActive) {
+                        Log.i("_isSilentMode", "_isCallActive");
                         mMediaPlayer.stop();
-                    }else {
-                        Log.i("_isSilentMode" ,"!_isCallActive");
-                        if(!_isSilentMode) {
+                    } else {
+                        Log.i("_isSilentMode", "!_isCallActive");
+                        if (!_isSilentMode) {
                             mMediaPlayer.start();
                         }
                     }
-                }else {
-                    Log.i("_isSilentMode" ,"tow");
-                    if(!_isSilentMode) {
+                } else {
+                    Log.i("_isSilentMode", "tow");
+                    if (!_isSilentMode) {
                         mMediaPlayer.start();
                     }
                 }
@@ -247,6 +247,7 @@ public class AzanIntentService extends Service {
         AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         return manager.getMode() == AudioManager.MODE_IN_CALL;
     }
+
     public boolean isSilentMode(Context context) {
         AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         return manager.getRingerMode() == AudioManager.RINGER_MODE_SILENT;
@@ -254,37 +255,42 @@ public class AzanIntentService extends Service {
 
     private void setSilentMode(boolean onDestroy) {
 
-        AudioManager mgr = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        int streamType = AudioManager.STREAM_SYSTEM;
-        mgr.setStreamSolo(streamType, true);
-        mgr.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-        mgr.setStreamMute(streamType, true);
+        try {
+            AudioManager mgr = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            int streamType = AudioManager.STREAM_SYSTEM;
+            mgr.setStreamSolo(streamType, true);
+            mgr.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+            mgr.setStreamMute(streamType, true);
 
 
-   new CountDownTimer(300000, 1000) {
+            new CountDownTimer(300000, 1000) {
 
-            public void onTick(long millisUntilFinished) {
-              String tttt =""+String.format("%02d:%02d:%02d",
-                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
-                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
-                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                Log.i("Seconds_remaining: " , tttt+"");
+                public void onTick(long millisUntilFinished) {
+                    String tttt = "" + String.format("%02d:%02d:%02d",
+                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                    Log.i("Seconds_remaining: ", tttt + "");
 
-            }
-
-            public void onFinish() {
-                int streamType = AudioManager.STREAM_SYSTEM;
-                mgr.setStreamSolo(streamType, false);
-                mgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-                mgr.setStreamMute(streamType, false);
-                if (onDestroy) {
-                    onDestroy();
                 }
-            }
 
-        }.start();
+                public void onFinish() {
+                    int streamType = AudioManager.STREAM_SYSTEM;
+                    mgr.setStreamSolo(streamType, false);
+                    mgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                    mgr.setStreamMute(streamType, false);
+                    if (onDestroy) {
+                        onDestroy();
+                    }
+                }
+
+            }.start();
+        } catch (Exception ex) {
+            //no need to log any error
+            //if crashed while setting mode to silent, that means the permission is not set
+        }
 
     }
 
