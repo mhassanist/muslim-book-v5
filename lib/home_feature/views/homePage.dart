@@ -89,39 +89,15 @@ class HomePage extends ConsumerWidget {
                                           decoration: BoxDecoration(
                                               color: light_grey,
                                               borderRadius:
-                                                  BorderRadius.circular(20)),
+                                                  BorderRadius.circular(10)),
                                           child: Padding(
                                             padding: const EdgeInsetsDirectional
-                                                .only(end: 20),
+                                                .only(start: 20),
                                             child: Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Container(
-                                                  width: 70,
-                                                  height: 40,
-                                                  decoration: BoxDecoration(
-                                                      color: darkish_green,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15)),
-                                                  child: Center(
-                                                    child: Text(
-                                                      AppLocalizations.of(
-                                                              context)
-                                                          .translate("Post"),
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 13,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  width: 5,
-                                                ),
                                                 Expanded(
                                                     child: Padding(
                                                   padding: const EdgeInsets
@@ -152,7 +128,31 @@ class HomePage extends ConsumerWidget {
                                                             color:
                                                             dark_blue_green)),
                                                   ),
-                                                ))
+                                                )),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Container(
+                                                  width: 70,
+                                                  height: 40,
+                                                  decoration: BoxDecoration(
+                                                      color: darkish_green,
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          10)),
+                                                  child: Center(
+                                                    child: Text(
+                                                      AppLocalizations.of(
+                                                          context)
+                                                          .translate("Post"),
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                          FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ),
                                               ],
                                             ),
                                           ),
