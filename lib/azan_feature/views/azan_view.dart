@@ -380,9 +380,9 @@ class _AzanViewState extends State<AzanView> {
   }
 
   listenToUpdate() {
-    setState(() {
+    //setState(() {
       controller.azanValue.clear();
-    });
+    //});
     controller.onStart();
     // controller.getAzanList();
     // controller.startRemainingStream();

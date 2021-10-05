@@ -236,7 +236,7 @@ class _MyAppState extends State<MyApp> {
 
   setLocale(Locale _locale) {
     getLocale().then((locale) {
-      print("shaimmmmmmmmmmmmmmmaaaa 2  " + locale.languageCode);
+      //print("shaimmmmmmmmmmmmmmmaaaa 2  " + locale.languageCode);
       setState(() {
         localeLoaded = locale;
       });
@@ -246,7 +246,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void didChangeDependencies() {
     getLocale().then((locale) {
-      print("shaimmmmmmmmmmmmmmmaaaa 3   " + locale.languageCode);
+      //print("shaimmmmmmmmmmmmmmmaaaa 3   " + locale.languageCode);
       setState(() {
         localeLoaded = locale;
       });
@@ -328,7 +328,7 @@ class _MyAppState extends State<MyApp> {
             AppLocalizations.delegate, // Add this line
           ],
           builder: (BuildContext context, Widget child) {
-            print("shaimmmmmmmmmmmmmmmaaaa 2   " + localeLoaded.languageCode);
+            //print("shaimmmmmmmmmmmmmmmaaaa 2   " + localeLoaded.languageCode);
 
             return new Directionality(
               textDirection: setTextDirection(localeLoaded),

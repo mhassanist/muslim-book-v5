@@ -247,8 +247,8 @@ class AzanController extends GetxController {
 
   String getHijriDate(context) {
     Localizations.localeOf(context).languageCode == 'ar'? HijriCalendar.setLocal("ar"):HijriCalendar.setLocal("en");
-    print(  "shimoooo     ${HijriCalendar.now().hMonth}   " +
-       "${HijriCalendar.now().hYear}");
+    //print(  "shimoooo     ${HijriCalendar.now().hMonth}   " +
+    //   "${HijriCalendar.now().hYear}");
     return HijriCalendar.now().toFormat("dd MMMM yyyy");
   }
 
