@@ -89,27 +89,27 @@ class AzanHomeWidget extends StatelessWidget {
             ),
             Expanded(
                 child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   
-                  "${AppLocalizations.of(context).translate("Day")}:${DateFormat.EEEE(Localizations.localeOf(context).languageCode).format(DateTime.now())}",
+                  "${DateFormat.EEEE(Localizations.localeOf(context).languageCode).format(DateTime.now())}  ${DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(DateTime.now())}",
                   locale: Locale('en'),
                   style: TextStyle(
                       color: Constants.PRIMARY_COLOR,
                       fontWeight: FontWeight.bold,
                       fontSize: sizeConfig.blockSizeHorizontal * 3),
                 ),
-                SizedBox(
-                  height: sizeConfig.blockSizeVertical,
-                ),
-                Text(
-                  "${DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(DateTime.now())}",
-                  style: TextStyle(
-                      color: Constants.PRIMARY_COLOR,
-                      fontWeight: FontWeight.bold,
-                      fontSize: sizeConfig.blockSizeHorizontal * 3),
-                ),
+                // SizedBox(
+                //   height: sizeConfig.blockSizeVertical,
+                // ),
+                // Text(
+                //   "${DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(DateTime.now())}",
+                //   style: TextStyle(
+                //       color: Constants.PRIMARY_COLOR,
+                //       fontWeight: FontWeight.bold,
+                //       fontSize: sizeConfig.blockSizeHorizontal * 3),
+                // ),
                 SizedBox(
                   height: sizeConfig.blockSizeVertical,
                 ),

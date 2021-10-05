@@ -105,7 +105,7 @@ class HomePage extends ConsumerWidget {
                                                       color: darkish_green,
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              28)),
+                                                              15)),
                                                   child: Center(
                                                     child: Text(
                                                       AppLocalizations.of(
@@ -150,7 +150,7 @@ class HomePage extends ConsumerWidget {
                                                         hintStyle: TextStyle(
                                                             fontSize: 13,
                                                             color:
-                                                                light_grey_Two)),
+                                                            dark_blue_green)),
                                                   ),
                                                 ))
                                               ],
