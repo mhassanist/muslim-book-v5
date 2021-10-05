@@ -80,7 +80,9 @@ class HomePage extends ConsumerWidget {
                                                           UserProvider>(context,
                                                       listen: false)
                                                   .isLoggedIn
-                                              ? showBottomsheetOptions(context)
+                                              ? Navigator.of(context).push(CustomPageRoute(child: CreatePostView(
+                                            postschanges: postschanges,
+                                          ),direction: AxisDirection.up))
                                               : showSheet(context);
                                         },
                                         child: Container(
@@ -112,8 +114,9 @@ class HomePage extends ConsumerWidget {
                                                                   context,
                                                                   listen: false)
                                                               .isLoggedIn
-                                                          ? showBottomsheetOptions(
-                                                              context)
+                                                          ? Navigator.of(context).push(CustomPageRoute(child: CreatePostView(
+                                                        postschanges: postschanges,
+                                                      ),direction: AxisDirection.up))
                                                           : showSheet(context);
                                                     },
                                                     decoration: InputDecoration(
@@ -680,4 +683,27 @@ class HomePage extends ConsumerWidget {
               ],
             )));
   }
+}
+
+class CustomPageRoute extends PageRouteBuilder {
+  final Widget child;
+  final AxisDirection direction;
+
+  CustomPageRoute({
+    this.child,
+    this.direction = AxisDirection.up
+}) : super(
+    transitionDuration: Duration(milliseconds: 400),
+    pageBuilder: (context, animation, secondaryAnimation) => child,
+  );
+
+  @override
+  Widget buildTransitions(BuildContext context, Animation<double> animation,
+      Animation<double> secondaryAnimation, Widget child) =>
+      SlideTransition(
+        position: Tween<Offset>(
+          begin: Offset(0,1),
+          end: Offset.zero
+        ).animate(animation),
+        child: child,);
 }
