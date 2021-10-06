@@ -164,7 +164,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
                 Container(
                   alignment: Alignment.topCenter,
                   margin: EdgeInsets.only(left: 20, right: 20),
-                  height: unitSize * 45,
+                  height: unitSize * 40,
                   child: Transform.rotate(
                     angle: currentLocLatLong != null
                         ? ((degToKaabaBaring - direction) * (math.pi / 180))
