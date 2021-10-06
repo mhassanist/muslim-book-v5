@@ -116,8 +116,8 @@ class _AddWidgetEditState extends State<AddWidgetEdit> {
                           child: GestureDetector(
                             onTap: () {
                               Navigator.pop(context);
-                              if (widget.title == "المسابقه" ||
-                                  widget.title == "المسابقات") {
+                              if ((widget.title == AppLocalizations.of(context).translate('competition')) ||
+                                  (widget.title == AppLocalizations.of(context).translate('competitions'))) {
                                 this.widget.exit();
                               } else {
                                 Navigator.pop(context);
