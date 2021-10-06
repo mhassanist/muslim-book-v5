@@ -16,7 +16,6 @@ import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -167,7 +166,7 @@ class _CompetitionViewMobilePortraitState
           .of(context)
           .size
           .height,
-      padding: EdgeInsets.only(top: kToolbarHeight),
+      padding: EdgeInsets.only(top: 10),
       child: ListView(
           padding: EdgeInsets.only(bottom: 20),
           children: <Widget>[

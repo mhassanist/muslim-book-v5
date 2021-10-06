@@ -9,7 +9,6 @@ import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/location_utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
-import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geolocation/geolocation.dart';
@@ -177,54 +176,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
                 ),
                 _hasPermissions
                     ? AnimatedCrossFade(
-                        firstChild: Column(
-                          children: <Widget>[
-                            Padding(
-                              padding: EdgeInsets.only(top: unitSize * 2),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "${currentLocLatLong != null ? currentLocLatLong : ""}",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColorDark,
-                                    fontSize: unitSize * 2,
-                                    fontWeight: FontWeight.w800),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: unitSize * 2),
-                            ),
-                            Text(
-                              AppLocalizations.of(context).translate("Qiblah"),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: unitSize * 2),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: unitSize * 1),
-                            ),
-                            Text(
-                              AppLocalizations.of(context).translate("from_left"),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: unitSize * 2),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: unitSize * 1),
-                            ),
-                            Text(
-                              "${degToKaabaBaring.toStringAsFixed(3)}",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                  fontSize: unitSize * 3,
-                                  fontWeight: FontWeight.w800),
-                            ),
-                            AdMobRectangle(BannerName.BOSLA )
-                            // .. AdMobRectangle(BannerName.BOSLA)
-                          ],
-                        ),
+                        firstChild: AdMobRectangle(BannerName.BOSLA ),
                         secondChild: Container(
                           alignment: Alignment.center,
                           padding: EdgeInsets.all(5),
