@@ -1,5 +1,6 @@
 import 'package:base_app/ads/add_widget_edit.dart';
 import 'package:base_app/ads/admob_rectangle.dart';
+import 'package:base_app/ads/admob_rectangle_small.dart';
 import 'package:base_app/ads/load_ui_with_add.dart';
 import 'package:base_app/enams/view_state_enum.dart';
 import 'package:base_app/home_feature/controllers/home_controller.dart';
@@ -168,13 +169,13 @@ class _CompetitionViewMobilePortraitState
           .height,
       padding: EdgeInsets.only(top: 10),
       child: ListView(
-          padding: EdgeInsets.only(bottom: 20),
+          padding: EdgeInsets.only(bottom: 10),
           children: <Widget>[
           ui.questionText(),
       ui.questions(),
       ui.answers(),
       ui.continueButton(),
-            AdMobRectangle(BannerName.COMPETITION )
+            AdMobRectangleSmall(BannerName.COMPETITION )
 //          ui.faceBookAdsWidget(
 //              locator<RemoteConfigService>().underCompetitionAdsId)
       ],

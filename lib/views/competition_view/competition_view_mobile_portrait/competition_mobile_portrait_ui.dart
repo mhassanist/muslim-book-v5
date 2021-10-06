@@ -187,11 +187,11 @@ class CompetitionUI {
     }
     return Container(
       margin: EdgeInsets.only(
-        top: sizeConfig.blockSizeHorizontal * 5,
+        top: sizeConfig.blockSizeHorizontal * 2,
         left: sizeConfig.blockSizeHorizontal * 10,
         right: sizeConfig.blockSizeHorizontal * 10,
       ),
-      height: sizeConfig.blockSizeVertical * 8,
+      height: sizeConfig.blockSizeVertical * 6,
       //width: sizeConfig.blockSizeHorizontal * 60,
       child: IgnorePointer(
         ignoring: provider.disablePickingAnswers,
