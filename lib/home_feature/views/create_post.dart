@@ -27,11 +27,13 @@ class _CreatePostViewState extends State<CreatePostView> {
     return ResponsiveBuilder(
         builder: (context, SizingInformation sizeConfig) {
           return AppScaffold(
-            transparentBackground: true,
+            padding: EdgeInsets.symmetric(vertical: 20),
+            transparentBackground: false,
             title: Text(AppLocalizations.of(context).translate("Post")),
             child: SingleChildScrollView(
               child: Container(
                 height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -42,11 +44,11 @@ class _CreatePostViewState extends State<CreatePostView> {
                 child: Stack(children: <Widget>[
                   Positioned.fill(child:
                   Padding(
-                    padding: const EdgeInsets.only(top:40,right: 10.0,left: 10.0,bottom: 10.0),
+                    padding: const EdgeInsets.only(top:0,right: 10.0,left: 10.0,bottom: 10.0),
                     child: Column(
                       children: [
-                        Text(AppLocalizations.of(context).translate("be_goodness"),
-                          style: TextStyle(fontSize: 17, color: dark_blue_green),),
+                        // Text(AppLocalizations.of(context).translate("be_goodness"),
+                        //   style: TextStyle(fontSize: 17, color: dark_blue_green),),
                         Padding(
                           padding:
                           const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
@@ -54,11 +56,14 @@ class _CreatePostViewState extends State<CreatePostView> {
                             key: formKey,
                             child: TextField(
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                // hintText:
-                                //     AppLocalizations.of(context).translate("be_goodness"),
-                                // hintStyle:
-                                //     TextStyle(fontSize: 13, color: Colors.black38)
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: darkish_green),borderRadius: BorderRadius.circular(20)),
+                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: darkish_green),borderRadius: BorderRadius.circular(20)),
+                                fillColor: Colors.grey[100],filled: true,
+                                hintText:
+                                    AppLocalizations.of(context).translate("be_goodness"),
+                                hintStyle:
+                                    TextStyle(fontSize: 17, color: Colors.black38)
                               ),
                               maxLines: 10,
                               onChanged: (val) {
