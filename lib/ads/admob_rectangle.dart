@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:base_app/ads/ad_manager.dart';
 import 'package:base_app/main.dart';
+import 'package:base_app/utils/Constants.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_native_admob/flutter_native_admob.dart';
 import 'package:flutter_native_admob/native_admob_controller.dart';
 
 import 'package:flutter_native_admob/native_admob_options.dart';
+import 'package:loading/indicator/ball_beat_indicator.dart';
+import 'package:loading/loading.dart';
 
 class AdMobRectangle extends StatefulWidget {
     final bannerName;
@@ -74,7 +77,11 @@ class _AdMobRectangleState extends State<AdMobRectangle> {
           .width / 4) * 3,
       child:NativeAdmob(
         loading:Container(
-          child: Center(child: CircularProgressIndicator(),),
+          child: Center(child: Loading(
+            indicator: BallBeatIndicator(),
+            size: 70.0,
+            color: Constants.PRIMARY_DARK_COLOR,
+          ),),
         ),
         options: NativeAdmobOptions(
         ),
