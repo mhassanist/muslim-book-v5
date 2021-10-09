@@ -159,37 +159,37 @@ public class AzanIntentService extends Service {
                 mAfterAzanMediaPlayer = MediaPlayer.create(this,
                         Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/after_azan.mp3")));
                 boolean _isCallActive = isCallActive(this);
-                AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+                AudioManager am = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
                 switch (am.getMode()) {
                     case AudioManager.MODE_IN_COMMUNICATION:
-                        Log.i("MyApp","Silent mode");
+                        Log.i("MyApp", "Silent mode");
                         break;
                     case AudioManager.MODE_RINGTONE:
-                        Log.i("MyApp","Vibrate mode");
+                        Log.i("MyApp", "Vibrate mode");
 
                         break;
-                      case AudioManager.MODE_IN_CALL:
-                          Log.i("MyApp","MODE_RINGTONE");
+                    case AudioManager.MODE_IN_CALL:
+                        Log.i("MyApp", "MODE_RINGTONE");
 //                        break;
                 }
-                 boolean _isSilentMode = isSilentMode(this);
-                 Log.i("_isSilentMode" ,_isSilentMode+"");
-                Log.i("MyApp" ,_isCallActive+"  _isCallActive");
-                if (Turn_Off_The_Call_To_Prayer_On_The_Phone){
-                    Log.i("_isSilentMode" ,"one");
-                    if(_isCallActive){
-                        Log.i("_isSilentMode" ,"_isCallActive");
+                boolean _isSilentMode = isSilentMode(this);
+                Log.i("_isSilentMode", _isSilentMode + "");
+                Log.i("MyApp", _isCallActive + "  _isCallActive");
+                if (Turn_Off_The_Call_To_Prayer_On_The_Phone) {
+                    Log.i("_isSilentMode", "one");
+                    if (_isCallActive) {
+                        Log.i("_isSilentMode", "_isCallActive");
                         mMediaPlayer.stop();
-                    }else {
-                        Log.i("_isSilentMode" ,"!_isCallActive");
-                        if(!_isSilentMode) {
+                    } else {
+                        Log.i("_isSilentMode", "!_isCallActive");
+                        if (!_isSilentMode) {
                             mMediaPlayer.start();
                         }
                     }
-                }else {
-                    Log.i("_isSilentMode" ,"tow");
-                    if(!_isSilentMode) {
+                } else {
+                    Log.i("_isSilentMode", "tow");
+                    if (!_isSilentMode) {
                         mMediaPlayer.start();
                     }
                 }
@@ -247,44 +247,49 @@ public class AzanIntentService extends Service {
         AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         return manager.getMode() == AudioManager.MODE_IN_CALL;
     }
+
     public boolean isSilentMode(Context context) {
         AudioManager manager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         return manager.getRingerMode() == AudioManager.RINGER_MODE_SILENT;
     }
 
     private void setSilentMode(boolean onDestroy) {
+        //audio permission might not have been set
+        try {
+            AudioManager mgr = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            int streamType = AudioManager.STREAM_SYSTEM;
+            mgr.setStreamSolo(streamType, true);
+            mgr.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+            mgr.setStreamMute(streamType, true);
 
-        AudioManager mgr = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        int streamType = AudioManager.STREAM_SYSTEM;
-        mgr.setStreamSolo(streamType, true);
-        mgr.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-        mgr.setStreamMute(streamType, true);
 
+            new CountDownTimer(300000, 1000) {
 
-   new CountDownTimer(300000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    String tttt = "" + String.format("%02d:%02d:%02d",
+                            TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
+                            TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+                                    TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                            TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                    Log.i("Seconds_remaining: ", tttt + "");
 
-            public void onTick(long millisUntilFinished) {
-              String tttt =""+String.format("%02d:%02d:%02d",
-                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
-                                TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
-                                TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
-                Log.i("Seconds_remaining: " , tttt+"");
-
-            }
-
-            public void onFinish() {
-                int streamType = AudioManager.STREAM_SYSTEM;
-                mgr.setStreamSolo(streamType, false);
-                mgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-                mgr.setStreamMute(streamType, false);
-                if (onDestroy) {
-                    onDestroy();
                 }
-            }
 
-        }.start();
+                public void onFinish() {
+                    int streamType = AudioManager.STREAM_SYSTEM;
+                    mgr.setStreamSolo(streamType, false);
+                    mgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                    mgr.setStreamMute(streamType, false);
+                    if (onDestroy) {
+                        onDestroy();
+                    }
+                }
+
+            }.start();
+        } catch (Exception e) {
+
+        }
 
     }
 
@@ -366,6 +371,12 @@ public class AzanIntentService extends Service {
             mMediaPlayer = MediaPlayer.create(this,
                     Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/korsi_ayat.mp3")));
             //Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/fajr_ebtehal.mp3")));
+            //Firebase Crash
+            // java.lang.NullPointerException:
+            // Attempt to invoke virtual method 'void android.media.MediaPlayer.start()' on a null object reference
+            if (mMediaPlayer == null)
+                return;
+
             mMediaPlayer.start();
             final int[] count = {1};
             int maxCount = 3;
@@ -385,6 +396,8 @@ public class AzanIntentService extends Service {
             mMediaPlayer = MediaPlayer.create(this,
                     Uri.fromFile(
                             new File(getApplicationInfo().dataDir + "/app_flutter/before_" + key + ".mp3")));
+            if (mMediaPlayer == null)
+                return;
             mMediaPlayer.start();
             mMediaPlayer.setOnCompletionListener(mediaPlayer -> {
                 onDestroy();
