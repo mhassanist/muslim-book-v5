@@ -81,6 +81,7 @@ public class AzkarPopUpService {
   void drawView() {
     mMediaPlayer = MediaPlayer.create(context,
             R.raw.azkar);
+    mediaPlayer.prepare();
     mMediaPlayer.start();
     mMediaPlayer.setOnCompletionListener(mp -> {
       closeService();

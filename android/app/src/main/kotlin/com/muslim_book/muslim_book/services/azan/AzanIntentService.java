@@ -149,6 +149,7 @@ public class AzanIntentService extends Service {
                 mMediaPlayer = MediaPlayer.create(this,
                         Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/azan_" + getMuazenName(key) + ".mp3")));
             }
+            mediaPlayer.prepare();
 
             if (json != null && json.contains(key)) {
 
@@ -277,10 +278,15 @@ public class AzanIntentService extends Service {
                 }
 
                 public void onFinish() {
-                    int streamType = AudioManager.STREAM_SYSTEM;
-                    mgr.setStreamSolo(streamType, false);
-                    mgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-                    mgr.setStreamMute(streamType, false);
+                    try{
+
+                    }catch (Exception c){
+                        int streamType = AudioManager.STREAM_SYSTEM;
+                        mgr.setStreamSolo(streamType, false);
+                        mgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                        mgr.setStreamMute(streamType, false);
+                    }
+
                     if (onDestroy) {
                         onDestroy();
                     }
@@ -370,6 +376,8 @@ public class AzanIntentService extends Service {
         if (key.equalsIgnoreCase("1") && new Prefs(this).getAllowAlfajrIbtehal()) {
             mMediaPlayer = MediaPlayer.create(this,
                     Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/korsi_ayat.mp3")));
+            mediaPlayer.prepare();
+
             //Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/fajr_ebtehal.mp3")));
             //Firebase Crash
             // java.lang.NullPointerException:
@@ -396,6 +404,7 @@ public class AzanIntentService extends Service {
             mMediaPlayer = MediaPlayer.create(this,
                     Uri.fromFile(
                             new File(getApplicationInfo().dataDir + "/app_flutter/before_" + key + ".mp3")));
+            mediaPlayer.prepare();
             if (mMediaPlayer == null)
                 return;
             mMediaPlayer.start();

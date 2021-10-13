@@ -111,6 +111,7 @@ public class RamadanCannonIntentService extends Service {
 
         mMediaPlayer = MediaPlayer.create(this,
                 Uri.fromFile(new File(azanSoundUriString())));
+        mediaPlayer.prepare();
         mMediaPlayer.start();
         mMediaPlayer.setOnCompletionListener(mPlayer -> {
             onDestroy();
