@@ -103,6 +103,7 @@ dependencies:
   universal_io: ^0.8.6
   ffi: ^1.1.2
   flutter_riverpod: ^0.12.4
+  pull_to_refresh: ^2.0.0
 
   easy_localization: ^1.2.2+4
  #  fluttertoast: ^7.1.5

@@ -293,7 +293,10 @@
   "part_no": "Part No:",
   "categories": "categories",
   "Feeds": "Feeds",
-  "checkout_internet": "No internet connection"
+  "checkout_internet": "No internet connection",
+  "release_to_load_more": "release to load more",
+  "pull_up-load": "pull up load",
+  "no_more_posts": "No More Posts"
 
 
 

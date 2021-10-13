@@ -7,13 +7,12 @@ import 'package:base_app/home_feature/domian/model/Posts_model.dart';
 
 class HomeRepository {
 
-  Future<List<Post>> getPosts() async {
+  Future<List<Post>> getPosts(int pageIndex) async {
     Posts posts = Posts();
     DioUtil.setDioAgain();
     final dio = DioUtil.dio;
-    final response = await dio.get("posts");
-    print("shiammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmma_ttttttttttt");
-    print(response.data);
+    final response = await dio.get("posts?page=$pageIndex");
+    //print(response.data);
     posts = Posts.fromJson(response.data);
 
     return posts.data;

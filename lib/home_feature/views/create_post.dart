@@ -1,5 +1,4 @@
 import 'package:base_app/ads/admob_rectangle.dart';
-import 'package:base_app/ads/admob_rectangle_small.dart';
 import 'package:base_app/home_feature/const/color.dart';
 import 'package:base_app/home_feature/controllers/providers_get_post.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
@@ -85,7 +84,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                             setState(() {
                               loadingHere = true;
                             });
-                            this.widget.postschanges.createPost(content).then((value) {
+                            this.widget.postschanges.createPost(content,1).then((value) {
                               Future.delayed(Duration(seconds: 1), () {
                                 setState(() {
                                   loadingHere = false;

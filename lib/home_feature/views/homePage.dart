@@ -1,3 +1,4 @@
+import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/home_feature/const/color.dart';
 import 'package:base_app/home_feature/controllers/providers_get_post.dart';
 import 'package:base_app/home_feature/domian/model/categories_model.dart';
@@ -8,6 +9,7 @@ import 'package:base_app/home_feature/widgets/azan_home_widget.dart';
 import 'package:base_app/home_feature/widgets/categories_horisontal_home_widget.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/main.dart';
+import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/views/login_pop_up_view/login_pop_up_view.dart';
@@ -19,17 +21,52 @@ import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
 import "package:provider/provider.dart" as ProviderUser;
 import 'package:share/share.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomePage extends ConsumerWidget {
   HomeRepository homeRepository = HomeRepository();
-  var postschanges;
+  PostsNotifier postschanges;
+  int pageIndex = 1;
+  List<Widget> postsListWidget = [];
+  List<Post> postsList = [];
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  void _onRefresh() async {
+    // monitor network fetch
+    await postschanges.getPosts(++pageIndex);
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
+  }
+
+  Future<void> _onLoading() async {
+    await postschanges.getPosts(++pageIndex);
+    if (postschanges.posts.isEmpty) {
+      _refreshController.loadNoData();
+    } else {
+      _refreshController.loadComplete();
+    }
+  }
 
   @override
   Widget build(BuildContext context, ScopedReader watch) {
     double width = MediaQuery.of(context).size.width;
     postschanges = watch(getPosts);
     if (postschanges.isloading == true) {
-      postschanges.getPosts();
+      postschanges.getPosts(pageIndex);
+    }
+    if (postschanges.posts.isNotEmpty) {
+      for (int i = 1; i <= postschanges.posts.length; i++) {
+        postsListWidget.add(buildPostItem(postschanges.posts[i-1]));
+
+
+        //add ad every 10 posts
+        if (pageIndex.isOdd && (i == 10 || i == 20)) {
+          postsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+        } else if (pageIndex.isEven  && (i == 5 || i == 15 || i== 25)) {
+          postsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+        }
+      }
     }
     if (postschanges.isloading == true) {
       postschanges.getcategories();
@@ -80,9 +117,14 @@ class HomePage extends ConsumerWidget {
                                                           UserProvider>(context,
                                                       listen: false)
                                                   .isLoggedIn
-                                              ? Navigator.of(context).push(CustomPageRoute(child: CreatePostView(
-                                            postschanges: postschanges,
-                                          ),direction: AxisDirection.up))
+                                              ? Navigator.of(context).push(
+                                                  CustomPageRoute(
+                                                      child: CreatePostView(
+                                                        postschanges:
+                                                            postschanges,
+                                                      ),
+                                                      direction:
+                                                          AxisDirection.up))
                                               : showSheet(context);
                                         },
                                         child: Container(
@@ -114,9 +156,16 @@ class HomePage extends ConsumerWidget {
                                                                   context,
                                                                   listen: false)
                                                               .isLoggedIn
-                                                          ? Navigator.of(context).push(CustomPageRoute(child: CreatePostView(
-                                                        postschanges: postschanges,
-                                                      ),direction: AxisDirection.up))
+                                                          ? Navigator.of(context).push(
+                                                              CustomPageRoute(
+                                                                  child:
+                                                                      CreatePostView(
+                                                                    postschanges:
+                                                                        postschanges,
+                                                                  ),
+                                                                  direction:
+                                                                      AxisDirection
+                                                                          .up))
                                                           : showSheet(context);
                                                     },
                                                     decoration: InputDecoration(
@@ -129,7 +178,7 @@ class HomePage extends ConsumerWidget {
                                                         hintStyle: TextStyle(
                                                             fontSize: 13,
                                                             color:
-                                                            dark_blue_green)),
+                                                                dark_blue_green)),
                                                   ),
                                                 )),
                                                 SizedBox(
@@ -141,18 +190,18 @@ class HomePage extends ConsumerWidget {
                                                   decoration: BoxDecoration(
                                                       color: darkish_green,
                                                       borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
+                                                          BorderRadius.circular(
+                                                              10)),
                                                   child: Center(
                                                     child: Text(
                                                       AppLocalizations.of(
-                                                          context)
+                                                              context)
                                                           .translate("Post"),
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 13,
                                                           fontWeight:
-                                                          FontWeight.bold),
+                                                              FontWeight.bold),
                                                     ),
                                                   ),
                                                 ),
@@ -176,28 +225,23 @@ class HomePage extends ConsumerWidget {
                                             ? postschanges.posts != null &&
                                                     postschanges
                                                         .posts.isNotEmpty
-                                                ? ListView.builder(
-                                                    padding: EdgeInsets.all(0),
-                                                    itemCount: postschanges
-                                                        .posts.length,
-                                                    itemBuilder: (ctx, index) =>
-                                                        buildPostItem(
-                                                            postschanges
-                                                                .posts[index]),
-                                                  )
-                                                : Center(
-                                                    child: Container(
-                                                    child: Text(
-                                                      "${AppLocalizations.of(context).translate("data_not_found")}",
-                                                      style: TextStyle(
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ))
+                                                ? _buildPostsList()
+                                                : postsListWidget.isNotEmpty
+                                                    ? _buildPostsList()
+                                                    : Center(
+                                                        child: Container(
+                                                        child: Text(
+                                                          "${AppLocalizations.of(context).translate("data_not_found")}",
+                                                          style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ))
                                             : postschanges.categories != null &&
                                                     postschanges
                                                         .categories.isNotEmpty
@@ -683,27 +727,62 @@ class HomePage extends ConsumerWidget {
               ],
             )));
   }
+
+  _buildPostsList() {
+    return SmartRefresher(
+      onRefresh: _onRefresh,
+      onLoading: _onLoading,
+      enablePullDown: false,
+      enablePullUp: true,
+      controller: _refreshController,
+      footer: CustomFooter(
+        builder: (BuildContext context, LoadStatus mode) {
+          Widget body;
+          if (mode == LoadStatus.noMore) {
+            body =
+                Text(AppLocalizations.of(context).translate("no_more_posts"));
+          } else if (mode == LoadStatus.idle) {
+            body = Text(AppLocalizations.of(context).translate("pull_up-load"));
+          } else if (mode == LoadStatus.loading) {
+            body = CupertinoActivityIndicator();
+          } else if (mode == LoadStatus.failed) {
+            body = Text("Load Failed!Click retry!");
+          } else if (mode == LoadStatus.canLoading) {
+            body = Text(
+                AppLocalizations.of(context).translate("release_to_load_more"));
+          } else {
+            body = Text("No more Data");
+          }
+          return Container(
+            height: 55.0,
+            child: Center(child: body),
+          );
+        },
+      ),
+      child: ListView(
+        padding: EdgeInsets.all(0),
+        children: postsListWidget,
+      ),
+    );
+  }
 }
 
 class CustomPageRoute extends PageRouteBuilder {
   final Widget child;
   final AxisDirection direction;
 
-  CustomPageRoute({
-    this.child,
-    this.direction = AxisDirection.up
-}) : super(
-    transitionDuration: Duration(milliseconds: 400),
-    pageBuilder: (context, animation, secondaryAnimation) => child,
-  );
+  CustomPageRoute({this.child, this.direction = AxisDirection.up})
+      : super(
+          transitionDuration: Duration(milliseconds: 400),
+          pageBuilder: (context, animation, secondaryAnimation) => child,
+        );
 
   @override
   Widget buildTransitions(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation, Widget child) =>
+          Animation<double> secondaryAnimation, Widget child) =>
       SlideTransition(
-        position: Tween<Offset>(
-          begin: Offset(0,1),
-          end: Offset.zero
-        ).animate(animation),
-        child: child,);
+        position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero)
+            .animate(animation),
+        child: child,
+      );
 }

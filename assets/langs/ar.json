@@ -286,7 +286,10 @@
   "part_no": "الجزء رقم :",
   "categories": "الاقسام",
   "Feeds": "مقالات",
-  "checkout_internet": "لا يوجد انترنت"
+  "checkout_internet": "لا يوجد انترنت",
+  "release_to_load_more": "اترك لتحميل المزيد",
+  "pull_up-load": "اسحب لأعلي لتحميل المزيد",
+  "no_more_posts": "لا يوجد المزيد من المنشورات"
 
 
 

@@ -31,9 +31,9 @@ String errormessage;
 
 
 
-  getPosts() async {
+  getPosts(int pageIndex) async {
     try {
-      posts = await homeRepository.getPosts();
+      posts = await homeRepository.getPosts(pageIndex);
       //posts=posts.reversed.toList();
       errormessage=null;
       isloading = false;
@@ -57,9 +57,9 @@ String errormessage;
     notifyListeners();
   }
 
-  createPost(String content) async {
+  createPost(String content, int pageIndex) async {
     message=await homeRepository.createPost(content);
-    posts = await homeRepository.getPosts();
+    posts = await homeRepository.getPosts(pageIndex);
     posts=posts.reversed.toList();
     isloading = true;
     notifyListeners();
