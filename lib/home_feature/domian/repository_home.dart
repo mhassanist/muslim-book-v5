@@ -5,6 +5,8 @@ import 'package:base_app/home_feature/domian/model/create_post_model.dart';
 import 'package:base_app/home_feature/domian/model/post_model.dart';
 import 'package:base_app/home_feature/domian/model/Posts_model.dart';
 
+import 'model/islamic_posts_model.dart';
+
 class HomeRepository {
 
   Future<List<Post>> getPosts(int pageIndex) async {
@@ -25,6 +27,16 @@ class HomeRepository {
     categories = Categories.fromJson(response.data);
 
     return categories.data;
+  }
+
+  Future<List<PostsOfIslamic>> getIslamicPosts(int pageIndex) async {
+    IslamicPosts islamicPosts = IslamicPosts();
+    DioUtil.setDioAgain();
+    final dio = DioUtil.dio;
+    final response = await dio.get("islamics/category/8?page=$pageIndex");
+    islamicPosts = IslamicPosts.fromJson(response.data);
+
+    return islamicPosts.data.posts;
   }
 
   Future<String> createPost(String content) async {

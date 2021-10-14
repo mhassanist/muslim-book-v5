@@ -2,6 +2,7 @@
 // import 'package:azan_app/Screens/Home/domian/repository_home.dart';
 import 'package:base_app/core/dio_util.dart';
 import 'package:base_app/home_feature/domian/model/categories_model.dart';
+import 'package:base_app/home_feature/domian/model/islamic_posts_model.dart';
 import 'package:base_app/home_feature/domian/repository_home.dart';
 import 'package:flutter/cupertino.dart';
  import 'package:base_app/home_feature/domian/model/post_model.dart';
@@ -14,6 +15,7 @@ class PostsNotifier extends ChangeNotifier {
   HomeRepository homeRepository = HomeRepository();
   List<Post> posts = [];
   List<Categore> categories=[];
+  List<PostsOfIslamic> islamicPosts = [];
 String message;
 String errormessage;
   bool isloading = true;
@@ -47,6 +49,19 @@ String errormessage;
   getcategories() async {
     try {
       categories = await homeRepository.getCategories();
+      errormessage=null;
+      isloading = false;
+    } catch(e){
+      isloading = false;
+      errormessage= DioUtil.handleDioError(e);
+      print(errormessage);
+    }
+    notifyListeners();
+  }
+
+  getIslamicPosts(int pageIndex) async {
+    try {
+      islamicPosts = await homeRepository.getIslamicPosts(pageIndex);
       errormessage=null;
       isloading = false;
     } catch(e){

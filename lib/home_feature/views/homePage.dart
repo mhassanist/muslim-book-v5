@@ -2,11 +2,13 @@ import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/home_feature/const/color.dart';
 import 'package:base_app/home_feature/controllers/providers_get_post.dart';
 import 'package:base_app/home_feature/domian/model/categories_model.dart';
+import 'package:base_app/home_feature/domian/model/islamic_posts_model.dart';
 import 'package:base_app/home_feature/domian/model/post_model.dart';
 import 'package:base_app/home_feature/domian/repository_home.dart';
 import 'package:base_app/home_feature/views/create_post.dart';
 import 'package:base_app/home_feature/widgets/azan_home_widget.dart';
 import 'package:base_app/home_feature/widgets/categories_horisontal_home_widget.dart';
+import 'package:base_app/home_feature/widgets/islamic_post_details.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/main.dart';
 import 'package:base_app/models/banner_names_enum.dart';
@@ -27,24 +29,45 @@ class HomePage extends ConsumerWidget {
   HomeRepository homeRepository = HomeRepository();
   PostsNotifier postschanges;
   int pageIndex = 1;
+  int islamicPageIndex = 1;
   List<Widget> postsListWidget = [];
   List<Post> postsList = [];
-  RefreshController _refreshController =
+  List<Widget> islamicPostsListWidget = [];
+  List<PostsOfIslamic> islamicPostsList = [];
+  RefreshController _postsRefreshController =
+      RefreshController(initialRefresh: false);
+  RefreshController _islamicPostsRefreshController =
       RefreshController(initialRefresh: false);
 
-  void _onRefresh() async {
+  void _onPostsRefresh() async {
     // monitor network fetch
     await postschanges.getPosts(++pageIndex);
     // if failed,use refreshFailed()
-    _refreshController.refreshCompleted();
+    _postsRefreshController.refreshCompleted();
   }
 
-  Future<void> _onLoading() async {
+  Future<void> _onPostsLoading() async {
     await postschanges.getPosts(++pageIndex);
     if (postschanges.posts.isEmpty) {
-      _refreshController.loadNoData();
+      _postsRefreshController.loadNoData();
     } else {
-      _refreshController.loadComplete();
+      _postsRefreshController.loadComplete();
+    }
+  }
+
+  void _onIslamicPostsRefresh() async {
+    // monitor network fetch
+    await postschanges.getIslamicPosts(++islamicPageIndex);
+    // if failed,use refreshFailed()
+    _islamicPostsRefreshController.refreshCompleted();
+  }
+
+  Future<void> _onIslamicPostsLoading() async {
+    await postschanges.getIslamicPosts(++islamicPageIndex);
+    if (postschanges.islamicPosts.isEmpty) {
+      _islamicPostsRefreshController.loadNoData();
+    } else {
+      _islamicPostsRefreshController.loadComplete();
     }
   }
 
@@ -57,19 +80,39 @@ class HomePage extends ConsumerWidget {
     }
     if (postschanges.posts.isNotEmpty) {
       for (int i = 1; i <= postschanges.posts.length; i++) {
-        postsListWidget.add(buildPostItem(postschanges.posts[i-1]));
+        if (!postsList.contains(postschanges.posts[i - 1])) {
+          postsListWidget.add(buildPostItem(postschanges.posts[i - 1]));
+          postsList.add(postschanges.posts[i - 1]);
 
-
-        //add ad every 10 posts
-        if (pageIndex.isOdd && (i == 10 || i == 20)) {
-          postsListWidget.add(AdMobRectangle(BannerName.BOSLA));
-        } else if (pageIndex.isEven  && (i == 5 || i == 15 || i== 25)) {
-          postsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+          //add ad every 10 posts
+          if (pageIndex.isOdd && (i == 10 || i == 20)) {
+            postsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+          } else if (pageIndex.isEven && (i == 5 || i == 15 || i == 25)) {
+            postsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+          }
         }
       }
     }
     if (postschanges.isloading == true) {
       postschanges.getcategories();
+      postschanges.getIslamicPosts(islamicPageIndex);
+    }
+    if (postschanges.islamicPosts.isNotEmpty) {
+      for (int i = 1; i <= postschanges.islamicPosts.length; i++) {
+        if (!islamicPostsList.contains(postschanges.islamicPosts[i - 1])) {
+          islamicPostsListWidget.add(
+              _buildIslamicPostItem(postschanges.islamicPosts[i - 1], context));
+          islamicPostsList.add(postschanges.islamicPosts[i - 1]);
+
+          //add ad every 10 posts
+          if (islamicPageIndex.isOdd && (i == 10 || i == 20)) {
+            islamicPostsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+          } else if (islamicPageIndex.isEven &&
+              (i == 5 || i == 15 || i == 25)) {
+            islamicPostsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+          }
+        }
+      }
     }
 
     return MyApp.loading
@@ -245,17 +288,12 @@ class HomePage extends ConsumerWidget {
                                             : postschanges.categories != null &&
                                                     postschanges
                                                         .categories.isNotEmpty
-                                                ? ListView.builder(
-                                                    padding: EdgeInsets.all(0),
-                                                    itemCount: postschanges
-                                                        .categories.length,
-                                                    itemBuilder: (ctx, index) =>
-                                                        CaregoryItem(
-                                                            postschanges
-                                                                    .categories[
-                                                                index],
-                                                            context),
-                                                  )
+                                                ? _buildIslamicPostList()
+                                                // CaregoryItem(
+                                                //     postschanges
+                                                //             .categories[
+                                                //         index],
+                                                //     context),
                                                 // StaggeredGridView
                                                 //                 .countBuilder(
                                                 //                 padding:
@@ -568,7 +606,7 @@ class HomePage extends ConsumerWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        /*InkWell(
+        InkWell(
           onTap: () => postschanges.changeisPosts(false),
           child: Column(
             children: [
@@ -596,7 +634,7 @@ class HomePage extends ConsumerWidget {
         ),
         SizedBox(
           width: 80,
-        ),*/
+        ),
         InkWell(
           onTap: () => postschanges.changeisPosts(true),
           child: Column(
@@ -730,11 +768,11 @@ class HomePage extends ConsumerWidget {
 
   _buildPostsList() {
     return SmartRefresher(
-      onRefresh: _onRefresh,
-      onLoading: _onLoading,
+      onRefresh: _onPostsRefresh,
+      onLoading: _onPostsLoading,
       enablePullDown: false,
       enablePullUp: true,
-      controller: _refreshController,
+      controller: _postsRefreshController,
       footer: CustomFooter(
         builder: (BuildContext context, LoadStatus mode) {
           Widget body;
@@ -764,6 +802,161 @@ class HomePage extends ConsumerWidget {
         children: postsListWidget,
       ),
     );
+  }
+
+  _buildIslamicPostList() {
+    return SmartRefresher(
+      onRefresh: _onIslamicPostsRefresh,
+      onLoading: _onIslamicPostsLoading,
+      enablePullDown: false,
+      enablePullUp: true,
+      controller: _islamicPostsRefreshController,
+      footer: CustomFooter(
+        builder: (BuildContext context, LoadStatus mode) {
+          Widget body;
+          if (mode == LoadStatus.noMore) {
+            body =
+                Text(AppLocalizations.of(context).translate("no_more_posts"));
+          } else if (mode == LoadStatus.idle) {
+            body = Text(AppLocalizations.of(context).translate("pull_up-load"));
+          } else if (mode == LoadStatus.loading) {
+            body = CupertinoActivityIndicator();
+          } else if (mode == LoadStatus.failed) {
+            body = Text("Load Failed!Click retry!");
+          } else if (mode == LoadStatus.canLoading) {
+            body = Text(
+                AppLocalizations.of(context).translate("release_to_load_more"));
+          } else {
+            body = Text("No more Data");
+          }
+          return Container(
+            height: 55.0,
+            child: Center(child: body),
+          );
+        },
+      ),
+      child: ListView(
+        children: islamicPostsListWidget,
+      ),
+    );
+  }
+
+  _buildIslamicPostItem(PostsOfIslamic islamicPost, BuildContext context) {
+    return Card(
+        elevation: 5,
+        child: Container(
+            height: 200,
+            child: Column(
+              children: [
+                Expanded(
+                  child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    IslamicPostDetails(islamicPost)));
+                      },
+                      child:
+                          // SizedBox(
+                          //   height: 200,
+                          //   child: PostVideoView(
+                          //     url: 'https://examole.com/a.mp4',
+                          //   ),
+                          // ),
+                          Container(
+                              child: (islamicPost.featured == null ||
+                                      islamicPost.featured.endsWith('mp4'))
+                                  ? Image.asset(
+                                      "assets/images/splash_view/logo.png",
+                                      color: Colors.grey[100],
+                                      fit: BoxFit.fill)
+                                  : Image.network(islamicPost.featured,
+                                      fit: BoxFit.fill)
+                              // Image.asset(
+                              //   "assets/images/splash_view/logo.png",
+                              //   color: Colors.grey[100],
+                              //   fit: BoxFit.fill,
+                              // )
+                              )),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    child: Column(
+                      children: [
+                        Text(
+                          islamicPost.name,
+                          style: TextStyle(
+                              color: darkish_green,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          islamicPost.description.length >= 50
+                              ? islamicPost.description.substring(0, 50)
+                              : islamicPost.description,
+                          style: TextStyle(
+                            fontSize: 10,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                                child: InkWell(
+                                    onTap: () {
+                                      // Share.share(islamicPost.name +
+                                      //     "\n \n " +
+                                      //     "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book");
+                                    },
+                                    child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8, vertical: 5),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            SvgPicture.asset(
+                                              'assets/icons/path_514.svg',
+                                              color: Colors.grey[300],
+                                              height: 15,
+                                            )
+                                          ],
+                                        )))),
+                            Expanded(
+                                child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 5),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        SvgPicture.asset(
+                                          'assets/icons/group_313.svg',
+                                          color: Colors.grey[300],
+                                          height: 15,
+                                        )
+                                      ],
+                                    ))),
+                          ],
+                        ),
+                      ],
+                    )),
+              ],
+            )));
   }
 }
 

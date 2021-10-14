@@ -20,8 +20,7 @@ class _PostVideoViewState extends State<PostVideoView> {
 
   @override
   void didChangeDependencies() async {
-    _videosController = VideoPlayerController.network(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4');
+    _videosController = VideoPlayerController.network(url);
     // ..initialize().then((_) => setState(() {}));
     await Future.wait([
       _videosController.initialize(),
