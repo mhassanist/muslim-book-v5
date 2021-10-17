@@ -35,8 +35,8 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
                 _buildSizedBox(),
                 _buildPostDescriptionUi(),
                 _buildSizedBox(),
-                _buildPostImageUi(),
-                _buildSizedBox(),
+                //_buildPostImageUi(),
+                //_buildSizedBox(),
                 _buildAdSection(),
                 _buildSizedBox(),
                 _buildPostContentUi(),
@@ -95,6 +95,6 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
   }
 
   _buildAdSection() {
-    return Container(height: 100, child: AdMobRectangle(BannerName.BOSLA));
+    return Container(height: 300, child: AdMobRectangle(BannerName.BOSLA));
   }
 }

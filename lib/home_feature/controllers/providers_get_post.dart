@@ -97,4 +97,13 @@ String errormessage;
     notifyListeners();
   }
 
+  likeIslamicPost(int id)async{
+    await homeRepository.likeIslamicPost(id);
+    notifyListeners();
+  }
+  unlikeIslamicPost(int id)async{
+    await homeRepository.unlikeIslamicPost(id);
+    notifyListeners();
+  }
+
 }

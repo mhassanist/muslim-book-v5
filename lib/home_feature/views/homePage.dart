@@ -842,121 +842,142 @@ class HomePage extends ConsumerWidget {
   }
 
   _buildIslamicPostItem(PostsOfIslamic islamicPost, BuildContext context) {
-    return Card(
-        elevation: 5,
-        child: Container(
-            height: 200,
-            child: Column(
-              children: [
-                Expanded(
-                  child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    IslamicPostDetails(islamicPost)));
-                      },
-                      child:
-                          // SizedBox(
-                          //   height: 200,
-                          //   child: PostVideoView(
-                          //     url: 'https://examole.com/a.mp4',
-                          //   ),
-                          // ),
-                          Container(
-                              child: (islamicPost.featured == null ||
-                                      islamicPost.featured.endsWith('mp4'))
-                                  ? Image.asset(
-                                      "assets/images/splash_view/logo.png",
-                                      color: Colors.grey[100],
-                                      fit: BoxFit.fill)
-                                  : Image.network(islamicPost.featured,
-                                      fit: BoxFit.fill)
-                              // Image.asset(
-                              //   "assets/images/splash_view/logo.png",
-                              //   color: Colors.grey[100],
-                              //   fit: BoxFit.fill,
-                              // )
-                              )),
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                    child: Column(
-                      children: [
-                        Text(
+    return StatefulBuilder(
+      builder: (context, setstate) => Card(
+          elevation: 5,
+          child: Container(
+              height: 200,
+              child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Text(
                           islamicPost.name,
+                          maxLines: 2,
                           style: TextStyle(
                               color: darkish_green,
                               fontSize: 12,
                               fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Text(
-                          islamicPost.description.length >= 50
-                              ? islamicPost.description.substring(0, 50)
-                              : islamicPost.description,
-                          style: TextStyle(
-                            fontSize: 10,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                                child: InkWell(
-                                    onTap: () {
-                                      // Share.share(islamicPost.name +
-                                      //     "\n \n " +
-                                      //     "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book");
-                                    },
-                                    child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8, vertical: 5),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            SvgPicture.asset(
-                                              'assets/icons/path_514.svg',
-                                              color: Colors.grey[300],
-                                              height: 15,
-                                            )
-                                          ],
-                                        )))),
-                            Expanded(
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Expanded(
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          IslamicPostDetails(islamicPost)));
+                            },
+                            child: Container(
+                                child: (islamicPost.featured == null ||
+                                        islamicPost.featured.endsWith('mp4'))
+                                    ? Image.asset(
+                                        "assets/images/splash_view/logo.png",
+                                        color: Colors.grey[100],
+                                        fit: BoxFit.fill)
+                                    : Image.network(islamicPost.featured,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        fit: BoxFit.fill))),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 0.5,
+                        color: darkish_green,
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: InkWell(
+                              onTap: () {
+                                Share.share(islamicPost.name +
+                                    "\n \n " +
+                                    "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book");
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 5),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        SvgPicture.asset(
-                                          'assets/icons/group_313.svg',
-                                          color: Colors.grey[300],
-                                          height: 15,
-                                        )
-                                      ],
-                                    ))),
-                          ],
-                        ),
-                      ],
-                    )),
-              ],
-            )));
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(context)
+                                            .translate("share"),
+                                        style: TextStyle(fontSize: 13),
+                                      ),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      SvgPicture.asset(
+                                        'assets/icons/path_514.svg',
+                                        height: 15,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 0.5,
+                            height: 30,
+                            color: darkish_green,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: InkWell(
+                              onTap: () {
+                                setstate(() {
+                                  islamicPost.liked
+                                      ? postschanges
+                                          .unlikeIslamicPost(islamicPost.id)
+                                      : postschanges
+                                          .likeIslamicPost(islamicPost.id);
+
+                                  islamicPost.liked = !islamicPost.liked;
+                                });
+                              },
+                              child: Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)
+                                          .translate("like"),
+                                      style: TextStyle(
+                                          color: islamicPost.liked
+                                              ? darkish_green
+                                              : Colors.grey[300]),
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    SvgPicture.asset(
+                                      'assets/icons/group_313.svg',
+                                      color: islamicPost.liked
+                                          ? darkish_green
+                                          : Colors.grey[300],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  )))),
+    );
   }
 }
 
