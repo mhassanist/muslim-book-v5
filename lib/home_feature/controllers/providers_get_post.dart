@@ -1,11 +1,11 @@
 // import 'package:azan_app/Screens/Home/domian/model/post_model.dart';
 // import 'package:azan_app/Screens/Home/domian/repository_home.dart';
 import 'package:base_app/core/dio_util.dart';
+import 'package:base_app/home_feature/domian/model/Posts_model.dart';
 import 'package:base_app/home_feature/domian/model/categories_model.dart';
 import 'package:base_app/home_feature/domian/model/islamic_posts_model.dart';
 import 'package:base_app/home_feature/domian/repository_home.dart';
 import 'package:flutter/cupertino.dart';
- import 'package:base_app/home_feature/domian/model/post_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
  final getPosts = ChangeNotifierProvider<PostsNotifier>(
   (_) => PostsNotifier(),
@@ -13,7 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PostsNotifier extends ChangeNotifier {
   HomeRepository homeRepository = HomeRepository();
-  List<Post> posts = [];
+  Posts posts = Posts();
   List<Categore> categories=[];
   List<PostsOfIslamic> islamicPosts = [];
 String message;
@@ -75,7 +75,7 @@ String errormessage;
   createPost(String content, int pageIndex) async {
     message=await homeRepository.createPost(content);
     posts = await homeRepository.getPosts(pageIndex);
-    posts=posts.reversed.toList();
+    //posts=posts.reversed.toList();
     isloading = true;
     notifyListeners();
   }

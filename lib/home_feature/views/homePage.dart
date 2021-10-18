@@ -31,7 +31,7 @@ class HomePage extends ConsumerWidget {
   int pageIndex = 1;
   int islamicPageIndex = 1;
   List<Widget> postsListWidget = [];
-  List<Post> postsList = [];
+  List<int> postsListIDS = [];
   List<Widget> islamicPostsListWidget = [];
   List<PostsOfIslamic> islamicPostsList = [];
   RefreshController _postsRefreshController =
@@ -49,7 +49,7 @@ class HomePage extends ConsumerWidget {
 
   Future<void> _onPostsLoading() async {
     await postschanges.getPosts(++pageIndex);
-    if (postschanges.posts.isEmpty) {
+    if (postschanges.posts.data.isEmpty) {
       _postsRefreshController.loadNoData();
     } else {
       _postsRefreshController.loadComplete();
@@ -79,17 +79,23 @@ class HomePage extends ConsumerWidget {
     if (postschanges.isloading == true) {
       postschanges.getPosts(pageIndex);
     }
-    if (postschanges.posts.isNotEmpty) {
-      for (int i = 1; i <= postschanges.posts.length; i++) {
-        if (!postsList.contains(postschanges.posts[i - 1])) {
-          postsListWidget.add(buildPostItem(postschanges.posts[i - 1]));
-          postsList.add(postschanges.posts[i - 1]);
+    if(postschanges.posts.data != null){
+      if (postschanges.posts.data.isNotEmpty) {
+        if(postschanges.posts.meta.currentPage == 1){
+          postsListWidget = [];
+          postsListIDS = [];
+        }
+        for (int i = 1; i <= postschanges.posts.data.length; i++) {
+          if (!postsListIDS.contains(postschanges.posts.data[i - 1].id)) {
+            postsListWidget.add(buildPostItem(postschanges.posts.data[i - 1]));
+            postsListIDS.add(postschanges.posts.data[i - 1].id);
 
-          //add ad every 10 posts
-          if (pageIndex.isOdd && (i == 10 || i == 20)) {
-            postsListWidget.add(AdMobRectangle(BannerName.BOSLA));
-          } else if (pageIndex.isEven && (i == 5 || i == 15 || i == 25)) {
-            postsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+            //add ad every 10 posts
+            if (pageIndex.isOdd && (i == 10 || i == 20)) {
+              postsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+            } else if (pageIndex.isEven && (i == 5 || i == 15 || i == 25)) {
+              postsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+            }
           }
         }
       }
@@ -267,8 +273,9 @@ class HomePage extends ConsumerWidget {
                                           )
                                         : postschanges.isPosts
                                             ? postschanges.posts != null &&
+                                        postschanges.posts.data != null &&
                                                     postschanges
-                                                        .posts.isNotEmpty
+                                                        .posts.data.isNotEmpty
                                                 ? _buildPostsList()
                                                 : postsListWidget.isNotEmpty
                                                     ? _buildPostsList()

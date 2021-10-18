@@ -2,14 +2,13 @@
 import 'package:base_app/core/dio_util.dart';
 import 'package:base_app/home_feature/domian/model/categories_model.dart';
 import 'package:base_app/home_feature/domian/model/create_post_model.dart';
-import 'package:base_app/home_feature/domian/model/post_model.dart';
 import 'package:base_app/home_feature/domian/model/Posts_model.dart';
 
 import 'model/islamic_posts_model.dart';
 
 class HomeRepository {
 
-  Future<List<Post>> getPosts(int pageIndex) async {
+  Future<Posts> getPosts(int pageIndex) async {
     Posts posts = Posts();
     DioUtil.setDioAgain();
     final dio = DioUtil.dio;
@@ -17,7 +16,7 @@ class HomeRepository {
     //print(response.data);
     posts = Posts.fromJson(response.data);
 
-    return posts.data;
+    return posts;
   }
   Future<List<Categore>> getCategories() async {
     Categories categories = Categories();
