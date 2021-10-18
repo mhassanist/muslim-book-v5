@@ -38,6 +38,7 @@ class HomePage extends ConsumerWidget {
       RefreshController(initialRefresh: false);
   RefreshController _islamicPostsRefreshController =
       RefreshController(initialRefresh: false);
+  Key _postsKey = Key('posts');
 
   void _onPostsRefresh() async {
     // monitor network fetch
@@ -768,6 +769,7 @@ class HomePage extends ConsumerWidget {
 
   _buildPostsList() {
     return SmartRefresher(
+      key: _postsKey,
       onRefresh: _onPostsRefresh,
       onLoading: _onPostsLoading,
       enablePullDown: false,
