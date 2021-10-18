@@ -73,7 +73,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                           ),
                         ),
                         Container(
-                          height: 300,
+                          height: 150,
                           child: AdMobRectangle(BannerName.AZKAR),
                         ),
                         SizedBox(height: 20,),
@@ -116,75 +116,20 @@ class _CreatePostViewState extends State<CreatePostView> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 20,),
+                        Container(
+                          height: 200,
+                          child: AdMobRectangle(BannerName.AZKAR),
+                        ),
                       ],
                     ),
                   ),
                   ),
-                  // Positioned.fill(
-                  //   child: Align(
-                  //     alignment: Alignment.center,
-                  //     child: Container(
-                  //       // margin: EdgeInsets.only(top: 100),
-                  //       child: Visibility(
-                  //         visible: loadingHere,
-                  //         child: Loading(
-                  //           indicator: BallBeatIndicator(),
-                  //           size: 70.0,
-                  //           color: Constants.PRIMARY_DARK_COLOR,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // )
-
 
                 ]),
               ),
             ),
-            // floatingActionButton: Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     InkWell(
-            //       onTap: () {
-            //         FocusScope.of(context).requestFocus(FocusNode());
-            //
-            //         setState(() {
-            //           loadingHere = true;
-            //         });
-            //         this.widget.postschanges.createPost(content).then((value) {
-            //           Future.delayed(Duration(seconds: 1), () {
-            //             setState(() {
-            //               loadingHere = false;
-            //             });
-            //             if (this.widget.postschanges != null) {
-            //               final snackBar = SnackBar(
-            //                   content: Text(this.widget.postschanges.message));
-            //               ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            //             }
-            //             Navigator.of(context).pop();
-            //           });
-            //
-            //         });
-            //       },
-            //       child: Container(
-            //         width: 200,
-            //         height: 45,
-            //         decoration: BoxDecoration(
-            //             color: darkish_green,
-            //             borderRadius: BorderRadius.circular(15)),
-            //         child: Center(
-            //           child: Text(
-            //             AppLocalizations.of(context).translate("Post"),
-            //             style: TextStyle(
-            //                 color: Colors.white,
-            //                 fontSize: 18,
-            //                 fontWeight: FontWeight.bold),
-            //           ),
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
+
           );
         }
     );
