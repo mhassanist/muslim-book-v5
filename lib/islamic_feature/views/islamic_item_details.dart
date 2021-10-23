@@ -30,7 +30,7 @@ class IslamicItemDetails extends ConsumerWidget {
 
   static final _key = Key('AHMED');
 
-  static final _islamicCatListRefreshController =
+  RefreshController _islamicCatListRefreshController =
       RefreshController(initialRefresh: false);
 
   void _onIslamicPostsRefresh() async {
