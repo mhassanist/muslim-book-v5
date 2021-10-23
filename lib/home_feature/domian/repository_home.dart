@@ -28,11 +28,11 @@ class HomeRepository {
     return categories.data;
   }
 
-  Future<List<PostsOfIslamic>> getIslamicPosts(int pageIndex) async {
+  Future<List<PostsOfIslamic>> getIslamicPosts(int pageIndex, int catId) async {
     IslamicPosts islamicPosts = IslamicPosts();
     DioUtil.setDioAgain();
     final dio = DioUtil.dio;
-    final response = await dio.get("islamics/category/8?page=$pageIndex");
+    final response = await dio.get("islamics/category/$catId?page=$pageIndex");
     islamicPosts = IslamicPosts.fromJson(response.data);
 
     return islamicPosts.data.posts;

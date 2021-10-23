@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:base_app/azan_feature/views/azan_view.dart';
 import 'package:base_app/home_feature/controllers/home_controller.dart';
+import 'package:base_app/islamic_feature/views/islamics_view.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/sebha_feature/views/sebha_view.dart';
@@ -236,6 +237,11 @@ class SideDrawerMenu {
                                     listen: false)
                                 .selectedPage = 3;
                           }, true, "assets/images/start_view/quizes_icon.svg"),
+                          _buildDivider(),
+                          _buildRow(Icons.drag_indicator, AppLocalizations.of(context).translate("Feeds"), () {
+                            Navigator.of(context).pop();
+                            Get.to(IslamicsView());
+                          }, false, ""),
                           _buildDivider(),
                           _buildRow(Icons.wine_bar, AppLocalizations.of(context).translate("best"), () {
                             Navigator.of(context).pop();

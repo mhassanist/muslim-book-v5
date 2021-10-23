@@ -58,13 +58,13 @@ class HomePage extends ConsumerWidget {
 
   void _onIslamicPostsRefresh() async {
     // monitor network fetch
-    await postschanges.getIslamicPosts(++islamicPageIndex);
+    await postschanges.getIslamicPosts(++islamicPageIndex, 8);
     // if failed,use refreshFailed()
     _islamicPostsRefreshController.refreshCompleted();
   }
 
   Future<void> _onIslamicPostsLoading() async {
-    await postschanges.getIslamicPosts(++islamicPageIndex);
+    await postschanges.getIslamicPosts(++islamicPageIndex, 8);
     if (postschanges.islamicPosts.isEmpty) {
       _islamicPostsRefreshController.loadNoData();
     } else {
@@ -102,7 +102,7 @@ class HomePage extends ConsumerWidget {
     }
     if (postschanges.isloading == true) {
       postschanges.getcategories();
-      postschanges.getIslamicPosts(islamicPageIndex);
+      postschanges.getIslamicPosts(islamicPageIndex, 8);
     }
     if (postschanges.islamicPosts.isNotEmpty) {
       for (int i = 1; i <= postschanges.islamicPosts.length; i++) {
@@ -885,7 +885,8 @@ class HomePage extends ConsumerWidget {
                             },
                             child: Container(
                                 child: (islamicPost.featured == null ||
-                                        islamicPost.featured.endsWith('mp4'))
+                                        islamicPost.featured.endsWith('mp4')||
+                                    islamicPost.featured == "")
                                     ? Image.asset(
                                         "assets/images/splash_view/logo.png",
                                         color: Colors.grey[100],

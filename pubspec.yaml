@@ -164,6 +164,7 @@ flutter:
     - assets/images/home_view/
     - assets/audio/
     - assets/audio/questions/
+    - assets/images/islamic_icons/
 #    - assets/audio/azkar/
 
   fonts:

@@ -16,9 +16,12 @@ class PostsNotifier extends ChangeNotifier {
   Posts posts = Posts();
   List<Categore> categories=[];
   List<PostsOfIslamic> islamicPosts = [];
+  List<PostsOfIslamic> islamicCatPosts = [];
 String message;
 String errormessage;
+String islamicCatItemsErrorMessage;
   bool isloading = true;
+  bool isIslamicCatItemsLoading = true;
   bool isnews=false;
   bool isPosts = true;
 
@@ -59,15 +62,28 @@ String errormessage;
     notifyListeners();
   }
 
-  getIslamicPosts(int pageIndex) async {
+  getIslamicPosts(int pageIndex, int catId) async {
     try {
-      islamicPosts = await homeRepository.getIslamicPosts(pageIndex);
+      islamicPosts = await homeRepository.getIslamicPosts(pageIndex, catId);
       errormessage=null;
       isloading = false;
     } catch(e){
       isloading = false;
       errormessage= DioUtil.handleDioError(e);
       print(errormessage);
+    }
+    notifyListeners();
+  }
+
+  getIslamicCategoryPosts(int pageIndex, int catId) async {
+    try {
+      islamicCatPosts = await homeRepository.getIslamicPosts(pageIndex, catId);
+      islamicCatItemsErrorMessage=null;
+      isIslamicCatItemsLoading = false;
+    } catch(e){
+      isIslamicCatItemsLoading = false;
+      islamicCatItemsErrorMessage= DioUtil.handleDioError(e);
+      print(islamicCatItemsErrorMessage);
     }
     notifyListeners();
   }

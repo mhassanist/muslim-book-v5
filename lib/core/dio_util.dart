@@ -36,8 +36,8 @@ var token  =locator<Prefs>().getToken();
          "Bearer ${token!=null && token.isNotEmpty ? token:"YZsiAFPyX3O29xcyoflxArylNNRWfExs4fwnsVIgrYUg03TV4XoVYOq23FM3"}"
     };
     options.contentType = "application/json";
-    print("shiammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmma_ttttttttttt");
-    print(options.headers);
+    //print("shiammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmma_ttttttttttt");
+    //print(options.headers);
 
     return options;
   }
