@@ -13,7 +13,14 @@ class LoadingUtils {
           message: AppLocalizations.of(context).translate("please_wait"),
           borderRadius: 10.0,
           backgroundColor: Constants.CANVAS_COLOR,
-          progressWidget: CircularProgressIndicator(),
+          progressWidget: Column(mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                  height: 30,
+                  width: 30,
+                  child: CircularProgressIndicator()),
+            ],
+          ),
           elevation: 10.0,
           insetAnimCurve: Curves.easeInOut,
           progress: 0.0,
