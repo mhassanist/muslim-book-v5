@@ -1,5 +1,4 @@
 import 'package:base_app/ads/add_widget_edit.dart';
-import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/ads/admob_rectangle_small.dart';
 import 'package:base_app/ads/load_ui_with_add.dart';
 import 'package:base_app/enams/view_state_enum.dart';
@@ -86,6 +85,7 @@ class _CompetitionViewMobilePortraitState
             key: _scaffoldKey,
             appBar: AppBar(
               centerTitle: true,
+              backgroundColor: Constants.PRIMARY_COLOR,
               title: AppScaffoldTitleWidget(title: AppLocalizations.of(context).translate("competitions")),
               leading:   InkWell(
                 child: Container(

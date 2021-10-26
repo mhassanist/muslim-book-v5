@@ -107,8 +107,10 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
                 .openGooglePickerDialog()
                 .then((value) {
               setState(() {});
-              if (this.widget.close) {
-                Navigator.of(context).pop();
+              if(this.widget.close != null){
+                if (this.widget.close) {
+                  Navigator.of(context).pop();
+                }
               }
             });
             util.setIsLoading(context, false);

@@ -38,7 +38,7 @@ dependencies:
   launch_review: ^2.0.0
   auto_size_text: ^2.1.0
   flutter_flexible_toast: ^0.1.4
-  facebook_audience_network: ^0.6.2
+  facebook_audience_network: ^0.9.0
 
   android_alarm_manager_plus: ^1.0.2
   dio: ^3.0.9
