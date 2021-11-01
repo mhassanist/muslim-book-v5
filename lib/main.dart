@@ -39,6 +39,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
+import 'islamic_feature/bloc/islamic_post_details_bloc.dart';
 import 'locals_utils/app_localizations.dart';
 import 'models/banner_names_enum.dart';
 import 'utils/Constants.dart';
@@ -307,6 +308,8 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider<OnlineSebhaProvider>(
             create: (_) => OnlineSebhaProvider()),
+        ChangeNotifierProvider<IslamicPostDetailsBloc>(
+            create: (_) => IslamicPostDetailsBloc()),
       ],
       child: ConnectivityAppWrapper(
         app: GetMaterialApp(

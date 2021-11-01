@@ -38,6 +38,16 @@ class HomeRepository {
     return islamicPosts.data.posts;
   }
 
+  Future<PostsOfIslamic> getIslamicPostDetails(String postId) async {
+    PostsOfIslamic islamicPostDetails = PostsOfIslamic();
+    DioUtil.setDioAgain();
+    final dio = DioUtil.dio;
+    final response = await dio.get("islamics/$postId");
+    islamicPostDetails = PostsOfIslamic.fromJson(response.data['data']);
+
+    return islamicPostDetails;
+  }
+
   Future<String> createPost(String content) async {
 
     DioUtil.setDioAgain();

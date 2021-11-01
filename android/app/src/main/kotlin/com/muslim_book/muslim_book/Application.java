@@ -29,6 +29,8 @@ import java.util.Locale;
 import net.danlew.android.joda.JodaTimeAndroid;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
+import io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin;
+import com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin;
 
 public class Application extends FlutterApplication implements PluginRegistry.PluginRegistrantCallback {
 
@@ -56,7 +58,9 @@ public class Application extends FlutterApplication implements PluginRegistry.Pl
    }
   @Override
   public void registerWith(PluginRegistry registry) {
-   }
+    FirebaseMessagingPlugin.registerWith(registry.registrarFor("io.flutter.plugins.firebasemessaging.FirebaseMessagingPlugin"));
+    FlutterLocalNotificationsPlugin.registerWith(registry.registrarFor("com.dexterous.flutterlocalnotifications.FlutterLocalNotificationsPlugin"));
+  }
 
 
 }

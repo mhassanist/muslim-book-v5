@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:base_app/ads/ad_manager.dart';
 import 'package:base_app/azkar_feature/views/azkar_list_view.dart';
+import 'package:base_app/core/push_notification_service.dart';
 import 'package:base_app/home_feature/controllers/home_controller.dart';
 import 'package:base_app/home_feature/views/home_view.dart';
-import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/main.dart';
 import 'package:base_app/models/banner_names_enum.dart';
@@ -46,6 +46,10 @@ class _StartViewMobilePortraitViewState
   static NativeAdmob _ad;
    @override
   void initState() {
+     WidgetsBinding.instance.addPostFrameCallback((_) async {
+       await PushNotificationService().initialise();
+       await PushNotificationService().initNotification(context);
+     });
     _ad = NativeAdmob(
       loading: Container(
         child: Center(
