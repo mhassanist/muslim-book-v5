@@ -21,7 +21,6 @@ import 'package:base_app/utils/sizing_info_extension.dart';
 import 'package:base_app/views/splash_view/splash_view.dart';
 import 'package:base_app/views/start_view/start_view.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:device_preview/device_preview.dart' show DevicePreview;
 import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
@@ -60,10 +59,7 @@ void main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   FacebookAudienceNetwork.init();
   runApp(
-    DevicePreview(
-      enabled: false,
-      builder: (context) => ProviderScope(child: MyApp()), // Wrap your app
-    ),
+    ProviderScope(child: MyApp()), // Wrap your app
   );
 }
 

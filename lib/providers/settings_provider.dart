@@ -15,20 +15,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 
 class SettingsProvider extends ViewStateProvider {
-
-
   BuildContext _context;
   bool _azanAlert,
       _mondaysAndThursdaysFastingAlert,
       _whiteDaysFastingAlert,
-      _fajrIbtehal ,
-  _isActivatingShaarawiVoice,
+      _fajrIbtehal,
+      _isActivatingShaarawiVoice,
       _isTurnOffPrayerPhone,
-   _isSwitchSilentModeAfterResidence,
-  _isRemmberActive
-  ;
-  bool _saveLocation  = false;
-  bool _saveSetting   = false;
+      _isSwitchSilentModeAfterResidence,
+      _isRemmberActive;
+
+  bool _saveLocation = false;
+  bool _saveSetting = false;
   String _countryName;
   String _pickedCountryName;
   String _pickedCityName;
@@ -36,27 +34,25 @@ class SettingsProvider extends ViewStateProvider {
   Map<String, dynamic> _pickedMazhab;
   Map<String, dynamic> _latitudeAdjustmentMethod;
 
+  void change() {
+    notifyListeners();
+  }
 
-void change(){
-  notifyListeners();
-}
-
-   static Map<String, dynamic> _pickedAzanShiekhMain ={
-    '1':"", '2':"", '3':"", '4':"", '5':"", '6':"",
-  };
+  static Map<String, dynamic> _pickedAzanShiekhMain;
   static Map<String, dynamic> _pickedFajrAzanShiekh;
 
   bool alreadyFilledData = false;
 
-  fillTheSettingsData()  async{
-
+  fillTheSettingsData() async {
     if (!alreadyFilledData) {
-      _isActivatingShaarawiVoice = locator<Prefs>().getActivatingAlShaarawiVoiceFlag() ;
-      _isSwitchSilentModeAfterResidence = locator<Prefs>().getSwitchSilentModeAfterResidenceFlag() ;
-      _isTurnOffPrayerPhone = locator<Prefs>().getTurnOffPrayerPhoneFlag() ;
+      _isActivatingShaarawiVoice =
+          locator<Prefs>().getActivatingAlShaarawiVoiceFlag();
+      _isSwitchSilentModeAfterResidence =
+          locator<Prefs>().getSwitchSilentModeAfterResidenceFlag();
+      _isTurnOffPrayerPhone = locator<Prefs>().getTurnOffPrayerPhoneFlag();
       SharedPreferences pprefs = await SharedPreferences.getInstance();
 
-       _isRemmberActive = locator<Prefs>().getVoiceReminderBeforePrayingFlag() ;
+      _isRemmberActive = locator<Prefs>().getVoiceReminderBeforePrayingFlag();
       _azanAlert = locator<Prefs>().getAzanOnPrayTimeFlag();
       _fajrIbtehal = locator<Prefs>().getFajrIbtehalFlag();
       _mondaysAndThursdaysFastingAlert =
@@ -66,41 +62,57 @@ void change(){
       // _pickedCountryName = locator<Prefs>().getCountry() ?? "EG";
       print(_pickedCountryName);
       _pickedCityName = locator<Prefs>().getCity();
-       print(locator<Prefs>().getLatitudeAdjustmentMethod());
-      if(locator<Prefs>().getLatitudeAdjustmentMethod()!=null) {
+      print(locator<Prefs>().getLatitudeAdjustmentMethod());
+      if (locator<Prefs>().getLatitudeAdjustmentMethod() != null) {
         _latitudeAdjustmentMethod = (AppLocalizations.of(_context).isEnglish()
-            ? Constants.EN_Latitude_Adjustment_Method
-            : Constants.AR_Latitude_Adjustment_Method)[locator<Prefs>()
-            .getLatitudeAdjustmentMethod()];
+                ? Constants.EN_Latitude_Adjustment_Method
+                : Constants.AR_Latitude_Adjustment_Method)[
+            locator<Prefs>().getLatitudeAdjustmentMethod()];
       }
       _pickedMethod = (AppLocalizations.of(_context).isEnglish()
           ? Constants.EN_AZAN_METHODS
           : Constants.AR_AZAN_METHODS)[locator<Prefs>().getAzanMethod() ?? 0];
       _pickedMazhab = (AppLocalizations.of(_context).isEnglish()
-          ? Constants.EN_AZAN_Mazhabs
-          : Constants.AR_AZAN_Mazhabs)[locator<Prefs>().getAzanMazhab()== null ? 0 :locator<Prefs>().getAzanMazhab() ];
-      for (var i = 2; i < 7; i++) {
-        String savedShiekLocalJSON =
-            locator<Prefs>().getAzanShiekhJSON(i.toString());
-        if (savedShiekLocalJSON == null) {
-          String savedShiekhId = locator<Prefs>().getAzanShiekh(i.toString());
-          if (savedShiekhId != null) {
-            for (Map<String, dynamic> shiekh in AppLocalizations.of(_context).isEnglish()? Constants.EN_SHIEKH_NAMES: Constants.AR_SHIEKH_NAMES) {
-              if (shiekh["id"] == savedShiekhId) {
-                // _pickedAzanShiekh = shiekh;
-                _pickedAzanShiekhMain[i.toString()] = shiekh;
-                break;
-              }
+              ? Constants.EN_AZAN_Mazhabs
+              : Constants.AR_AZAN_Mazhabs)[
+          locator<Prefs>().getAzanMazhab() == null
+              ? 0
+              : locator<Prefs>().getAzanMazhab()];
+
+      String savedShiekLocalJSON = locator<Prefs>().getAzanShiekhJSON("3");
+
+      if (savedShiekLocalJSON == null) {
+        String savedShiekhId = locator<Prefs>().getAzanShiekh("3");
+        if (savedShiekhId != null) {
+          for (Map<String, dynamic> shiekh
+              in AppLocalizations.of(_context).isEnglish()
+                  ? Constants.EN_SHIEKH_NAMES
+                  : Constants.AR_SHIEKH_NAMES) {
+            if(shiekh == null){
+              _pickedAzanShiekhMain = {
+                "3": AppLocalizations.of(_context).isEnglish()
+                    ? Constants.EN_SHIEKH_NAMES[0]['name']
+                    : Constants.AR_SHIEKH_NAMES[0]['name']
+              };
             }
-          } else {
-            // _pickedAzanShiekh = Constants.SHIEKH_NAMES[0];
-            _pickedAzanShiekhMain[i.toString()] = AppLocalizations.of(_context).isEnglish()?Constants.EN_SHIEKH_NAMES[0]:Constants.AR_SHIEKH_NAMES[0];
+            else if (shiekh["id"] == savedShiekhId) {
+              _pickedAzanShiekhMain = {"3": shiekh['name']};
+              break;
+            }
           }
-          alreadyFilledData = true;
         } else {
-          _pickedAzanShiekhMain[i.toString()] =
-              AzanSound.toMap(savedShiekLocalJSON);
+          // _pickedAzanShiekh = Constants.SHIEKH_NAMES[0];
+          _pickedAzanShiekhMain = {
+            "3": AppLocalizations.of(_context).isEnglish()
+                ? Constants.EN_SHIEKH_NAMES[0]['name']
+                : Constants.AR_SHIEKH_NAMES[0]['name']
+          };
         }
+        alreadyFilledData = true;
+      } else {
+        _pickedAzanShiekhMain = {
+          "3": AzanSound.toMap(savedShiekLocalJSON)['name']
+        };
       }
 
       //fajr part
@@ -108,7 +120,10 @@ void change(){
       if (savedFajrShiekLocalJSON == null) {
         String savedShiekhId = locator<Prefs>().getFajrAzanShiekh();
         if (savedShiekhId != null) {
-          for (Map<String, dynamic> shiekh in AppLocalizations.of(_context).isEnglish()? Constants.EN_SHIEKH_NAMES:Constants.AR_SHIEKH_NAMES) {
+          for (Map<String, dynamic> shiekh
+              in AppLocalizations.of(_context).isEnglish()
+                  ? Constants.EN_SHIEKH_NAMES
+                  : Constants.AR_SHIEKH_NAMES) {
             if (shiekh["id"] == savedShiekhId) {
               _pickedFajrAzanShiekh = shiekh;
               break;
@@ -125,42 +140,59 @@ void change(){
   }
 
   Map<String, dynamic> get pickedMethod => _pickedMethod;
+
   set pickedMethod(Map<String, dynamic> value) {
     _pickedMethod = value;
     notifyListeners();
   }
-  Map<String, dynamic> get latitudeAdjustmentMethod => _latitudeAdjustmentMethod;
+
+  Map<String, dynamic> get latitudeAdjustmentMethod =>
+      _latitudeAdjustmentMethod;
+
   set latitudeAdjustmentMethod(Map<String, dynamic> value) {
     _latitudeAdjustmentMethod = value;
     notifyListeners();
   }
 
   bool get saveLocation => _saveLocation;
+
   bool get saveSetting => _saveSetting;
+
   bool get isActivatingShaarawiVoice => _isActivatingShaarawiVoice;
-  bool get isSwitchSilentModeAfterResidence => _isSwitchSilentModeAfterResidence;
+
+  bool get isSwitchSilentModeAfterResidence =>
+      _isSwitchSilentModeAfterResidence;
+
   bool get isTurnOffPrayerPhone => _isTurnOffPrayerPhone;
+
   bool get isRemmberActive => _isRemmberActive;
 
   set isRemmberActive(bool value) {
     _isRemmberActive = value;
     notifyListeners();
   }
+
   set isActivatingShaarawiVoice(bool value) {
     _isActivatingShaarawiVoice = value;
     notifyListeners();
   }
+
   set isSwitchSilentModeAfterResidence(bool value) {
     _isSwitchSilentModeAfterResidence = value;
     notifyListeners();
-  } set isTurnOffPrayerPhone(bool value) {
+  }
+
+  set isTurnOffPrayerPhone(bool value) {
     _isTurnOffPrayerPhone = value;
     notifyListeners();
   }
+
   set saveLocation(bool value) {
     _saveLocation = value;
     notifyListeners();
-  } set saveSetting(bool value) {
+  }
+
+  set saveSetting(bool value) {
     _saveLocation = value;
     notifyListeners();
   }
@@ -221,7 +253,7 @@ void change(){
   }
 
   refreshAzanTimes() async {
-     await AzanApis().getAzan();
+    await AzanApis().getAzan();
   }
 
   azanAlertFlagChanged(bool newVal) async {
@@ -235,20 +267,22 @@ void change(){
     _isActivatingShaarawiVoice = newVal;
     locator<Prefs>().setActivatingAlShaarawiVoiceFlag(newVal);
     notifyListeners();
-   }
+  }
+
   isSwitchSilentModeAfterResidenceChanged(bool newVal) async {
     _isSwitchSilentModeAfterResidence = newVal;
     locator<Prefs>().setSwitchSilentModeAfterResidenceFlag(newVal);
     await Constants.platform.invokeMethod("AllowPhoneState");
 
     notifyListeners();
-   }
+  }
+
   isTurnOffPrayerPhoneChanged(bool newVal) async {
     _isTurnOffPrayerPhone = newVal;
     locator<Prefs>().setTurnOffPrayerPhoneFlag(newVal);
     await Constants.platform.invokeMethod("AllowPhoneState");
     notifyListeners();
-   }
+  }
 
   isRemmberActiveFlagChanged(bool newVal) async {
     _isRemmberActive = newVal;
@@ -256,7 +290,6 @@ void change(){
     notifyListeners();
     // if (newVal) await Constants.platform.invokeMethod("fireAzan");
   }
-
 
   mondaysAndThursdaysFastingAlertFlagChanged(bool newVal) {
     _mondaysAndThursdaysFastingAlert = newVal;

@@ -170,22 +170,62 @@ class SettingsMobilePortraitUi {
     );
   }
 
+  Widget azanShiekhPart() {
+    return Container(
+      width: sizeConfig.blockSizeHorizontal * 90,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          AnimatedCrossFade(
+            firstChild: SizedBox(),
+            secondChild: Container(
+              margin: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 2),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    provider.pickedAzanShiekhMain != null &&
+                            provider.pickedAzanShiekhMain["3"] != null
+                        ? "${provider.pickedAzanShiekhMain["3"]}"
+                        : "اختر شيخاً",
+
+                    //"${AppLocalizations.of(context).isEnglish() ? Constants.EN_SHIEKH_NAMES[0]["name"] : Constants.AR_SHIEKH_NAMES[0]["name"]}",
+                    // "${provider.pickedAzanShiekhMain["3"]["name"]}",
+                    style: TextStyle(
+                        color: Constants.PRIMARY_DARK_COLOR,
+                        fontWeight: FontWeight.w700,
+                        fontSize: sizeConfig.blockSizeHorizontal * 4),
+                  ),
+                ),
+              ),
+            ),
+            crossFadeState: provider.pickedAzanShiekhMain == null
+                ? CrossFadeState.showFirst
+                : CrossFadeState.showSecond,
+            duration: Duration(milliseconds: 200),
+          ),
+          Center(
+            child: standardButton(
+                isGo: true,
+                context: context,
+                sizeConfig: sizeConfig,
+                color: Theme.of(context).primaryColor,
+                title: AppLocalizations.of(context).translate("select_shiekh"),
+                onPressed: () {
+                  chooseSheikh("3");
+                }),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget fajrAzanShiekhPart() {
     return Container(
       width: sizeConfig.blockSizeHorizontal * 90,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          // Container(
-          //   margin: EdgeInsets.only(top: 20, left: 30, right: 30),
-          //   child: Text(
-          //     AppLocalizations.of(context).translate("azan_shiekh_fajr"),
-          //     style: TextStyle(
-          //         fontSize: sizeConfig.blockSizeHorizontal * 5,
-          //         fontWeight: FontWeight.w700,
-          //         color: Theme.of(context).primaryColor),
-          //   ),
-          // ),
           AnimatedCrossFade(
             firstChild: SizedBox(),
             secondChild: Container(
@@ -220,22 +260,7 @@ class SettingsMobilePortraitUi {
                 title: AppLocalizations.of(context).translate("select_shiekh"),
                 onPressed: chooseFajrSheikh),
           ),
-          // LoadingButton(
-          //   firstWidget: Center(
-          //     child: standardButton(
-          //         isGo: true,
-          //
-          //         context: context,
-          //         sizeConfig: sizeConfig,
-          //         color: Theme.of(context).primaryColorDark,
-          //         title:
-          //         AppLocalizations.of(context).translate("save_settings"),
-          //         onPressed: () async => saveSettings()),
-          //   ),
-          //   state: provider.viewState == ViewState.Loading
-          //       ? CrossFadeState.showSecond
-          //       : CrossFadeState.showFirst,
-          // )
+
         ],
       ),
     );
@@ -252,123 +277,7 @@ class SettingsMobilePortraitUi {
         // azan: azanValue,
         // updateAzan: listenToUpdate,
       ),
-      // Column(
-      //   crossAxisAlignment: CrossAxisAlignment.start,
-      //   children: <Widget>[
-      //     // Container(
-      //     //   margin: EdgeInsets.only(top: 20, left: 30, right: 30),
-      //     //   child: Text(
-      //     //     AppLocalizations.of(context).translate("edite_tieme_prayer"),
-      //     //     style: TextStyle(
-      //     //         fontSize: sizeConfig.blockSizeHorizontal * 5,
-      //     //         fontWeight: FontWeight.w700,
-      //     //         color: Theme.of(context).primaryColor),
-      //     //   ),
-      //     // ),
-      //
-      //     Center(
-      //       child: standardButton(
-      //           context: context,
-      //           sizeConfig: sizeConfig,
-      //           color: Theme.of(context).primaryColor,
-      //           title: AppLocalizations.of(context).translate("edite_tieme_prayer"),
-      //           onPressed:(){
-      //
-      //             Navigator.of(context).push(MaterialPageRoute(
-      //                 builder: (BuildContext context) => EditTimePrayer(
-      //                   // azan: azanValue,
-      //                   updateAzan: listenToUpdate,
-      //                 )));
-      //
-      //
-      //           }),
-      //     ),
-      //     /*LoadingButton(
-      //       firstWidget: Center(
-      //         child: standardButton(
-      //             context: context,
-      //             sizeConfig: sizeConfig,
-      //             color: Theme.of(context).primaryColorDark,
-      //             title:
-      //                 AppLocalizations.of(context).translate("save_settings"),
-      //             onPressed: () async => saveSettings()),
-      //       ),
-      //       state: provider.viewState == ViewState.Loading
-      //           ? CrossFadeState.showSecond
-      //           : CrossFadeState.showFirst,
-      //     )*/
-      //   ],
-      // ),
-    );
-  }
 
-  Widget azanShiekhPart() {
-    return Container(
-      width: sizeConfig.blockSizeHorizontal * 90,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          // Container(
-          //   margin: EdgeInsets.only(top: 20, left: 30, right: 30),
-          //   child: Text(
-          //     AppLocalizations.of(context).translate("azan_shiekh"),
-          //     style: TextStyle(
-          //         fontSize: sizeConfig.blockSizeHorizontal * 5,
-          //         fontWeight: FontWeight.w700,
-          //         color: Theme.of(context).primaryColor),
-          //   ),
-          // ),
-          AnimatedCrossFade(
-            firstChild: SizedBox(),
-            secondChild: Container(
-              margin: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 2),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    "${AppLocalizations.of(context).isEnglish() ? Constants.EN_SHIEKH_NAMES[0]["name"] : Constants.AR_SHIEKH_NAMES[0]["name"]}",
-
-                    // "${provider.pickedAzanShiekhMain["2"]["name"]}",
-                    style: TextStyle(
-                        color: Constants.PRIMARY_DARK_COLOR,
-                        fontWeight: FontWeight.w700,
-                        fontSize: sizeConfig.blockSizeHorizontal * 4),
-                  ),
-                ),
-              ),
-            ),
-            crossFadeState: provider.pickedAzanShiekhMain == null
-                ? CrossFadeState.showFirst
-                : CrossFadeState.showSecond,
-            duration: Duration(milliseconds: 200),
-          ),
-          Center(
-            child: standardButton(
-                isGo: true,
-                context: context,
-                sizeConfig: sizeConfig,
-                color: Theme.of(context).primaryColor,
-                title: AppLocalizations.of(context).translate("select_shiekh"),
-                onPressed: () {
-                  chooseSheikh("3");
-                }),
-          ),
-          /*LoadingButton(
-            firstWidget: Center(
-              child: standardButton(
-                  context: context,
-                  sizeConfig: sizeConfig,
-                  color: Theme.of(context).primaryColorDark,
-                  title:
-                      AppLocalizations.of(context).translate("save_settings"),
-                  onPressed: () async => saveSettings()),
-            ),
-            state: provider.viewState == ViewState.Loading
-                ? CrossFadeState.showSecond
-                : CrossFadeState.showFirst,
-          )*/
-        ],
-      ),
     );
   }
 
@@ -440,22 +349,25 @@ class SettingsMobilePortraitUi {
 
   void chooseSheikh(String azanId) async {
     int newShiekhIndex = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (BuildContext context) => PickAzanShiekhView()));
+        builder: (BuildContext context) => PickAzanShiekhView(
+              azanId: azanId,
+            )));
+
     List<AzanSound> sounds = (await LocalStorageManager().loadAzanSoundsList());
+
     if (newShiekhIndex != null && sounds != null && sounds.length > 0) {
-      provider.pickedAzanShiekhMain[azanId] = sounds[newShiekhIndex].toJSON();
+      provider.pickedAzanShiekhMain = {"3": sounds[newShiekhIndex].name};
     } else if (newShiekhIndex != null) {
-      provider.pickedAzanShiekhMain[azanId] =
-          AppLocalizations.of(context).isEnglish()
-              ? Constants.EN_SHIEKH_NAMES[newShiekhIndex]
-              : Constants.AR_SHIEKH_NAMES[newShiekhIndex];
+      provider.pickedAzanShiekhMain = {"3" : AppLocalizations.of(context).isEnglish()
+          ? Constants.EN_SHIEKH_NAMES[newShiekhIndex]["name"]
+          : Constants.AR_SHIEKH_NAMES[newShiekhIndex]["name"]};
     }
   }
 
   void chooseFajrSheikh() async {
     int newShiekhIndex = await Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => PickFajrAzanShiekhView()));
-    List<AzanSound> sounds = (await LocalStorageManager().loadAzanSoundsList());
+    List<AzanSound> sounds = (await LocalStorageManager().loadFajrAzanSoundsList());
     if (newShiekhIndex != null && sounds != null && sounds.length > 0) {
       provider.pickedFajrAzanShiekh = sounds[newShiekhIndex].toJSON();
     } else if (newShiekhIndex != null) {

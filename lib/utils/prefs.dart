@@ -390,6 +390,19 @@ class Prefs {
   }
 
   setAzanShiekhIdFromJSON(String id, String azanId) async {
+    azanId="2";
+    await prefs.setString('${Constants.DOWNLOADED_SHEIKH_ID}$azanId', id);
+
+    azanId="3";
+    await prefs.setString('${Constants.DOWNLOADED_SHEIKH_ID}$azanId', id);
+
+    azanId="4";
+    await prefs.setString('${Constants.DOWNLOADED_SHEIKH_ID}$azanId', id);
+
+    azanId="5";
+    await prefs.setString('${Constants.DOWNLOADED_SHEIKH_ID}$azanId', id);
+
+    azanId="6";
     await prefs.setString('${Constants.DOWNLOADED_SHEIKH_ID}$azanId', id);
   }
 

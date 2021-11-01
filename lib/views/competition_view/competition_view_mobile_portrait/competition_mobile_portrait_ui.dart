@@ -399,7 +399,6 @@ class CompetitionUI {
         return false;
       },
       child: Scaffold(
-        backgroundColor: const Color(0XFF347D53),
         body: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
