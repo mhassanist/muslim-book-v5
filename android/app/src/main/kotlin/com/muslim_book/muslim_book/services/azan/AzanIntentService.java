@@ -456,7 +456,7 @@ public class AzanIntentService extends Service {
             Log.d("MBOOK", moazanNameId);
             return "sound" + moazanNameId;
         }
-        return prefs.getString(Constants.MUAZEN_KEY + key, "1");
+        return prefs.getString(Constants.MUAZEN_KEY + key, "3");
     }
 
     private void showAzanSlider(String key, boolean Switch_Silent_Mode_After_Residence) {

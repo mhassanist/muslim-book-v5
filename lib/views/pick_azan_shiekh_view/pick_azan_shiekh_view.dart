@@ -102,6 +102,8 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
     return PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight),
       child: AppBar(
+        backgroundColor: const Color(0XFF347D53),
+
         title: Text(
           AppLocalizations.of(context).translate("select_shiekh"),
           style: TextStyle(fontWeight: FontWeight.w500),
