@@ -51,10 +51,10 @@ android {
 
         applicationId "com.muslim_book.muslim_book"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 30
         multiDexEnabled true
-        versionCode 64
-        versionName "4.5.17"
+        versionCode 65
+        versionName "4.5.18"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }

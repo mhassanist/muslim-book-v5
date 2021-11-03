@@ -303,7 +303,7 @@ class _AzanViewState extends State<AzanView> {
                             textAlign: TextAlign.center,
                           ),
                         ])),
-                Container(
+                /*Container(
                     height: 50,
                     width: 40,
                     child: Row(
@@ -315,7 +315,7 @@ class _AzanViewState extends State<AzanView> {
                             height: 20.0,
                             allowDrawingOutsideViewBox: true,
                           )
-                        ])),
+                        ])),*/
                 InkWell(
                     onTap: () {
                       _modalBottomSheetMenu(controller.azanValue[index]);

@@ -238,7 +238,7 @@ class SideDrawerMenu {
                                 .selectedPage = 3;
                           }, true, "assets/images/start_view/quizes_icon.svg"),
                           _buildDivider(),
-                          _buildRow(Icons.drag_indicator, AppLocalizations.of(context).translate("Feeds"), () {
+                          _buildRow(Icons.drag_indicator, AppLocalizations.of(context).translate("more"), () {
                             Navigator.of(context).pop();
                             Get.to(IslamicsView());
                           }, false, ""),

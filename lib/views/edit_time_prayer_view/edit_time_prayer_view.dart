@@ -231,6 +231,8 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
     return PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight),
       child: AppBar(
+        backgroundColor: const Color(0XFF347D53),
+
         title: Text(
           AppLocalizations.of(context).translate("edite_tieme_prayer"),
           style: TextStyle(fontWeight: FontWeight.w500),

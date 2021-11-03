@@ -1,3 +1,4 @@
+import 'package:base_app/islamic_feature/views/islamics_view.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/sebha_feature/views/sebha_view.dart';
@@ -58,7 +59,8 @@ class HomeController extends GetxController {
         "icon": "assets/icons/iconappbar.svg",
         "name": AppLocalizations.of(context).translate("more"),
         "onTap": () async {
-          Get.find<HomeController>().scaffoldKey.currentState.openDrawer();
+          //Get.find<HomeController>().scaffoldKey.currentState.openDrawer();
+          Get.to(IslamicsView());
         }
         //Get.find<HomeController>().scaffoldKey.currentState.openDrawer()
       },

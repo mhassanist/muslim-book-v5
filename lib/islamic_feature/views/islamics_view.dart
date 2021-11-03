@@ -21,7 +21,7 @@ class _IslamicsViewState extends State<IslamicsView> {
     return ResponsiveBuilder(
         builder: (context, SizingInformation sizeConfig){
           return AppScaffold(
-            title: AppScaffoldTitleWidget(title: AppLocalizations.of(context).translate("Feeds")),
+            title: AppScaffoldTitleWidget(title: AppLocalizations.of(context).translate("more")),
             centerTitle: true,
             child: Container(
                 child:Container(

@@ -6,7 +6,9 @@ import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:share/share.dart';
 
 class IslamicPostDetails extends StatefulWidget {
   final PostsOfIslamic islamicPost;
@@ -32,16 +34,44 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
               padding: EdgeInsets.all(10),
               children: [
                 _buildPostTitleUi(),
-                _buildSizedBox(),
-                _buildPostDescriptionUi(),
-                _buildSizedBox(),
-                //_buildPostImageUi(),
-                //_buildSizedBox(),
                 _buildAdSection(),
                 _buildSizedBox(),
                 _buildPostContentUi(),
                 _buildSizedBox(),
                 _buildPostVideoUi(),
+                _buildAdSection(),
+                Expanded(
+                  flex: 1,
+                  child: InkWell(
+                    onTap: () {
+                      Share.share(widget.islamicPost.name +
+                          "\n \n " +
+                          "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book");
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppLocalizations.of(context)
+                                  .translate("share"),
+                              style: TextStyle(fontSize: 13),
+                            ),
+                            SizedBox(
+                              width: 8,
+                            ),
+                            SvgPicture.asset(
+                              'assets/icons/path_514.svg',
+                              height: 15,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                )
               ],
             ),
           ),
