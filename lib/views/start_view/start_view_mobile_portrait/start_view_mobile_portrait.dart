@@ -5,6 +5,7 @@ import 'package:base_app/azkar_feature/views/azkar_list_view.dart';
 import 'package:base_app/core/push_notification_service.dart';
 import 'package:base_app/home_feature/controllers/home_controller.dart';
 import 'package:base_app/home_feature/views/home_view.dart';
+import 'package:base_app/islamic_feature/views/islamic_post_details_from_notification.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/main.dart';
 import 'package:base_app/models/banner_names_enum.dart';
@@ -21,6 +22,7 @@ import 'package:base_app/widgets/SideDrawerMenu_widget.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_admob/flutter_native_admob.dart';
 import 'package:flutter_native_admob/native_admob_options.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -44,11 +46,20 @@ class _StartViewMobilePortraitViewState
   bool isAdd = false;
   RemoteConfig remoteConfig;
   static NativeAdmob _ad;
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  FlutterLocalNotificationsPlugin();
    @override
   void initState() {
      WidgetsBinding.instance.addPostFrameCallback((_) async {
        await PushNotificationService().initialise();
        await PushNotificationService().initNotification(context);
+       final NotificationAppLaunchDetails notificationAppLaunchDetails =
+       await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+       print(notificationAppLaunchDetails);
+       if(notificationAppLaunchDetails.didNotificationLaunchApp == true){
+         Navigator.push(context, MaterialPageRoute(builder: (context) => IslamicPostDetailsFromNotification(notificationAppLaunchDetails.payload)));
+
+       }
      });
     _ad = NativeAdmob(
       loading: Container(

@@ -39,13 +39,15 @@ class PushNotificationService {
     if (Platform.isIOS) {
       //_fcm.requestPermission();
     }
-    await _fcm.subscribeToTopic('muslim').then((value) {
+    await _fcm.subscribeToTopic('muslim66').then((value) {
       print('value');
     }).catchError((error){
       print('subscribeToTopic Errorrrrrrrr: '+ error.toString());
     });
     await _fcm.getToken().then((value) {
       print('Android token:  $value');
+    }).catchError((e){
+      print(e);
     });
 
     _fcm.configure(
@@ -117,7 +119,7 @@ class PushNotificationService {
   void _handleNavigation(BuildContext context, String payload) {
     try{
       Navigator.push(context, MaterialPageRoute(builder: (context) => IslamicPostDetailsFromNotification(payload)));
-      flutterNotification.cancelAll();
+     // flutterNotification.cancelAll();
 
     }catch(e){
       print(e);
@@ -137,8 +139,8 @@ class PushNotificationService {
         importance: Importance.max,
         priority: Priority.high,
         showWhen: false,
-        autoCancel: false,
-        ongoing: true);
+        autoCancel: true,
+        ongoing: false);
 
     var iosDetails = new IOSNotificationDetails(presentSound: true);
     var generalNotificationDetails =
