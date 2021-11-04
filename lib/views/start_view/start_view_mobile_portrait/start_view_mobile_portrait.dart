@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:base_app/ads/ad_manager.dart';
@@ -9,6 +10,7 @@ import 'package:base_app/islamic_feature/views/islamic_post_details_from_notific
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/main.dart';
 import 'package:base_app/models/banner_names_enum.dart';
+import 'package:base_app/models/push_notification_model.dart';
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/quran/views/quran_view.dart';
 import 'package:base_app/utils/Constants.dart';
@@ -48,6 +50,7 @@ class _StartViewMobilePortraitViewState
   static NativeAdmob _ad;
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
   FlutterLocalNotificationsPlugin();
+  NotificationData data = NotificationData();
    @override
   void initState() {
      WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -57,7 +60,14 @@ class _StartViewMobilePortraitViewState
        await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
        print(notificationAppLaunchDetails);
        if(notificationAppLaunchDetails.didNotificationLaunchApp == true){
-         Navigator.push(context, MaterialPageRoute(builder: (context) => IslamicPostDetailsFromNotification(notificationAppLaunchDetails.payload)));
+         Map<String,dynamic> dataa = jsonDecode(notificationAppLaunchDetails.payload);
+         String postId = dataa["post_id"];
+         String catName = dataa["cat_name"];
+         String catId = dataa["cat_id"];
+         data.postId = postId;
+         data.catName = catName;
+         data.catId = catId;
+         Navigator.push(context, MaterialPageRoute(builder: (context) => IslamicPostDetailsFromNotification(data)));
 
        }
      });

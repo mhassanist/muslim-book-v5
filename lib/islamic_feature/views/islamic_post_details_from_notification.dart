@@ -6,12 +6,13 @@ import 'package:base_app/home_feature/widgets/video_view.dart';
 import 'package:base_app/islamic_feature/bloc/islamic_post_details_bloc.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/models/banner_names_enum.dart';
+import 'package:base_app/models/push_notification_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class IslamicPostDetailsFromNotification extends StatefulWidget {
-  final String postId;
-  const IslamicPostDetailsFromNotification(this.postId,{Key key}) : super(key: key);
+  final NotificationData data;
+  const IslamicPostDetailsFromNotification(this.data,{Key key}) : super(key: key);
 
   @override
   _IslamicPostDetailsFromNotificationState createState() => _IslamicPostDetailsFromNotificationState();
@@ -20,7 +21,7 @@ class IslamicPostDetailsFromNotification extends StatefulWidget {
 class _IslamicPostDetailsFromNotificationState extends State<IslamicPostDetailsFromNotification> {
   @override
   void initState() {
-    IslamicPostDetailsBloc().getIslamicPostDetails(widget.postId);
+    IslamicPostDetailsBloc().getIslamicPostDetails(widget.data.postId);
     super.initState();
   }
   @override
@@ -28,7 +29,9 @@ class _IslamicPostDetailsFromNotificationState extends State<IslamicPostDetailsF
     IslamicPostDetailsBloc _islamicPostDetails = Provider.of<IslamicPostDetailsBloc>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context).translate("Feeds")),
+        title: Text((widget.data != null || widget.data.catName != null)
+            ? widget.data.catName
+            : ""),
         centerTitle: true,
         backgroundColor: Color(0XFF347D53),
       ),

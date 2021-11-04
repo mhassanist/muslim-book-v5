@@ -1,4 +1,5 @@
-import 'dart:async';
+
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:base_app/islamic_feature/views/islamic_post_details_from_notification.dart';
@@ -14,16 +15,20 @@ class PushNotificationService {
       FlutterLocalNotificationsPlugin();
 
    //PushNotificationModel notificationModel = PushNotificationModel();
-    static Data data = Data();
+    static NotificationData data = NotificationData();
 
   static Future<dynamic> myBackgroundMessageHandler(
       Map<String, dynamic> massage) async {
     String title = massage['data']['title'];
     String body = massage['data']['body'];
     String postId = massage['data']['post_id'];
+    String catId = massage['data']['cat_id'];
+    String catName = massage['data']['cat_name'];
     data.title = title;
     data.body = body;
     data.postId = postId;
+    data.catId = catId;
+    data.catName = catName;
       //LocalDataStore().saveNotificationType(notificationModel.data.notificationType);
     try {
       await _showNotification(data);
@@ -57,25 +62,28 @@ class PushNotificationService {
         String title = massage['data']['title'];
         String body = massage['data']['body'];
         String postId = massage['data']['post_id'];
+        String catId = massage['data']['cat_id'];
+        String catName = massage['data']['cat_name'];
           print("onMessage: $massage");
         data.title = title;
         data.body = body;
         data.postId = postId;
+        data.catId = catId;
+        data.catName = catName;
 
         _showNotification(data);
       },
       onLaunch: (Map<String, dynamic> massage) async {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          Timer(const Duration(seconds: 7), () {
-            print("onLaunch");
-          });
-        });
         String title = massage['data']['title'];
         String body = massage['data']['body'];
         String postId = massage['data']['post_id'];
+        String catId = massage['data']['cat_id'];
+        String catName = massage['data']['cat_name'];
         data.title = title;
         data.body = body;
         data.postId = postId;
+        data.catId = catId;
+        data.catName = catName;
           print("onLaunch");
 
         //LocalDataStore().saveNotificationType(notificationModel.data.notificationType);
@@ -85,9 +93,13 @@ class PushNotificationService {
         String title = massage['data']['title'];
         String body = massage['data']['body'];
         String postId = massage['data']['post_id'];
+        String catId = massage['data']['cat_id'];
+        String catName = massage['data']['cat_name'];
         data.title = title;
         data.body = body;
         data.postId = postId;
+        data.catId = catId;
+        data.catName = catName;
           print("onResume");
 
 
@@ -118,7 +130,19 @@ class PushNotificationService {
 
   void _handleNavigation(BuildContext context, String payload) {
     try{
-      Navigator.push(context, MaterialPageRoute(builder: (context) => IslamicPostDetailsFromNotification(payload)));
+      Map<String,dynamic> dataa = jsonDecode(payload);
+      String postId = dataa["post_id"];
+      String catName = dataa["cat_name"];
+      String catId = dataa["cat_id"];
+      data.postId = postId;
+      data.catName = catName;
+      data.catId = catId;
+    }catch(e){
+      print(e);
+    }
+
+    try{
+      Navigator.push(context, MaterialPageRoute(builder: (context) => IslamicPostDetailsFromNotification(data)));
      // flutterNotification.cancelAll();
 
     }catch(e){
@@ -131,7 +155,7 @@ class PushNotificationService {
   }
 
   static Future _showNotification(
-      Data notificationModel
+      NotificationData notificationModel
       ) async {
     AndroidNotificationDetails androidDetails = new AndroidNotificationDetails("channelId",
         notificationModel.title, notificationModel.body,
@@ -148,7 +172,8 @@ class PushNotificationService {
 
     await flutterNotification.show(0, notificationModel.title,
         notificationModel.body, generalNotificationDetails,
-        payload: notificationModel.postId);
+        payload: notificationModel.toString());
+
   }
 
   Future onDidReceiveLocalNotification(
