@@ -83,7 +83,7 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
   _buildPostTitleUi() {
     return Text(
       widget.islamicPost.name,
-      style: TextStyle(fontSize: 18),
+      style: TextStyle(fontSize: 16, height: 2, fontWeight: FontWeight.w600),
     );
   }
 
@@ -104,7 +104,8 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
   }
 
   _buildPostContentUi() {
-    return Text(widget.islamicPost.content, style: TextStyle(fontSize: 15));
+    return Text(widget.islamicPost.content,
+        style: TextStyle(fontSize: 16, height: 2,));
   }
 
   _buildPostVideoUi() {
