@@ -7,6 +7,8 @@ import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/widgets/app_scaffold_title.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
+import 'package:loading/indicator/ball_beat_indicator.dart';
+import 'package:loading/loading.dart';
 
 class IslamicCatPosts extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -237,7 +239,11 @@ class _IslamicCatPostsState extends State<IslamicCatPosts> {
                 });
           }
           return Center(
-            child: CircularProgressIndicator(),
+            child: Loading(
+              indicator: BallBeatIndicator(),
+              size: 70.0,
+              color: Colors.white,
+            ),
           );
         });
   }
