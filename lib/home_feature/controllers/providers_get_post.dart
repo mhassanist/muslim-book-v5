@@ -24,6 +24,7 @@ String islamicCatItemsErrorMessage;
   bool isIslamicCatItemsLoading = true;
   bool isnews=false;
   bool isPosts = true;
+  bool isPostListError = false;
 
   changeisPosts(bool value) {
     isPosts = value;
@@ -45,6 +46,7 @@ String islamicCatItemsErrorMessage;
     } catch(e){
       isloading = false;
       errormessage= DioUtil.handleDioError(e);
+      isPostListError = true;
     }
     notifyListeners();
   }

@@ -154,7 +154,11 @@ class HomePage extends ConsumerWidget {
                 Expanded(
                     child: postschanges.isloading
                         ? Center(
-                            child: CircularProgressIndicator(),
+                            child: Loading(
+                              indicator: BallBeatIndicator(),
+                              size: 50.0,
+                              color: Constants.PRIMARY_DARK_COLOR,
+                            ),
                           )
                         : Container(
                             height: 150,
@@ -273,26 +277,40 @@ class HomePage extends ConsumerWidget {
                                           )
                                         : postschanges.isPosts
                                             ? postschanges.posts != null &&
-                                        postschanges.posts.data != null &&
+                                                    postschanges.posts.data !=
+                                                        null &&
                                                     postschanges
                                                         .posts.data.isNotEmpty
                                                 ? _buildPostsList()
                                                 : postsListWidget.isNotEmpty
                                                     ? _buildPostsList()
-                                                    : Center(
-                                                        child: Container(
-                                                        child: Text(
-                                                          "${AppLocalizations.of(context).translate("data_not_found")}",
-                                                          style: TextStyle(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .primaryColor,
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                      ))
+                                                    : postschanges.isPostListError ==
+                                                            false
+                                                        ? Container(
+                                                            child: Center(
+                                                              child: Loading(
+                                                                indicator:
+                                                                    BallBeatIndicator(),
+                                                                size: 70.0,
+                                                                color: Constants.PRIMARY_DARK_COLOR,
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : Center(
+                                                            child: Container(
+                                                            child: Text(
+                                                              "${AppLocalizations.of(context).translate("data_not_found")}",
+                                                              style: TextStyle(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .primaryColor,
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ))
                                             : postschanges.categories != null &&
                                                     postschanges
                                                         .categories.isNotEmpty
