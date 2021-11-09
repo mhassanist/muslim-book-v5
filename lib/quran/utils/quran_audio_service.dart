@@ -5,7 +5,6 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:base_app/quran/models/quran_model.dart';
 import 'package:base_app/quran/utils/quran_top_level_functions.dart';
 import 'package:base_app/utils/Constants.dart';
-import 'package:base_app/utils/prefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QuranAudioService extends BackgroundAudioTask {
@@ -130,13 +129,13 @@ class QuranAudioService extends BackgroundAudioTask {
       if (prefs.getBool(Constants.ALLOW_REPEAT_AYA) != null &&
           prefs.getBool(Constants.ALLOW_REPEAT_AYA)) {
         if (playerCount < playCount) {
-          print(
-              "first play count is $playCount and playerCount is $playerCount");
+         // print(
+              //"first play count is $playCount and playerCount is $playerCount");
           playerCount = playerCount + 1;
           this.onPlay();
         } else {
-          print(
-              "second play count is $playCount and playerCount is $playerCount");
+          // print(
+          //     "second play count is $playCount and playerCount is $playerCount");
 
           playerCount = 1;
           playNext();

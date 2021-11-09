@@ -22,7 +22,7 @@ class RamadanMashraatAAPI {
 
   Future requestRamadanMashraat() async {
     var response = await _dio.get("ramadan/mp3/1");
-    print("requestRamadanMashraat " +response.data["data"].toString());
+    //print("requestRamadanMashraat " +response.data["data"].toString());
     if (!(response.data is Failure)) {
       List<RamadanSoundsModel> model=List<RamadanSoundsModel>.from( response.data["data"].map((x) => RamadanSoundsModel.fromJson(x)));
       return model;

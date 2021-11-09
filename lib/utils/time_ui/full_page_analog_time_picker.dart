@@ -17,7 +17,7 @@ class FullPageAnalogTimePicker extends StatelessWidget {
   Map<String, DateTime> _dateTime = new Map();
   @override
   Widget build(BuildContext context) {
-    print(mapData);
+    //print(mapData);
     return Scaffold(
       body: Container(
         child: Stack(

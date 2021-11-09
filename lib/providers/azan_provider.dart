@@ -45,7 +45,7 @@ class AzanProvider extends ViewStateProvider {
 
   Future getAzanModel(context) async {
     setViewState(ViewState.Loading);
-    print("hosaaaaaaaaaaaaaaaaaaaaaaaam  2   ");
+    //print("hosaaaaaaaaaaaaaaaaaaaaaaaam  2   ");
 
     await AzanApis().getAzan();
     Future.delayed(Duration(seconds: 1), () {

@@ -46,7 +46,7 @@ class AzanHomeWidget extends StatelessWidget {
                           ));
                     } else {
                       // return Container();
-                      print(locator<Prefs>().getAssalahTime("1"));
+                      //print(locator<Prefs>().getAssalahTime("1"));
                       var nextSalah =
                           controller.getAzanList(context)[controller.nextAzanKey - 1];
                       return Padding(

@@ -97,7 +97,7 @@ class ApiService {
         },
       );
       var res = json.decode(resource.body);
-      print(res);
+      //print(res);
       if (map["additional"] == "force" && !(res.data is Failure)) {
         return answer.AnswerModel.fromMap(res.data).data;
       }
@@ -122,7 +122,7 @@ class ApiService {
         options: Options(headers: {
           "Authorization": 'Bearer ' + _userProvider.user.apiToken
         }));
-    print(response.data);
+    //print(response.data);
     if (!(response.data is Failure)) {
       TopModel model = TopModel.fromMap(response.data);
       return model;
@@ -136,7 +136,7 @@ class ApiService {
         options: Options(headers: {
           "Authorization": 'Bearer ' + _userProvider.user.apiToken
         }));
-    print(response.data);
+    //print(response.data);
     if (!(response.data is Failure)) {
       TopModel model = TopModel.fromMap(response.data);
       return model;
@@ -168,13 +168,13 @@ class ApiService {
         'https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${token}');
 
     Map ddddv = json.decode(graphResponse.body);
-    print(graphResponse.body);
-    print("--------------");
-    print(response.body);
+    //print(graphResponse.body);
+    //print("--------------");
+    //print(response.body);
     model.image = ddddv['picture']['data']['url'];
-    print(ddddv['picture']['data']['url']);
-    print("--------------");
-    print(model.image);
+    //print(ddddv['picture']['data']['url']);
+    //print("--------------");
+    //print(model.image);
     return model;
   }
 
@@ -214,7 +214,7 @@ class ApiService {
           options: Options(headers: {
             "Authorization": 'Bearer ' + _userProvider.user.apiToken,
           }));
-      print("arrived to updateUserCount ${res.data}");
+      //print("arrived to updateUserCount ${res.data}");
 
       return true;
     } catch (e) {

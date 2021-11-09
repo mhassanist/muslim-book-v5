@@ -1,12 +1,14 @@
 import 'package:base_app/ads/add_widget_edit.dart';
 import 'package:base_app/ads/load_ui_with_add.dart';
 import 'package:base_app/models/banner_names_enum.dart';
+import 'package:base_app/providers/tasbeeh_top_provider.dart';
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/sebha_feature/online_sebha/controllers/online_sebha_controller.dart';
 import 'package:base_app/sebha_feature/online_sebha/models/tasabeeh_model.dart';
 import 'package:base_app/sebha_feature/views/new_tasbeeh_view.dart';
 import 'package:base_app/views/login_pop_up_view/login_pop_up_view.dart';
 import 'package:base_app/views/myProfile_view/myProfile_view.dart';
+import 'package:base_app/views/top_view/tasbeeh_top_view.dart';
 import 'package:base_app/widgets/app_scaffold_title.dart';
 import 'package:base_app/widgets/share_dialog.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +74,28 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
           AppScaffold(
           onProfileTap: () => Get.to(MyProfileView()),
           actions: [
+            Container(
+              margin: EdgeInsets.only(
+                top: sizeConfig.blockSizeVertical,
+                left: sizeConfig.blockSizeHorizontal * 3,
+              ),
+              width: sizeConfig.blockSizeHorizontal * 9.5,
+              height: sizeConfig.blockSizeHorizontal * 9.5,
+              child: FloatingActionButton(
+                backgroundColor: Constants.ICON_COLOR,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) =>_getTabseehTopPage()),
+                  );
+                },
+                child: FittedBox(
+                    child: Icon(
+                      Icons.wine_bar,
+                      color: Colors.white,
+                    )),
+              ),
+            ),
             Container(
               margin: EdgeInsets.only(
                 top: sizeConfig.blockSizeVertical,
@@ -473,5 +497,17 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  _getTabseehTopPage() {
+    return ChangeNotifierProxyProvider<UserProvider, TasbeehTopProvider>(
+      create: (_) => TasbeehTopProvider(null),
+      update: (_, user, __) => TasbeehTopProvider(user),
+      child:ScreenTypeLayout(
+        mobile: OrientationLayoutBuilder(
+          portrait: (context) => TasbeehTopView(),
+        ),
+      ),
+    );
   }
 }

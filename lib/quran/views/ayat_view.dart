@@ -305,8 +305,8 @@ class _AyatViewState extends State<AyatView> {
   void deactivate() {
     super.deactivate();
     endTime = DateTime.now();
-    print(endTime.difference(startTime).inMinutes);
-    print(endTime.difference(startTime).inMinutes.abs());
+    //print(endTime.difference(startTime).inMinutes);
+    //print(endTime.difference(startTime).inMinutes.abs());
     if (endTime.difference(startTime).inMinutes.abs() >= 1) {
       _audioCache.play('allah_make_you_from_heaven.wav');
     }

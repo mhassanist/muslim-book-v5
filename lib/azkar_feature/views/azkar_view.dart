@@ -110,7 +110,7 @@ class _AzkarViewState extends State<AzkarView> {
                           Spacer(),
 
                           Container(
-                              height: 100,
+                              height: 300,
                               child: AdMobRectangle(BannerName.BOSLA )),
 
 

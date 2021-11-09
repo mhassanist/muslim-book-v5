@@ -129,13 +129,13 @@ class QuranAudioService extends BackgroundAudioTask {
       if (prefs.getBool(Constants.ALLOW_REPEAT_AYA) != null &&
           prefs.getBool(Constants.ALLOW_REPEAT_AYA)) {
         if (playerCount < playCount) {
-          print(
-              "first play count is $playCount and playerCount is $playerCount");
+          // print(
+          //     "first play count is $playCount and playerCount is $playerCount");
           playerCount = playerCount + 1;
           this.onPlay();
         } else {
-          print(
-              "second play count is $playCount and playerCount is $playerCount");
+          // print(
+          //     "second play count is $playCount and playerCount is $playerCount");
 
           playerCount = 1;
           playNext();

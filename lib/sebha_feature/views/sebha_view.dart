@@ -2,12 +2,7 @@ import 'dart:io';
 
 import 'package:base_app/sebha_feature/offline_sebha/views/offline_sebha_view.dart';
 import 'package:base_app/sebha_feature/online_sebha/views/online_sebha_view.dart';
-import 'package:base_app/utils/locator.dart';
-import 'package:base_app/utils/prefs.dart';
-import 'package:base_app/widgets/share_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 class SebhaView extends StatefulWidget {
   @override
