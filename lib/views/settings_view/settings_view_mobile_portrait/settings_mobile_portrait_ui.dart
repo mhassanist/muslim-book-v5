@@ -25,6 +25,12 @@ class SettingsMobilePortraitUi {
   final BuildContext context;
   final LocationProvider locationProvider;
 
+  //because we are not selecting specific prayer time from this screen, 
+  //we will get Asr as a sample to display 
+  //we pass null to the sheikh picker, to apply the selection to all 5 prayer
+  //times
+  final randomAzanId_value3 = "3";
+
   SettingsMobilePortraitUi(this.locationProvider,
       {this.provider, this.sizeConfig, this.context});
 
@@ -135,7 +141,6 @@ class SettingsMobilePortraitUi {
                   title:
                       AppLocalizations.of(context).translate("save_settings"),
                   onPressed: () async {
-                    print("arrived here");
                     provider.setViewState(ViewState.Loading);
 
                     locator<Prefs>().setLatitudeAdjustmentMethod(
@@ -185,12 +190,12 @@ class SettingsMobilePortraitUi {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
                     provider.pickedAzanShiekhMain != null &&
-                            provider.pickedAzanShiekhMain["3"] != null
-                        ? "${provider.pickedAzanShiekhMain["3"]}"
+                            provider.pickedAzanShiekhMain[randomAzanId_value3] != null
+                        ? "${provider.pickedAzanShiekhMain[randomAzanId_value3]}"
                         : "اختر شيخاً",
 
                     //"${AppLocalizations.of(context).isEnglish() ? Constants.EN_SHIEKH_NAMES[0]["name"] : Constants.AR_SHIEKH_NAMES[0]["name"]}",
-                    // "${provider.pickedAzanShiekhMain["3"]["name"]}",
+                    // "${provider.pickedAzanShiekhMain[randomAzanId]["name"]}",
                     style: TextStyle(
                         color: Constants.PRIMARY_DARK_COLOR,
                         fontWeight: FontWeight.w700,
@@ -212,7 +217,7 @@ class SettingsMobilePortraitUi {
                 color: Theme.of(context).primaryColor,
                 title: AppLocalizations.of(context).translate("select_shiekh"),
                 onPressed: () {
-                  chooseSheikh("3");
+                  chooseSheikh(randomAzanId_value3);
                 }),
           ),
         ],
@@ -260,7 +265,6 @@ class SettingsMobilePortraitUi {
                 title: AppLocalizations.of(context).translate("select_shiekh"),
                 onPressed: chooseFajrSheikh),
           ),
-
         ],
       ),
     );
@@ -277,7 +281,6 @@ class SettingsMobilePortraitUi {
         // azan: azanValue,
         // updateAzan: listenToUpdate,
       ),
-
     );
   }
 
@@ -347,27 +350,32 @@ class SettingsMobilePortraitUi {
     provider.setViewState(ViewState.Idle);
   }
 
+  //we are working with azan id 3 only in this screen
+  //when we save from here, we should save to all ids
   void chooseSheikh(String azanId) async {
     int newShiekhIndex = await Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => PickAzanShiekhView(
-              azanId: azanId,
+              azanId, true,
             )));
 
     List<AzanSound> sounds = (await LocalStorageManager().loadAzanSoundsList());
 
     if (newShiekhIndex != null && sounds != null && sounds.length > 0) {
-      provider.pickedAzanShiekhMain = {"3": sounds[newShiekhIndex].name};
+      provider.pickedAzanShiekhMain = {randomAzanId_value3: sounds[newShiekhIndex].name};
     } else if (newShiekhIndex != null) {
-      provider.pickedAzanShiekhMain = {"3" : AppLocalizations.of(context).isEnglish()
-          ? Constants.EN_SHIEKH_NAMES[newShiekhIndex]["name"]
-          : Constants.AR_SHIEKH_NAMES[newShiekhIndex]["name"]};
+      provider.pickedAzanShiekhMain = {
+        randomAzanId_value3: AppLocalizations.of(context).isEnglish()
+            ? Constants.EN_SHIEKH_NAMES[newShiekhIndex]["name"]
+            : Constants.AR_SHIEKH_NAMES[newShiekhIndex]["name"]
+      };
     }
   }
 
   void chooseFajrSheikh() async {
     int newShiekhIndex = await Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => PickFajrAzanShiekhView()));
-    List<AzanSound> sounds = (await LocalStorageManager().loadFajrAzanSoundsList());
+    List<AzanSound> sounds =
+        (await LocalStorageManager().loadFajrAzanSoundsList());
     if (newShiekhIndex != null && sounds != null && sounds.length > 0) {
       provider.pickedFajrAzanShiekh = sounds[newShiekhIndex].toJSON();
     } else if (newShiekhIndex != null) {

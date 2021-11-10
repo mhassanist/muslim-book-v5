@@ -71,11 +71,6 @@ class _AzanDrawOverViewState extends State<AzanDrawOverView>
     });
   }
 
-
-  Future saveSelectedShiekh() async {
-    locator<Prefs>().setAzanShiekh(Constants.AR_SHIEKH_NAMES[0]["id"] ,"");
-    // locator<Prefs>().setAzanShiekh(Constants.SHIEKH_NAMES[1]["name"] ,azanId);
-  }
   Widget buttonsRow(SizingInformation sizeConfig, context) {
     return RawMaterialButton(
       onPressed: () {

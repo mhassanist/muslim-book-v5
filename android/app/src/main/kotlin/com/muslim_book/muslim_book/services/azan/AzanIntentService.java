@@ -149,9 +149,10 @@ public class AzanIntentService extends Service {
                 mMediaPlayer = MediaPlayer.create(this,
                         Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/azan_" + getMuazenName(key) + ".mp3")));
             }
-            try{
+
+            try {
                 mMediaPlayer.prepare();
-            }catch(Exception e){
+            } catch (Exception e) {
 
             }
             if (json != null && json.contains(key)) {
@@ -281,9 +282,9 @@ public class AzanIntentService extends Service {
                 }
 
                 public void onFinish() {
-                    try{
+                    try {
 
-                    }catch (Exception c){
+                    } catch (Exception c) {
                         int streamType = AudioManager.STREAM_SYSTEM;
                         mgr.setStreamSolo(streamType, false);
                         mgr.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
@@ -379,9 +380,9 @@ public class AzanIntentService extends Service {
         if (key.equalsIgnoreCase("1") && new Prefs(this).getAllowAlfajrIbtehal()) {
             mMediaPlayer = MediaPlayer.create(this,
                     Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/korsi_ayat.mp3")));
-            try{
+            try {
                 mMediaPlayer.prepare();
-            }catch(Exception e){
+            } catch (Exception e) {
 
             }
             //Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/fajr_ebtehal.mp3")));
@@ -410,9 +411,9 @@ public class AzanIntentService extends Service {
             mMediaPlayer = MediaPlayer.create(this,
                     Uri.fromFile(
                             new File(getApplicationInfo().dataDir + "/app_flutter/before_" + key + ".mp3")));
-            try{
+            try {
                 mMediaPlayer.prepare();
-            }catch(Exception e){
+            } catch (Exception e) {
 
             }
             if (mMediaPlayer == null)
@@ -447,16 +448,27 @@ public class AzanIntentService extends Service {
         return "mshary_fajr";
     }
 
-    private String getMuazenName(String key) {
+    private String getMuazenName(String keyAzanId) {
         SharedPreferences prefs = getSharedPreferences(Constants.FLUTTER_SHARED_PREFERENCES,
                 MODE_PRIVATE);
-        String moazanNameId = prefs.getString(Constants.SELECTED_SHEIKH_NAME_JSON + key, null);
-        //name = azan_sound_$id
-        if (moazanNameId != null) {
-            Log.d("MBOOK", moazanNameId);
-            return "sound" + moazanNameId;
+        //downloaded and saved
+        String downloadedAzanId = prefs.getString(Constants.SELECTED_SHEIKH_NAME_JSON + keyAzanId, null);//if there are some downloaded files
+
+        String localMoazanId = prefs.getString("flutter.AZAN_SHIEKH_LOCAL_ID" + keyAzanId, null);//if there are some downloaded files
+
+       if (downloadedAzanId != null) {
+            Log.d("MBOOK", downloadedAzanId);
+            return "sound" + downloadedAzanId;
+        } else if(localMoazanId !=null){
+           Log.d("MBOOK", "local");
+           //return local selected sheikh
+           return localMoazanId;
+       }else{
+            Log.d("MBOOK", "elseeeeeeee");
+            //return local selected sheikh
+            return "1";
         }
-        return prefs.getString(Constants.MUAZEN_KEY + key, "3");
+
     }
 
     private void showAzanSlider(String key, boolean Switch_Silent_Mode_After_Residence) {

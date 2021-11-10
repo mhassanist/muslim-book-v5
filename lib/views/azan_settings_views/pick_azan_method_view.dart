@@ -212,7 +212,7 @@ class _PickAzanMethodViewState extends State<PickAzanMethodView> {
                       int newShiekhIndex = await Navigator.of(context).push(
                           MaterialPageRoute(
                               builder: (BuildContext context) =>
-                                  PickAzanShiekhView(azanId: "3",)));
+                                  PickAzanShiekhView("3",false)));
                       List<AzanSound> sounds = await LocalStorageManager().loadAzanSoundsList();
                       if(sounds!=null && sounds[newShiekhIndex]!=null){
                         _provider.pickedAzanShiekh = sounds[newShiekhIndex].toJSON();

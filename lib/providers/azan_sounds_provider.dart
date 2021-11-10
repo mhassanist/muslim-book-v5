@@ -113,9 +113,15 @@ class AzanSoundsProvider extends ViewStateProvider {
     return azanSounds[index];
   }
 
-  Future<void> saveSelectedShiekhJson(Map<String, dynamic> json , String azanId , BuildContext context) async {
-    await locator<Prefs>().setAzanShiekhJSON(json ,azanId);
-    print("saved local db azan sound json");
+  Future<void> saveDownloadedShiekhJson(Map<String, dynamic> json , String azanId , BuildContext context, bool saveToAll) async {
+    if(saveToAll){
+      //save the same sheikh to all prayer times
+      for(int i=2;i<=6;i++){
+        await locator<Prefs>().setAzanShiekhJSON(json ,i.toString());
+      }
+    }else{
+      await locator<Prefs>().setAzanShiekhJSON(json ,azanId);
+    }
     Navigator.pop(context, _pickedAzanShiekhIndex);
   }
 

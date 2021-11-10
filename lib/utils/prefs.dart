@@ -84,10 +84,8 @@ class Prefs {
 
   String getFajrAzanShiekh() => prefs.getString(Constants.FAJR_AZAN_SHIEKH);
 
-  void setAzanShiekh(String value, String azanId) async {
-    String values = '${Constants.AZAN_SHIEKH}$azanId';
-
-    await prefs.setString(values, value);
+  void setAzanShiekh(String key, String azanIndex) async {
+    await prefs.setString(key, azanIndex);//DOWNLOADED_SHEIKH_ID
     // await prefs.setString(Constants.AZAN_SHIEKH, value);
   }
 
@@ -390,19 +388,10 @@ class Prefs {
   }
 
   setAzanShiekhIdFromJSON(String id, String azanId) async {
-    azanId="2";
     await prefs.setString('${Constants.DOWNLOADED_SHEIKH_ID}$azanId', id);
-
-    azanId="3";
     await prefs.setString('${Constants.DOWNLOADED_SHEIKH_ID}$azanId', id);
-
-    azanId="4";
     await prefs.setString('${Constants.DOWNLOADED_SHEIKH_ID}$azanId', id);
-
-    azanId="5";
     await prefs.setString('${Constants.DOWNLOADED_SHEIKH_ID}$azanId', id);
-
-    azanId="6";
     await prefs.setString('${Constants.DOWNLOADED_SHEIKH_ID}$azanId', id);
   }
 

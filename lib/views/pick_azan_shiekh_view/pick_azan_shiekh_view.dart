@@ -1,4 +1,3 @@
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:base_app/enams/view_state_enum.dart';
 import 'package:base_app/local_storage/local_storage_manager.dart';
@@ -20,9 +19,12 @@ import 'package:responsive_builder/responsive_builder.dart';
 //
 class PickAzanShiekhView extends StatefulWidget {
   final String azanId;
-  const PickAzanShiekhView({
-    Key key,
+  final bool applyToAll;
+
+  const PickAzanShiekhView(
     this.azanId,
+    this.applyToAll, {
+    Key key,
   }) : super(key: key);
 
   @override
@@ -75,7 +77,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
       },
       child: BaseView<PickAzanShiekhProvider>(onModelReady: (model) {
         _azanSoundFromAssetsProvider = model;
-        _azanSoundFromAssetsProvider.loadSelectedShiekh(widget.azanId,context);
+        _azanSoundFromAssetsProvider.loadSelectedShiekh(widget.azanId, context);
       }, builder: (_, model, __) {
         return SafeArea(
           child: Scaffold(
@@ -86,7 +88,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
                   builder: (BuildContext context, snapshot) {
                     if (snapshot.data == true) {
                       //local storage ready
-                      return _buildAzanSoundsList(sizeConfig ,widget.azanId);
+                      return _buildAzanSoundsList(sizeConfig, widget.azanId);
                     } else {
                       return Container();
                     }
@@ -103,7 +105,6 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
       preferredSize: Size.fromHeight(kToolbarHeight),
       child: AppBar(
         backgroundColor: const Color(0XFF347D53),
-
         title: Text(
           AppLocalizations.of(context).translate("select_shiekh"),
           style: TextStyle(fontWeight: FontWeight.w500),
@@ -116,15 +117,20 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
             ),
             onPressed: () {
               //on clicking save button
-              if (displayingFromAssets)
-                _azanSoundFromAssetsProvider.saveSelectedShiekh(context ,widget.azanId);
-              else
-                _moreSoundsProvider.saveSelectedShiekhJson(
+              if (displayingFromAssets) {
+                _azanSoundFromAssetsProvider.saveAssetsSelectedShiekh(
+                    context, widget.azanId,
+                    _azanSoundFromAssetsProvider.pickedAzanShiekhIndex,
+                    saveToAll: widget.applyToAll);
+              } else {
+                _moreSoundsProvider.saveDownloadedShiekhJson(
                     _moreSoundsProvider
                         .getAzanSound(_moreSoundsProvider.pickedAzanShiekhIndex)
                         .toJSON(),
                     this.widget.azanId,
-                    context);
+                    context,
+                    widget.applyToAll);
+              }
             },
           )
         ],
@@ -192,20 +198,24 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
   _buildAzanSoundsListFromAssets(sizeConfig) {
     displayingFromAssets = true;
 
-    AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES.forEach((f) {
-      animationList.add(AnimationController(
-          vsync: this, duration: Duration(milliseconds: 300)));
-    }) :Constants.AR_SHIEKH_NAMES.forEach((f) {
-      animationList.add(AnimationController(
-          vsync: this, duration: Duration(milliseconds: 300)));
-    });
+    AppLocalizations.of(context).isEnglish()
+        ? Constants.EN_SHIEKH_NAMES.forEach((f) {
+            animationList.add(AnimationController(
+                vsync: this, duration: Duration(milliseconds: 300)));
+          })
+        : Constants.AR_SHIEKH_NAMES.forEach((f) {
+            animationList.add(AnimationController(
+                vsync: this, duration: Duration(milliseconds: 300)));
+          });
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Expanded(
             child: ListView.builder(
-                itemCount:AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES.length: Constants.AR_SHIEKH_NAMES.length,
+                itemCount: AppLocalizations.of(context).isEnglish()
+                    ? Constants.EN_SHIEKH_NAMES.length
+                    : Constants.AR_SHIEKH_NAMES.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     selected:
@@ -214,38 +224,48 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
                     onTap: () {
                       _azanSoundFromAssetsProvider.pickedAzanShiekhIndex =
                           index;
-                      if (AppLocalizations.of(context).isEnglish()?
-                      Constants.EN_SHIEKH_NAMES[index]["id"]:Constants.AR_SHIEKH_NAMES[index]["id"] ==
-                          currentPlayingItemId) {
+                      if (AppLocalizations.of(context).isEnglish()
+                          ? Constants.EN_SHIEKH_NAMES[index]["id"]
+                          : Constants.AR_SHIEKH_NAMES[index]["id"] ==
+                              currentPlayingItemId) {
                         audioPlayer.stop();
                         currentPlayingItemId = null;
                         animationList[index].reverse();
                       } else {
-                        playAzan(AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES[index]["id"]:Constants.AR_SHIEKH_NAMES[index]["id"], index);
+                        playAzan(
+                            AppLocalizations.of(context).isEnglish()
+                                ? Constants.EN_SHIEKH_NAMES[index]["id"]
+                                : Constants.AR_SHIEKH_NAMES[index]["id"],
+                            index);
                       }
                     },
                     title: Text(
-                      AppLocalizations.of(context).isEnglish()? Constants.EN_SHIEKH_NAMES[index]["name"]: Constants.AR_SHIEKH_NAMES[index]["name"],
+                      AppLocalizations.of(context).isEnglish()
+                          ? Constants.EN_SHIEKH_NAMES[index]["name"]
+                          : Constants.AR_SHIEKH_NAMES[index]["name"],
                       overflow: TextOverflow.ellipsis,
                     ),
-                    leading:AppLocalizations.of(context).isEnglish()? Constants.EN_SHIEKH_NAMES[index]["id"]:Constants.AR_SHIEKH_NAMES[index]["id"] ==
-                            currentPlayingItemId
-                        ? Icon(Icons.check)
-                        : null,
+                    leading: AppLocalizations.of(context).isEnglish()
+                        ? Constants.EN_SHIEKH_NAMES[index]["id"]
+                        : Constants.AR_SHIEKH_NAMES[index]["id"] ==
+                                currentPlayingItemId
+                            ? Icon(Icons.check)
+                            : null,
                     trailing: IconButton(
                       onPressed: () {
-                        if (AppLocalizations.of(context).isEnglish()?
-                        Constants.EN_SHIEKH_NAMES[index]["id"]
-                            :
-                        Constants.AR_SHIEKH_NAMES[index]["id"] ==
-                            currentPlayingItemId) {
+                        if (AppLocalizations.of(context).isEnglish()
+                            ? Constants.EN_SHIEKH_NAMES[index]["id"]
+                            : Constants.AR_SHIEKH_NAMES[index]["id"] ==
+                                currentPlayingItemId) {
                           audioPlayer.stop();
                           currentPlayingItemId = null;
                           animationList[index].reverse();
                         } else {
-                          playAzan(AppLocalizations.of(context).isEnglish()?
-                          Constants.EN_SHIEKH_NAMES[index]["id"]
-                              :Constants.AR_SHIEKH_NAMES[index]["id"], index);
+                          playAzan(
+                              AppLocalizations.of(context).isEnglish()
+                                  ? Constants.EN_SHIEKH_NAMES[index]["id"]
+                                  : Constants.AR_SHIEKH_NAMES[index]["id"],
+                              index);
                         }
                       },
                       icon: AnimatedIcon(
@@ -353,6 +373,4 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
           });
     }
   }
-
-
 }

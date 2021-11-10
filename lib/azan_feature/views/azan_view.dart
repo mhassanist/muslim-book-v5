@@ -24,17 +24,19 @@ class AzanView extends StatefulWidget {
 }
 
 class _AzanViewState extends State<AzanView> {
-   AzanController controller ;
+  AzanController controller;
 
   PickAzanMethodsProvider _provider;
-@override
+
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    controller= Get.find<AzanController>();
+    controller = Get.find<AzanController>();
     final size = MediaQuery.of(context).size;
     final isSmall = size.width <= 450;
     return ResponsiveBuilder(builder: (context, sizeConfig) {
@@ -59,48 +61,42 @@ class _AzanViewState extends State<AzanView> {
                       backgroundColor: Colors.transparent,
                       elevation: 0,
                       title: Text(
-                        AppLocalizations.of(context).translate("Prayer_Timings"),
+                        AppLocalizations.of(context)
+                            .translate("Prayer_Timings"),
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: sizeConfig.blockSizeHorizontal * 6),
                       ),
-
-                        actions: [
-                          InkWell(
-                              onTap: () {
-                                Get.dialog(ShareDialog());
-                              },
-                              child: Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 5),
-                                child: Icon(Icons.share),
-                              )),
-                          InkWell(
+                      actions: [
+                        InkWell(
                             onTap: () {
-                              Navigator.pushNamed(context, '/settings');
+                              Get.dialog(ShareDialog());
                             },
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 5),
-                              child: Icon(Icons.settings),
-                            ),
+                              child: Icon(Icons.share),
+                            )),
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(context, '/settings');
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 5),
+                            child: Icon(Icons.settings),
                           ),
-                          Container(
-                            width: 10,
-                          )
-
-
+                        ),
+                        Container(
+                          width: 10,
+                        )
                       ],
                     ),
-                    body:
-
-                    Container(
+                    body: Container(
                       // padding: EdgeInsets.only(
                       //     bottom: sizeConfig.blockSizeVertical * 2),
                       child: Column(
                         children: [
-                          isSmall ?
-                          Expanded(child: Container())
-                              :Container(),
+                          isSmall ? Expanded(child: Container()) : Container(),
                           Container(
                             margin: EdgeInsets.only(
                                 bottom: sizeConfig.blockSizeVertical * 3),
@@ -112,7 +108,7 @@ class _AzanViewState extends State<AzanView> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize:
-                                      sizeConfig.blockSizeHorizontal * 6),
+                                          sizeConfig.blockSizeHorizontal * 6),
                                 ),
                                 SizedBox(
                                   height: sizeConfig.blockSizeVertical,
@@ -123,7 +119,7 @@ class _AzanViewState extends State<AzanView> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize:
-                                      sizeConfig.blockSizeHorizontal * 6),
+                                          sizeConfig.blockSizeHorizontal * 6),
                                 ),
                                 SizedBox(
                                   height: sizeConfig.blockSizeVertical,
@@ -134,25 +130,20 @@ class _AzanViewState extends State<AzanView> {
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
                                       fontSize:
-                                      sizeConfig.blockSizeHorizontal * 6),
+                                          sizeConfig.blockSizeHorizontal * 6),
                                 )
                               ],
                             ),
                           ),
                           for (int i = 0;
-                          i < controller.getAzanList(context).length;
-                          i++)
-                            buildSingleAzan(
-                                controller.getAzanList(context)[i], sizeConfig, i)
-                          ,
-
-                          Container(
-                              height: 100,
-                              child: AdManager.boslaBanner)                        ],
+                              i < controller.getAzanList(context).length;
+                              i++)
+                            buildSingleAzan(controller.getAzanList(context)[i],
+                                sizeConfig, i),
+                          Container(height: 100, child: AdManager.boslaBanner)
+                        ],
                       ),
                     ),
-
-
                   ),
                 );
               });
@@ -232,7 +223,8 @@ class _AzanViewState extends State<AzanView> {
                         width: sizeConfig.blockSizeHorizontal,
                       ),
                       Text(
-                        AppLocalizations.of(context).translate(controller.azanValue[index].key),
+                        AppLocalizations.of(context)
+                            .translate(controller.azanValue[index].key),
                         style: TextStyle(
                             color: Constants.PRIMARY_DARK_COLOR,
                             fontWeight: FontWeight.bold,
@@ -303,7 +295,7 @@ class _AzanViewState extends State<AzanView> {
                             textAlign: TextAlign.center,
                           ),
                         ])),
-                /*Container(
+                Container(
                     height: 50,
                     width: 40,
                     child: Row(
@@ -311,11 +303,12 @@ class _AzanViewState extends State<AzanView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SvgPicture.asset(
-                            "assets/images/azan_view/edite.svg",
-                            height: 20.0,
+                            "assets/images/azan_view/setting.svg",
+                            height: 24.0,
+                            width: 24.0,
                             allowDrawingOutsideViewBox: true,
                           )
-                        ])),*/
+                        ])),
                 InkWell(
                     onTap: () {
                       _modalBottomSheetMenu(controller.azanValue[index]);
@@ -328,9 +321,8 @@ class _AzanViewState extends State<AzanView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SvgPicture.asset(
-                                "assets/images/azan_view/setting.svg",
-                                height: 24.0,
-                                width: 24.0,
+                                "assets/images/azan_view/edite.svg",
+                                height: 20.0,
                                 allowDrawingOutsideViewBox: true,
                               )
                             ]))),
@@ -344,15 +336,15 @@ class _AzanViewState extends State<AzanView> {
 
   void chooseSheikh(String azanId) async {
     int newShiekhIndex = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (BuildContext context) => PickAzanShiekhView(
-              azanId: azanId,
-            )));
+        builder: (BuildContext context) => PickAzanShiekhView(azanId, false)));
     List<AzanSound> sounds = await LocalStorageManager().loadAzanSoundsList();
     if (sounds != null && sounds[newShiekhIndex] != null) {
       _provider.pickedAzanShiekh = sounds[newShiekhIndex].toJSON();
     }
     if (sounds == null && newShiekhIndex != null) {
-      _provider.pickedAzanShiekh =AppLocalizations.of(context).isEnglish()? Constants.EN_SHIEKH_NAMES[newShiekhIndex]:Constants.AR_SHIEKH_NAMES[newShiekhIndex];
+      _provider.pickedAzanShiekh = AppLocalizations.of(context).isEnglish()
+          ? Constants.EN_SHIEKH_NAMES[newShiekhIndex]
+          : Constants.AR_SHIEKH_NAMES[newShiekhIndex];
     }
   }
 
@@ -371,7 +363,7 @@ class _AzanViewState extends State<AzanView> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) => EditTimePrayer(
-          showAppBar:  true,
+          showAppBar: true,
           azan: azanValue,
           updateAzan: listenToUpdate,
         ),

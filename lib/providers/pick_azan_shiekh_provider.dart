@@ -25,42 +25,59 @@ class PickAzanShiekhProvider extends ViewStateProvider {
     _pickedAzanShiekhIndex = value;
     notifyListeners();
   }
-  Future saveSelectedShiekh(context ,String azanId) async {
-    locator<Prefs>().setAzanShiekh( AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES[_pickedAzanShiekhIndex]["id"]:Constants.AR_SHIEKH_NAMES[_pickedAzanShiekhIndex]["id"] ,azanId);
+
+  Future saveAssetsSelectedShiekh(context, String azanId, int azanIndex,
+      {bool saveToAll}) async {
+    if (saveToAll) {
+      //save the same sheikh to all prayer times
+      for (int i = 2; i <= 6; i++) {
+        locator<Prefs>().setAzanShiekh(Constants.AZAN_SHIEKH_LOCAL_ID+i.toString(),
+            azanIndex.toString());
+      }
+    } else {
+      locator<Prefs>().setAzanShiekh(Constants.AZAN_SHIEKH_LOCAL_ID+azanId.toString(),
+          azanIndex.toString());
+    }
+
     Navigator.pop(context, _pickedAzanShiekhIndex);
   }
 
-
-  Future loadSelectedShiekh(String azanId,context) async {
-
+  Future loadSelectedShiekh(String azanId, context) async {
     String savedShiekhId = locator<Prefs>().getAzanShiekh(azanId);
-    if(savedShiekhId != null){
-      for(Map<String, dynamic> shiekh in AppLocalizations.of(context).isEnglish()? Constants.EN_SHIEKH_NAMES: Constants.AR_SHIEKH_NAMES){
+    if (savedShiekhId != null) {
+      for (Map<String, dynamic> shiekh
+          in AppLocalizations.of(context).isEnglish()
+              ? Constants.EN_SHIEKH_NAMES
+              : Constants.AR_SHIEKH_NAMES) {
         String check = '${shiekh["id"]}$azanId';
 
-
-        if(shiekh["id"]== savedShiekhId){
-          _pickedAzanShiekhIndex =AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES.indexOf(shiekh): Constants.AR_SHIEKH_NAMES.indexOf(shiekh);
-          _pickedAzanShiekh = AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES[_pickedAzanShiekhIndex]:Constants.AR_SHIEKH_NAMES[_pickedAzanShiekhIndex];
+        if (shiekh["id"] == savedShiekhId) {
+          _pickedAzanShiekhIndex = AppLocalizations.of(context).isEnglish()
+              ? Constants.EN_SHIEKH_NAMES.indexOf(shiekh)
+              : Constants.AR_SHIEKH_NAMES.indexOf(shiekh);
+          _pickedAzanShiekh = AppLocalizations.of(context).isEnglish()
+              ? Constants.EN_SHIEKH_NAMES[_pickedAzanShiekhIndex]
+              : Constants.AR_SHIEKH_NAMES[_pickedAzanShiekhIndex];
 
           return;
         }
       }
-    }else if(locator<Prefs>().getDownloadedAzanShiekhId()!=null){ //check for azan json
+    } else if (locator<Prefs>().getDownloadedAzanShiekhId() != null) {
+      //check for azan json
       String savedLoadedid = locator<Prefs>().getDownloadedAzanShiekhId();
       List<AzanSound> sounds = await LocalStorageManager().loadAzanSoundsList();
-      for(AzanSound sound in sounds){
-        if(savedLoadedid == sound.id.toString()){
+      for (AzanSound sound in sounds) {
+        if (savedLoadedid == sound.id.toString()) {
           _pickedAzanShiekhIndex = sounds.indexOf(sound);
           _pickedAzanShiekh = sound.toJSON();
           return;
         }
       }
-    }else{
+    } else {
       _pickedAzanShiekhIndex = 0;
-      _pickedAzanShiekh = AppLocalizations.of(context).isEnglish()?Constants.EN_SHIEKH_NAMES[_pickedAzanShiekhIndex]:Constants.AR_SHIEKH_NAMES[_pickedAzanShiekhIndex];
-
+      _pickedAzanShiekh = AppLocalizations.of(context).isEnglish()
+          ? Constants.EN_SHIEKH_NAMES[_pickedAzanShiekhIndex]
+          : Constants.AR_SHIEKH_NAMES[_pickedAzanShiekhIndex];
     }
-
   }
 }
