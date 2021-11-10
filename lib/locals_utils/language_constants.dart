@@ -17,7 +17,7 @@ Future<Locale> getLocale() async {
 }
 
 TextDirection setTextDirection(Locale lang) {
-  print("shaimmmmmmmmmmmmmmmaaaa   " + lang.languageCode);
+  //print("shaimmmmmmmmmmmmmmmaaaa   " + lang.languageCode);
   return lang.languageCode == "ar" ? TextDirection.rtl : TextDirection.ltr;
 }
 

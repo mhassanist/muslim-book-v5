@@ -1,6 +1,9 @@
 import 'dart:convert';
 
+import 'package:base_app/ads/admob_rectangle.dart';
+import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/utils/sizing_info_extension.dart';
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -16,6 +19,26 @@ class IslamicsOfflineScreen extends StatefulWidget {
 }
 
 class _IslamicsOfflineScreenState extends State<IslamicsOfflineScreen> {
+  bool isInternetConnected = false;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await DataConnectionChecker().hasConnection.then((value) {
+        if (value == true) {
+          setState(() {
+            isInternetConnected = true;
+          });
+        } else {
+          setState(() {
+            isInternetConnected = false;
+          });
+        }
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -24,23 +47,7 @@ class _IslamicsOfflineScreenState extends State<IslamicsOfflineScreen> {
         builder: (context, snapshot) {
           var data = jsonDecode(snapshot.data.toString());
           if (snapshot.connectionState == ConnectionState.done) {
-            return ResponsiveBuilder(
-                builder: (context, SizingInformation sizeConfig) {
-              return Container(
-                child: StaggeredGridView.countBuilder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                      vertical: sizeConfig.blockSizeHorizontal * 3),
-                  crossAxisCount: 6,
-                  itemCount: data.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      _buildIslamicCatsItem(index, sizeConfig, data),
-                  staggeredTileBuilder: (int index) =>
-                      new StaggeredTile.count(2, 2),
-                ),
-              );
-            });
+            return _buildIslamicCatsGridWithAd(data);
           }
           return Center(
             child: CircularProgressIndicator(),
@@ -80,6 +87,86 @@ class _IslamicsOfflineScreenState extends State<IslamicsOfflineScreen> {
           )
         ],
       ),
+    );
+  }
+
+  Widget _buildIslamicCatsGridWithAd(data) {
+    return Column(
+      children: [
+        ResponsiveBuilder(builder: (context, SizingInformation sizeConfig) {
+          return Container(
+            child: StaggeredGridView.countBuilder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(
+                  vertical: sizeConfig.blockSizeHorizontal * 3),
+              crossAxisCount: 6,
+              itemCount: 9,
+              itemBuilder: (BuildContext context, int index) {
+                return _buildIslamicCatsItem(index, sizeConfig, data);
+              },
+              staggeredTileBuilder: (int index) =>
+                  new StaggeredTile.count(2, 2),
+            ),
+          );
+        }),
+        isInternetConnected == true
+            ? Container(
+                height: MediaQuery.of(context).size.height / 3.0,
+                child: AdMobRectangle(BannerName.AZKAR))
+            : Container(),
+        ResponsiveBuilder(builder: (context, SizingInformation sizeConfig) {
+          return Container(
+            child: StaggeredGridView.countBuilder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(
+                  vertical: sizeConfig.blockSizeHorizontal * 3),
+              crossAxisCount: 6,
+              itemCount: 15,
+              itemBuilder: (BuildContext context, int index) {
+                if (index >= 9) {
+                  return _buildIslamicCatsItem(index, sizeConfig, data);
+                } else {
+                  return Container(
+                    height: 0,
+                  );
+                }
+              },
+              staggeredTileBuilder: (int index) => new StaggeredTile.count(
+                  index >= 9 ? 2 : 0, index >= 9 ? 2 : 0),
+            ),
+          );
+        }),
+        isInternetConnected == true
+            ? Container(
+                height: MediaQuery.of(context).size.height / 3.0,
+                child: AdMobRectangle(BannerName.AZKAR))
+            : Container(),
+        ResponsiveBuilder(builder: (context, SizingInformation sizeConfig) {
+          return Container(
+            child: StaggeredGridView.countBuilder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(
+                  vertical: sizeConfig.blockSizeHorizontal * 3),
+              crossAxisCount: 6,
+              itemCount: data.length,
+              itemBuilder: (BuildContext context, int index) {
+                if (index >= 15) {
+                  return _buildIslamicCatsItem(index, sizeConfig, data);
+                } else {
+                  return Container(
+                    height: 0,
+                  );
+                }
+              },
+              staggeredTileBuilder: (int index) => new StaggeredTile.count(
+                  index >= 15 ? 2 : 0, index >= 15 ? 2 : 0),
+            ),
+          );
+        })
+      ],
     );
   }
 }

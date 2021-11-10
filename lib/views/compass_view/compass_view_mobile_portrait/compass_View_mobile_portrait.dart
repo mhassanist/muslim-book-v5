@@ -117,7 +117,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
         }
 
         if (!snapshot.hasData) {
-          print("${snapshot.data}");
+          //print("${snapshot.data}");
           return Center(
             child: Container(
               width: 32,

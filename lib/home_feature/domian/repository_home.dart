@@ -56,7 +56,7 @@ class HomeRepository {
     final response = await dio.post("posts", data: {
       "content": content,
     });
-    print(response);
+    //print(response);
 
 
 ResponseCreateModel responseCreateModel =ResponseCreateModel();
@@ -69,7 +69,7 @@ return responseCreateModel.message;
     final response = await dio.post("posts/${id}/like", data: {
       "":""
     });
-    print(response);
+    //print(response);
     DioUtil.setDioAgain();
   }
 
@@ -79,7 +79,7 @@ return responseCreateModel.message;
     final response = await dio.post("posts/${id}/unlike", data: {
       "":""
     });
-    print(response);
+    //print(response);
     DioUtil.setDioAgain();
   }
 
@@ -88,7 +88,7 @@ return responseCreateModel.message;
     final response = await dio.post("islamics/${id}/like", data: {
       "":""
     });
-    print(response);
+    //print(response);
     DioUtil.setDioAgain();
   }
 
@@ -97,7 +97,7 @@ return responseCreateModel.message;
     final response = await dio.post("islamics/${id}/unlike", data: {
       "":""
     });
-    print(response);
+    //print(response);
     DioUtil.setDioAgain();
   }
 
@@ -106,7 +106,7 @@ return responseCreateModel.message;
     final response = await dio.post("islamics/${id}/like", data: {
       "":""
     });
-    print(response);
+    //print(response);
     DioUtil.setDioAgain();
   }
 

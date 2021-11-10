@@ -12,7 +12,6 @@ import 'package:base_app/ramadan/models/ramadan_data.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/locator.dart';
 import 'package:base_app/utils/prefs.dart';
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -38,9 +37,9 @@ class RamadanProvider extends ViewStateProvider {
     Repetitions(1, "مره واحده"),
     Repetitions(2, "مرتان")
   ];
-  List<RamadanData> _ramadanAllData = List();
-  List<RamadanData> _ramadanDataShow = List();
-  List<RamadanData> _ramadanDataLast = List();
+  List<RamadanData> _ramadanAllData = [];
+  List<RamadanData> _ramadanDataShow = [];
+  List<RamadanData> _ramadanDataLast = [];
 
   List<RamadanData> get ramadanDataShow => _ramadanDataShow;
   List<RamadanData> get ramadanAllData => _ramadanAllData;
@@ -50,9 +49,9 @@ class RamadanProvider extends ViewStateProvider {
   BuildContext _context;
   bool alreadyFilledData = false;
 
-  List<RamadanSoundsModel> ramadanCannonModel = List();
+  List<RamadanSoundsModel> ramadanCannonModel = [];
   DataLoadingState loadedCannonState = DataLoadingState.notLoaded;
-  List<FileDownloadState> filesCannonStates = List();
+  List<FileDownloadState> filesCannonStates = [];
 
   bool get ramadanCannon => _ramadanCannon;
 
@@ -78,8 +77,8 @@ class RamadanProvider extends ViewStateProvider {
   // mashraaat
 
   DataLoadingState loadedMashraatState = DataLoadingState.notLoaded;
-  List<RamadanSoundsModel> ramadanMashraatModel = List();
-  List<FileDownloadState> filesMashraatStates = List();
+  List<RamadanSoundsModel> ramadanMashraatModel = [];
+  List<FileDownloadState> filesMashraatStates = [];
   RamadanSoundsModel _ramadanMashraatSelected;
   bool _ramadanMashraat;
 
@@ -319,7 +318,7 @@ class RamadanProvider extends ViewStateProvider {
     String savedSoundCannon = locator<Prefs>().getRamadanMashraatJSON(soundId);
 
     if (azanList != null) {
-       print(azanList.toString());
+       //print(azanList.toString());
       loadedMashraatState = DataLoadingState.localAvailable;
       ramadanMashraatModel = azanList;
 

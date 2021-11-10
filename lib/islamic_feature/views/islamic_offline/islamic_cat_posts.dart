@@ -6,7 +6,10 @@ import 'package:base_app/islamic_feature/views/islamic_offline/islamic_post_offl
 import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/widgets/app_scaffold_title.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:loading/indicator/ball_beat_indicator.dart';
+import 'package:loading/loading.dart';
 
 class IslamicCatPosts extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -18,12 +21,15 @@ class IslamicCatPosts extends StatefulWidget {
 }
 
 class _IslamicCatPostsState extends State<IslamicCatPosts> {
-  int adIndex = 1;
   bool isInternetConnected = false;
+  int numberOfCharacter = 100;
+  bool isInteger(num value) =>
+    value is int || value == value.roundToDouble();
+
+
 
   @override
   void initState() {
-    adIndex = 1;
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await DataConnectionChecker().hasConnection.then((value) {
         if (value == true) {
@@ -67,178 +73,111 @@ class _IslamicCatPostsState extends State<IslamicCatPosts> {
                 itemCount: data.length,
                 itemBuilder: (context, index) {
                   if (isInternetConnected == true) {
-                    if ((index + 1) / 10 == adIndex) {
-                      adIndex = adIndex + 1;
-                      return Column(
-                        children: [
-                          Card(
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              IslamicPostOfflineDetails(
-                                                  data[index],
-                                                  widget.data['name'])));
-                                },
-                                child: Container(
-                                    height: 150,
-                                    margin: EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 5),
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Column(
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Text(
-                                            data[index]['title'],
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                                color: darkish_green,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Text(
-                                            data[index]['body'] != null
-                                                ? data[index]['body']
-                                                : data[index]['title'],
-                                            maxLines: 3,
-                                            style: TextStyle(
-                                              color: darkish_green,
-                                              fontSize: 16, height: 2,
-                                              //fontWeight: FontWeight.w600
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )),
-                              )),
-                          Container(
-                              height: MediaQuery.of(context).size.height / 3.0,
-                              child: AdMobRectangle(BannerName.AZKAR))
-                        ],
-                      );
+                    if (isInteger((index + 1)/4)) {
+                      if((index + 1).isEven){
+                        return Column(
+                          children: [
+                            _buildPostCardUi(data[index]),
+                            Container(
+                                height: MediaQuery.of(context).size.height / 3.0,
+                                child: AdMobRectangle(BannerName.AZKAR))
+                          ],
+                        );
+                      }else{
+                        return _buildPostCardUi(data[index]);
+                      }
+
                     } else {
-                      return Card(
-                          elevation: 5,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          IslamicPostOfflineDetails(data[index],
-                                              widget.data['name'])));
-                            },
-                            child: Container(
-                                height: 150,
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 5),
-                                padding: EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Text(
-                                        data[index]['title'],
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                            color: darkish_green,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Text(
-                                        data[index]['body'] != null
-                                            ? data[index]['body']
-                                            : data[index]['title'],
-                                        maxLines: 3,
-                                        style: TextStyle(
-                                          color: darkish_green,
-                                          fontSize: 16, height: 2,
-                                          //fontWeight: FontWeight.w600
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                          ));
+                      return _buildPostCardUi(data[index]);
                     }
                   } else {
-                    return Card(
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        IslamicPostOfflineDetails(
-                                            data[index], widget.data['name'])));
-                          },
-                          child: Container(
-                              height: 150,
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: 5, vertical: 5),
-                              padding: EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      data[index]['title'],
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                          color: darkish_green,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      data[index]['body'] != null
-                                          ? data[index]['body']
-                                          : data[index]['title'],
-                                      maxLines: 3,
-                                      style: TextStyle(
-                                        color: darkish_green,
-                                        fontSize: 16, height: 2,
-                                        //fontWeight: FontWeight.w600
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )),
-                        ));
+                    return _buildPostCardUi(data[index]);
                   }
                 });
           }
           return Center(
-            child: CircularProgressIndicator(),
+            child: Loading(
+              indicator: BallBeatIndicator(),
+              size: 70.0,
+              color: Colors.white,
+            ),
           );
         });
+  }
+
+  _buildPostCardUi(data) {
+    return Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10)),
+        child: Container(
+
+            margin: EdgeInsets.symmetric(
+                horizontal: 5, vertical: 5),
+            padding: EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    data['title'],
+                    maxLines: 1,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: RichText(
+                    text: TextSpan(
+                        text: data['body'] != null
+                            ? data['body'].toString().length > numberOfCharacter ? data['body'].toString().substring(0,numberOfCharacter) + '.. ' : data['body'].toString()
+                            : data['title'].toString().length > numberOfCharacter ? data['title'].toString().substring(0,numberOfCharacter) + '.. ' : data['title'].toString(),
+                        style: TextStyle(
+                          color: darkish_green,
+                          fontSize: 16,
+                          height: 2,
+                          fontFamily: 'arabic',
+                          //fontWeight: FontWeight.w600
+                        ),
+                        children: <TextSpan>[
+                          data['body'] != null
+                              ? data['body'].toString().length > numberOfCharacter
+                              ? _buildTextSpan(data)
+                              : TextSpan()
+                              : data['title'].toString().length > numberOfCharacter
+                              ? _buildTextSpan(data)
+                              : TextSpan()
+                        ]
+                    ),
+                  ),
+                ),
+              ],
+            )));
+  }
+
+  _buildTextSpan(data) {
+    return TextSpan(
+        text: 'عرض المزيد ..',
+        style: TextStyle(
+          color: Colors.blueAccent,
+          fontSize: 18,fontWeight: FontWeight.bold,
+          fontFamily: 'arabic',
+        ),
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        IslamicPostOfflineDetails(
+                            data,
+                            widget.data['name'])));
+          });
   }
 }

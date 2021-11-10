@@ -6,9 +6,11 @@ import 'package:base_app/home_feature/controllers/home_controller.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/providers/competition_provider.dart';
+import 'package:base_app/providers/top_provider.dart';
 import 'package:base_app/providers/user_provider.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/views/login_pop_up_view/login_pop_up_view.dart';
+import 'package:base_app/views/top_view/compeition_top_view.dart';
 import 'package:base_app/widgets/app_scaffold_title.dart';
 import 'package:base_app/widgets/retry_view_widget.dart';
 import 'package:base_app/widgets/share_dialog.dart';
@@ -103,6 +105,18 @@ class _CompetitionViewMobilePortraitState
                 },
               ),
               actions: [
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => _getCompetitionPage()),
+                    );
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 5),
+                    child: Icon(Icons.wine_bar),
+                  ),
+                ),
                 InkWell(
                     onTap: () {
                       Get.dialog(ShareDialog());
@@ -200,5 +214,17 @@ class _CompetitionViewMobilePortraitState
       return ui.buildNoMoreQuestions();
     else
       return LoadUiWithAdd(mainView: buildCompetitionWidget(context));
+  }
+
+  _getCompetitionPage() {
+    return ChangeNotifierProxyProvider<UserProvider, TopProvider>(
+      create: (_) => TopProvider(null),
+      update: (_, user, __) => TopProvider(user),
+      child:ScreenTypeLayout(
+        mobile: OrientationLayoutBuilder(
+          portrait: (context) => CompetitionTopView(),
+        ),
+      ),
+    );
   }
 }

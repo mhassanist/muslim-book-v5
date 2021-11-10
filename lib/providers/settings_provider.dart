@@ -1,6 +1,4 @@
-import 'package:base_app/local_storage/local_storage_manager.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
-import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/models/azan_sound.dart';
 import 'package:base_app/network_utils/azan_apis.dart';
 import 'package:base_app/providers/view_state_provider.dart';
@@ -12,7 +10,6 @@ import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../main.dart';
 
 class SettingsProvider extends ViewStateProvider {
   BuildContext _context;
@@ -60,9 +57,9 @@ class SettingsProvider extends ViewStateProvider {
       _whiteDaysFastingAlert =
           locator<Prefs>().getWhiteDaysFastingAlertFlag() ?? false;
       // _pickedCountryName = locator<Prefs>().getCountry() ?? "EG";
-      print(_pickedCountryName);
+      //print(_pickedCountryName);
       _pickedCityName = locator<Prefs>().getCity();
-      print(locator<Prefs>().getLatitudeAdjustmentMethod());
+      //print(locator<Prefs>().getLatitudeAdjustmentMethod());
       if (locator<Prefs>().getLatitudeAdjustmentMethod() != null) {
         _latitudeAdjustmentMethod = (AppLocalizations.of(_context).isEnglish()
                 ? Constants.EN_Latitude_Adjustment_Method
