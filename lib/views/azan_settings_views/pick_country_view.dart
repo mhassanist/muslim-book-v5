@@ -113,7 +113,7 @@ class _PickCountryViewState extends State<PickCountryView> {
               await _provider.getLocation(context);
               _provider.setViewState(ViewState.Idle);
             },
-            fillColor: Theme.of(context).accentColor,
+            fillColor: Theme.of(context).primaryColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
