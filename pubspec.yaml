@@ -156,6 +156,7 @@ flutter:
     - assets/images/more/
 
     - assets/databases/azkar_database/
+    - assets/databases/quran_database/
     - assets/images/azan_view/
     - assets/images/setting_view/
     - assets/images/general/

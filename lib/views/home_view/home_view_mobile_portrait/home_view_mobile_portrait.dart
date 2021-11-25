@@ -1,7 +1,7 @@
 import 'package:base_app/azkar_feature/views/azkar_list_view.dart';
 
 import 'package:base_app/providers/user_provider.dart';
-import 'package:base_app/quran/views/quran_view.dart';
+import 'package:base_app/quran/views/quran_section_screen.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/locator.dart';
 import 'package:base_app/utils/prefs.dart';
@@ -108,7 +108,7 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                       FlatButton(
                         onPressed: () {
                           Navigator.push(context,
-                              MaterialPageRoute(builder: (c) => QuranView()));
+                              MaterialPageRoute(builder: (c) => QuranSectionScreen()));
                         },
                         child: Container(
                           height: sizeConfig.blockSizeHorizontal * 40,

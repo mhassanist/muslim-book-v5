@@ -12,7 +12,7 @@ import 'package:base_app/main.dart';
 import 'package:base_app/models/banner_names_enum.dart';
 import 'package:base_app/models/push_notification_model.dart';
 import 'package:base_app/providers/user_provider.dart';
-import 'package:base_app/quran/views/quran_view.dart';
+import 'package:base_app/quran/views/quran_section_screen.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/locator.dart';
 import 'package:base_app/utils/prefs.dart';
@@ -154,7 +154,7 @@ class _StartViewMobilePortraitViewState
   @override
   Widget build(BuildContext context) {
     _pages = [
-      QuranView(),
+      QuranSectionScreen(),
       CompassView(),
       HomeView(),
       Provider.of<UserProvider>(context).isLoggedIn

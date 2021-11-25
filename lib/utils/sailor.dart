@@ -1,6 +1,5 @@
 import 'package:base_app/azan_feature/views/azan_view.dart';
-import 'package:base_app/quran/views/quran_view.dart';
-import 'package:base_app/ramadan/views/ramadan_view.dart';
+import 'package:base_app/quran/views/quran_section_screen.dart';
 import 'package:base_app/views/azan_settings_views/adjust_battery_view.dart';
 import 'package:base_app/views/azan_settings_views/azan_draw_over_view.dart';
 import 'package:base_app/views/azan_settings_views/pick_azan_method_view.dart';
@@ -235,7 +234,7 @@ class Routes {
       SailorRoute(
           name: "/suras_view",
           builder: (context, args, params) {
-            return QuranView();
+            return QuranSectionScreen();
           },
           defaultTransitionDuration: Duration(milliseconds: 100),
           defaultTransitionCurve: Curves.ease,

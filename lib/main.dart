@@ -10,6 +10,7 @@ import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/providers/azan_fajr_sounds_provider.dart';
 import 'package:base_app/providers/azan_sounds_provider.dart';
 import 'package:base_app/providers/user_provider.dart';
+import 'package:base_app/quran/provider/quran_pages_pic_bloc.dart';
 import 'package:base_app/quran/provider/quran_provider.dart';
 import 'package:base_app/ramadan/provider/ramadan_provider.dart';
 import 'package:base_app/sebha_feature/online_sebha/controllers/online_sebha_controller.dart';
@@ -306,6 +307,8 @@ class _MyAppState extends State<MyApp> {
             create: (_) => OnlineSebhaProvider()),
         ChangeNotifierProvider<IslamicPostDetailsBloc>(
             create: (_) => IslamicPostDetailsBloc()),
+        ChangeNotifierProvider<QuranPagesPicBloc>(
+            create: (_) => QuranPagesPicBloc()),
       ],
       child: ConnectivityAppWrapper(
         app: GetMaterialApp(
