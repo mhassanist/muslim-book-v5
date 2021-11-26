@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class QuranPagePicView extends StatefulWidget {
   final int quranPage;
@@ -33,6 +34,8 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
   @override
   void initState() {
     _currentPageNumber = widget.quranPage;
+    //save current page to local storage
+    saveCurrentPage();
     QuranPagesPicBloc().downloadQuranSinglePage(widget.quranPage).then((value) {
         setState(() {
           quranPagePic = value;
@@ -53,6 +56,12 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
     _linearProgressController.repeat(reverse: false);
 
     super.initState();
+  }
+
+  void saveCurrentPage() {
+    SharedPreferences.getInstance().then((pref){
+      pref.setInt("LAST_READ_PAGE", _currentPageNumber);
+    });
   }
   @override
   void dispose() {
@@ -117,6 +126,8 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
                       quranPagePic = value;
                       _currentPageNumber = _currentPageNumber-1;
                     });
+                    saveCurrentPage();
+
                   });
                 }
                 else if (dx > 0 && _currentPageNumber < 604) {
@@ -125,6 +136,8 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
                       quranPagePic = value;
                       _currentPageNumber = _currentPageNumber+1;
                     });
+                    saveCurrentPage();
+
                   });
                 }
               },
@@ -146,7 +159,7 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
                       child: AppBar(backgroundColor: Colors.black26,title: Text('$_currentPageNumber'),centerTitle: true,),
                     ),
                   ),
-                  _buildLoadingBar(_quranPagesBloc),
+                  //_buildLoadingBar(_quranPagesBloc),
                 ],
               )),
         ),

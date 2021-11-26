@@ -6,6 +6,7 @@ import 'package:base_app/quran/views/quran_page_pic_view.dart';
 import 'package:base_app/widgets/app_scaffold.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class QuranReadingIndex extends StatefulWidget {
   const QuranReadingIndex({Key key}) : super(key: key);
@@ -15,9 +16,44 @@ class QuranReadingIndex extends StatefulWidget {
 }
 
 class _QuranReadingIndexState extends State<QuranReadingIndex> {
+//end then
+
+  Route _createRoute(pgNumber) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          QuranPagePicView(pgNumber),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        const curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: child,
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
+      Future.delayed(Duration(seconds: 1), () {
+        SharedPreferences.getInstance().then((value) {
+          if (value != null && value.getInt("LAST_READ_PAGE") != -1) {
+            QuranPagesPicBloc().setState(APIStatus.initial);
+
+            Navigator.push(context, _createRoute(value.getInt("LAST_READ_PAGE")));
+          }
+        });
+      });
+
+    });
+
     return AppScaffold(
         title: Text("قراءة القرءان بالصور"),
         centerTitle: true,
@@ -37,7 +73,7 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
               image: NetworkImage(
                   "https://png.pngtree.com/thumb_back/fw800/background/20190718/pngtree-islamic-ramadhan-background-image_284340.jpg"))),
       child: Padding(
-        padding: EdgeInsets.only(left: 15.0,right: 15.0),
+        padding: EdgeInsets.only(left: 15.0, right: 15.0),
         child: Column(
           children: [
             _buildLayoutTitle(),
@@ -99,7 +135,8 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
                     size: 50,
                   ),
                   Positioned(
-                      bottom: 15,right: 19,
+                      bottom: 15,
+                      right: 19,
                       child: Text(
                         'ج',
                         style: TextStyle(fontSize: 17),
@@ -175,14 +212,20 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
                       child: InkWell(
                           onTap: () {
                             QuranPagesPicBloc().setState(APIStatus.initial);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => QuranPagePicView(data[index]['page'])));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        QuranPagePicView(data[index]['page'])));
                           },
                           child: Container(
                             width: MediaQuery.of(context).size.width / 9.1,
                             child: Center(
                               child: Text((data[index]['part']).toString(),
                                   style: TextStyle(
-                                      fontSize: 18, color: Colors.white,height: 3)),
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                      height: 3)),
                             ),
                           )),
                     );
@@ -202,25 +245,28 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
           builder: (context, snapshot) {
             var data = jsonDecode(snapshot.data.toString());
             if (snapshot.connectionState == ConnectionState.done) {
-              return Column(
-                  children:  [
-                    for(int i = 0; i< data.length; i++)
-                     InkWell(
-                      onTap: () {
-                        QuranPagesPicBloc().setState(APIStatus.initial);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => QuranPagePicView(data[i]['page'])));
-                      },
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 8.0),
-                          child: Text(data[i]['name'],
-                              style: TextStyle(
-                                  fontSize: 18, color: Colors.white,height: 3)),
-                        ),
+              return Column(children: [
+                for (int i = 0; i < data.length; i++)
+                  InkWell(
+                    onTap: () {
+                      QuranPagesPicBloc().setState(APIStatus.initial);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  QuranPagePicView(data[i]['page'])));
+                    },
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Text(data[i]['name'],
+                            style: TextStyle(
+                                fontSize: 18, color: Colors.white, height: 3)),
                       ),
-                    )
-                  ]);
+                    ),
+                  )
+              ]);
             }
             return Container();
           }),
@@ -236,19 +282,22 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
           builder: (context, snapshot) {
             var data = jsonDecode(snapshot.data.toString());
             if (snapshot.connectionState == ConnectionState.done) {
-              return Column(
-                  children: [
-                    for(int i = 0; i< data.length; i++)
-                     Center(
-                      child: InkWell(
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => QuranPagePicView(data[i]['page'])));
-                          },
-                          child: Text(data[i]['page'].toString(),
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white,height: 3))),
-                    )
-                  ]);
+              return Column(children: [
+                for (int i = 0; i < data.length; i++)
+                  Center(
+                    child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      QuranPagePicView(data[i]['page'])));
+                        },
+                        child: Text(data[i]['page'].toString(),
+                            style: TextStyle(
+                                fontSize: 18, color: Colors.white, height: 3))),
+                  )
+              ]);
             }
             return Container();
           }),

@@ -184,7 +184,7 @@ public class FastingAlertsReceiver extends BroadcastReceiver {
                     .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .setUsage(AudioAttributes.USAGE_ALARM)
                     .build();
-            notificationChannel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI, audioAttributes);
+            //notificationChannel.setSound(Settings.System.DEFAULT_NOTIFICATION_URI, audioAttributes);
             notificationChannel.setVibrationPattern(new long[]{
                     500,
                     500,

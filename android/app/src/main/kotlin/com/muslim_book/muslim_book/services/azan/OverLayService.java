@@ -157,6 +157,7 @@ public class OverLayService extends Service {
                     appName,
                     NotificationManager.IMPORTANCE_DEFAULT
             );
+            serviceChannel.setSound(null, null);
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(serviceChannel);
         }
