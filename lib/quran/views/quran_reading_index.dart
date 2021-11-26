@@ -44,7 +44,7 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
 
       Future.delayed(Duration(seconds: 1), () {
         SharedPreferences.getInstance().then((value) {
-          if (value != null && value.getInt("LAST_READ_PAGE") != -1) {
+          if (value != null && value.getInt("LAST_READ_PAGE") != null) {
             QuranPagesPicBloc().setState(APIStatus.initial);
 
             Navigator.push(context, _createRoute(value.getInt("LAST_READ_PAGE")));
