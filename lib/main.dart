@@ -23,6 +23,8 @@ import 'package:base_app/views/splash_view/splash_view.dart';
 import 'package:base_app/views/start_view/start_view.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:facebook_audience_network/facebook_audience_network.dart';
+import 'package:fancy_dialog/FancyGif.dart';
+import 'package:fancy_dialog/fancy_dialog.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -38,7 +40,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'islamic_feature/bloc/islamic_post_details_bloc.dart';
 import 'locals_utils/app_localizations.dart';
 import 'models/banner_names_enum.dart';
@@ -112,6 +114,12 @@ class MyApp extends StatefulWidget {
     state.setLocale(newLocale);
   }
 
+  static void _launchURL() async {
+    if (!await launch(
+        "https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book"))
+      print('Could not launch');
+  }
+
   static Future<Widget> exitBottomSheet(context) async {
     return await showModalBottomSheet(
       context: context,
@@ -166,7 +174,34 @@ class MyApp extends StatefulWidget {
                               sizeConfig.blockSizeVertical),
                         ),
                         onPressed: () {
-                          SystemNavigator.pop();
+                          if (locator<Prefs>().getClickLike() != null) {
+                            SystemNavigator.pop();
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) => FancyDialog(
+                                      title: "شكراً لإستخدامك مسلم بوك",
+                                      descreption:
+                                          "سوف نكون ممتنين جداً إذا أضفت تعليق جيد على البرنامج فذلك يساعدنا على تطوير البرنامج مجانا للمسلمين و نشره على سوق الأندرويد بين الدول الإسلامية\n\n",
+                                      okColor: Theme.of(context).primaryColor,
+                                      okFun: () async {
+                                        await locator<Prefs>()
+                                            .setClickLike(true);
+                                        SystemNavigator.pop();
+                                      },
+                                      cancelFun: () async {
+                                        await locator<Prefs>()
+                                            .setClickLike(true);
+                                        _launchURL();
+                                        SystemNavigator.pop();
+                                      },
+                                      gifPath: FancyGif.SUBMIT,
+                                      cancelColor:
+                                          Theme.of(context).primaryColor,
+                                      cancel: "أعجبنى",
+                                      ok: "لم يعجبني",
+                                    ));
+                          }
                         },
                         fillColor: Theme.of(context).primaryColor,
                         child: Text(

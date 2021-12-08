@@ -362,6 +362,14 @@ class Prefs {
     await prefs.setString("lastUpdatedShowShareDialogTap", val);
   }
 
+  setClickLike(bool val) async {
+    await prefs.setBool("clicked_like", val);
+  }
+
+  bool getClickLike()  {
+    return prefs.getBool("clicked_like");
+  }
+
   setAzanShiekhJSON(Map<String, dynamic> sheikhJson, String azanId) async {
     await setAzanShiekhIdFromJSON(sheikhJson['id'].toString(), azanId);
     await prefs.setString(
