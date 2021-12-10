@@ -91,7 +91,7 @@ dependencies {
     implementation 'com.github.markushi:circlebutton:1.1'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.nineoldandroids:library:2.4.0'
-    implementation 'com.facebook.android:audience-network-sdk:5.9.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.1.1'
     implementation 'com.android.support:multidex:1.0.3'
     implementation platform('com.google.firebase:firebase-bom')
     implementation "androidx.constraintlayout:constraintlayout:2.0.0-beta7"

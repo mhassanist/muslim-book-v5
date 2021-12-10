@@ -370,6 +370,22 @@ class Prefs {
     return prefs.getBool("clicked_like");
   }
 
+  setClickNotLike(bool val) async {
+    await prefs.setBool("clicked_not_like", val);
+  }
+
+  bool getClickNotLike()  {
+    return prefs.getBool("clicked_not_like");
+  }
+
+  setDateOfFirstTimeAppOpened(int i) async {
+    await prefs.setInt("app_date_open", i);
+  }
+
+  int getDateOfFirstTimeAppOpened(){
+    return prefs.getInt("app_date_open");
+  }
+
   setAzanShiekhJSON(Map<String, dynamic> sheikhJson, String azanId) async {
     await setAzanShiekhIdFromJSON(sheikhJson['id'].toString(), azanId);
     await prefs.setString(

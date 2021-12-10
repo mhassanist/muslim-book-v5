@@ -174,33 +174,57 @@ class MyApp extends StatefulWidget {
                               sizeConfig.blockSizeVertical),
                         ),
                         onPressed: () {
-                          if (locator<Prefs>().getClickLike() != null) {
-                            SystemNavigator.pop();
+                          if (locator<Prefs>().getDateOfFirstTimeAppOpened() !=
+                              null) {
+                            ///for test///
+                            //DateTime before =DateTime.fromMillisecondsSinceEpoch(
+                            //DateTime(2021, 10, 9).millisecondsSinceEpoch);
+
+                            DateTime before = DateTime.fromMillisecondsSinceEpoch(
+                                locator<Prefs>().getDateOfFirstTimeAppOpened());
+                            DateTime now = DateTime.now();
+                            Duration timeDifference = now.difference(before);
+                            print(timeDifference.inDays);
+
+                            if (locator<Prefs>().getClickLike() != null) {
+                              if (timeDifference != null) {
+                                if (timeDifference.inDays / 30 >= 150) {
+                                  SystemNavigator.pop();
+                                } else {
+                                  if (timeDifference.inDays / 30 == 1 ||
+                                      timeDifference.inDays / 30 == 2 ||
+                                      timeDifference.inDays / 30 == 3 ||
+                                      timeDifference.inDays / 30 == 4 ||
+                                      timeDifference.inDays / 30 == 5) {
+                                    _showRateAppDialog(context);
+                                  } else {
+                                    SystemNavigator.pop();
+                                  }
+                                }
+                              }
+                            } else if (locator<Prefs>().getClickNotLike() !=
+                                null) {
+                              if (timeDifference != null) {
+                                if (timeDifference.inDays / 15 >= 120) {
+                                  SystemNavigator.pop();
+                                } else {
+                                  if (timeDifference.inDays / 15 == 1 ||
+                                      timeDifference.inDays / 15 == 2 ||
+                                      timeDifference.inDays / 15 == 3 ||
+                                      timeDifference.inDays / 15 == 4 ||
+                                      timeDifference.inDays / 15 == 5 ||
+                                      timeDifference.inDays / 15 == 6 ||
+                                      timeDifference.inDays / 15 == 7 ||
+                                      timeDifference.inDays / 15 == 8) {
+                                    _showRateAppDialog(context);
+                                  } else {
+                                    SystemNavigator.pop();
+                                  }
+                                }
+                              }
+                            }
                           } else {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) => FancyDialog(
-                                      title: "شكراً لإستخدامك مسلم بوك",
-                                      descreption:
-                                          "سوف نكون ممتنين جداً إذا أضفت تعليق جيد على البرنامج فذلك يساعدنا على تطوير البرنامج مجانا للمسلمين و نشره على سوق الأندرويد بين الدول الإسلامية\n\n",
-                                      okColor: Theme.of(context).primaryColor,
-                                      okFun: () async {
-                                        await locator<Prefs>()
-                                            .setClickLike(true);
-                                        SystemNavigator.pop();
-                                      },
-                                      cancelFun: () async {
-                                        await locator<Prefs>()
-                                            .setClickLike(true);
-                                        _launchURL();
-                                        SystemNavigator.pop();
-                                      },
-                                      gifPath: FancyGif.SUBMIT,
-                                      cancelColor:
-                                          Theme.of(context).primaryColor,
-                                      cancel: "أعجبنى",
-                                      ok: "لم يعجبني",
-                                    ));
+                            _showRateAppDialog(context);
                           }
                         },
                         fillColor: Theme.of(context).primaryColor,
@@ -252,6 +276,39 @@ class MyApp extends StatefulWidget {
 
   @override
   _MyAppState createState() => _MyAppState();
+
+  static void _showRateAppDialog(BuildContext context) {
+     showDialog(
+        context: context,
+        builder: (BuildContext context) => FancyDialog(
+          title: "شكراً لإستخدامك مسلم بوك",
+          descreption:
+          "سوف نكون ممتنين جداً إذا أضفت تعليق جيد على البرنامج فذلك يساعدنا على تطوير البرنامج مجانا للمسلمين و نشره على سوق الأندرويد بين الدول الإسلامية\n\n",
+          okColor: Theme.of(context).primaryColor,
+          okFun: () async {
+            if(locator<Prefs>().getDateOfFirstTimeAppOpened() == null){
+              await locator<Prefs>().setDateOfFirstTimeAppOpened(DateTime.now().millisecondsSinceEpoch);
+            }
+            await locator<Prefs>()
+                .setClickNotLike(true);
+            SystemNavigator.pop();
+          },
+          cancelFun: () async {
+            if(locator<Prefs>().getDateOfFirstTimeAppOpened() == null){
+              await locator<Prefs>().setDateOfFirstTimeAppOpened(DateTime.now().millisecondsSinceEpoch);
+            }
+            await locator<Prefs>()
+                .setClickLike(true);
+            _launchURL();
+            SystemNavigator.pop();
+          },
+          gifPath: FancyGif.SUBMIT,
+          cancelColor:
+          Theme.of(context).primaryColor,
+          cancel: "أعجبنى",
+          ok: "لم يعجبني",
+        ));
+  }
 }
 
 class _MyAppState extends State<MyApp> {
