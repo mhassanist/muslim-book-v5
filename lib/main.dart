@@ -174,57 +174,48 @@ class MyApp extends StatefulWidget {
                               sizeConfig.blockSizeVertical),
                         ),
                         onPressed: () {
-                          if (locator<Prefs>().getDateOfFirstTimeAppOpened() !=
+                          if(locator<Prefs>().getDateOfClickLike() == null &&
+                              locator<Prefs>().getDateOfClickNotLike() == null){
+                            _showRateAppDialog(context);
+                          }
+                          if (locator<Prefs>().getDateOfClickLike() !=
                               null) {
-                            ///for test///
-                            //DateTime before =DateTime.fromMillisecondsSinceEpoch(
-                            //DateTime(2021, 10, 9).millisecondsSinceEpoch);
-
                             DateTime before = DateTime.fromMillisecondsSinceEpoch(
-                                locator<Prefs>().getDateOfFirstTimeAppOpened());
+                                locator<Prefs>().getDateOfClickLike());
                             DateTime now = DateTime.now();
                             Duration timeDifference = now.difference(before);
                             print(timeDifference.inDays);
 
-                            if (locator<Prefs>().getClickLike() != null) {
                               if (timeDifference != null) {
-                                if (timeDifference.inDays / 30 >= 150) {
-                                  SystemNavigator.pop();
-                                } else {
-                                  if (timeDifference.inDays / 30 == 1 ||
-                                      timeDifference.inDays / 30 == 2 ||
-                                      timeDifference.inDays / 30 == 3 ||
-                                      timeDifference.inDays / 30 == 4 ||
-                                      timeDifference.inDays / 30 == 5) {
+                                  if ((timeDifference.inDays >= 30 && locator<Prefs>().getCountOfClickLike() == 1)  ||
+                                      (timeDifference.inDays >= 90 && locator<Prefs>().getCountOfClickLike() == 2)) {
                                     _showRateAppDialog(context);
                                   } else {
                                     SystemNavigator.pop();
                                   }
-                                }
+                              }else{
+                                SystemNavigator.pop();
                               }
-                            } else if (locator<Prefs>().getClickNotLike() !=
-                                null) {
-                              if (timeDifference != null) {
-                                if (timeDifference.inDays / 15 >= 120) {
-                                  SystemNavigator.pop();
+                          }
+                          if (locator<Prefs>().getDateOfClickNotLike() !=
+                              null) {
+                            DateTime before = DateTime.fromMillisecondsSinceEpoch(
+                                locator<Prefs>().getDateOfClickLike());
+                            DateTime now = DateTime.now();
+                            Duration timeDifference = now.difference(before);
+                            print(timeDifference.inDays);
+
+                            if (timeDifference != null) {
+                                if ((timeDifference.inDays >= 15 && locator<Prefs>().getCountOfClickNotLike() == 1) ||
+                                    (timeDifference.inDays >= 30 && locator<Prefs>().getCountOfClickNotLike() == 2) ||
+                                    (timeDifference.inDays >= 45 && locator<Prefs>().getCountOfClickNotLike() == 3)) {
+                                  _showRateAppDialog(context);
                                 } else {
-                                  if (timeDifference.inDays / 15 == 1 ||
-                                      timeDifference.inDays / 15 == 2 ||
-                                      timeDifference.inDays / 15 == 3 ||
-                                      timeDifference.inDays / 15 == 4 ||
-                                      timeDifference.inDays / 15 == 5 ||
-                                      timeDifference.inDays / 15 == 6 ||
-                                      timeDifference.inDays / 15 == 7 ||
-                                      timeDifference.inDays / 15 == 8) {
-                                    _showRateAppDialog(context);
-                                  } else {
-                                    SystemNavigator.pop();
-                                  }
+                                  SystemNavigator.pop();
                                 }
-                              }
+                            }else{
+                              SystemNavigator.pop();
                             }
-                          } else {
-                            _showRateAppDialog(context);
                           }
                         },
                         fillColor: Theme.of(context).primaryColor,
@@ -286,19 +277,25 @@ class MyApp extends StatefulWidget {
           "سوف نكون ممتنين جداً إذا أضفت تعليق جيد على البرنامج فذلك يساعدنا على تطوير البرنامج مجانا للمسلمين و نشره على سوق الأندرويد بين الدول الإسلامية\n\n",
           okColor: Theme.of(context).primaryColor,
           okFun: () async {
-            if(locator<Prefs>().getDateOfFirstTimeAppOpened() == null){
-              await locator<Prefs>().setDateOfFirstTimeAppOpened(DateTime.now().millisecondsSinceEpoch);
+            if(locator<Prefs>().getDateOfClickNotLike() == null){
+              await locator<Prefs>().setDateOfClickNotLike(DateTime.now().millisecondsSinceEpoch);
+              await locator<Prefs>().setCountOfClickNotLike(1);
+            }else{
+              if(locator<Prefs>().getCountOfClickNotLike() != null){
+                await locator<Prefs>().setCountOfClickNotLike(locator<Prefs>().getCountOfClickNotLike()+1);
+              }
             }
-            await locator<Prefs>()
-                .setClickNotLike(true);
             SystemNavigator.pop();
           },
           cancelFun: () async {
-            if(locator<Prefs>().getDateOfFirstTimeAppOpened() == null){
-              await locator<Prefs>().setDateOfFirstTimeAppOpened(DateTime.now().millisecondsSinceEpoch);
+            if(locator<Prefs>().getDateOfClickLike() == null){
+              await locator<Prefs>().setDateOfClickLike(DateTime.now().millisecondsSinceEpoch);
+              await locator<Prefs>().setCountOfClickLike(1);
+            }else{
+              if(locator<Prefs>().getCountOfClickLike() != null){
+                await locator<Prefs>().setCountOfClickLike(locator<Prefs>().getCountOfClickLike()+1);
+              }
             }
-            await locator<Prefs>()
-                .setClickLike(true);
             _launchURL();
             SystemNavigator.pop();
           },

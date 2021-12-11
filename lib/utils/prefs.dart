@@ -362,28 +362,36 @@ class Prefs {
     await prefs.setString("lastUpdatedShowShareDialogTap", val);
   }
 
-  setClickLike(bool val) async {
-    await prefs.setBool("clicked_like", val);
+  setCountOfClickLike(int i) async {
+    await prefs.setInt("clicked_like_count", i);
   }
 
-  bool getClickLike()  {
-    return prefs.getBool("clicked_like");
+  int getCountOfClickLike() {
+    return prefs.getInt("clicked_like_count");
   }
 
-  setClickNotLike(bool val) async {
-    await prefs.setBool("clicked_not_like", val);
+  setCountOfClickNotLike(int i) async {
+    await prefs.setInt("clicked_not_like_count", i);
   }
 
-  bool getClickNotLike()  {
-    return prefs.getBool("clicked_not_like");
+  int getCountOfClickNotLike() {
+    return prefs.getInt("clicked_not_like_count");
   }
 
-  setDateOfFirstTimeAppOpened(int i) async {
-    await prefs.setInt("app_date_open", i);
+  setDateOfClickLike(int i) async {
+    await prefs.setInt("clicked_like_date", i);
   }
 
-  int getDateOfFirstTimeAppOpened(){
-    return prefs.getInt("app_date_open");
+  int getDateOfClickLike(){
+    return prefs.getInt("clicked_like_date");
+  }
+
+  setDateOfClickNotLike(int i) async {
+    await prefs.setInt("clicked_not_like_date", i);
+  }
+
+  int getDateOfClickNotLike(){
+    return prefs.getInt("clicked_not_like_date");
   }
 
   setAzanShiekhJSON(Map<String, dynamic> sheikhJson, String azanId) async {
