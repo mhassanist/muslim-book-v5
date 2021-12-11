@@ -200,7 +200,7 @@ class MyApp extends StatefulWidget {
                           if (locator<Prefs>().getDateOfClickNotLike() !=
                               null) {
                             DateTime before = DateTime.fromMillisecondsSinceEpoch(
-                                locator<Prefs>().getDateOfClickLike());
+                                locator<Prefs>().getDateOfClickNotLike());
                             DateTime now = DateTime.now();
                             Duration timeDifference = now.difference(before);
                             print(timeDifference.inDays);
