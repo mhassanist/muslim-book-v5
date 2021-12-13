@@ -239,7 +239,7 @@ class MyApp extends StatefulWidget {
 
                                 if(locator<Prefs>().getCountOfClickLike() == 1 &&
                                     locator<Prefs>().getCountOfClickNotLike() == 1){
-                                  if(likeTimeDifference.inDays >= 30){
+                                  if(likeTimeDifference.inDays >= 30 && notLikeTimeDifference.inDays >= 15){
                                     _showRateAppDialog(context);
                                   }else if(notLikeTimeDifference.inDays >= 15){
                                     _showRateAppDialog(context);
@@ -249,7 +249,7 @@ class MyApp extends StatefulWidget {
 
                                 }else if(locator<Prefs>().getCountOfClickLike() == 2 &&
                                     locator<Prefs>().getCountOfClickNotLike() == 1){
-                                  if(likeTimeDifference.inDays >= 90){
+                                  if(likeTimeDifference.inDays >= 90 && notLikeTimeDifference.inDays >= 30){
                                     _showRateAppDialog(context);
                                   }else if(notLikeTimeDifference.inDays >= 30){
                                     _showRateAppDialog(context);
