@@ -394,6 +394,14 @@ class Prefs {
     return prefs.getInt("clicked_not_like_date");
   }
 
+  setCountOfOpenDialog(int i) async {
+    await prefs.setInt("open_dialog_count", i);
+  }
+
+  int getCountOfOpenDialog() {
+    return prefs.getInt("open_dialog_count");
+  }
+
   setAzanShiekhJSON(Map<String, dynamic> sheikhJson, String azanId) async {
     await setAzanShiekhIdFromJSON(sheikhJson['id'].toString(), azanId);
     await prefs.setString(
