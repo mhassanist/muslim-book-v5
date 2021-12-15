@@ -1,7 +1,7 @@
 name: base_app
 description: Muslim Book App
 
-version: 4.5.22+70
+version: 4.5.23+71
 
 environment:
   sdk: ">=2.6.0 <3.0.0"
