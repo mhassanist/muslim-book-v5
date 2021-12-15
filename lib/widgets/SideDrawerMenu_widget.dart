@@ -11,6 +11,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../utils/sizing_info_extension.dart';
 
@@ -267,6 +268,14 @@ class SideDrawerMenu {
                           }, false, ""),
                           _buildDivider(),
                           _buildRow(
+                              Icons.privacy_tip,
+                              AppLocalizations.of(context)
+                                  .translate("privacy_policy"), () {
+                            _launchURL();
+                            Navigator.of(context).pop();
+                          }, false, ""),
+                          _buildDivider(),
+                          _buildRow(
                               Icons.settings,
                               AppLocalizations.of(context)
                                   .translate("settings"), () {
@@ -438,4 +447,9 @@ class SideDrawerMenu {
       },
     );
   }
-}
+
+  static void _launchURL() async {
+    if (!await launch(
+        "https://docs.google.com/document/d/1Hbvqvr2gknDXsPJ8KiDhsqxqDrzzc6OstV4UB7dh__k/edit#"))
+      print('Could not launch');
+  }}
