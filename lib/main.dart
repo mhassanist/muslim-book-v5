@@ -326,9 +326,11 @@ class MyApp extends StatefulWidget {
      showDialog(
         context: context,
         builder: (BuildContext context) => FancyDialog(
-          title: "شكراً لإستخدامك مسلم بوك",
+          title: AppLocalizations.of(context)
+              .translate("thanx_to_use_app"),
           descreption:
-          "سوف نكون ممتنين جداً إذا أضفت تعليق جيد على البرنامج فذلك يساعدنا على تطوير البرنامج مجانا للمسلمين و نشره على سوق الأندرويد بين الدول الإسلامية\n\n",
+          AppLocalizations.of(context)
+              .translate("rate_app_description"),
           okColor: Theme.of(context).primaryColor,
           okFun: () async {
             if(locator<Prefs>().getCountOfOpenDialog() == null){
@@ -366,8 +368,10 @@ class MyApp extends StatefulWidget {
           gifPath: FancyGif.SUBMIT,
           cancelColor:
           Theme.of(context).primaryColor,
-          cancel: "أعجبنى",
-          ok: "لم يعجبني",
+          cancel: AppLocalizations.of(context)
+              .translate("like"),
+          ok: AppLocalizations.of(context)
+              .translate("not_like"),
         ));
   }
 }

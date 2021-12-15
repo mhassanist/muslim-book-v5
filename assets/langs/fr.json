@@ -287,12 +287,14 @@
   "part_no": "Numéro de pièce:",
   "categories": "catégories",
   "Feeds": "Islamique",
-
   "checkout_internet": "Pas de connexion Internet",
   "release_to_load_more": "relâcher pour charger plus",
   "pull_up-load": "tirez vers le haut pour charger plus de messages",
   "no_more_posts": "Plus de messages",
-  "privacy_policy": "Politique de confidentialité"
+  "privacy_policy": "Politique de confidentialité",
+  "thanx_to_use_app": "Merci d'utiliser le book musulman",
+  "rate_app_description": "Nous vous serons très reconnaissants si vous ajoutez un bon commentaire sur le programme, cela nous aide à développer le programme gratuitement pour les musulmans et à le publier sur le marché Android parmi les pays islamiques\n\n",
+  "not_like": "Ne pas aimer"
 
 
 
