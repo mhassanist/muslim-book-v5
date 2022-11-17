@@ -6,27 +6,33 @@ import 'dart:convert';
 
 import 'dart:ffi';
 
+import 'package:base_app/models/base_model.dart';
+
 MonthAzanModel monthAzanModelFromJson(String str) => MonthAzanModel.fromJson(json.decode(str));
 
 String monthAzanModelToJson(MonthAzanModel data) => json.encode(data.toJson());
 
-class MonthAzanModel {
+class MonthAzanModel with Model {
   MonthAzanModel({
-    this.code,
-    this.status,
-    this.data,
-  });
+    this.code = -1,
+    this.status = '',
+    List<AzanModel>? data,
+  }) {
+    this.data = data ?? <AzanModel>[];
+  }
 
-  int code;
-  String status;
-  List<AzanModel> data;
+  late int code;
+  late String status;
+  late List<AzanModel> data;
+
   factory MonthAzanModel.fromJson(String str) =>
       MonthAzanModel.fromMap(json.decode(str));
-  factory MonthAzanModel.fromMap(Map<String, dynamic> json) => MonthAzanModel(
-    code: json["code"],
-    status: json["status"],
-    data: List<AzanModel>.from(json["data"].map((x) => AzanModel.fromJson(x))),
-  );
+
+  MonthAzanModel.fromMap(Map<String, dynamic> json) {
+    code = intFromJson(json, 'code');
+    status = stringFromJson(json, 'status');
+    data = listFromJson(json, 'data', (v) => AzanModel.fromJson(v));
+  }
 
   Map<String, dynamic> toJson() => {
     "code": code,
@@ -35,7 +41,7 @@ class MonthAzanModel {
   };
 }
 
-class AzanModel {
+class AzanModel with Model {
   AzanModel({
     this.timings,
     this.date,
@@ -59,7 +65,7 @@ class AzanModel {
   };
 }
 
-class Date {
+class Date with Model {
   Date({
     this.readable,
     this.timestamp,
@@ -87,7 +93,7 @@ class Date {
   };
 }
 
-class Gregorian {
+class Gregorian with Model {
   Gregorian({
     this.date,
     this.format,
@@ -127,7 +133,7 @@ class Gregorian {
   };
 }
 
-class Designation {
+class Designation with Model {
   Designation({
     this.abbreviated,
     this.expanded,
@@ -167,7 +173,7 @@ final formatValues = EnumValues({
   "DD-MM-YYYY": Format.DD_MM_YYYY
 });
 
-class GregorianMonth {
+class GregorianMonth with Model {
   GregorianMonth({
     this.number,
     this.en,
@@ -193,7 +199,7 @@ final purpleEnValues = EnumValues({
   "April": PurpleEn.APRIL
 });
 
-class GregorianWeekday {
+class GregorianWeekday with Model {
   GregorianWeekday({
     this.en,
   });
@@ -209,7 +215,7 @@ class GregorianWeekday {
   };
 }
 
-class Hijri {
+class Hijri with Model {
   Hijri({
     this.date,
     this.format,
@@ -253,7 +259,7 @@ class Hijri {
   };
 }
 
-class HijriMonth {
+class HijriMonth with Model {
   HijriMonth({
     this.number,
     this.en,
@@ -291,7 +297,7 @@ final fluffyEnValues = EnumValues({
   "Shaʿbān": FluffyEn.SHA_BN
 });
 
-class HijriWeekday {
+class HijriWeekday with Model {
   HijriWeekday({
     this.en,
     this.ar,
@@ -311,7 +317,7 @@ class HijriWeekday {
   };
 }
 
-class Meta {
+class Meta with Model {
   Meta({
     this.latitude,
     this.longitude,
@@ -361,19 +367,24 @@ final latitudeAdjustmentMethodValues = EnumValues({
   "ANGLE_BASED": LatitudeAdjustmentMethod.ANGLE_BASED
 });
 
-class Method {
+class Method with Model {
   Method({
     this.id,
     this.name,
     this.params,
   });
 
-  int id;
-  Name name;
-  Params params;
+  late int id;
+  late Name name;
+  late Params params;
+
+  // Method.fromJson(Map<String, dynamic> json) {
+  //   id = intFromJson(json, 'id');
+  //   name = nameValues.map[stringFromJson(json, 'name')];
+  // }
 
   factory Method.fromJson(Map<String, dynamic> json) => Method(
-    id: json["id"],
+    id: json[""],
     name: nameValues.map[json["name"]],
     params: Params.fromJson(json["params"]),
   );
@@ -391,19 +402,19 @@ final nameValues = EnumValues({
   "Egyptian General Authority of Survey": Name.EGYPTIAN_GENERAL_AUTHORITY_OF_SURVEY
 });
 
-class Params {
+class Params with Model {
   Params({
-    this.fajr,
-    this.isha,
+    this.fajr = '',
+    this.isha = '',
   });
 
-  String fajr;
-  String isha;
+  late String fajr;
+  late String isha;
+  Params.fromJson(Map<String, dynamic> json) {
+    fajr= stringFromJson(json, 'Fajr');
+    isha= stringFromJson(json, 'Isha');
+  }
 
-  factory Params.fromJson(Map<String, dynamic> json) => Params(
-    fajr: json["Fajr"].toString() ,
-    isha: json["Isha"] .toString() ,
-  );
 
   Map<String, dynamic> toJson() => {
     "Fajr": fajr,
@@ -417,46 +428,46 @@ final midnightModeValues = EnumValues({
   "STANDARD": MidnightMode.STANDARD
 });
 
-enum Timezone { AFRICA_CAIRO }
+enum Timezone with Model { AFRICA_CAIRO }
 
 final timezoneValues = EnumValues({
   "Africa/Cairo": Timezone.AFRICA_CAIRO
 });
 
-class Timings {
+class Timings with Model {
   Timings({
-    this.fajr,
-    this.sunrise,
-    this.dhuhr,
-    this.asr,
-    this.sunset,
-    this.maghrib,
-    this.isha,
-    this.imsak,
-    this.midnight,
+    this.fajr = '',
+    this.sunrise = '',
+    this.dhuhr = '',
+    this.asr = '',
+    this.sunset = '',
+    this.maghrib = '',
+    this.isha = '',
+    this.imsak = '',
+    this.midnight = '',
   });
 
-  String fajr;
-  String sunrise;
-  String dhuhr;
-  String asr;
-  String sunset;
-  String maghrib;
-  String isha;
-  String imsak;
-  String midnight;
+  late String fajr;
+  late String sunrise;
+  late String dhuhr;
+  late String asr;
+  late String sunset;
+  late String maghrib;
+  late String isha;
+  late String imsak;
+  late String midnight;
 
-  factory Timings.fromJson(Map<String, dynamic> json) => Timings(
-    fajr: json["Fajr"],
-    sunrise: json["Sunrise"],
-    dhuhr: json["Dhuhr"],
-    asr: json["Asr"],
-    sunset: json["Sunset"],
-    maghrib: json["Maghrib"],
-    isha: json["Isha"],
-    imsak: json["Imsak"],
-    midnight: json["Midnight"],
-  );
+  Timings.fromJson(Map<String, dynamic> json) {
+    fajr= stringFromJson(json, 'Fajr');
+    sunrise= stringFromJson(json, 'Sunrise');
+    dhuhr= stringFromJson(json, 'Dhuhr');
+    asr= stringFromJson(json, 'Asr');
+    sunset= stringFromJson(json, 'Sunset');
+    maghrib= stringFromJson(json, 'Maghrib');
+    isha= stringFromJson(json, 'Isha');
+    imsak= stringFromJson(json, 'Imsak');
+    midnight= stringFromJson(json, 'Midnight');
+  }
 
   Map<String, dynamic> toJson() => {
     "Fajr": fajr,
@@ -477,17 +488,17 @@ final asrValues = EnumValues({
   "15:31 (EET)": Asr.THE_1531_EET
 });
 
-class EnumValues<T> {
-  Map<String, T> map;
-  Map<T, String> reverseMap;
+class EnumValues<T> with Model {
+  late Map<String, T> map;
+  Map<T, String>? reverseMap;
 
-  EnumValues(this.map);
+  EnumValues(this.map,);
 
   Map<T, String> get reverse {
     if (reverseMap == null) {
       reverseMap = map.map((k, v) => new MapEntry(v, k));
     }
-    return reverseMap;
+    return reverseMap ?? map.map((k, v) => new MapEntry(v, k));
   }
 }
 

@@ -7,9 +7,15 @@ import '../utils/sizing_info_extension.dart';
 
 class LoadMoreAzanSoundsButton extends StatelessWidget {
   final CrossFadeState state;
-  final Function onTap;
+  final Function? onTap;
   final String text;
-  const LoadMoreAzanSoundsButton({Key key, this.state, this.onTap, this.text = "press_here"}) : super(key: key);
+  const LoadMoreAzanSoundsButton({
+    super.key,
+    required this.state,
+    this.onTap,
+    this.text = "press_here",
+  });
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveBuilder(builder: (context, sizeConfig) {
@@ -24,7 +30,7 @@ class LoadMoreAzanSoundsButton extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                       sizeConfig.blockSizeHorizontal * 2)),
-              onPressed: onTap,
+              onPressed: onTap?.call,
               fillColor: Theme.of(context).primaryColor,
               child: Text(
                 AppLocalizations.of(context).translate("$text"),

@@ -1,14 +1,18 @@
+import 'package:base_app/utils/locator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../utils/locator.dart';
-
 class BaseView<T extends ChangeNotifier> extends StatefulWidget {
-  BaseView({Key key, this.builder, T viewModel, this.onModelReady})
-      : super(key: key);
-  final Widget Function(BuildContext context, T value, Widget child) builder;
+  BaseView({
+    super.key,
+    required this.builder,
+    required T viewModel,
+    this.onModelReady,
+  });
+  final Widget Function(BuildContext context, T value, Widget? child) builder;
 
-  final Function(T) onModelReady;
+  final Function(T)? onModelReady;
+
   @override
   _BaseWidget<T> createState() => _BaseWidget<T>();
 }
@@ -18,7 +22,7 @@ class _BaseWidget<T extends ChangeNotifier> extends State<BaseView<T>> {
   @override
   void initState() {
     super.initState();
-    if (widget.onModelReady != null) widget.onModelReady(_viewModel);
+    if (widget.onModelReady != null) widget.onModelReady?.call(_viewModel);
   }
 
   @override

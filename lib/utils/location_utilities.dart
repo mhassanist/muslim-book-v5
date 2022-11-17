@@ -10,10 +10,13 @@ class LocationUtilities {
     if (await Permission.locationWhenInUse.request().isGranted) {
       if (!await location.serviceEnabled()) {
         try {
-          GeolocationResult result = await Geolocation.enableLocationServices();
-          if (result.isSuccessful) {
-             return await getLastKnownLocation();
+          if (await location.requestService()) {
+            return await getLastKnownLocation();
           }
+          // GeolocationResult result = await Geolocation.enableLocationServices();
+          // if (result.isSuccessful) {
+          //    return await getLastKnownLocation();
+          // }
         } catch (e) {}
       } else
         return await getLastKnownLocation();

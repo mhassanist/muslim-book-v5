@@ -1,8 +1,8 @@
 class SignUpModel {
   dynamic data;
-  String client;
-  String message;
-  bool success;
+  String? client;
+  String? message;
+  bool? success;
 
   SignUpModel({
     this.data,
@@ -19,16 +19,16 @@ class SignUpModel {
 }
 
 class SignUpModelData {
-  String email;
-  int id;
-  String image;
-  String name;
-  String countryId;
-  String flag;
-  String cityId;
-  String country;
-  String city;
-  String apiToken;
+  String? email;
+  int? id;
+  String? image;
+  String? name;
+  String? countryId;
+  String? flag;
+  String? cityId;
+  String? country;
+  String? city;
+  String? apiToken;
 
   SignUpModelData.fromJson(obj){
     this.email = obj['email'];

@@ -1,49 +1,51 @@
 import 'dart:convert';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:base_app/models/base_model.dart';
 
-class AzanSound {
-  int id;
-  int fajr;
-  String name;
-  String key;
-  String fileUrl;
-  String localPath;
+class AzanSound with Model {
+  late int id;
+  late int fajr;
+  late String name;
+  late String key;
+  late String fileUrl;
+  late String localPath;
 
-  AzanSound({this.id, this.fajr, this.name, this.key, this.fileUrl, this.localPath});
+  AzanSound({
+    this.id = -1,
+    this.fajr = 0,
+    this.name = '',
+    this.key = '',
+    this.fileUrl = '',
+    this.localPath = '',
+  });
 
-  factory AzanSound.fromMap(Map<String, dynamic> json) => AzanSound(
-        id: json["id"],
-        fajr: json["fajr"],
-        name: json["name"],
-    key: json["key"],
-    fileUrl: json["file"],
-    localPath: json["local_path"],
-      );
-
-  Map<String, dynamic> toJSON() {
-    Map<String, dynamic> m = new Map();
-
-    m['id'] = id;
-    m['fajr'] = fajr;
-    m['name'] = name;
-    m['key'] = key;
-    m['file'] = fileUrl;
-    m['local_path'] = localPath;
-
-    return m;
+  AzanSound.fromMap(Map<String, dynamic> json) {
+    id = intFromJson(json, 'id');
+    fajr = intFromJson(json, 'fajr');
+    name = stringFromJson(json, 'name');
+    key = stringFromJson(json, 'key');
+    fileUrl = stringFromJson(json, 'file');
+    localPath = stringFromJson(json, 'local_path');
   }
+
+  Map<String, dynamic> toJSON() => {
+        'id': id,
+        'fajr': fajr,
+        'name': name,
+        'key': key,
+        'file': fileUrl,
+        'local_path': localPath,
+      };
 
   static Map<String, dynamic> toMap(String savedShiekLocalJSON) {
     return json.decode(savedShiekLocalJSON);
   }
 }
 
-class AzanSoundsList {
-
+class AzanSoundsList with Model {
   fromJson(response) {
-    List<AzanSound> soundsList = List();
-    for (var azanSound in response) {
+    final soundsList = <AzanSound>[];
+    for (final azanSound in response) {
       AzanSound model = AzanSound.fromMap(azanSound);
       soundsList.add(model);
     }

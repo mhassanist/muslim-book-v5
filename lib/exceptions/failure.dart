@@ -16,25 +16,20 @@ class Failure {
   }
 
   String get message {
-    if (_message == null) {
-      switch (statusCode) {
-        case Constants.NO_CONNECTION_EXCEPTION:
-          return locator<Prefs>().getLang() == Constants.EN
-              ? _noConnectionException()["en"]
-              : _noConnectionException()["ar"];
-          break;
-      }
+    switch (statusCode) {
+      case Constants.NO_CONNECTION_EXCEPTION:
+        return locator<Prefs>().getLang() == Constants.EN
+            ? '${_noConnectionException()["en"]}'
+            : '${_noConnectionException()["ar"]}';
     }
     return _message;
   }
 
   void _getMessage() {
-    if (_message != null) {
-      switch (statusCode) {
-        case Constants.NO_CONNECTION_EXCEPTION:
-          _noConnectionException();
-          break;
-      }
+    switch (statusCode) {
+      case Constants.NO_CONNECTION_EXCEPTION:
+        _noConnectionException();
+        break;
     }
   }
 

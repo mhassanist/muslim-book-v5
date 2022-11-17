@@ -31,7 +31,7 @@ class SignupMobilePortraitUi {
       padding: const EdgeInsets.only(top: 20, bottom: 15),
       child: Center(
         child: Stack(
-          overflow: Overflow.visible,
+          // overflow: Overflow.visible,
           fit: StackFit.passthrough,
           //fit: StackFit.loose,
           children: <Widget>[

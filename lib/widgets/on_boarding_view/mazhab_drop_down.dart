@@ -40,7 +40,7 @@ class MazhabsDropDown extends BaseModelWidget<PickAzanMethodsProvider> {
               );
             }).toList(),
             onChanged: (value) {
-              model.pickedMazhab = value;
+              model.pickedMazhab = value as Map<String,dynamic>;
             },
           ),
         ),

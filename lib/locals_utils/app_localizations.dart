@@ -5,21 +5,21 @@ import 'package:flutter/services.dart';
 
 class AppLocalizations {
   final Locale locale;
+  Map<String, String> _localizedStrings = {};
+
   AppLocalizations(this.locale);
 
-  static AppLocalizations of(BuildContext context) {
+  static AppLocalizations? of(BuildContext context) {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
   static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocaalizationsDelegate();
-  Map<String, String> _localizedStrings;
+      _AppLocalizationsDelegate();
 
-   Future<bool> load() async {
+  Future<bool> load() async {
     String jsonString =
         await rootBundle.loadString("assets/langs/${locale.languageCode}.json");
     Map<String, dynamic> jsonMap = json.decode(jsonString);
-    if(_localizedStrings !=null)
     _localizedStrings.clear();
 
     _localizedStrings = jsonMap.map((key, value) {
@@ -33,17 +33,17 @@ class AppLocalizations {
   }
 
   String translate(String key) {
-     return _localizedStrings[key];
+    return '${_localizedStrings[key]}';
   }
 }
 
-class _AppLocaalizationsDelegate
+class _AppLocalizationsDelegate
     extends LocalizationsDelegate<AppLocalizations> {
-  const _AppLocaalizationsDelegate();
+  const _AppLocalizationsDelegate();
 
   @override
   bool isSupported(Locale locale) {
-    return ["ar", "en","fr"].contains(locale.languageCode);
+    return ["ar", "en", "fr"].contains(locale.languageCode);
   }
 
   @override

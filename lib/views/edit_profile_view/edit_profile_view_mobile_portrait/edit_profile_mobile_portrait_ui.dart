@@ -26,12 +26,16 @@ class EditProfileMobilePortraitUi {
   final AppFormControllers controllers;
 
   EditProfileMobilePortraitUi(
-      this.sizeConfig, this.context, this.provider, this.controllers) {
+      this.sizeConfig,
+      this.context,
+      this.provider,
+      this.controllers,
+      ) {
     controllers.emailController.text =
-        Provider.of<UserProvider>(context).user.email;
+        Provider.of<UserProvider>(context).user.email ?? '';
 
     controllers.nameController.text =
-        Provider.of<UserProvider>(context).user.name;
+        Provider.of<UserProvider>(context).user.name ?? '';
   }
 
   Widget imageWidget() {
@@ -39,7 +43,7 @@ class EditProfileMobilePortraitUi {
       padding: const EdgeInsets.only(top: 30, bottom: 20),
       child: Center(
         child: Stack(
-          overflow: Overflow.visible,
+          // overflow: Overflow.visible,
           fit: StackFit.passthrough,
           //fit: StackFit.loose,
           children: <Widget>[
@@ -48,7 +52,7 @@ class EditProfileMobilePortraitUi {
                     ? userImageOrFlag()
                     : Container(
                         decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                             shape: BoxShape.circle),
                         child: showImage(provider.getUserProfileImage),
                         height: sizeConfig.blockSizeHorizontal * 60,

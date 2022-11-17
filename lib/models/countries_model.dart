@@ -2,10 +2,10 @@
 import 'dart:convert';
 
 class CountriesModel {
-  List<CountryModel> data;
-  String client;
-  String message;
-  bool success;
+  List<CountryModel>? data;
+  String? client;
+  String? message;
+  bool? success;
 
   CountriesModel({
     this.data,
@@ -26,7 +26,9 @@ class CountriesModel {
   );
 
   Map<String, dynamic> toMap() => {
-    "data": List<dynamic>.from(data.map((x) => x.toMap())),
+    "data": data != null
+        ? List<dynamic>.from(data!.map((x) => x.toMap()))
+        : '',
     "client": client,
     "message": message,
     "success": success,
@@ -34,10 +36,10 @@ class CountriesModel {
 }
 
 class CountryModel {
-  int id;
-  String flag;
-  String iso;
-  String name;
+  int? id;
+  String? flag;
+  String? iso;
+  String? name;
 
   CountryModel({
     this.id,

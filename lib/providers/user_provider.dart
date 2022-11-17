@@ -28,7 +28,7 @@ class UserProvider extends ViewStateProvider {
 
   List<CountryModel> _countries = [];
   CountryModel _selectedCountry;
-  String _countryName;
+  String _countryName = '';
 
   List<CountryModel> get countries => _countries;
 

@@ -36,7 +36,7 @@ class _AzanDrawOverViewState extends State<AzanDrawOverView>
             decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(
-                      "assets/images/onboarding/draw_over_apps_background.png"),
+                      "assets/images/on_boarding/draw_over_apps_background.png"),
                   fit: BoxFit.cover),
             ),
             padding: EdgeInsets.only(

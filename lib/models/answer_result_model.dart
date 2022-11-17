@@ -1,40 +1,44 @@
-class AnswerResultModel {
-  dynamic data;
-  String client;
-  String message;
-  bool success;
+import 'package:base_app/models/base_model.dart';
+
+class AnswerResultModel with Model {
+  late dynamic data;
+  late String client;
+  late String message;
+  late bool success;
 
   AnswerResultModel({
     this.data,
-    this.client,
-    this.message,
-    this.success,
+    this.client = '',
+    this.message = '',
+    this.success = false,
   });
-  AnswerResultModel.fromJson(obj) {
-    this.client = obj['client'];
-    this.message = obj['message'];
-    this.success = obj['success'];
-    this.data = obj['data'];
+
+  AnswerResultModel.fromJson(json) {
+    data = json['data'];
+    client = stringFromJson(json, 'client');
+    message = stringFromJson(json, 'message');
+    success = boolFromJson(json, 'success');
   }
 }
 
-class AnswerResultModelData {
-  bool result;
-  int points;
-  bool hasAdditional;
-  dynamic additional;
+class AnswerResultModelData with Model {
+  late bool result;
+  late int points;
+  late bool hasAdditional;
+  late dynamic additional;
 
   AnswerResultModelData({
-    this.result,
-    this.points,
-    this.hasAdditional,
+    this.result = false,
+    this.points = 0,
+    this.hasAdditional = false,
     this.additional,
   });
-  AnswerResultModelData.fromJson(obj) {
-    this.result = obj['result'];
-    this.points = obj['points'];
-    this.hasAdditional = obj['has_additional'];
-    this.additional = obj['additional'];
+
+  AnswerResultModelData.fromJson(json) {
+    result = boolFromJson(json, 'result');
+    points = intFromJson(json, 'points');
+    hasAdditional = boolFromJson(json, 'has_additional');
+    additional = json['additional'];
   }
 }
 

@@ -9,7 +9,7 @@ class ScoreModel {
     this.data,
   });
 
-  ScoreModelData data;
+  ScoreModelData? data;
 
   factory ScoreModel.fromJson(String str) => ScoreModel.fromMap(json.decode(str));
 
@@ -20,7 +20,7 @@ class ScoreModel {
   );
 
   Map<String, dynamic> toMap() => {
-    "data": data.toMap(),
+    "data": data?.toMap(),
   };
 }
 
@@ -43,21 +43,21 @@ class ScoreModelData {
     this.remindsRank, //rank in competition
   });
 
-  int id;
-  String email;
-  String image;
-  String name;
-  int countryId;
-  int cityId;
-  int points;
-  String flag;
-  String country;
-  String city;
-  int correctAnswer;
-  int wrongAnswer;
-  int rank;
-  String reminds;
-  int remindsRank;
+  int? id;
+  String? email;
+  String? image;
+  String? name;
+  int? countryId;
+  int? cityId;
+  int? points;
+  String? flag;
+  String? country;
+  String? city;
+  int? correctAnswer;
+  int? wrongAnswer;
+  int? rank;
+  String? reminds;
+  int? remindsRank;
 
   factory ScoreModelData.fromJson(String str) => ScoreModelData.fromMap(json.decode(str));
 

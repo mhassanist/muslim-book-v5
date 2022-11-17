@@ -9,11 +9,15 @@ import '../utils/sizing_info_extension.dart';
 
 class RetryViewWidget extends StatefulWidget {
   final ViewStateProvider provider;
-  final Function function;
+  final Function? function;
   final String text;
 
-  const RetryViewWidget({Key key, this.provider, this.function, this.text})
-      : super(key: key);
+  const RetryViewWidget({
+    super.key,
+    required this.provider,
+    this.function,
+    required this.text,
+  });
 
   @override
   _RetryViewWidgetState createState() => _RetryViewWidgetState();
@@ -50,7 +54,7 @@ class _RetryViewWidgetState extends State<RetryViewWidget> {
               Padding(padding: EdgeInsets.only(top: 20)),
               LoadingButton(
                 firstWidget: RaisedButton(
-                  onPressed: widget.function,
+                  onPressed: widget.function?.call,
                   child: Text(
                     AppLocalizations.of(context).translate("retry"),
                     style: TextStyle(color: Constants.CANVAS_COLOR),
@@ -71,7 +75,7 @@ class _RetryViewWidgetState extends State<RetryViewWidget> {
   @override
   void dispose() {
     if (widget.provider.mounted) {
-      Future.delayed(Duration(milliseconds: 300), widget.function);
+      Future.delayed(Duration(milliseconds: 300), widget.function?.call);
     }
     super.dispose();
   }
@@ -81,7 +85,7 @@ Widget modelNotPresentWidget(
   SizingInformation sizeConfig,
   BuildContext context,
   ViewStateProvider provider,
-  Function function,
+  Function? function,
   String text,
 ) {
   return Scaffold(
@@ -111,7 +115,7 @@ Widget modelNotPresentWidget(
           Padding(padding: EdgeInsets.only(top: 20)),
           LoadingButton(
             firstWidget: RaisedButton(
-              onPressed: function,
+              onPressed: function?.call,
               child: Text(
                 AppLocalizations.of(context).translate("retry"),
                 style: TextStyle(color: Constants.CANVAS_COLOR),

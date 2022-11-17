@@ -1,12 +1,15 @@
-
 import 'package:base_app/utils/Constants.dart';
 import 'package:flutter/material.dart';
 
 class LoadingButton extends StatelessWidget {
+  const LoadingButton({
+    super.key,
+    required this.state,
+    required this.firstWidget,
+  });
   final CrossFadeState state;
   final Widget firstWidget;
 
-  const LoadingButton({Key key, this.state, this.firstWidget}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return AnimatedCrossFade(

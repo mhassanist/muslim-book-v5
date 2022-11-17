@@ -3,8 +3,8 @@ import 'package:base_app/utils/locator.dart';
 import 'package:base_app/utils/prefs.dart';
 
 class AzanSingleton {
-  List<AzanModel> getAzanModel() {
-    if (locator<Prefs>().getAzanModel() == null) {
+  List<AzanModel>? getAzanModel() {
+    if (locator<Prefs>().getAzanModel().isEmpty) {
       return null;
     } else {
       MonthAzanModel model =
@@ -14,18 +14,21 @@ class AzanSingleton {
   }
 
   Future saveAzanTimes() async {
-    await locator<Prefs>().saveAzanTimes(
-        fajr: getCurrentAzanModel().timings.fajr.split(" ")[0],
-        sunRise: getCurrentAzanModel().timings.sunrise.split(" ")[0],
-        zuhr: getCurrentAzanModel().timings.dhuhr.split(" ")[0],
-        asr: getCurrentAzanModel().timings.asr.split(" ")[0],
-        maghreb: getCurrentAzanModel().timings.maghrib.split(" ")[0],
-        isha: getCurrentAzanModel().timings.isha.split(" ")[0]);
+    final azanModel = getCurrentAzanModel();
+    if (azanModel != null) {
+      await locator<Prefs>().saveAzanTimes(
+          fajr: azanModel.timings.fajr.split(" ")[0],
+          sunRise: azanModel.timings.sunrise.split(" ")[0],
+          zuhr: azanModel.timings.dhuhr.split(" ")[0],
+          asr: azanModel.timings.asr.split(" ")[0],
+          maghreb: azanModel.timings.maghrib.split(" ")[0],
+          isha: azanModel.timings.isha.split(" ")[0]);
+    }
   }
 
-  AzanModel getCurrentAzanModel() {
+  AzanModel? getCurrentAzanModel() {
     return getAzanModel() == null
         ? null
-        : getAzanModel()[DateTime.now().day - 1];
+        : getAzanModel()![DateTime.now().day - 1];
   }
 }

@@ -1,115 +1,89 @@
 import 'dart:convert';
 
 class PushNotificationModel {
-  Notification _notification;
-  NotificationData _data;
+  late Notification notification;
+  late NotificationData data;
 
-  PushNotificationModel({Notification notification, NotificationData data}) {
-    this._notification = notification;
-    this._data = data;
+  PushNotificationModel({
+    Notification? notification,
+    NotificationData? data,
+  }) {
+    this.notification = notification ?? Notification();
+    this.data = data ?? NotificationData();
   }
-
-  Notification get notification => _notification;
-  set notification(Notification notification) => _notification = notification;
-  NotificationData get data => _data;
-  set data(NotificationData data) => _data = data;
 
   PushNotificationModel.fromJson(Map<String, dynamic> json) {
-    // _notification = json['notification'] != null
-    //     ?  Notification.fromJson(json['notification'])
-    //     : null;
-    _data = json['data'] != null
-        ?  NotificationData.fromJson(json['data'])
-        : null;
+    notification = json.containsKey('notification')
+        ? Notification.fromJson(json['notification'])
+        : Notification();
+    data = json.containsKey('data')
+        ? NotificationData.fromJson(json['data'])
+        : NotificationData();
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this._notification != null) {
-      data['notification'] = this._notification.toJson();
-    }
-    if (this._data != null) {
-      data['data'] = this._data.toJson();
-    }
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        'notification': notification.toJson(),
+        'data': data.toJson(),
+      };
 }
 
 class Notification {
-  String _title;
-  String _body;
+  late String title;
+  late String body;
 
-  Notification({String title, String body}) {
-    this._title = title;
-    this._body = body;
-  }
-
-  String get title => _title;
-  set title(String title) => _title = title;
-  String get body => _body;
-  set body(String body) => _body = body;
+  Notification({
+    this.title = '',
+    this.body = '',
+  });
 
   Notification.fromJson(Map<String, dynamic> json) {
-    _title = json['title'];
-    _body = json['body'];
+    title = json['title'] ?? '';
+    body = json['body'] ?? '';
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['title'] = this._title;
-    data['body'] = this._body;
+    data['title'] = this.title;
+    data['body'] = this.body;
     return data;
   }
 }
 
-class NotificationData extends Object{
-  String _postId;
-  String _body;
-  String _title;
-  String _catId;
-  String _catName;
+class NotificationData extends Object {
+  late String postId;
+  late String body;
+  late String title;
+  late String catId;
+  late String catName;
 
-  NotificationData({String postId, String body, String title, String catId, String catName}) {
-    this._postId = postId;
-    this._body = body;
-    this._title = title;
-    this._catId = catId;
-    this._catName = catName;
-  }
+  NotificationData({
+    this.postId = '',
+    this.body = '',
+    this.title = '',
+    this.catId = '',
+    this.catName = '',
+  });
 
   @override
   String toString() {
-    Map<String,String>data = {
-      "post_id" : "$_postId",
-      "cat_name" : "$_catName",
-      "cat_id" : "$_catId"
+    Map<String, String> data = {
+      "post_id": postId,
+      "cat_name": catName,
+      "cat_id": catId,
     };
     var json = jsonEncode(data);
     return json.toString();
   }
 
-  String get postId => _postId;
-  set postId(String postId) => _postId = postId;
-  String get body => _body;
-  set body(String body) => _body = body;
-  String get title => _title;
-  set title(String title) => _title = title;
-  String get catId => _catId;
-  set catId(String catId) => _catId = catId;
-  String get catName => _catName;
-  set catName(String catName) => _catName = catName;
-
   NotificationData.fromJson(Map<String, dynamic> json) {
-    _postId = json['post_id'];
-    _body = json['body'];
-    _title = json['title'];
+    postId = json['post_id'];
+    body = json['body'];
+    title = json['title'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['post_id'] = this._postId;
-    data['body'] = this._body;
-    data['title'] = this._title;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+        'post_id': postId,
+        'body': body,
+        'title': title,
+      };
 }

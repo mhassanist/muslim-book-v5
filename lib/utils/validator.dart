@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Validator {
   ///Validate email entered
-  static String validateEmail(BuildContext context, String value) {
+  static String? validateEmail(BuildContext context, String? value) {
     if (value == null) {
       // The form is empty
       return 'enter email';
@@ -32,7 +32,7 @@ class Validator {
   }
 
   //Validate password
-  static String validatePassword(BuildContext context, String value) {
+  static String? validatePassword(BuildContext context, String? value) {
     if (value == null) {
       // The form is empty
       return 'enter password';

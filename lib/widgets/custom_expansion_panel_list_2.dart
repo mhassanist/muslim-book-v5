@@ -1,19 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CustomExpansionPanelList extends StatelessWidget {
-  const CustomExpansionPanelList(
-      {Key key,
-      this.children: const <ExpansionPanel>[],
-      this.expansionCallback,
-      this.animationDuration: kThemeAnimationDuration})
-      : assert(children != null),
-        assert(animationDuration != null),
-        super(key: key);
+  const CustomExpansionPanelList({
+    super.key,
+    this.children: const <ExpansionPanel>[],
+    this.expansionCallback,
+    this.animationDuration: kThemeAnimationDuration,
+  });
 
   final List<ExpansionPanel> children;
 
-  final ExpansionPanelCallback expansionCallback;
+  final ExpansionPanelCallback? expansionCallback;
 
   final Duration animationDuration;
 
@@ -23,8 +20,8 @@ class CustomExpansionPanelList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final smallDevice = size.width <= 350;
+    // final size = MediaQuery.of(context).size;
+    // final smallDevice = size.width <= 350;
     // double _kPanelHeaderCollapsedHeight = (smallDevice ? 130.0 : 100.0);
     // double _kPanelHeaderExpandedHeight = (smallDevice ? 130.0 : 100.0);
     final List<Widget> items = <Widget>[];
@@ -54,7 +51,7 @@ class CustomExpansionPanelList extends StatelessWidget {
               padding: const EdgeInsets.all(0.0),
               onPressed: (bool isExpanded) {
                 if (expansionCallback != null)
-                  expansionCallback(index, isExpanded);
+                  expansionCallback!(index, isExpanded);
               },
             ),
           ),

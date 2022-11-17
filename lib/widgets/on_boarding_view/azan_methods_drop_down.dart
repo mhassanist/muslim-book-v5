@@ -2,24 +2,27 @@ import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/providers/pick_azan_methods_provider.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/widgets/base_model_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../utils/sizing_info_extension.dart';
 
 class MethodsDropDown extends BaseModelWidget<PickAzanMethodsProvider> {
-
   @override
-  Widget build(BuildContext context,model) {
+  Widget build(BuildContext context, model) {
     return ResponsiveBuilder(builder: (context, sizeConfig) {
       return Container(
-        margin: EdgeInsets.symmetric(vertical: sizeConfig.blockSizeVertical * 3),
+        margin: EdgeInsets.symmetric(
+          vertical: sizeConfig.blockSizeVertical * 3,
+        ),
         padding: EdgeInsets.symmetric(
-            horizontal: sizeConfig.blockSizeHorizontal * 2),
+          horizontal: sizeConfig.blockSizeHorizontal * 2,
+        ),
         decoration: BoxDecoration(
-            borderRadius:
-                BorderRadius.circular(sizeConfig.blockSizeHorizontal * 2),
-            border: Border.all(color: Constants.ACCENT_COLOR, width: 1)),
+          borderRadius: BorderRadius.circular(
+            sizeConfig.blockSizeHorizontal * 2,
+          ),
+          border: Border.all(color: Constants.ACCENT_COLOR, width: 1),
+        ),
         child: DropdownButtonHideUnderline(
           child: DropdownButton(
             isExpanded: true,
@@ -33,7 +36,7 @@ class MethodsDropDown extends BaseModelWidget<PickAzanMethodsProvider> {
                     ? Constants.EN_AZAN_METHODS
                     : Constants.AR_AZAN_METHODS)
                 .map((f) {
-              return DropdownMenuItem<Map<String,dynamic>>(
+              return DropdownMenuItem<Map<String, dynamic>>(
                 child: Text(
                   f["title"],
                   style: textStyle(sizeConfig),
@@ -44,8 +47,7 @@ class MethodsDropDown extends BaseModelWidget<PickAzanMethodsProvider> {
               );
             }).toList(),
             onChanged: (value) {
-
-              model.pickedMethod = value;
+              model.pickedMethod = value as Map<String, dynamic>;
             },
           ),
         ),
@@ -55,7 +57,9 @@ class MethodsDropDown extends BaseModelWidget<PickAzanMethodsProvider> {
 
   TextStyle textStyle(SizingInformation sizeConfig) {
     return TextStyle(
-
-        color: Colors.black, fontSize: sizeConfig.blockSizeHorizontal * 4 , fontWeight: FontWeight.w600);
+      color: Colors.black,
+      fontSize: sizeConfig.blockSizeHorizontal * 4,
+      fontWeight: FontWeight.w600,
+    );
   }
 }

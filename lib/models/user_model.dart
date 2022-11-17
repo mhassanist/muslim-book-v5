@@ -15,16 +15,16 @@ class UserModel {
     this.apiToken,
   });
 
-  String email;
-  int id;
-  String image;
-  String name;
+  String? email;
+  int? id;
+  String? image;
+  String? name;
   var countryId;
-  String flag;
+  String? flag;
   var cityId;
-  String country;
-  String city;
-  String apiToken;
+  String? country;
+  String? city;
+  String? apiToken;
 
   factory UserModel.fromJson(String str) => UserModel.fromMap(json.decode(str));
 

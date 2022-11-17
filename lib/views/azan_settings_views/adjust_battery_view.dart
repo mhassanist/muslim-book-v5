@@ -61,7 +61,7 @@ class _AdjustBatteryViewState extends State<AdjustBatteryView>
                             borderRadius: BorderRadius.circular(
                                 sizeConfig.blockSizeHorizontal * 5),
                             child: Image.asset(
-                              "assets/images/onboarding/praying_man.png",
+                              "assets/images/on_boarding/praying_man.png",
                               fit: BoxFit.contain,
                             ),
                           ),

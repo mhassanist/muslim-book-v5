@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
 
 const double _kPanelHeaderCollapsedHeight = 48.0;
-const double _kPanelHeaderExpandedHeight = 64.0;
+// const double _kPanelHeaderExpandedHeight = 64.0;
 
 class CustomExpansionPanelList extends StatelessWidget {
-
-  const CustomExpansionPanelList(
-      {Key key,
-        this.children: const <ExpansionPanel>[],
-        this.expansionCallback,
-        this.animationDuration: kThemeAnimationDuration})
-      : assert(children != null),
-        assert(animationDuration != null),
-        super(key: key);
+  const CustomExpansionPanelList({
+    super.key,
+    this.children: const <ExpansionPanel>[],
+    this.expansionCallback,
+    this.animationDuration: kThemeAnimationDuration,
+  });
 
   final List<ExpansionPanel> children;
 
-  final ExpansionPanelCallback expansionCallback;
+  final ExpansionPanelCallback? expansionCallback;
 
   final Duration animationDuration;
 
@@ -27,28 +24,28 @@ class CustomExpansionPanelList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> items = <Widget>[];
-    const EdgeInsets kExpandedEdgeInsets = const EdgeInsets.symmetric(
-        vertical: _kPanelHeaderExpandedHeight - _kPanelHeaderCollapsedHeight);
+    // const EdgeInsets kExpandedEdgeInsets = const EdgeInsets.symmetric(
+    //     vertical: _kPanelHeaderExpandedHeight - _kPanelHeaderCollapsedHeight);
 
     for (int index = 0; index < children.length; index += 1) {
       if (_isChildExpanded(index) && index != 0 && !_isChildExpanded(index - 1))
-        items.add(new Divider(
-          key: new _SaltedKey<BuildContext, int>(context, index * 2 - 1),
+        items.add(Divider(
+          key: _SaltedKey<BuildContext, int>(context, index * 2 - 1),
           height: 15.0,
           color: Colors.transparent,
         ));
 
-      final Row header = new Row(
+      final Row header = Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          new Expanded(
-            child: new AnimatedContainer(
+          Expanded(
+            child: AnimatedContainer(
               duration: animationDuration,
               curve: Curves.fastOutSlowIn,
               // margin: _isChildExpanded(index)
               //     ? kExpandedEdgeInsets
               //     : EdgeInsets.zero,
-              child: new SizedBox(
+              child: SizedBox(
                 height: _kPanelHeaderCollapsedHeight,
                 child: children[index].headerBuilder(
                   context,
@@ -57,94 +54,87 @@ class CustomExpansionPanelList extends StatelessWidget {
               ),
             ),
           ),
-          new Container(
+          Container(
             decoration: BoxDecoration(
-
-
-    borderRadius: BorderRadius.only(
-      // topRight: Radius.circular(12),
-    topLeft: Radius.circular(12),
-    bottomRight: Radius.circular(12),
-    // bottomLeft: Radius.circular(12),
-
-    ),                gradient: LinearGradient(
+                borderRadius: BorderRadius.only(
+                  // topRight: Radius.circular(12),
+                  topLeft: Radius.circular(12),
+                  bottomRight: Radius.circular(12),
+                  // bottomLeft: Radius.circular(12),
+                ),
+                gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors:[
+                    colors: [
                       Colors.white,
                       Colors.white,
-                    ]
-                )
-            ),
-            child: new ExpandIcon(
+                    ])),
+            child: ExpandIcon(
               isExpanded: _isChildExpanded(index),
               onPressed: (bool isExpanded) {
                 if (expansionCallback != null)
-                  expansionCallback(index, isExpanded);
+                  expansionCallback!(index, isExpanded);
               },
             ),
           ),
         ],
       );
 
-      double _radiusValue = _isChildExpanded(index)? 8.0 : 0.0;
+      // double _radiusValue = _isChildExpanded(index) ? 8.0 : 0.0;
       items.add(
-        new Container(
-          margin: EdgeInsets.symmetric(horizontal: 18 ,vertical: 5),
+        Container(
+          margin: EdgeInsets.symmetric(horizontal: 18, vertical: 5),
           decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 0,
-                  blurRadius: 5,
-                  offset: Offset(
-                      0, 6), // changes position of shadow
-                ),
-              ],
-              borderRadius: BorderRadius.circular(12),
-              color:  const Color(0XFF347D53),
-              // gradient: LinearGradient(
-              //     begin: Alignment.topRight,
-              //     end: Alignment.bottomLeft,
-              //     colors: [
-              //       const Color(0XFF347D53),
-              //       const Color(0XFF6BCF96),
-              //     ])
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 0,
+                blurRadius: 5,
+                offset: Offset(0, 6), // changes position of shadow
+              ),
+            ],
+            borderRadius: BorderRadius.circular(12),
+            color: const Color(0XFF347D53),
+            // gradient: LinearGradient(
+            //     begin: Alignment.topRight,
+            //     end: Alignment.bottomLeft,
+            //     colors: [
+            //       const Color(0XFF347D53),
+            //       const Color(0XFF6BCF96),
+            //     ])
           ),
-
-          key: new _SaltedKey<BuildContext, int>(context, index * 2),
+          key: _SaltedKey<BuildContext, int>(context, index * 2),
           child: Column(
-              children: <Widget>[
-                Container(
-                  child: header,
-                ),
-                new AnimatedCrossFade(
-                  firstChild: new Container(height: 0.0),
-                  secondChild: children[index].body,
-                  firstCurve:
-                  const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
-                  secondCurve:
-                  const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
-                  sizeCurve: Curves.fastOutSlowIn,
-                  crossFadeState: _isChildExpanded(index)
-                      ? CrossFadeState.showSecond
-                      : CrossFadeState.showFirst,
-                  duration: animationDuration,
-                ),
-              ],
-            ),
-
+            children: <Widget>[
+              Container(
+                child: header,
+              ),
+              AnimatedCrossFade(
+                firstChild: Container(height: 0.0),
+                secondChild: children[index].body,
+                firstCurve:
+                    const Interval(0.0, 0.6, curve: Curves.fastOutSlowIn),
+                secondCurve:
+                    const Interval(0.4, 1.0, curve: Curves.fastOutSlowIn),
+                sizeCurve: Curves.fastOutSlowIn,
+                crossFadeState: _isChildExpanded(index)
+                    ? CrossFadeState.showSecond
+                    : CrossFadeState.showFirst,
+                duration: animationDuration,
+              ),
+            ],
+          ),
         ),
       );
 
       if (_isChildExpanded(index) && index != children.length - 1)
-        items.add(new Divider(
-          key: new _SaltedKey<BuildContext, int>(context, index * 2 + 1),
+        items.add(Divider(
+          key: _SaltedKey<BuildContext, int>(context, index * 2 + 1),
           height: 15.0,
         ));
     }
 
-    return new Column(
+    return Column(
       children: items,
     );
   }

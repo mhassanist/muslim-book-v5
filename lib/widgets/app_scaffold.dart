@@ -4,34 +4,34 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AppScaffold extends StatelessWidget {
-  AppScaffold(
-      {Key key,
-      @required this.title,
-      @required this.child,
-      this.centerTitle = false,
-      this.addImageProfile = true,
-      this.transparentBackground = false,
-      this.padding,
-      this.backGroundColor,
-      this.actions,
-      this.floatingActionButton,
-      this.onProfileTap,
-      this.scaffoldKey,
-      this.leading})
-      : super(key: key);
+  AppScaffold({
+    super.key,
+    required this.title,
+    required this.child,
+    this.centerTitle = false,
+    this.addImageProfile = true,
+    this.transparentBackground = false,
+    this.padding,
+    this.backGroundColor,
+    this.actions,
+    this.floatingActionButton,
+    this.onProfileTap,
+    this.scaffoldKey,
+    this.leading,
+  });
   final Widget title;
-  final Widget leading;
-  final Color backGroundColor;
+  final Widget? leading;
+  final Color? backGroundColor;
   final Widget child;
   final bool centerTitle;
   final bool addImageProfile;
   final bool transparentBackground;
-  final EdgeInsets padding;
-  final Function onProfileTap;
-  final List<Widget> actions;
-  final Widget floatingActionButton;
-  final Color prymaryColor = const Color(0XFF347D53);
-  final GlobalKey<ScaffoldState> scaffoldKey;
+  final EdgeInsets? padding;
+  final Function? onProfileTap;
+  final List<Widget>? actions;
+  final Widget? floatingActionButton;
+  final Color primaryColor = const Color(0XFF347D53);
+  final GlobalKey<ScaffoldState>? scaffoldKey;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -41,16 +41,16 @@ class AppScaffold extends StatelessWidget {
         appBar: AppBar(
             leading: leading,
             actions: [
-              if (actions != null) ...actions,
+              if (actions != null)...actions!,
               if (addImageProfile) getProfilePicture(context),
             ],
             centerTitle: centerTitle,
-            backgroundColor: prymaryColor,
+            backgroundColor: primaryColor,
             elevation: 0,
             title: title),
         floatingActionButton: floatingActionButton,
         body: Container(
-          color: prymaryColor,
+          color: primaryColor,
           child: Container(
             padding:
                 padding ?? EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -74,8 +74,9 @@ class AppScaffold extends StatelessWidget {
   Widget getProfilePicture(context) {
     if (Provider.of<UserProvider>(context).isLoggedIn) {
       return GestureDetector(
-        onTap: onProfileTap ??
-            () => Navigator.pushNamed(context, "/myProfile_view"),
+        onTap: onProfileTap != null
+            ? onProfileTap?.call
+            : () => Navigator.pushNamed(context, "/myProfile_view"),
         child: Provider.of<UserProvider>(context).user.image == null
             ? placeHolder()
             : Container(
@@ -87,7 +88,7 @@ class AppScaffold extends StatelessWidget {
                 child: ExtendedImage.network(
                   Provider.of<UserProvider>(context)
                       .user
-                      .image
+                      .image!
                       .replaceAll("http://", "https://"),
                   loadStateChanged: (state) {
                     if (state.extendedImageLoadState == LoadState.failed) {

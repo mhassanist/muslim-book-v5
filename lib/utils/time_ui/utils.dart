@@ -26,8 +26,8 @@ class Utils {
 
 class TopPrograssBar extends StatelessWidget {
   final String progressBarImagePath;
+  const TopPrograssBar({super.key, this.progressBarImagePath = ''});
 
-  TopPrograssBar({Key key, this.progressBarImagePath}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -59,8 +59,12 @@ class TopTitle extends StatelessWidget {
   final double leftMargin;
   final String title;
 
-  const TopTitle({Key key, this.topMargin, this.leftMargin, this.title})
-      : super(key: key);
+  const TopTitle({
+    super.key,
+    this.topMargin = 8.0,
+    this.leftMargin = 8.0,
+    this.title = '',
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -78,10 +82,14 @@ class TopTitle extends StatelessWidget {
 }
 
 class SendButton extends StatelessWidget {
-  final Function sendAction;
-  final Icon buttonIcon;
+  final Function? sendAction;
+  final Icon? buttonIcon;
 
-  SendButton({Key key, this.sendAction, this.buttonIcon}) : super(key: key);
+  const SendButton({
+    super.key,
+    this.sendAction,
+    this.buttonIcon,
+  });
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -90,7 +98,7 @@ class SendButton extends StatelessWidget {
       child: FloatingActionButton(
         backgroundColor: Colors.black87,
         child: Icon(Icons.arrow_forward),
-        onPressed: () => sendAction,
+        onPressed: sendAction?.call,
       ),
     );
   }

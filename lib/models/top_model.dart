@@ -12,8 +12,8 @@ class TopModel {
     this.userScoreModel
   });
 
-  List<TopModelData> data;
-  UserScoreModel userScoreModel;
+  List<TopModelData>? data;
+  UserScoreModel? userScoreModel;
 
   factory TopModel.fromJson(String str) => TopModel.fromMap(json.decode(str));
 
@@ -25,7 +25,9 @@ class TopModel {
   );
 
   Map<String, dynamic> toMap() => {
-    "data": List<dynamic>.from(data.map((x) => x.toMap())),
+    "data": data != null
+        ? List<dynamic>.from(data!.map((x) => x.toMap()))
+        : '',
   };
 }
 
@@ -45,18 +47,18 @@ class TopModelData {
     this.wrongAnswer,
   });
 
-  int id;
-  String email;
-  String image;
-  String name;
-  int countryId;
-  int cityId;
-  int points;
-  String flag;
-  String country;
-  String city;
-  int correctAnswer;
-  int wrongAnswer;
+  int? id;
+  String? email;
+  String? image;
+  String? name;
+  int? countryId;
+  int? cityId;
+  int? points;
+  String? flag;
+  String? country;
+  String? city;
+  int? correctAnswer;
+  int? wrongAnswer;
 
   factory TopModelData.fromJson(String str) => TopModelData.fromMap(json.decode(str));
 

@@ -1,4 +1,3 @@
-import 'package:base_app/main.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
@@ -7,7 +6,10 @@ import 'package:loading/loading.dart';
 class LoadUiWithAdd extends StatefulWidget {
   final Widget mainView;
 
-  const LoadUiWithAdd({Key key, this.mainView}) : super(key: key);
+  const LoadUiWithAdd({
+    super.key,
+    required this.mainView,
+  });
 
   @override
   _LoadUiWithAddState createState() => _LoadUiWithAddState();

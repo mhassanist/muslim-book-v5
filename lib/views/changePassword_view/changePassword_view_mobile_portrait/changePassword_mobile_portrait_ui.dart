@@ -38,7 +38,7 @@ class ChangePasswordUI {
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(
-                      'assets/images/onboarding/country_picker.png')))),
+                      'assets/images/on_boarding/country_picker.png')))),
     );
   }
 
@@ -81,8 +81,8 @@ class ChangePasswordUI {
       isGo: true,
       context: context,
       sizeConfig:sizeConfig,
-     color: Theme.of(context).primaryColor,
-        title:          AppLocalizations.of(context).translate("send_data"),
+      color: Theme.of(context).primaryColor,
+      title: AppLocalizations.of(context).translate("send_data"),
       onPressed:(){},
     );
   }

@@ -254,7 +254,7 @@ class MyProfileUI {
     return Container(
       child: Center(
         child: Stack(
-          overflow: Overflow.visible,
+          // overflow: Overflow.visible,
           fit: StackFit.passthrough,
           //fit: StackFit.loose,
           children: <Widget>[

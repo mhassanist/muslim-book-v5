@@ -16,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:quiver/async.dart';
 
 class CompetitionProvider extends ViewStateProvider {
-  final UserProvider _userProvider;
+  final UserProvider? _userProvider;
   CompetitionUI ui;
   AudioCache _audioPlayer = AudioCache();
   int _chosenPosition;

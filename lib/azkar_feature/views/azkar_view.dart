@@ -1,4 +1,4 @@
-import 'package:audioplayers/audio_cache.dart';
+// import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/ads/load_ui_with_add.dart';
@@ -15,10 +15,13 @@ import 'package:flutter/services.dart';
 
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:base_app/utils/sizing_info_extension.dart';
-import 'package:share/share.dart';
+// import 'package:share/share.dart';
 
 class AzkarView extends StatefulWidget {
-  AzkarView({Key key, this.zikr}) : super(key: key);
+  AzkarView({
+    super.key,
+    required this.zikr,
+  });
   final Map<String, String> zikr;
 
   @override

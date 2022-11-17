@@ -19,20 +19,20 @@ class UserScoreModel {
     this.total
   });
 
-  int id;
-  String email;
+  int? id;
+  String? email;
   dynamic image;
-  String name;
-  int countryId;
-  int cityId;
-  int points;
-  String flag;
-  String country;
-  String city;
-  int correctAnswer;
-  int wrongAnswer;
-  int rank;
-  int total;
+  String? name;
+  int? countryId;
+  int? cityId;
+  int? points;
+  String? flag;
+  String? country;
+  String? city;
+  int? correctAnswer;
+  int? wrongAnswer;
+  int? rank;
+  int? total;
 
 
   factory UserScoreModel.fromJson(String str) => UserScoreModel.fromMap(json.decode(str));

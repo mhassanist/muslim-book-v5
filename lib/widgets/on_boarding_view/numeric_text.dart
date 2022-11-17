@@ -4,11 +4,15 @@ import 'package:responsive_builder/responsive_builder.dart';
 import '../../utils/sizing_info_extension.dart';
 
 class OnBoardingNumericText extends StatelessWidget {
-
-  OnBoardingNumericText(this.firstText,this.number , {this.secondText});
+  OnBoardingNumericText({
+    required this.firstText,
+    required this.number,
+    this.secondText,
+  });
   final String firstText;
   final String number;
-  final String secondText;
+  final String? secondText;
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveBuilder(

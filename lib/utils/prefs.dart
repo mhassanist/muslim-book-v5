@@ -7,7 +7,7 @@ import 'package:base_app/utils/locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Prefs {
-  SharedPreferences prefs;
+  late SharedPreferences prefs;
 
   Future setSharedPreferences() async {
     prefs = await SharedPreferences.getInstance();
@@ -23,66 +23,66 @@ class Prefs {
     await prefs.setString(Constants.COUNTRY, value);
   }
 
-  String getCountry() => prefs.getString(Constants.COUNTRY);
+  String getCountry() => prefs.getString(Constants.COUNTRY) ?? '';
 
   void setId(String value) async {
     await prefs.setString(Constants.ID, value);
   }
 
-  String getId() => prefs.getString(Constants.ID);
+  String getId() => prefs.getString(Constants.ID) ?? '';
 
   void setCountryCode(String value) async {
     await prefs.setString(Constants.COUNTRY_CODE, value);
   }
 
-  String getCountryCode() => prefs.getString(Constants.COUNTRY_CODE);
+  String getCountryCode() => prefs.getString(Constants.COUNTRY_CODE) ?? '';
 
   void setCity(String value) async {
     await prefs.setString(Constants.CITY, value);
   }
 
-  String getCity() => prefs.getString(Constants.CITY);
+  String getCity() => prefs.getString(Constants.CITY) ?? '';
 
   void setLatitude(double value) async =>
       await prefs.setDouble(Constants.LATITUDE, value);
 
-  double getLatitue() => prefs.getDouble(Constants.LATITUDE);
+  double getLatitue() => prefs.getDouble(Constants.LATITUDE) ?? 0.0;
 
   void setLongtude(double value) async =>
       await prefs.setDouble(Constants.LONGTUDE, value);
 
-  double getLongtude() => prefs.getDouble(Constants.LONGTUDE);
+  double getLongtude() => prefs.getDouble(Constants.LONGTUDE) ?? 0.0;
 
-  int getAzanMethod() => prefs.getInt(Constants.AZAN_METHOD);
+  int getAzanMethod() => prefs.getInt(Constants.AZAN_METHOD) ?? 0;
 
   void setAzanMethod(int value) async {
     await prefs.setInt(Constants.AZAN_METHOD, value);
   }
 
   int getLatitudeAdjustmentMethod() =>
-      prefs.getInt(Constants.Latitude_Adjustment_Method);
+      prefs.getInt(Constants.Latitude_Adjustment_Method) ?? 0;
 
   void setLatitudeAdjustmentMethod(int value) async {
     await prefs.setInt(Constants.Latitude_Adjustment_Method, value);
   }
 
-  int get loginType => prefs.getInt(Constants.LOGIN_TYPE);
+  int get loginType => prefs.getInt(Constants.LOGIN_TYPE) ?? 0;
 
   void setLoginType(int value) async {
     await prefs.setInt(Constants.LOGIN_TYPE, value);
   }
 
-  int getAzanMazhab() => prefs.getInt(Constants.AZAN_MAZHAB);
+  int getAzanMazhab() => prefs.getInt(Constants.AZAN_MAZHAB) ?? 0;
 
   void setAzanMazhab(int value) async {
     await prefs.setInt(Constants.AZAN_MAZHAB, value);
   }
 
   String getAzanShiekh(String azanId) {
-    return prefs.getString('${Constants.AZAN_SHIEKH}$azanId');
+    return prefs.getString('${Constants.AZAN_SHIEKH}$azanId') ?? '';
   }
 
-  String getFajrAzanShiekh() => prefs.getString(Constants.FAJR_AZAN_SHIEKH);
+  String getFajrAzanShiekh() => prefs.getString(Constants.FAJR_AZAN_SHIEKH) ?? '';
 
   void setAzanShiekh(String key, String azanIndex) async {
     await prefs.setString(key, azanIndex);//DOWNLOADED_SHEIKH_ID
@@ -97,9 +97,9 @@ class Prefs {
     await prefs.setInt(Constants.AZAN_SHIEKH_LOCAL_ID, id);
   }
 
-  String getAzanModel() => prefs.getString(Constants.AZAN_MODEL);
+  String getAzanModel() => prefs.getString(Constants.AZAN_MODEL) ?? '';
 
-  String getRamadanModel() => prefs.getString(Constants.RAMADAN_MODEL);
+  String getRamadanModel() => prefs.getString(Constants.RAMADAN_MODEL) ?? '';
 
   Future setAzanModel(String value) async {
     await prefs.setString(Constants.AZAN_MODEL, value);
@@ -114,15 +114,16 @@ class Prefs {
   Future setToken(value)async{
     await prefs.setString(Constants.USER_TOKEN, value);
   }
-  String getToken()=>
-     prefs.getString(Constants.USER_TOKEN);
+
+  String getToken()=> prefs.getString(Constants.USER_TOKEN) ?? '';
+
   Future saveAzanTimes(
-      {String fajr,
-      String zuhr,
-      String asr,
-      String maghreb,
-      String isha,
-      String sunRise}) async {
+      {required String fajr,
+        required String zuhr,
+        required String asr,
+        required String maghreb,
+        required String isha,
+        required String sunRise,}) async {
     await prefs.setString("1", fajr);
     await prefs.setString("2", sunRise);
     await prefs.setString("3", zuhr);
@@ -150,7 +151,7 @@ class Prefs {
   }
 
   String getAssalahTime(value) {
-    return prefs.getString(value);
+    return prefs.getString(value) ?? '';
   }
 
   void setAzanOnPrayTimeFlag(bool value) async {
@@ -159,9 +160,9 @@ class Prefs {
 
   bool getAzanOnPrayTimeFlag() =>
       prefs.getBool(Constants.AZAN_ON_PRAY_TIME_FLAG) == null ||
-      prefs.getBool(Constants.AZAN_ON_PRAY_TIME_FLAG);
+      (prefs.getBool(Constants.AZAN_ON_PRAY_TIME_FLAG) ?? false);
 
-  bool getRamadanConnanFlag() => prefs.getBool(Constants.RAMADAN_CONNAN_FLAG);
+  bool getRamadanConnanFlag() => prefs.getBool(Constants.RAMADAN_CONNAN_FLAG) ?? false;
 
   void setRamadanConnanFlag(bool value) async {
     await prefs.setBool(Constants.RAMADAN_CONNAN_FLAG, value);
@@ -172,11 +173,11 @@ class Prefs {
   }
 
   String getRamadanMashartTime() {
-    return prefs.getString(Constants.RAMADAN_MASHRAAT_TIME);
+    return prefs.getString(Constants.RAMADAN_MASHRAAT_TIME) ?? '';
   }
 
   bool getRamadanMashraatFlag() =>
-      prefs.getBool(Constants.RAMADAN_MASHRAAT_FLAG);
+      prefs.getBool(Constants.RAMADAN_MASHRAAT_FLAG) ?? false;
 
   void setRamadanMashraatFlag(bool value) async {
     await prefs.setBool(Constants.RAMADAN_MASHRAAT_FLAG, value);
@@ -188,7 +189,7 @@ class Prefs {
 
   bool getVoiceReminderBeforePrayingFlag() =>
       prefs.getBool(Constants.Voice_Reminder_Before_Praying_FLAG) == null ||
-      prefs.getBool(Constants.Voice_Reminder_Before_Praying_FLAG);
+      (prefs.getBool(Constants.Voice_Reminder_Before_Praying_FLAG) ?? false);
 
   void setActivatingAlShaarawiVoiceFlag(bool value) async {
     await prefs.setBool(Constants.Activating_Al_Shaarawi_Voice_FLAG, value);
@@ -202,15 +203,18 @@ class Prefs {
 
   bool getActivatingAlShaarawiVoiceFlag() =>
       prefs.getBool(Constants.Activating_Al_Shaarawi_Voice_FLAG) == null ||
-      prefs.getBool(Constants.Activating_Al_Shaarawi_Voice_FLAG);
+      (prefs.getBool(Constants.Activating_Al_Shaarawi_Voice_FLAG) ?? false);
 
 
   bool getSwitchSilentModeAfterResidenceFlag() =>
-      prefs.getBool(Constants.Switch_Silent_Mode_After_Residence) == null ? false   :
-          prefs.getBool(Constants.Switch_Silent_Mode_After_Residence);
+      prefs.getBool(Constants.Switch_Silent_Mode_After_Residence) == null
+          ? false
+          : prefs.getBool(Constants.Switch_Silent_Mode_After_Residence)!;
+
   bool getTurnOffPrayerPhoneFlag() =>
-      prefs.getBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone) == null ? false   :
-      prefs.getBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone);
+      prefs.getBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone) == null
+          ? false
+          : prefs.getBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone)!;
 
   void setMondaysAndThursdaysFastingAlertFlag(bool value) async {
     await prefs.setBool(
@@ -218,14 +222,14 @@ class Prefs {
   }
 
   bool getMondaysAndThursdaysFastingAlertFlag() =>
-      prefs.getBool(Constants.MONDAYS_AND_THURSDAYS_FASTING_ALERT_FLAG);
+      prefs.getBool(Constants.MONDAYS_AND_THURSDAYS_FASTING_ALERT_FLAG) ?? false;
 
   void setWhiteDaysFastingAlertFlag(bool value) async {
     await prefs.setBool(Constants.WHITE_DAYS_FASTING_ALERT_FLAG, value);
   }
 
   bool getWhiteDaysFastingAlertFlag() =>
-      prefs.getBool(Constants.WHITE_DAYS_FASTING_ALERT_FLAG);
+      prefs.getBool(Constants.WHITE_DAYS_FASTING_ALERT_FLAG) ?? false;
 
   bool get getIsAzanUrlValid => (getAzanMazhab() != null &&
       getAzanMethod() != null &&
@@ -237,9 +241,9 @@ class Prefs {
 
   bool getFajrIbtehalFlag() =>
       prefs.getBool(Constants.ALFAJR_IBTEHAL_ALERT_FLAG) == null ||
-      prefs.getBool(Constants.ALFAJR_IBTEHAL_ALERT_FLAG);
+      (prefs.getBool(Constants.ALFAJR_IBTEHAL_ALERT_FLAG) ?? false);
 
-  String getLang() => prefs.getString(Constants.LANG) == null
+  String? getLang() => prefs.getString(Constants.LANG) == null
       ? "ar"
       : prefs.getString(Constants.LANG);
 

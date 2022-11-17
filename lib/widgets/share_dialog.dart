@@ -1,30 +1,32 @@
-import 'package:audioplayers/audio_cache.dart';
+// import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:base_app/utils/Constants.dart';
 import 'package:base_app/utils/sizing_info_extension.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ShareDialog extends StatefulWidget {
-  ShareDialog({Key key}) : super(key: key);
+  ShareDialog({super.key});
 
   @override
   _ShareDialogState createState() => _ShareDialogState();
 }
 
 class _ShareDialogState extends State<ShareDialog> {
-  AudioCache _audioCache;
+  late AudioCache _audioCache;
+  late AudioPlayer _audioPlayer;
 
   @override
   void initState() {
     _audioCache = AudioCache(
-        prefix: "audio/",
-        fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP));
-
-    _audioCache.play('share_app.wav');
-
+      prefix: "audio/",
+    );
+    _audioPlayer = AudioPlayer();
+    _audioPlayer.audioCache = _audioCache;
+    _audioPlayer.setReleaseMode(ReleaseMode.stop);
+    _audioPlayer.play(AssetSource('share_app.wav'));
     super.initState();
   }
 
@@ -61,7 +63,7 @@ class _ShareDialogState extends State<ShareDialog> {
                             borderRadius: BorderRadius.circular(
                                 sizeConfig.blockSizeHorizontal * 5),
                             child: Image.asset(
-                              "assets/images/onboarding/praying_man.png",
+                              "assets/images/on_boarding/praying_man.png",
                               fit: BoxFit.contain,
                             ),
                           ),
@@ -75,7 +77,8 @@ class _ShareDialogState extends State<ShareDialog> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                              AppLocalizations.of(context).translate("chairty"),
+                                AppLocalizations.of(context)
+                                    .translate("chairty"),
                                 textAlign: TextAlign.center,
                                 style: textStyle(
                                     const Color(0XFFFFAA3F),
@@ -88,7 +91,8 @@ class _ShareDialogState extends State<ShareDialog> {
                                     horizontal:
                                         sizeConfig.blockSizeHorizontal * 15),
                                 child: Text(
-                                  AppLocalizations.of(context).translate("help_spearding"),
+                                  AppLocalizations.of(context)
+                                      .translate("help_spearding"),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
@@ -117,7 +121,8 @@ class _ShareDialogState extends State<ShareDialog> {
                             shape: StadiumBorder(),
                             fillColor: Colors.white,
                             child: Text(
-                              AppLocalizations.of(context).translate("spearding_app"),
+                              AppLocalizations.of(context)
+                                  .translate("spearding_app"),
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -138,12 +143,10 @@ class _ShareDialogState extends State<ShareDialog> {
                           child: FittedBox(
                             child: FloatingActionButton(
                               onPressed: () {
-                                _audioCache.clearCache();
-                                _audioCache.clear('share_app.wav');
+                                _audioCache.clearAll();
+                                // _audioCache.clear('share_app.wav');
                                 Navigator.pop(context);
-
-
-                                },
+                              },
                               backgroundColor: Colors.white,
                               child: Icon(
                                 Icons.close,

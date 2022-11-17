@@ -52,7 +52,7 @@ class _PickCountryViewState extends State<PickCountryView> {
                         children: <Widget>[
                           Expanded(
                             child: Image.asset(
-                                "assets/images/onboarding/country_picker.png"),
+                                "assets/images/on_boarding/country_picker.png"),
                           ),
 
                           titleContainer(sizeConfig, context),

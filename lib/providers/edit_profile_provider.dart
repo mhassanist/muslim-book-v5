@@ -24,7 +24,7 @@ class EditProfileProvider extends ViewStateProvider {
   String _fileExtension;
   UserProvider _userProvider;
   String _countryName;
-  Future<File> _userSelectedImage;
+  Future<File>? _userSelectedImage;
   String _userPictureBase64;
   bool _isFormValidateOn = false;
 
@@ -32,7 +32,7 @@ class EditProfileProvider extends ViewStateProvider {
     getCountries();
   }
 
-  Future<File> get getUserProfileImage => _userSelectedImage;
+  Future<File>? get getUserProfileImage => _userSelectedImage;
 
   set userProvider(UserProvider val) {
     _userProvider = val;

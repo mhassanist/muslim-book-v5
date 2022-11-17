@@ -1,10 +1,7 @@
-
 import 'dart:async';
 
 import 'package:base_app/ads/ad_manager.dart';
-import 'package:base_app/main.dart';
 import 'package:base_app/utils/Constants.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_admob/flutter_native_admob.dart';
@@ -24,8 +21,8 @@ class AdMobRectangle extends StatefulWidget {
 
 class _AdMobRectangleState extends State<AdMobRectangle> {
   final _nativeAdController = NativeAdmobController();
-  StreamSubscription _subscription ;
-  RemoteConfig remoteConfig;
+  late StreamSubscription _subscription ;
+  // RemoteConfig remoteConfig;
    @override
   void initState() {
     _subscription = _nativeAdController.stateChanged.listen(_onStateChanged);

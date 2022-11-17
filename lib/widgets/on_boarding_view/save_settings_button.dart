@@ -6,10 +6,16 @@ import 'package:responsive_builder/responsive_builder.dart';
 import '../../utils/sizing_info_extension.dart';
 
 class SaveSettingsButton extends StatelessWidget {
+  const SaveSettingsButton({
+    super.key,
+    required this.state,
+    this.onTap,
+    this.text = "save_settings",
+  });
   final CrossFadeState state;
-  final Function onTap;
+  final Function? onTap;
   final String text;
-  const SaveSettingsButton({Key key, this.state, this.onTap, this.text = "save_settings"}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveBuilder(builder: (context, sizeConfig) {
@@ -24,7 +30,7 @@ class SaveSettingsButton extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(
                       sizeConfig.blockSizeHorizontal * 2)),
-              onPressed: onTap,
+              onPressed: onTap?.call,
               fillColor: Theme.of(context).primaryColor,
               child: Text(
                 AppLocalizations.of(context).translate("$text"),

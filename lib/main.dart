@@ -3,9 +3,9 @@ import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:base_app/ads/ad_manager.dart';
 import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/ads/load_ui_with_add.dart';
-import 'package:base_app/azan_feature/controllers/azan_controller.dart';
+// import 'package:base_app/azan_feature/controllers/azan_controller.dart';
 import 'package:base_app/azkar_feature/providers/azkar_provider.dart';
-import 'package:base_app/home_feature/controllers/home_controller.dart';
+// import 'package:base_app/home_feature/controllers/home_controller.dart';
 import 'package:base_app/locals_utils/language_constants.dart';
 import 'package:base_app/providers/azan_fajr_sounds_provider.dart';
 import 'package:base_app/providers/azan_sounds_provider.dart';
@@ -26,11 +26,10 @@ import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:fancy_dialog/FancyGif.dart';
 import 'package:fancy_dialog/fancy_dialog.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
+// import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -47,7 +46,7 @@ import 'models/banner_names_enum.dart';
 import 'utils/Constants.dart';
 import 'utils/locator.dart';
 
-const String LAGUAGE_CODE = 'languageCode';
+const String LANGUAGE_CODE = 'languageCode';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -58,7 +57,7 @@ void main() async {
   Routes.createRoutes();
   setupLocator();
   await locator<Prefs>().setSharedPreferences();
-  Locale loaded = await getLocale();
+  // Locale loaded = await getLocale();
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   FacebookAudienceNetwork.init();
@@ -67,14 +66,14 @@ void main() async {
   );
 }
 
-_initAdMob() {
+void _initAdMob() {
   Admob.initialize();
   MobileAds.instance.initialize();
 }
 
-Future<RemoteConfig> setupRemoteConfig() async {
+Future<FirebaseRemoteConfig> setupRemoteConfig() async {
   await Firebase.initializeApp();
-  RemoteConfig remoteConfig = await RemoteConfig.instance;
+  final remoteConfig = FirebaseRemoteConfig.instance;
   remoteConfig.setDefaults(<String, dynamic>{
     'down_Competition_1': 'ca-app-pub-8586064191208277/2234874389',
     'Sabha': 'ca-app-pub-8586064191208277/9405322350',
@@ -85,38 +84,51 @@ Future<RemoteConfig> setupRemoteConfig() async {
     'Top': 'ca-app-pub-8586064191208277/5354527555',
     'The_middle_of_the_competition': 'ca-app-pub-8586064191208277/2784204532',
   });
-  try {
-    // Using default duration to force fetching from remote server.
-    await remoteConfig.fetch(expiration: const Duration(seconds: 0));
-    await remoteConfig.activateFetched();
-  } on FetchThrottledException catch (exception) {
-    // Fetch throttled.
-    //print(exception);
-  } catch (exception) {
-    print('Unable to fetch remote config. Cached or default values will be '
-        'used');
-  }
+  await remoteConfig.setConfigSettings(
+    RemoteConfigSettings(
+      fetchTimeout: const Duration(seconds: 0),
+      minimumFetchInterval: const Duration(seconds: 10),
+    ),
+  );
+  RemoteConfigValue(null, ValueSource.valueStatic);
+  await fetchAndActivate(remoteConfig);
   return remoteConfig;
 }
 
+Future<void> fetchAndActivate(FirebaseRemoteConfig remoteConfig) async {
+  try {
+    if (await remoteConfig.fetchAndActivate()) {} else {
+      print('Unable to fetch remote config. Cached or default values will be '
+          'used');
+    }
+  } catch (e) {
+    print('Remote config error: $e');
+  }
+}
+
 class MyApp extends StatefulWidget {
-  // Locale localeLoadedd;
-  static FirebaseAnalytics analytics = FirebaseAnalytics();
+  // Locale localeLoaded;
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer =
       FirebaseAnalyticsObserver(analytics: analytics);
   static bool loading = false;
   static bool loadingAddMobe = false;
 
-  // MyApp(this.localeLoadedd);
+  // MyApp(this.localeLoaded);
 
-  static Future setLocale(BuildContext context, Locale newLocale) {
-    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
-    state.setLocale(newLocale);
+  static Future<void>? setLocale(BuildContext context, Locale newLocale) {
+    _MyAppState? state = context.findAncestorStateOfType<_MyAppState>();
+    if (state != null) {
+      state.setLocale(newLocale);
+    }
+    return null;
   }
 
   static void _launchURL() async {
-    if (!await launch(
-        "https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book"))
+    if (!await launchUrl(
+      Uri.parse('https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book'),
+      mode: LaunchMode.externalApplication,
+    ))
       print('Could not launch');
   }
 
@@ -149,7 +161,7 @@ class MyApp extends StatefulWidget {
                     ),
                   ),
                   child: Text(
-                    AppLocalizations.of(context).translate("are_you_sure_exit"),
+                    AppLocalizations.of(context)!.translate("are_you_sure_exit"),
                     style: TextStyle(
                       fontSize: sizeConfig.blockSizeHorizontal * 5,
                       color: Colors.white,
@@ -274,7 +286,7 @@ class MyApp extends StatefulWidget {
                         },
                         fillColor: Theme.of(context).primaryColor,
                         child: Text(
-                          AppLocalizations.of(context).translate("yes"),
+                          AppLocalizations.of(context)!.translate("yes"),
                           style: TextStyle(
                             fontSize: sizeConfig.blockSizeHorizontal * 6,
                             color: Constants.CANVAS_COLOR,
@@ -299,9 +311,9 @@ class MyApp extends StatefulWidget {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        fillColor: Theme.of(context).accentColor,
+                        fillColor: Theme.of(context).colorScheme.secondary,
                         child: Text(
-                          AppLocalizations.of(context).translate("cancel"),
+                          AppLocalizations.of(context)!.translate("cancel"),
                           style: TextStyle(
                             fontSize: sizeConfig.blockSizeHorizontal * 6,
                             color: Constants.CANVAS_COLOR,
@@ -326,10 +338,10 @@ class MyApp extends StatefulWidget {
      showDialog(
         context: context,
         builder: (BuildContext context) => FancyDialog(
-          title: AppLocalizations.of(context)
+          title: AppLocalizations.of(context)!
               .translate("thanx_to_use_app"),
           descreption:
-          AppLocalizations.of(context)
+          AppLocalizations.of(context)!
               .translate("rate_app_description"),
           okColor: Theme.of(context).primaryColor,
           okFun: () async {
@@ -368,20 +380,20 @@ class MyApp extends StatefulWidget {
           gifPath: FancyGif.SUBMIT,
           cancelColor:
           Theme.of(context).primaryColor,
-          cancel: AppLocalizations.of(context)
+          cancel: AppLocalizations.of(context)!
               .translate("like"),
-          ok: AppLocalizations.of(context)
+          ok: AppLocalizations.of(context)!
               .translate("not_like"),
         ));
   }
 }
 
 class _MyAppState extends State<MyApp> {
-  AzanController _azanController = Get.put(AzanController());
-  HomeController _homeController = Get.put(HomeController());
-  String showCompetition, openAzkar;
+  // AzanController _azanController = Get.put(AzanController());
+  // HomeController _homeController = Get.put(HomeController());
+  String? showCompetition, openAzkar;
   var checkOverLay;
-  Locale localeLoaded;
+  Locale? localeLoaded;
 
   @override
   void initState() {
@@ -391,7 +403,6 @@ class _MyAppState extends State<MyApp> {
 
   setLocale(Locale _locale) {
     getLocale().then((locale) {
-      //print("shaimmmmmmmmmmmmmmmaaaa 2  " + locale.languageCode);
       setState(() {
         localeLoaded = locale;
       });
@@ -401,7 +412,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void didChangeDependencies() {
     getLocale().then((locale) {
-      //print("shaimmmmmmmmmmmmmmmaaaa 3   " + locale.languageCode);
       setState(() {
         localeLoaded = locale;
       });
@@ -424,7 +434,7 @@ class _MyAppState extends State<MyApp> {
       openAzkar = await Constants.platform.invokeMethod(Constants.open_Azkar);
       checkOverLay = await Constants.platform.invokeMethod("checkOverlay");
     } on PlatformException catch (e) {
-      message = e.message;
+      message = e.message ?? '';
     }
     return message;
   }
@@ -470,7 +480,7 @@ class _MyAppState extends State<MyApp> {
       child: ConnectivityAppWrapper(
         app: GetMaterialApp(
           onGenerateTitle: (context) {
-            return AppLocalizations.of(context).translate("muslim_book");
+            return AppLocalizations.of(context)!.translate("muslim_book");
           },
           debugShowCheckedModeBanner: false,
           supportedLocales: [
@@ -486,12 +496,10 @@ class _MyAppState extends State<MyApp> {
             GlobalCupertinoLocalizations.delegate,
             AppLocalizations.delegate, // Add this line
           ],
-          builder: (BuildContext context, Widget child) {
-            //print("shaimmmmmmmmmmmmmmmaaaa 2   " + localeLoaded.languageCode);
-
-            return new Directionality(
-              textDirection: setTextDirection(localeLoaded),
-              child: child,
+          builder: (BuildContext context, Widget? child) {
+            return Directionality(
+              textDirection: setTextDirection(localeLoaded ?? Locale('ar')),
+              child: child ?? Container(),
             );
           },
           localeResolutionCallback: (locale, supportedLocales) {
@@ -502,10 +510,13 @@ class _MyAppState extends State<MyApp> {
               Theme.of(context).textTheme,
             ),
             primarySwatch: Colors.blue,
-            accentColor: Constants.ACCENT_COLOR,
+            // accentColor: Constants.ACCENT_COLOR,
             primaryColor: Constants.PRIMARY_COLOR,
             primaryColorDark: Constants.PRIMARY_DARK_COLOR,
             canvasColor: Constants.CANVAS_COLOR,
+            colorScheme: ColorScheme.light(
+              secondary: Constants.ACCENT_COLOR,
+            ),
           ),
           home: checkOverLay != null
               ? showCompetition != null || openAzkar != null

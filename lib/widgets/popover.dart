@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class Popover extends StatelessWidget {
   const Popover({
-    Key key,
+    super.key,
     this.child,
-  }) : super(key: key);
+  });
 
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +23,7 @@ class Popover extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _buildHandle(context),
-          if (child != null)
-            child
+          if (child != null) child!,
         ],
       ),
     );

@@ -1,10 +1,12 @@
 import 'package:base_app/ads/admob_rectangle.dart';
 import 'package:base_app/locals_utils/app_localizations.dart';
 import 'package:base_app/utils/Constants.dart';
-import 'package:flutter/cupertino.dart';
+
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_admob/flutter_native_admob.dart';
-import 'package:flutter_native_admob/native_admob_controller.dart';
+
+// import 'package:flutter_native_admob/flutter_native_admob.dart';
+// import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AddWidgetEdit extends StatefulWidget {
@@ -12,28 +14,25 @@ class AddWidgetEdit extends StatefulWidget {
   final String buttomTitle;
   final Function exit;
   final bannerName;
-  final Widget mainView ;
+  final Widget mainView;
 
   const AddWidgetEdit({
-    Key key,
-    this.title,
+    super.key,
+    required this.title,
     this.bannerName,
-    this.buttomTitle,
-    this.exit, this.mainView,
-  }) : super(key: key);
+    required this.buttomTitle,
+    required this.exit,
+    required this.mainView,
+  });
 
   @override
   _AddWidgetEditState createState() => _AddWidgetEditState();
-
-
 }
 
 class _AddWidgetEditState extends State<AddWidgetEdit> {
-
-   @override
+  @override
   void initState() {
-
-  super.initState();
+    super.initState();
   }
 
   @override
@@ -52,7 +51,8 @@ class _AddWidgetEditState extends State<AddWidgetEdit> {
               Container(
                 alignment: Alignment.center,
                 child: Text(
-                  AppLocalizations.of(context).translate("Exit") + this.widget.title,
+                  AppLocalizations.of(context).translate("Exit") +
+                      this.widget.title,
                   style: GoogleFonts.almarai(
                       color: Constants.PRIMARY_DARK_COLOR,
                       fontWeight: FontWeight.bold,
@@ -62,10 +62,8 @@ class _AddWidgetEditState extends State<AddWidgetEdit> {
               SizedBox(
                 height: 10,
               ),
-
               Expanded(
-                  child:
-                      Container(child:AdMobRectangle(widget.bannerName  ))),
+                  child: Container(child: AdMobRectangle(widget.bannerName))),
               Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 5,
@@ -95,7 +93,7 @@ class _AddWidgetEditState extends State<AddWidgetEdit> {
                                   )
                                 ],
                               ),
-                            child: Center(
+                              child: Center(
                                 child: Text(
                                   this.widget.buttomTitle,
                                   style: TextStyle(
@@ -116,8 +114,12 @@ class _AddWidgetEditState extends State<AddWidgetEdit> {
                           child: GestureDetector(
                             onTap: () {
                               Navigator.pop(context);
-                              if ((widget.title == AppLocalizations.of(context).translate('competition')) ||
-                                  (widget.title == AppLocalizations.of(context).translate('competitions'))) {
+                              if ((widget.title ==
+                                      AppLocalizations.of(context)
+                                          .translate('competition')) ||
+                                  (widget.title ==
+                                      AppLocalizations.of(context)
+                                          .translate('competitions'))) {
                                 this.widget.exit();
                               } else {
                                 Navigator.pop(context);
@@ -137,30 +139,28 @@ class _AddWidgetEditState extends State<AddWidgetEdit> {
                                   BoxShadow(
                                     color: Colors.black12,
                                     offset: Offset(5, 5),
-                                  blurRadius: 7,
-                                )
-                              ],
-                            ),
-                            child: Center(
-                              child: Text(
-                                AppLocalizations.of(context).translate("Exit_from"),
-                                style: TextStyle(
-                                  color: Constants.PRIMARY_DARK_COLOR,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
+                                    blurRadius: 7,
+                                  )
+                                ],
+                              ),
+                              child: Center(
+                                child: Text(
+                                  AppLocalizations.of(context)
+                                      .translate("Exit_from"),
+                                  style: TextStyle(
+                                    color: Constants.PRIMARY_DARK_COLOR,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
                             ),
-                            ),
-                          ),)
-
-
+                          ),
+                        )
                       ])),
-
               SizedBox(
                 height: 15,
               ),
-
             ]));
   }
 }

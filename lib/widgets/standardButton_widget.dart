@@ -5,14 +5,14 @@ import '../utils/sizing_info_extension.dart';
 
 
 Widget standardButton({
-  BuildContext context,
-  SizingInformation sizeConfig,
-  bool isGo,
+  BuildContext? context,
+  required SizingInformation sizeConfig,
+  bool isGo = false,
   //int widthPercent,
-  Color color,
-  String title,
-  Function onPressed,
-  EdgeInsets margin,
+  Color? color,
+  String title = '',
+  Function? onPressed,
+  EdgeInsets? margin,
   
 }) {
   return Column(
@@ -25,13 +25,12 @@ Widget standardButton({
             color: color,
             borderRadius: BorderRadius.circular(10)),
         child: FlatButton(
-          onPressed: onPressed,
+          onPressed: onPressed?.call,
           child: Row(
-            mainAxisAlignment: isGo ?MainAxisAlignment.spaceBetween :MainAxisAlignment.center,
+            mainAxisAlignment: isGo ? MainAxisAlignment.spaceBetween :MainAxisAlignment.center,
 
             children: <Widget>[
               if(isGo)
-
                 SizedBox(
                 width: sizeConfig.blockSizeHorizontal * 5,
               ),

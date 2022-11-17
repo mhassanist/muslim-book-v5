@@ -1,43 +1,43 @@
+import 'package:base_app/utils/sizing_info_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import '../utils/sizing_info_extension.dart';
 
 class AppTextField extends StatelessWidget {
   final bool enabled;
 
-  const AppTextField(
-      {Key key,
-      this.enabled = true,
-      this.hint,
-      this.icon,
-      this.sizeConfig,
-      this.onChanged,
-      this.initialValue,
-      this.validator,
-      this.obscureText = false,
-      @required this.formKey,
-      this.controller,
-      this.nextNode,
-      this.inputType = TextInputType.text,
-      @required this.currentNode,
-      this.textInputAction = TextInputAction.next,
-      this.onSubmit})
-      : super(key: key);
+  const AppTextField({
+    super.key,
+    this.enabled = true,
+    this.hint,
+    this.icon,
+    required this.sizeConfig,
+    this.onChanged,
+    this.initialValue,
+    this.validator,
+    this.obscureText = false,
+    this.formKey,
+    this.controller,
+    this.nextNode,
+    this.inputType = TextInputType.text,
+    this.currentNode,
+    this.textInputAction = TextInputAction.next,
+    this.onSubmit,
+  });
 
-  final GlobalKey<FormState> formKey;
-  final String hint;
-  final IconData icon;
+  final GlobalKey<FormState>? formKey;
+  final String? hint;
+  final IconData? icon;
   final SizingInformation sizeConfig;
-  final Function onChanged;
-  final String initialValue;
-  final Function validator;
+  final Function? onChanged;
+  final String? initialValue;
+  final Function? validator;
   final TextInputType inputType;
   final bool obscureText;
-  final TextEditingController controller;
-  final FocusNode nextNode;
-  final FocusNode currentNode;
+  final TextEditingController? controller;
+  final FocusNode? nextNode;
+  final FocusNode? currentNode;
   final TextInputAction textInputAction;
-  final Function onSubmit;
+  final Function? onSubmit;
 
   @override
   Widget build(BuildContext context) {
@@ -71,12 +71,14 @@ class AppTextField extends StatelessWidget {
             border:
                 OutlineInputBorder(borderRadius: BorderRadius.circular(10))),
         onChanged: (s) {
-          formKey.currentState.validate();
-          onChanged();
+          if (formKey != null) {
+            formKey!.currentState!.validate();
+          }
+          onChanged?.call();
         },
-        validator: validator,
+        validator: validator?.call,
         onFieldSubmitted: textInputAction == TextInputAction.done
-            ? onSubmit
+            ? onSubmit?.call
             : (s) => FocusScope.of(context).requestFocus(nextNode),
       ),
     );
