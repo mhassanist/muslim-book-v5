@@ -11,23 +11,24 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.os.Bundle;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.util.Log;
+import android.view.Gravity;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import com.muslim_book.muslim_book.R;
 import com.muslim_book.muslim_book.classes.ramdan.RamadanCannonUtils;
 import com.muslim_book.muslim_book.classes.ramdan.RamadanMshartUtils;
+import com.muslim_book.muslim_book.recievers.FastingAlertsReceiver;
 import com.muslim_book.muslim_book.recievers.azkar.AzkarAlarm;
- import com.muslim_book.muslim_book.recievers.FastingAlertsReceiver;
 import com.muslim_book.muslim_book.recievers.competition.CompetitionsAlarmReceiver;
 import com.muslim_book.muslim_book.recievers.phoneState.PhoneStateBroadcastReceiver;
 import com.muslim_book.muslim_book.services.azan.OverLayService;
-//import com.muslim_book.muslim_book.services.azan.OverLayService;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -35,13 +36,6 @@ import java.util.List;
 
 import io.flutter.embedding.engine.dart.DartExecutor;
 import io.flutter.plugin.common.MethodChannel;
-import android.content.SharedPreferences;
-import android.view.Gravity;
-import android.widget.TextView;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 public class ChannelMethods {
 
@@ -92,11 +86,13 @@ public class ChannelMethods {
                              result.success(true);
                              break;
                         case "askOverlay":
-                            Intent intentOverLayService = new Intent(mContext, OverLayService.class);
-                            Constants.SETBOOTAZANRECIEVER(mContext);
-                            ContextCompat.startForegroundService(mContext, intentOverLayService);
-                            boolean value = canDrawOverLays();
-                            result.success(value);
+                            try {
+                                Intent intentOverLayService = new Intent(mContext, OverLayService.class);
+                                Constants.SETBOOTAZANRECIEVER(mContext);
+                                ContextCompat.startForegroundService(mContext, intentOverLayService);
+                                boolean value = canDrawOverLays();
+                                result.success(value);
+                            } catch (Exception e) {}
                             break;
                         case "checkOverlay":
                             boolean overlayCheck = checkDrawOverLays();
@@ -215,7 +211,7 @@ public class ChannelMethods {
 
     private void RequestPermission() {
         // Check if Android M or higher
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (VERSION.SDK_INT >= VERSION_CODES.M) {
             // Show alert dialog to the user saying a separate permission is needed
             // Launch the settings activity if the user prefers
 

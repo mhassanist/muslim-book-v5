@@ -1,5 +1,7 @@
 package com.muslim_book.muslim_book.classes.ramdan;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,8 +21,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class RamadanCannonUtils {
 

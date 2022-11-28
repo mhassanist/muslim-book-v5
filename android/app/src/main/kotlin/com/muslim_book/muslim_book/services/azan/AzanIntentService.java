@@ -1,7 +1,6 @@
 package com.muslim_book.muslim_book.services.azan;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static android.media.MediaExtractor.MetricsConstants.FORMAT;
 import static com.facebook.ads.CacheFlag.ALL;
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_CHANNEL_NAME;
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_CHANNEL_ID;
@@ -21,7 +20,6 @@ import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.CountDownTimer;
@@ -37,13 +35,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-
-import at.markushi.ui.CircleButton;
 
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
@@ -58,17 +53,18 @@ import com.muslim_book.muslim_book.classes.Constants;
 import com.muslim_book.muslim_book.classes.Prefs;
 import com.muslim_book.muslim_book.recievers.azan.AzanReceiver;
 
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
+import at.markushi.ui.CircleButton;
 
 
 public class AzanIntentService extends Service {
@@ -94,7 +90,7 @@ public class AzanIntentService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (Build.VERSION.SDK_INT >= 26) {
+        if (VERSION.SDK_INT >= 26) {
             NotificationChannel channel = new NotificationChannel(
                     AZAN_NOTIFICATION_CHANNEL_ID,
                     AZAN_CHANNEL_NAME,
@@ -105,7 +101,7 @@ public class AzanIntentService extends Service {
                     NotificationCompat.Builder(
                     this, AZAN_NOTIFICATION_CHANNEL_ID)
                     .setContentTitle("")
-                    .setSmallIcon(R.mipmap.launcher_icon)
+                    .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentText("").build();
             startForeground(AZAN_NOTIFICATION_ID, notification);
             stopForeground(true);
@@ -188,38 +184,40 @@ public class AzanIntentService extends Service {
                         mMediaPlayer.stop();
                     } else {
                         Log.i("_isSilentMode", "!_isCallActive");
-                        if (!_isSilentMode) {
+                        if (!_isSilentMode && mMediaPlayer != null) {
                             mMediaPlayer.start();
                         }
                     }
                 } else {
                     Log.i("_isSilentMode", "tow");
-                    if (!_isSilentMode) {
+                    if (!_isSilentMode && mMediaPlayer != null) {
                         mMediaPlayer.start();
                     }
                 }
 
-                mMediaPlayer.setOnCompletionListener(mPlayer -> {
-                    if (Activating_Al_Shaarawi_Voice_FLAG) {
-                        if (mAfterAzanMediaPlayer != null) {
-                            mAfterAzanMediaPlayer.start();
-                            mAfterAzanMediaPlayer.setOnCompletionListener(mediaPlayer -> {
-                                /// add silent mode after do3aa sound
-                                if (Switch_Silent_Mode_After_Residence) {
-                                    setSilentMode(true);
-                                } else {
-                                    onDestroy();
+                if (mMediaPlayer != null) {
+                    mMediaPlayer.setOnCompletionListener(mPlayer -> {
+                        if (Activating_Al_Shaarawi_Voice_FLAG) {
+                            if (mAfterAzanMediaPlayer != null) {
+                                mAfterAzanMediaPlayer.start();
+                                if (mAfterAzanMediaPlayer != null) {
+                                    mAfterAzanMediaPlayer.setOnCompletionListener(mediaPlayer -> {
+                                        /// add silent mode after do3aa sound
+                                        if (Switch_Silent_Mode_After_Residence) {
+                                            setSilentMode(true);
+                                        } else {
+                                            onDestroy();
+                                        }
+                                    });
                                 }
-
-
-                            });
+                            }
+                        } else {
+                            if (Switch_Silent_Mode_After_Residence) {
+                                setSilentMode(false);
+                            }
                         }
-                    } else {
-                        if (Switch_Silent_Mode_After_Residence) {
-                            setSilentMode(false);
-                        }
-                    }
-                });
+                    });
+                }
 
             }
 
@@ -389,23 +387,22 @@ public class AzanIntentService extends Service {
             //Firebase Crash
             // java.lang.NullPointerException:
             // Attempt to invoke virtual method 'void android.media.MediaPlayer.start()' on a null object reference
-            if (mMediaPlayer == null)
-                return;
-
-            mMediaPlayer.start();
-            final int[] count = {1};
-            int maxCount = 3;
-            mMediaPlayer.setOnCompletionListener(mediaPlayer -> {
-                if (count[0] < maxCount) {
-                    count[0]++;
-                    mediaPlayer.seekTo(0);
-                    mediaPlayer.start();
-                } else {
-                    onDestroy();
+            if (mMediaPlayer != null) {
+                mMediaPlayer.start();
+                final int[] count = {1};
+                int maxCount = 3;
+                if (mMediaPlayer != null) {
+                    mMediaPlayer.setOnCompletionListener(mediaPlayer -> {
+                        if (count[0] < maxCount) {
+                            count[0]++;
+                            mediaPlayer.seekTo(0);
+                            mediaPlayer.start();
+                        } else {
+                            onDestroy();
+                        }
+                    });
                 }
-
-            });
-
+            }
         } else {
             stopForeground(true);
             mMediaPlayer = MediaPlayer.create(this,
@@ -416,12 +413,14 @@ public class AzanIntentService extends Service {
             } catch (Exception e) {
 
             }
-            if (mMediaPlayer == null)
-                return;
-            mMediaPlayer.start();
-            mMediaPlayer.setOnCompletionListener(mediaPlayer -> {
-                onDestroy();
-            });
+            if (mMediaPlayer != null) {
+                mMediaPlayer.start();
+                if (mMediaPlayer != null) {
+                    mMediaPlayer.setOnCompletionListener(mediaPlayer -> {
+                        onDestroy();
+                    });
+                }
+            }
         }
 
     }
@@ -507,7 +506,7 @@ public class AzanIntentService extends Service {
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
-                android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O ?
+                VERSION.SDK_INT >= VERSION_CODES.O ?
                         WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
                         : WindowManager.LayoutParams.TYPE_PHONE,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
@@ -567,7 +566,7 @@ public class AzanIntentService extends Service {
         }
         builder.setContentTitle(contentTitle);
         builder.setContentText(contentText);
-        builder.setSmallIcon(R.mipmap.launcher_icon);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setAutoCancel(true);
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
         builder.setVibrate(new long[]{
@@ -623,7 +622,7 @@ public class AzanIntentService extends Service {
     }
 
     private void setNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (VERSION.SDK_INT >= VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(
                     AZAN_NOTIFICATION_CHANNEL_ID, AZAN_CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_DEFAULT);

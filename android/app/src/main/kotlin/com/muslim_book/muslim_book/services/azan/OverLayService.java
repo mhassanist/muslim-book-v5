@@ -1,39 +1,28 @@
 package com.muslim_book.muslim_book.services.azan;
 
-
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
-import androidx.work.PeriodicWorkRequest;
-
-import java.util.Timer;
-import java.util.TimerTask;
-
-import android.app.Service;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.preference.PreferenceManager;
 
 import com.muslim_book.muslim_book.MainActivity;
 import com.muslim_book.muslim_book.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class OverLayService extends Service {
     private String TAG = "MyService";
@@ -119,7 +108,7 @@ public class OverLayService extends Service {
         if (overlayCheck) {
             mTimer.cancel();
             mTimer.purge();
-            Log.d(TAG, "====Bringging Application to Front====");
+            Log.d(TAG, "====Bringging com.muslim_book.muslim_book.Application to Front====");
             Intent notificatonIntent = new Intent(this, MainActivity.class);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT );
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -130,10 +119,14 @@ public class OverLayService extends Service {
                 e.printStackTrace();
             }
             onDestroy();
-
             Log.v(TAG, "Notification sent");
-        }else{
-            startForeground(1, notification);
+        } else {
+            try {
+                startForeground(1, notification);
+            } catch (Exception e) {
+                Log.v(TAG, "Notification did not send");
+                e.printStackTrace();
+            }
         }
     }
 

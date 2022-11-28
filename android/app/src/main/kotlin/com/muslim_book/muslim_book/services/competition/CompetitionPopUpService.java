@@ -18,8 +18,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
-import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Handler;
@@ -34,7 +32,7 @@ import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import at.markushi.ui.CircleButton;
+
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
 import com.facebook.ads.InterstitialAd;
@@ -44,6 +42,8 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.muslim_book.muslim_book.MainActivity;
 import com.muslim_book.muslim_book.R;
 import com.muslim_book.muslim_book.classes.Constants;
+
+import at.markushi.ui.CircleButton;
 
 public class CompetitionPopUpService {
 
@@ -85,7 +85,7 @@ public class CompetitionPopUpService {
 
     builder.setContentTitle(contentTitle);
     builder.setContentText(contentText);
-    builder.setSmallIcon(R.mipmap.launcher_icon);
+    builder.setSmallIcon(R.mipmap.ic_launcher);
     builder.setAutoCancel(true);
     builder.setPriority(NotificationCompat.PRIORITY_MAX);
     builder.setVibrate(new long[]{
@@ -121,7 +121,7 @@ public class CompetitionPopUpService {
   }
 
   private void setNotificationChannel() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    if (VERSION.SDK_INT >= VERSION_CODES.O) {
       NotificationChannel notificationChannel = new NotificationChannel(
           AZAN_NOTIFICATION_CHANNEL_ID, AZAN_CHANNEL_NAME,
           NotificationManager.IMPORTANCE_DEFAULT);
@@ -219,7 +219,7 @@ public class CompetitionPopUpService {
     WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
         WindowManager.LayoutParams.MATCH_PARENT,
         WindowManager.LayoutParams.MATCH_PARENT,
-        android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O ?
+        VERSION.SDK_INT >= VERSION_CODES.O ?
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
             : WindowManager.LayoutParams.TYPE_PHONE,
         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,

@@ -1,15 +1,14 @@
 package com.muslim_book.muslim_book.services.azan;
 
+import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_ID;
+
 import android.app.Service;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
 import android.provider.Settings;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
-
-import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_ID;
 
 public class AzanService extends Service {
 

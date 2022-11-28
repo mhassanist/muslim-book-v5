@@ -1,9 +1,10 @@
 
 package com.muslim_book.muslim_book.models.azan_model;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class Hijri {
 

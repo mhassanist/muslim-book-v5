@@ -5,9 +5,7 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.widget.Toast;
 
-//import com.muslim_book.muslim_book.recievers.azan.AzanReceiver;
 import com.muslim_book.muslim_book.recievers.azan.AzanReceiver;
 import com.muslim_book.muslim_book.recievers.ramadan.RamadanCannonReceiver;
 import com.muslim_book.muslim_book.recievers.ramadan.RamadanMshartReceiver;

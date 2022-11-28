@@ -1,5 +1,11 @@
 package com.muslim_book.muslim_book.services.ramadan.ramadan_mshart;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+import static com.muslim_book.muslim_book.classes.Constants.FLUTTER_SHARED_PREFERENCES;
+import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_MSHARAT_CHANNEL_NAME;
+import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_MSHARAT_NOTIFICATION_CHANNEL_ID;
+import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_MSHART_NOTIFICATION_ID;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -19,18 +25,11 @@ import com.muslim_book.muslim_book.R;
 import com.muslim_book.muslim_book.classes.Constants;
 import com.muslim_book.muslim_book.classes.Prefs;
 import com.muslim_book.muslim_book.recievers.ramadan.RamadanMshartReceiver;
-//import com.muslim_book.muslim_book.recievers.ramadan.ramadan_cannon.RamadanMshartReceiver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
- import static com.muslim_book.muslim_book.classes.Constants.FLUTTER_SHARED_PREFERENCES;
- import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_MSHARAT_CHANNEL_NAME;
-import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_MSHARAT_NOTIFICATION_CHANNEL_ID;
-import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_MSHART_NOTIFICATION_ID;
 
 
 public class RamadanMshartServiceUtils {
@@ -134,7 +133,7 @@ public class RamadanMshartServiceUtils {
             builder.setOngoing(true);
         builder.setContentTitle(contentTitle);
         builder.setContentText(contentText);
-        builder.setSmallIcon(R.mipmap.launcher_icon);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setAutoCancel(true);
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
         builder.setVibrate(new long[]{

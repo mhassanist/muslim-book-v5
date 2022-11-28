@@ -1,16 +1,15 @@
 package com.muslim_book.muslim_book.services.azkar;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static android.content.Context.WINDOW_SERVICE;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.facebook.ads.CacheFlag.ALL;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Handler;
@@ -21,11 +20,7 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.RemoteViews;
 import android.widget.TextView;
-
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
@@ -37,19 +32,9 @@ import com.muslim_book.muslim_book.MainActivity;
 import com.muslim_book.muslim_book.R;
 import com.muslim_book.muslim_book.classes.Constants;
 
-import java.io.File;
 import java.util.Calendar;
 
 import at.markushi.ui.CircleButton;
-
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
-import static android.content.Context.NOTIFICATION_SERVICE;
-import static android.content.Context.WINDOW_SERVICE;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.facebook.ads.CacheFlag.ALL;
-import static com.muslim_book.muslim_book.classes.Constants.AZAN_CHANNEL_NAME;
-import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_CHANNEL_ID;
-import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_ID;
 
 public class AzkarPopUpService {
 

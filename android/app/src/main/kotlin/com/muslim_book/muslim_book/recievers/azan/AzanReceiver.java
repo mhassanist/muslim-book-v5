@@ -1,5 +1,7 @@
 package com.muslim_book.muslim_book.recievers.azan;
 
+import static com.muslim_book.muslim_book.classes.Constants.FLUTTER_SHARED_PREFERENCES;
+
 import android.app.AlarmManager;
 import android.app.AlarmManager.AlarmClockInfo;
 import android.app.PendingIntent;
@@ -7,7 +9,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 
@@ -18,8 +19,6 @@ import com.muslim_book.muslim_book.classes.Prefs;
 import com.muslim_book.muslim_book.services.azan.AzanIntentService;
 
 import java.util.Calendar;
-
-import static com.muslim_book.muslim_book.classes.Constants.FLUTTER_SHARED_PREFERENCES;
 
 
 public class AzanReceiver extends BroadcastReceiver {
@@ -132,7 +131,7 @@ public class AzanReceiver extends BroadcastReceiver {
   }
 
   private void setAlarm(Calendar calendar, AlarmManager alarmMgr, PendingIntent alarmIntent) {
-    if (Build.VERSION.SDK_INT >= VERSION_CODES.M) {
+    if (VERSION.SDK_INT >= VERSION_CODES.M) {
 //      alarmMgr.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
 //          calendar.getTimeInMillis(), alarmIntent);
 
@@ -140,7 +139,7 @@ public class AzanReceiver extends BroadcastReceiver {
       alarmMgr.setAlarmClock(info
           , alarmIntent);
 
-    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+    } else if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
       alarmMgr.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);
     } else {
       alarmMgr.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), alarmIntent);

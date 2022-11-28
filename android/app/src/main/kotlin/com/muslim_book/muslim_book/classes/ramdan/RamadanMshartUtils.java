@@ -1,5 +1,7 @@
 package com.muslim_book.muslim_book.classes.ramdan;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,21 +9,9 @@ import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 
-import com.google.gson.Gson;
 import com.muslim_book.muslim_book.classes.Constants;
 import com.muslim_book.muslim_book.classes.Prefs;
-import com.muslim_book.muslim_book.models.ramadan_model.RamadanDatum;
-import com.muslim_book.muslim_book.models.ramadan_model.RamadanModel;
-import com.muslim_book.muslim_book.models.ramadan_model.Timings;
-import com.muslim_book.muslim_book.services.ramadan.ramadan_mshart.RamadanMshartIntentService;
 import com.muslim_book.muslim_book.services.ramadan.ramadan_mshart.RamadanMshartService;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class RamadanMshartUtils {
 

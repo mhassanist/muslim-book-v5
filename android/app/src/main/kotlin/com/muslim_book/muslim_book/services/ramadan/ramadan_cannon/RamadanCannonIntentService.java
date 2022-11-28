@@ -1,5 +1,10 @@
 package com.muslim_book.muslim_book.services.ramadan.ramadan_cannon;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_CANNON_CHANNEL_NAME;
+import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_CANNON_NOTIFICATION_CHANNEL_ID;
+import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_CANNON_NOTIFICATION_ID;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -18,7 +23,6 @@ import android.os.Build.VERSION;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +45,6 @@ import com.muslim_book.muslim_book.classes.Constants;
 import com.muslim_book.muslim_book.classes.ramdan.RamadanCannonUtils;
 import com.muslim_book.muslim_book.recievers.ramadan.RamadanCannonReceiver;
 
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -50,11 +53,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import at.markushi.ui.CircleButton;
-
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_CANNON_CHANNEL_NAME;
-import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_CANNON_NOTIFICATION_CHANNEL_ID;
-import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_CANNON_NOTIFICATION_ID;
 
 public class RamadanCannonIntentService extends Service {
     NotificationManager notificationManager;
@@ -89,7 +87,7 @@ public class RamadanCannonIntentService extends Service {
             Notification notification = new NotificationCompat.Builder(this
                     , RAMADAN_CANNON_NOTIFICATION_CHANNEL_ID)
                     .setContentTitle("")
-                    .setSmallIcon(R.mipmap.launcher_icon)
+                    .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentText("").build();
             startForeground(RAMADAN_CANNON_NOTIFICATION_ID, notification);
             stopForeground(true);
@@ -116,12 +114,15 @@ public class RamadanCannonIntentService extends Service {
         }catch(Exception e){
 
         }
-        mMediaPlayer.start();
-        mMediaPlayer.setOnCompletionListener(mPlayer -> {
-            onDestroy();
-        });
+        if (mMediaPlayer != null) {
+            mMediaPlayer.start();
+        }
+        if (mMediaPlayer != null) {
+            mMediaPlayer.setOnCompletionListener(mPlayer -> {
+                onDestroy();
+            });
+        }
         checkAzanSlider();
- 
     }
 
 
@@ -208,7 +209,7 @@ public class RamadanCannonIntentService extends Service {
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT,
-                android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O ?
+                VERSION.SDK_INT >= Build.VERSION_CODES.O ?
                         WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
                         : WindowManager.LayoutParams.TYPE_PHONE,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
@@ -281,7 +282,7 @@ public class RamadanCannonIntentService extends Service {
     }
 
     private void setNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(
                     RAMADAN_CANNON_NOTIFICATION_CHANNEL_ID, RAMADAN_CANNON_CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_DEFAULT);
@@ -323,7 +324,7 @@ public class RamadanCannonIntentService extends Service {
 
         builder.setContentTitle(contentTitle);
         builder.setContentText(contentText);
-        builder.setSmallIcon(R.mipmap.launcher_icon);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setAutoCancel(true);
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
         builder.setVibrate(new long[]{

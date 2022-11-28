@@ -1,5 +1,11 @@
 package com.muslim_book.muslim_book.services.azan;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+import static com.muslim_book.muslim_book.classes.Constants.AZAN_CHANNEL_NAME;
+import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_CHANNEL_ID;
+import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_ID;
+import static com.muslim_book.muslim_book.classes.Constants.FLUTTER_SHARED_PREFERENCES;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -24,12 +30,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
-import static com.muslim_book.muslim_book.classes.Constants.AZAN_CHANNEL_NAME;
-import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_CHANNEL_ID;
-import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_ID;
-import static com.muslim_book.muslim_book.classes.Constants.FLUTTER_SHARED_PREFERENCES;
 
 
 public class AzanServiceUtils {
@@ -136,7 +136,7 @@ public class AzanServiceUtils {
             builder.setOngoing(true);
         builder.setContentTitle(contentTitle);
         builder.setContentText(contentText);
-        builder.setSmallIcon(R.mipmap.launcher_icon);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setAutoCancel(true);
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
         builder.setVibrate(new long[]{

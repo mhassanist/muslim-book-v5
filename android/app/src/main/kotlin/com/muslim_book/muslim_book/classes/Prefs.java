@@ -1,9 +1,9 @@
 package com.muslim_book.muslim_book.classes;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class Prefs {
 

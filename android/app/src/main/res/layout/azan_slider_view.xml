@@ -1,76 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#ffffff"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-  <androidx.appcompat.widget.AppCompatImageView
-    android:id="@+id/azan_slider"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-      android:scaleType="fitXY"
-      app:srcCompat="@drawable/azan_background"/>
-  <TextView
+    android:background="#ffffff">
 
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="حان الآن موعد آذان"
-      android:textColor="#FFFFFF"
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/azan_slider"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/azan_background" />
 
-      android:textSize="30sp"
-      android:textFontWeight="700"
-      android:id="@+id/azan_text"
-      android:layout_centerHorizontal="true"
-      android:layout_marginTop="180dp"
-      android:fontFamily="@font/almarai"
-      />
+    <TextView
+        android:id="@+id/azan_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="180dp"
+        android:fontFamily="@font/almarai"
+        android:text="حان الآن موعد آذان"
+        android:textColor="#FFFFFF"
+        android:textFontWeight="700"
+        android:textSize="30sp" />
 
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:textColor="#FFAA3F"
-      tools:text="العصر"
-      android:textSize="50sp"
-      android:textFontWeight="700"
-      android:id="@+id/azan_name"
-      android:layout_below="@id/azan_text"
-      android:layout_centerHorizontal="true"
-      android:layout_marginTop="30dp"
-      android:fontFamily="@font/almarai"
-      />
-  <at.markushi.ui.CircleButton
-    android:layout_margin="10dp"
-    android:layout_width="64dp"
-    android:layout_height="64dp"
-    android:src="@drawable/ic_close_black_24dp"
-    app:cb_color="#588B6D"
-      android:visibility="gone"
-    android:id="@+id/close_azan_slider"
-    app:cb_pressedRingWidth="8dp" />
+    <TextView
+        android:id="@+id/azan_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/azan_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:fontFamily="@font/almarai"
+        android:textColor="#FFAA3F"
+        android:textFontWeight="700"
+        android:textSize="50sp"
+        tools:text="العصر" />
 
-  <Button
-      android:id="@+id/bt_azan_done"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_alignParentStart="true"
-      android:layout_alignParentEnd="true"
-      android:layout_alignParentBottom="true"
-      android:layout_marginStart="16dp"
-      android:layout_marginTop="16dp"
-      android:layout_marginEnd="16dp"
-      android:layout_marginBottom="40dp"
-      android:layout_weight="1"
-      android:background="@drawable/rounded_pop_up"
-      android:text="حسنا"
-      android:textColor="#347D53"
-      android:textSize="22sp"
-      android:textStyle="bold" />
+    <at.markushi.ui.CircleButton
+        android:id="@+id/close_azan_slider"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_margin="10dp"
+        android:src="@drawable/ic_close_black_24dp"
+        android:visibility="gone"
+        app:cb_color="#588B6D"
+        app:cb_pressedRingWidth="8dp" />
 
-<!--  <pl.droidsonroids.gif.GifImageView-->
-<!--      android:layout_width="100dp"-->
-<!--      android:layout_height="100dp"-->
-<!--      android:src="@drawable/share"-->
-<!--      />-->
+    <Button
+        android:id="@+id/bt_azan_done"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/rounded_pop_up"
+        android:text="حسنا"
+        android:textColor="#347D53"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <!--  <pl.droidsonroids.gif.GifImageView-->
+    <!--      android:layout_width="100dp"-->
+    <!--      android:layout_height="100dp"-->
+    <!--      android:src="@drawable/share"-->
+    <!--      />-->
 </RelativeLayout>

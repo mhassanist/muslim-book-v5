@@ -9,10 +9,10 @@ import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 
+import com.google.gson.Gson;
 import com.muslim_book.muslim_book.models.azan_model.AzanModel;
 import com.muslim_book.muslim_book.models.azan_model.AzanModelData;
 import com.muslim_book.muslim_book.models.azan_model.Timings;
-import com.google.gson.Gson;
 import com.muslim_book.muslim_book.services.azan.AzanService;
 
 import java.text.SimpleDateFormat;

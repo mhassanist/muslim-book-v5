@@ -1,5 +1,10 @@
 package com.muslim_book.muslim_book.recievers;
 
+import static android.content.Context.NOTIFICATION_SERVICE;
+import static com.muslim_book.muslim_book.classes.Constants.WEEKLY_FASTING_CHANNEL_NAME;
+import static com.muslim_book.muslim_book.classes.Constants.WEEKLY_FASTING_NOTIFICATION_CHANNEL_ID;
+import static com.muslim_book.muslim_book.classes.Constants.WEEKLY_FASTING_NOTIFICATION_ID;
+
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -11,7 +16,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioAttributes;
 import android.os.Build;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -24,11 +28,6 @@ import com.muslim_book.muslim_book.classes.Constants;
 import com.muslim_book.muslim_book.classes.Prefs;
 
 import java.util.Calendar;
-
-import static android.content.Context.NOTIFICATION_SERVICE;
-import static com.muslim_book.muslim_book.classes.Constants.WEEKLY_FASTING_CHANNEL_NAME;
-import static com.muslim_book.muslim_book.classes.Constants.WEEKLY_FASTING_NOTIFICATION_CHANNEL_ID;
-import static com.muslim_book.muslim_book.classes.Constants.WEEKLY_FASTING_NOTIFICATION_ID;
 
 public class FastingAlertsReceiver extends BroadcastReceiver {
     NotificationManager notificationManager;
@@ -142,7 +141,7 @@ public class FastingAlertsReceiver extends BroadcastReceiver {
         builder = new NotificationCompat.Builder(mContext, WEEKLY_FASTING_NOTIFICATION_CHANNEL_ID);
         builder.setContentTitle(contentTitle);
         builder.setContentText(contentText);
-        builder.setSmallIcon(R.mipmap.launcher_icon);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
         //        builder.setAutoCancel(true);
         builder.setPriority(NotificationCompat.PRIORITY_MAX);
         builder.setVibrate(new long[]{

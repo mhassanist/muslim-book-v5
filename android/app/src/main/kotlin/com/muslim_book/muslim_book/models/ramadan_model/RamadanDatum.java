@@ -1,10 +1,12 @@
 
 package com.muslim_book.muslim_book.models.ramadan_model;
 
-import java.io.Serializable;
- import android.os.Parcelable;
-  import com.google.gson.annotations.Expose;
+import android.os.Parcelable;
+
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 
  public class RamadanDatum implements Serializable, Parcelable
 {

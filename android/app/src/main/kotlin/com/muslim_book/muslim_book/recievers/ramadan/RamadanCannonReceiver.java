@@ -1,5 +1,7 @@
 package com.muslim_book.muslim_book.recievers.ramadan;
 
+import static com.muslim_book.muslim_book.classes.Constants.FLUTTER_SHARED_PREFERENCES;
+
 import android.app.AlarmManager;
 import android.app.AlarmManager.AlarmClockInfo;
 import android.app.PendingIntent;
@@ -8,15 +10,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+
 import androidx.core.content.ContextCompat;
+
 import com.muslim_book.muslim_book.classes.Constants;
 import com.muslim_book.muslim_book.services.ramadan.ramadan_cannon.RamadanCannonIntentService;
 
 import java.util.Calendar;
 
 import io.flutter.Log;
-
-import static com.muslim_book.muslim_book.classes.Constants.FLUTTER_SHARED_PREFERENCES;
 
 public class RamadanCannonReceiver extends BroadcastReceiver {
 

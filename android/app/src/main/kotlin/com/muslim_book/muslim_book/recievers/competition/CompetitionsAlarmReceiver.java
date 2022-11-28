@@ -1,5 +1,7 @@
 package com.muslim_book.muslim_book.recievers.competition;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -13,11 +15,9 @@ import com.muslim_book.muslim_book.models.azan_model.AzanModel;
 import com.muslim_book.muslim_book.models.azan_model.AzanModelData;
 import com.muslim_book.muslim_book.services.competition.CompetitionPopUpService;
 
-import io.flutter.Log;
-
 import java.util.Calendar;
 
-import static android.content.Context.MODE_PRIVATE;
+import io.flutter.Log;
 
 public class CompetitionsAlarmReceiver extends BroadcastReceiver {
 
