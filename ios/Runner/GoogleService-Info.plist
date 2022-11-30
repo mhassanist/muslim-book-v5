@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>429140413449-qh4ssotvsetikv7o1clj4sqe8kb51f0t.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.429140413449-qh4ssotvsetikv7o1clj4sqe8kb51f0t</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>429140413449-1rt5i3tinkq40ipvjnplk4bs9h1h0kt8.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBx87TQTpgfQZOS5sVtsHwbYHYrgRhBjTQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>429140413449</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.muslimbook.muslimBook</string>
+	<key>PROJECT_ID</key>
+	<string>muslim-book-ab937</string>
+	<key>STORAGE_BUCKET</key>
+	<string>muslim-book-ab937.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:429140413449:ios:cfafa98f7e099e81cb7cd8</string>
+	<key>DATABASE_URL</key>
+	<string>https://muslim-book-ab937.firebaseio.com</string>
+</dict>
+</plist>

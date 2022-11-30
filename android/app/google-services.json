@@ -31,11 +31,35 @@
           }
         },
         {
+          "client_id": "429140413449-bbbjqmqr6oa6usvutm4jj0jguavtgaef.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muslim_book.muslim_book",
+            "certificate_hash": "01ef33fd53d2b7472fc21087b81a69be6a763cdf"
+          }
+        },
+        {
+          "client_id": "429140413449-emj0c8qvco65rnrjfb9p5bb3kdlejmqa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muslim_book.muslim_book",
+            "certificate_hash": "5fee7b9ad516fbea09471a4f68d1bbf69de58125"
+          }
+        },
+        {
           "client_id": "429140413449-hlbalrhfqiiod45nohefriq32fd2pne1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.muslim_book.muslim_book",
             "certificate_hash": "c4585e13df62c7b6a844077c136601eaf85b7a71"
+          }
+        },
+        {
+          "client_id": "429140413449-n9fbujdb2iqieqn0itfes0ciqrj5aagj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.muslim_book.muslim_book",
+            "certificate_hash": "3b9c7c234325847e8d6c4e28d5353174943e1d6b"
           }
         },
         {
@@ -75,6 +99,35 @@
         }
       },
       "admob_app_id": "ca-app-pub-8586064191208277~4831882751"
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429140413449:android:c3be96111db0b201cb7cd8",
+        "android_client_info": {
+          "package_name": "ewr.com.v"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "429140413449-50p5omidhhqs5r229ppk0anl64ff503g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC4GCIxjEvULoLY2K6lc2k7iSeH4V4ZHY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "429140413449-50p5omidhhqs5r229ppk0anl64ff503g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
