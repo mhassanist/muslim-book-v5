@@ -67,6 +67,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBmvh-bg4aW703O9N0VHuReE7W890aNIo8" />
 
+        <!-- A custom Android Notification Channel to deliver FCM notifications on a non-default channel -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="high_importance_channel" />
 
         <service
             android:name=".services.azan.AzanService"
