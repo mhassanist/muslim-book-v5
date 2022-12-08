@@ -1,13 +1,11 @@
 import 'dart:convert';
 
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 class AzanSound {
   int? id;
   int? fajr;
   String? name;
   String? key;
-  String? fileUrl;
+  String fileUrl;
   String? localPath;
 
   AzanSound({
@@ -15,7 +13,7 @@ class AzanSound {
     this.fajr,
     this.name,
     this.key,
-    this.fileUrl,
+    required this.fileUrl,
     this.localPath,
   });
 

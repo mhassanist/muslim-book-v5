@@ -23,7 +23,7 @@ class Prefs {
     await prefs!.setString(Constants.COUNTRY, value);
   }
 
-  String? getCountry() => prefs!.getString(Constants.COUNTRY);
+  String getCountry() => prefs!.getString(Constants.COUNTRY) ?? '';
 
   void setId(String value) async {
     await prefs!.setString(Constants.ID, value);
@@ -53,14 +53,14 @@ class Prefs {
 
   double? getLongtude() => prefs!.getDouble(Constants.LONGTUDE);
 
-  int? getAzanMethod() => prefs!.getInt(Constants.AZAN_METHOD);
+  int getAzanMethod() => prefs!.getInt(Constants.AZAN_METHOD) ?? 0;
 
   void setAzanMethod(int value) async {
     await prefs!.setInt(Constants.AZAN_METHOD, value);
   }
 
-  int? getLatitudeAdjustmentMethod() =>
-      prefs!.getInt(Constants.Latitude_Adjustment_Method);
+  int getLatitudeAdjustmentMethod() =>
+      prefs!.getInt(Constants.Latitude_Adjustment_Method) ?? -1;
 
   void setLatitudeAdjustmentMethod(int value) async {
     await prefs!.setInt(Constants.Latitude_Adjustment_Method, value);
@@ -72,17 +72,17 @@ class Prefs {
     await prefs!.setInt(Constants.LOGIN_TYPE, value);
   }
 
-  int? getAzanMazhab() => prefs!.getInt(Constants.AZAN_MAZHAB);
+  int getAzanMazhab() => prefs!.getInt(Constants.AZAN_MAZHAB) ?? 0;
 
   void setAzanMazhab(int value) async {
     await prefs!.setInt(Constants.AZAN_MAZHAB, value);
   }
 
-  String? getAzanShiekh(String azanId) {
-    return prefs!.getString('${Constants.AZAN_SHIEKH}$azanId');
+  String getAzanShiekh(String azanId) {
+    return prefs!.getString('${Constants.AZAN_SHIEKH}$azanId') ?? '';
   }
 
-  String? getFajrAzanShiekh() => prefs!.getString(Constants.FAJR_AZAN_SHIEKH);
+  String getFajrAzanShiekh() => prefs!.getString(Constants.FAJR_AZAN_SHIEKH) ?? '';
 
   void setAzanShiekh(String key, String azanIndex) async {
     await prefs!.setString(key, azanIndex);//DOWNLOADED_SHEIKH_ID
@@ -149,9 +149,7 @@ class Prefs {
     await prefs!.setString(key, value);
   }
 
-  String? getAssalahTime(value) {
-    return prefs!.getString(value);
-  }
+  String getAssalahTime(value) => prefs!.getString(value) ?? '';
 
   void setAzanOnPrayTimeFlag(bool value) async {
     await prefs!.setBool(Constants.AZAN_ON_PRAY_TIME_FLAG, value);
@@ -227,9 +225,9 @@ class Prefs {
   bool? getWhiteDaysFastingAlertFlag() =>
       prefs!.getBool(Constants.WHITE_DAYS_FASTING_ALERT_FLAG);
 
-  bool get getIsAzanUrlValid => (getAzanMazhab() != null &&
-      getAzanMethod() != null &&
-      ((getLatitue() != null && getLatitue() != null) || getCountry() != null));
+  bool get getIsAzanUrlValid => (getAzanMazhab() != -1 &&
+      getAzanMethod() != -1 &&
+      ((getLatitue() != null && getLatitue() != null) || getCountry().isNotEmpty));
 
   void setAllowFajrIbtehal(bool value) async {
     await prefs!.setBool(Constants.ALFAJR_IBTEHAL_ALERT_FLAG, value);
@@ -416,8 +414,8 @@ class Prefs {
         '${Constants.SELECTED_RAMADAN_MASHRAAT_ID}$azanId', id);
   }
 
-  String? getAzanShiekhJSON(String azanId) {
-    return prefs!.getString('${Constants.SELECTED_SHEIKH_JSON}$azanId');
+  String getAzanShiekhJSON(String azanId) {
+    return prefs!.getString('${Constants.SELECTED_SHEIKH_JSON}$azanId') ?? '';
   }
 
   String? getRamadanCannonJSON(String soundCannon) {
@@ -428,7 +426,7 @@ class Prefs {
     return prefs!.getString('${Constants.SELECTED_RAMADAN_MASHRaAAT_JSON}$soundCannon');
   }
 
-  String? getDownloadedAzanShiekhId() => prefs!.getString(Constants.DOWNLOADED_SHEIKH_ID);
+  String getDownloadedAzanShiekhId() => prefs!.getString(Constants.DOWNLOADED_SHEIKH_ID) ?? '';
 
   String? getDownloadSelectedRamadanConnanID(String azanId) {
     return prefs!.getString('${Constants.SELECTED_RAMADAN_CANNON_ID}$azanId');
@@ -451,8 +449,8 @@ class Prefs {
   String? getSelectedMashraatRepetitionsId() =>
       prefs!.getString(Constants.SELECTED_MASHRAAT_REPETITION_ID);
 
-  String? getFajrAzanShiekhJSON() {
-    return prefs!.getString(Constants.SELECTED_FAJR_SHEIKH_JSON);
+  String getFajrAzanShiekhJSON() {
+    return prefs!.getString(Constants.SELECTED_FAJR_SHEIKH_JSON) ?? '';
   }
 
   saveMutedAzanList(String mutedAzanList) async {
