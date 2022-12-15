@@ -22,7 +22,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
 import "package:provider/provider.dart" as ProviderUser;
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomePage extends ConsumerWidget {

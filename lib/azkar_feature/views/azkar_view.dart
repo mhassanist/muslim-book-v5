@@ -15,10 +15,14 @@ import 'package:flutter/services.dart';
 
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class AzkarView extends StatefulWidget {
-  AzkarView({Key key, this.zikr}) : super(key: key);
+  AzkarView({
+    super.key,
+    required this.zikr,
+  });
+
   final Map<String, String> zikr;
 
   @override
@@ -26,37 +30,41 @@ class AzkarView extends StatefulWidget {
 }
 
 class _AzkarViewState extends State<AzkarView> {
-  List<Zikr> azkar;
-  Zikr currentZikr;
+  List<Zikr>? azkar;
+  late Zikr currentZikr;
   int currentIndex = 0;
   final CarouselController controller = CarouselController();
-  AudioCache _audioCache;
+  late AudioCache _audioCache;
 
   @override
   void initState() {
-
     super.initState();
     _audioCache = AudioCache(
-        prefix: "audio/",
-        fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP));
+      prefix: "audio/",
+      fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP),
+    );
     getAzkarContent();
   }
 
-
   Future<bool> _onWillPop() async {
     return (await showDialog(
-      context: context,
-      builder: (context) =>  new AlertDialog(
-          contentPadding: EdgeInsets.all(0.0),
-          shape: RoundedRectangleBorder(borderRadius:
-          BorderRadius.all(Radius.circular(12))),
-          content:Container(
-            height: 400,
-            child:LoadUiWithAdd(mainView: AddWidgetEdit(title:   AppLocalizations.of(context)!.translate("azkar"),bannerName :BannerName.AZKAR ,buttomTitle: AppLocalizations.of(context)!.translate("follow"),)) ,
-          )  ,
-        
-      ),
-    )) ?? false;
+          context: context,
+          builder: (context) => new AlertDialog(
+            contentPadding: EdgeInsets.all(0.0),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12))),
+            content: Container(
+              height: 400,
+              child: LoadUiWithAdd(
+                  mainView: AddWidgetEdit(
+                title: AppLocalizations.of(context)!.translate("azkar"),
+                bannerName: BannerName.AZKAR,
+                buttomTitle: AppLocalizations.of(context)!.translate("follow"),
+              )),
+            ),
+          ),
+        )) ??
+        false;
   }
 
   @override
@@ -65,17 +73,15 @@ class _AzkarViewState extends State<AzkarView> {
       builder: (context, SizingInformation sizeConfig) {
         return WillPopScope(
             onWillPop: _onWillPop,
-
             child: AppScaffold(
               padding: EdgeInsets.symmetric(vertical: 20),
-              title:
-                  AppScaffoldTitleWidget(title: "${widget.zikr["name"]}"),
+              title: AppScaffoldTitleWidget(title: "${widget.zikr["name"]}"),
               centerTitle: true,
               transparentBackground: true,
               child: azkar == null
                   ? Container()
                   : LoadUiWithAdd(
-                    mainView: ListView(
+                      mainView: ListView(
                         children: [
                           CarouselSlider(
                             carouselController: controller,
@@ -86,13 +92,13 @@ class _AzkarViewState extends State<AzkarView> {
                                 onPageChanged: (index, _) {
                                   setState(() {
                                     currentIndex = index;
-                                    currentZikr = azkar[index];
+                                    currentZikr = azkar![index];
                                   });
                                 },
                                 viewportFraction: 0.9,
                                 aspectRatio: 2.0,
-                                height: sizeConfig.blockSizeVertical * 50),
-                            items: azkar.map((zikr) {
+                                height: sizeConfig.blockSizeVertical * 50,),
+                            items: azkar!.map((zikr) {
                               return Builder(
                                 builder: (BuildContext context) {
                                   return Container(
@@ -108,15 +114,12 @@ class _AzkarViewState extends State<AzkarView> {
                           ),
                           buildControllesWidget(sizeConfig, currentZikr),
                           Spacer(),
-
                           Container(
                               height: 300,
-                              child: AdMobRectangle(BannerName.BOSLA )),
-
-
+                              child: AdMobRectangle(BannerName.BOSLA)),
                         ],
                       ),
-                  ),
+                    ),
             ));
       },
     );
@@ -280,7 +283,7 @@ class _AzkarViewState extends State<AzkarView> {
     azkar = AzkarModel.fromJson(await rootBundle.loadString(
             'assets/databases/azkar_database/${widget.zikr["path"]}'))
         .azkar;
-    currentZikr = azkar.first;
+    currentZikr = azkar!.first;
     setState(() {});
   }
 
@@ -298,7 +301,7 @@ class _AzkarViewState extends State<AzkarView> {
             });
           } else {
             controller.nextPage();
-            if (currentIndex == azkar.length - 1) {
+            if (currentIndex == azkar!.length - 1) {
               _audioCache.play('allah_make_you_from_heaven.wav');
 
               Navigator.pop(context);

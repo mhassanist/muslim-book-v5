@@ -1,10 +1,10 @@
 class IslamicPosts {
-  Data? _data;
-  String? _client;
-  String? _message;
-  bool? _success;
-  Links? _links;
-  Meta? _meta;
+  late Data _data;
+  late String _client;
+  late String _message;
+  late bool _success;
+  late Links _links;
+  late Meta _meta;
 
   IslamicPosts({
     Data? data,
@@ -14,15 +14,15 @@ class IslamicPosts {
     Links? links,
     Meta? meta,
   }) {
-    this._data = data;
-    this._client = client;
-    this._message = message;
-    this._success = success;
-    this._links = links;
-    this._meta = meta;
+    this._data = data ?? Data();
+    this._client = client ?? '';
+    this._message = message ?? '';
+    this._success = success ?? false;
+    this._links = links ?? Links();
+    this._meta = meta ?? Meta();
   }
 
-  Data? get data => _data;
+  Data get data => _data;
 
   set data(Data data) => _data = data;
 
@@ -47,43 +47,43 @@ class IslamicPosts {
   set meta(Meta meta) => _meta = meta;
 
   IslamicPosts.fromJson(Map<String, dynamic> json) {
-    _data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    _data = json['data'] != null ? Data.fromJson(json['data']) : Data();
     _client = json['client'];
     _message = json['message'];
     _success = json['success'];
-    _links = json['links'] != null ? new Links.fromJson(json['links']) : null;
-    _meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
+    _links =
+        json['links'] != null ? new Links.fromJson(json['links']) : Links();
+    _meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : Meta();
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this._data != null) {
-      data['data'] = this._data.toJson();
-    }
+    data['data'] = this._data.toJson();
     data['client'] = this._client;
     data['message'] = this._message;
     data['success'] = this._success;
-    if (this._links != null) {
-      data['links'] = this._links.toJson();
-    }
-    if (this._meta != null) {
-      data['meta'] = this._meta.toJson();
-    }
+    data['links'] = this._links.toJson();
+    data['meta'] = this._meta.toJson();
     return data;
   }
 }
 
 class Data {
-  int _id;
-  String _name;
-  String _description;
-  List<PostsOfIslamic> _posts;
+  late int _id;
+  late String _name;
+  late String _description;
+  late List<PostsOfIslamic> _posts;
 
-  Data({int id, String name, String description, List<PostsOfIslamic> posts}) {
-    this._id = id;
-    this._name = name;
-    this._description = description;
-    this._posts = posts;
+  Data({
+    int? id,
+    String? name,
+    String? description,
+    List<PostsOfIslamic>? posts,
+  }) {
+    this._id = id ?? -1;
+    this._name = name ?? '';
+    this._description = description ?? '';
+    this._posts = posts ?? <PostsOfIslamic>[];
   }
 
   int get id => _id;
@@ -106,8 +106,8 @@ class Data {
     _id = json['id'];
     _name = json['name'];
     _description = json['description'];
+    _posts = <PostsOfIslamic>[];
     if (json['posts'] != null) {
-      _posts = new List<PostsOfIslamic>();
       json['posts'].forEach((v) {
         _posts.add(new PostsOfIslamic.fromJson(v));
       });
@@ -119,46 +119,45 @@ class Data {
     data['id'] = this._id;
     data['name'] = this._name;
     data['description'] = this._description;
-    if (this._posts != null) {
-      data['posts'] = this._posts.map((v) => v.toJson()).toList();
-    }
+    data['posts'] = this._posts.map((v) => v.toJson()).toList();
     return data;
   }
 }
 
 class PostsOfIslamic {
-  int _id;
-  String _type;
-  String _name;
-  String _description;
-  String _content;
-  int _likes;
-  int _categoryId;
-  bool _liked;
-  String _featured;
-  List<Media> _media;
+  late int _id;
+  late String _type;
+  late String _name;
+  late String _description;
+  late String _content;
+  late int _likes;
+  late int _categoryId;
+  late bool _liked;
+  late String _featured;
+  late List<Media> _media;
 
-  PostsOfIslamic(
-      {int id,
-      String type,
-      String name,
-      String description,
-      String content,
-      int likes,
-      int categoryId,
-      bool liked,
-      String featured,
-      List<Media> media}) {
-    this._id = id;
-    this._type = type;
-    this._name = name;
-    this._description = description;
-    this._content = content;
-    this._likes = likes;
-    this._categoryId = categoryId;
-    this._liked = liked;
-    this._featured = featured;
-    this._media = media;
+  PostsOfIslamic({
+    int? id,
+    String? type,
+    String? name,
+    String? description,
+    String? content,
+    int? likes,
+    int? categoryId,
+    bool? liked,
+    String? featured,
+    List<Media>? media,
+  }) {
+    this._id = id ?? -1;
+    this._type = type ?? '';
+    this._name = name ?? '';
+    this._description = description ?? '';
+    this._content = content ?? '';
+    this._likes = likes ?? 0;
+    this._categoryId = categoryId ?? -1;
+    this._liked = liked ?? false;
+    this._featured = featured ?? '';
+    this._media = media ?? <Media>[];
   }
 
   int get id => _id;
@@ -211,8 +210,8 @@ class PostsOfIslamic {
     _categoryId = json['category_id'];
     _liked = json['liked'];
     _featured = json['featured'];
+    _media = <Media>[];
     if (json['media'] != null) {
-      _media = new List<Media>();
       json['media'].forEach((v) {
         _media.add(new Media.fromJson(v));
       });
@@ -230,46 +229,45 @@ class PostsOfIslamic {
     data['category_id'] = this._categoryId;
     data['liked'] = this._liked;
     data['featured'] = this._featured;
-    if (this._media != null) {
-      data['media'] = this._media.map((v) => v.toJson()).toList();
-    }
+    data['media'] = this._media.map((v) => v.toJson()).toList();
     return data;
   }
 }
 
 class Media {
-  int _id;
-  String _name;
-  String _fileName;
-  String _mimeType;
-  String _extension;
-  int _size;
-  List<Null> _responsiveImages;
-  int _order;
-  String _url;
-  String _thumb;
+  late int _id;
+  late String _name;
+  late String _fileName;
+  late String _mimeType;
+  late String _extension;
+  late int _size;
+  late List<Null> _responsiveImages;
+  late int _order;
+  late String _url;
+  late String _thumb;
 
-  Media(
-      {int id,
-      String name,
-      String fileName,
-      String mimeType,
-      String extension,
-      int size,
-      List<Null> responsiveImages,
-      int order,
-      String url,
-      String thumb}) {
-    this._id = id;
-    this._name = name;
-    this._fileName = fileName;
-    this._mimeType = mimeType;
-    this._extension = extension;
-    this._size = size;
-    this._responsiveImages = responsiveImages;
-    this._order = order;
-    this._url = url;
-    this._thumb = thumb;
+  Media({
+    int? id,
+    String? name,
+    String? fileName,
+    String? mimeType,
+    String? extension,
+    int? size,
+    List<Null>? responsiveImages,
+    int? order,
+    String? url,
+    String? thumb,
+  }) {
+    this._id = id ?? -1;
+    this._name = name ?? '';
+    this._fileName = fileName ?? '';
+    this._mimeType = mimeType ?? '';
+    this._extension = extension ?? '';
+    this._size = size ?? 0;
+    this._responsiveImages = responsiveImages ?? <Null>[];
+    this._order = order ?? -1;
+    this._url = url ?? '';
+    this._thumb = thumb ?? '';
   }
 
   int get id => _id;
@@ -341,14 +339,18 @@ class Media {
 }
 
 class Links {
-  String _first;
-  String _last;
-  String _next;
+  late String _first;
+  late String _last;
+  late String _next;
 
-  Links({String first, String last, String next}) {
-    this._first = first;
-    this._last = last;
-    this._next = next;
+  Links({
+    String? first,
+    String? last,
+    String? next,
+  }) {
+    this._first = first ?? '';
+    this._last = last ?? '';
+    this._next = next ?? '';
   }
 
   String get first => _first;
@@ -379,29 +381,30 @@ class Links {
 }
 
 class Meta {
-  int _currentPage;
-  int _from;
-  int _lastPage;
-  String _path;
-  int _perPage;
-  int _to;
-  int _total;
+  late int _currentPage;
+  late int _from;
+  late int _lastPage;
+  late String _path;
+  late int _perPage;
+  late int _to;
+  late int _total;
 
-  Meta(
-      {int currentPage,
-      int from,
-      int lastPage,
-      String path,
-      int perPage,
-      int to,
-      int total}) {
-    this._currentPage = currentPage;
-    this._from = from;
-    this._lastPage = lastPage;
-    this._path = path;
-    this._perPage = perPage;
-    this._to = to;
-    this._total = total;
+  Meta({
+    int? currentPage,
+    int? from,
+    int? lastPage,
+    String? path,
+    int? perPage,
+    int? to,
+    int? total,
+  }) {
+    this._currentPage = currentPage ?? 0;
+    this._from = from ?? 0;
+    this._lastPage = lastPage ?? 0;
+    this._path = path ?? '';
+    this._perPage = perPage ?? 1;
+    this._to = to ?? 0;
+    this._total = total ?? 0;
   }
 
   int get currentPage => _currentPage;

@@ -28,7 +28,7 @@ class AzkarModel {
 class Zikr {
   Zikr({
     this.content,
-    this.counter,
+    this.counter = 0,
     this.url,
     this.counted = 0,
     this.notes,
@@ -36,8 +36,8 @@ class Zikr {
 
   String? content;
   String? notes;
-  int? counter;
-  int? counted;
+  int counter;
+  int counted;
   String? url;
 
   factory Zikr.fromJson(String str) => Zikr.fromMap(json.decode(str));

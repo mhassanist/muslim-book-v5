@@ -11,7 +11,6 @@ import 'package:intl/intl.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class AzanHomeWidget extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final AzanController controller = Get.find<AzanController>();
@@ -32,7 +31,7 @@ class AzanHomeWidget extends StatelessWidget {
               child: GetBuilder<AzanController>(
                   init: AzanController(),
                   builder: (controller) {
-                    if (locator<Prefs>().getAzanModel() == null) {
+                    if (locator<Prefs>().getAzanModel().isEmpty) {
                       return Container(
                           margin: EdgeInsetsDirectional.only(start: 15),
                           child: Center(
@@ -47,8 +46,10 @@ class AzanHomeWidget extends StatelessWidget {
                     } else {
                       // return Container();
                       //print(locator<Prefs>().getAssalahTime("1"));
-                      var nextSalah =
-                          controller.getAzanList(context)[controller.nextAzanKey - 1];
+                      var nextSalah = controller.getAzanList(context) != null
+                          ? controller
+                              .getAzanList(context)![controller.nextAzanKey - 1]
+                          : null;
                       return Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: sizeConfig.blockSizeVertical * 3),
@@ -56,9 +57,11 @@ class AzanHomeWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
-                                AppLocalizations.of(context)
+                                AppLocalizations.of(context)!
                                         .translate("salah") +
-                                    " "+AppLocalizations.of(context)!.translate(nextSalah.key),
+                                    " " +
+                                    AppLocalizations.of(context)!
+                                        .translate(nextSalah?.key ?? ''),
                                 // "صلاة ${nextSalah.title}",
                                 style: TextStyle(
                                     color: Colors.white,
@@ -66,15 +69,14 @@ class AzanHomeWidget extends StatelessWidget {
                                     fontSize:
                                         sizeConfig.blockSizeHorizontal * 5)),
                             Text(
-                                "${nextSalah.time} ${int.parse(nextSalah.hours) >= 12 ? AppLocalizations.of(context)!.translate("evening") : AppLocalizations.of(context)!.translate("morning")}",
+                                "${nextSalah?.time} ${int.parse(nextSalah?.hours ?? '0') >= 12 ? AppLocalizations.of(context)!.translate("evening") : AppLocalizations.of(context)!.translate("morning")}",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize:
                                         sizeConfig.blockSizeHorizontal * 5)),
                             Text(
-                              
-                              "${AppLocalizations.of(context)!.translate("left")}: ${controller.remaining.inHours > 10 ? controller.remaining.inHours : "0${controller.remaining.inHours}"}:${DateFormat("mm:ss").format(DateTime.fromMillisecondsSinceEpoch(controller.remaining.inMilliseconds))}",
+                              "${AppLocalizations.of(context)!.translate("left")}: ${controller.remaining!.inHours > 10 ? controller.remaining!.inHours : "0${controller.remaining!.inHours}"}:${DateFormat("mm:ss").format(DateTime.fromMillisecondsSinceEpoch(controller.remaining!.inMilliseconds))}",
                               style: TextStyle(
                                   color: Constants.PRIMARY_COLOR,
                                   fontWeight: FontWeight.bold,
@@ -92,7 +94,6 @@ class AzanHomeWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  
                   "${DateFormat.EEEE(Localizations.localeOf(context).languageCode).format(DateTime.now())}  ${DateFormat.yMMMd(Localizations.localeOf(context).languageCode).format(DateTime.now())}",
                   locale: Locale('en'),
                   style: TextStyle(
@@ -127,7 +128,7 @@ class AzanHomeWidget extends StatelessWidget {
                       vertical: sizeConfig.blockSizeVertical),
                   child: RawMaterialButton(
                     onPressed: () {
-                      if (locator<Prefs>().getAzanModel() != null) {
+                      if (locator<Prefs>().getAzanModel().isNotEmpty) {
                         Get.to(AzanView());
                       } else {}
                     },

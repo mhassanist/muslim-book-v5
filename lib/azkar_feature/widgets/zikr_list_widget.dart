@@ -10,10 +10,14 @@ import 'package:intl/intl.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class ZikrListWidget extends StatefulWidget {
-  ZikrListWidget({Key key, this.sizeConfig, this.zikrDetails})
-      : super(key: key);
+  ZikrListWidget({
+    super.key,
+    required this.sizeConfig,
+    required this.zikrDetails,
+  });
   final SizingInformation sizeConfig;
   final Map<String, String> zikrDetails;
+
   @override
   _ZikrListWidgetState createState() => _ZikrListWidgetState();
 }
@@ -21,8 +25,8 @@ class ZikrListWidget extends StatefulWidget {
 class _ZikrListWidgetState extends State<ZikrListWidget> {
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      padding: EdgeInsets.zero,
+    return ElevatedButton(
+      // padding: EdgeInsets.zero,
       onPressed: () async {
         await Get.to(AzkarView(
           zikr: widget.zikrDetails,
@@ -124,8 +128,8 @@ class _ZikrListWidgetState extends State<ZikrListWidget> {
 
   void checkShareDialogHistory() async {
     String todayDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
-    String lastUpdate = locator<Prefs>().lastUpdatedShowShareDialogTap;
-    if (lastUpdate != todayDate) {
+    String? lastUpdate = locator<Prefs>().lastUpdatedShowShareDialogTap;
+    if (lastUpdate != null && lastUpdate != todayDate) {
       Get.dialog(ShareDialog());
     }
     locator<Prefs>().setLastUpdatedShowShareDialogTap(todayDate);

@@ -4,20 +4,24 @@ import 'package:flutter_svg/svg.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class SingleCategoryWidget extends StatefulWidget {
-  SingleCategoryWidget({Key key, this.sizeConfig, this.categoryDetails})
-      : super(key: key);
+  SingleCategoryWidget({
+    super.key,
+    required this.sizeConfig,
+    required this.categoryDetails,
+  });
+
   final SizingInformation sizeConfig;
   final Map<String, dynamic> categoryDetails;
+
   @override
   _SingleCategoryWidgetState createState() => _SingleCategoryWidgetState();
 }
 
 class _SingleCategoryWidgetState extends State<SingleCategoryWidget> {
-
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      padding: EdgeInsets.zero,
+    return ElevatedButton(
+      // padding: EdgeInsets.zero,
       onPressed: widget.categoryDetails["onTap"],
       child: Container(
         margin: EdgeInsets.all(10),

@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class PostVideoView extends StatefulWidget {
-  PostVideoView({Key key, @required this.url}) : super(key: key);
+  PostVideoView({
+    super.key,
+    required this.url,
+  });
 
   final String url;
 
@@ -13,8 +16,12 @@ class PostVideoView extends StatefulWidget {
 }
 
 class _PostVideoViewState extends State<PostVideoView> {
-  ValueNotifier<ChewieController> _chewieControllers = ValueNotifier(null);
-  VideoPlayerController _videosController;
+  ValueNotifier<ChewieController> _chewieControllers = ValueNotifier(
+    ChewieController(
+      videoPlayerController: VideoPlayerController.network('url'),
+    ),
+  );
+  VideoPlayerController? _videosController;
 
   String get url => widget.url;
 
@@ -22,31 +29,32 @@ class _PostVideoViewState extends State<PostVideoView> {
   void didChangeDependencies() async {
     _videosController = VideoPlayerController.network(url);
     // ..initialize().then((_) => setState(() {}));
-    await Future.wait([
-      _videosController.initialize(),
-    ]);
-    _chewieControllers.value = ChewieController(
-      videoPlayerController: _videosController,
-      aspectRatio: 16 / 9,
-      autoInitialize: false,
-      errorBuilder: (context, errorMessage) => Center(
-        child: Text(
-          errorMessage,
+    if (_videosController != null) {
+      await Future.wait([
+        _videosController!.initialize(),
+      ]);
+      _chewieControllers.value = ChewieController(
+        videoPlayerController: _videosController!,
+        aspectRatio: 16 / 9,
+        autoInitialize: false,
+        errorBuilder: (context, errorMessage) => Center(
+          child: Text(
+            errorMessage,
+          ),
         ),
-      ),
-    );
-
+      );
+    }
     super.didChangeDependencies();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _videosController?.pause()?.then((_) {
+    _videosController?.pause().then((_) {
       _videosController?.dispose();
     });
     //  _videosController.dispose();
-    _chewieControllers.value?.dispose();
+    _chewieControllers.value.dispose();
   }
 
   @override

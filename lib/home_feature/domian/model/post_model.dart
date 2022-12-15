@@ -1,26 +1,27 @@
 class Post {
-  int id;
-  String content;
-  int likes;
-  int userId;
-  String userImage;
-  String userName;
-  bool liked;
-  bool reported;
-  int reports;
-  bool editable;
+  int? id;
+  String? content;
+  int? likes;
+  int? userId;
+  String? userImage;
+  String? userName;
+  bool? liked;
+  bool? reported;
+  int? reports;
+  bool? editable;
 
-  Post(
-      {this.id,
-      this.content,
-      this.likes,
-      this.userId,
-      this.userImage,
-      this.userName,
-      this.liked,
-      this.reported,
-      this.reports,
-      this.editable});
+  Post({
+    this.id,
+    this.content,
+    this.likes,
+    this.userId,
+    this.userImage,
+    this.userName,
+    this.liked,
+    this.reported,
+    this.reports,
+    this.editable,
+  });
 
   Post.fromJson(Map<String, dynamic> json) {
     id = json['id'];

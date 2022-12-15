@@ -1,59 +1,64 @@
 import 'package:muslim_book/home_feature/domian/model/post_model.dart';
-class Posts {
-  List<Post> data;
-  String client;
-  String message;
-  bool success;
-  Links links;
-  Meta meta;
 
-  Posts(
-      {this.data,
-      this.client,
-      this.message,
-      this.success,
-      this.links,
-      this.meta});
+class Posts {
+  late List<Post> data;
+  String? client;
+  String? message;
+  bool? success;
+  Links? links;
+  Meta? meta;
+
+  Posts({
+    this.data = const <Post>[],
+    this.client,
+    this.message,
+    this.success,
+    this.links,
+    this.meta,
+  });
 
   Posts.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = new List<Post>();
+      data = <Post>[];
       json['data'].forEach((v) {
-        data.add(new Post.fromJson(v));
+        data.add(Post.fromJson(v));
       });
     }
     client = json['client'];
     message = json['message'];
     success = json['success'];
-    links = json['links'] != null ?  Links.fromJson(json['links']) : null;
-    meta = json['meta'] != null ?  Meta.fromJson(json['meta']) : null;
+    links = json['links'] != null ? Links.fromJson(json['links']) : null;
+    meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
-    }
+    data['data'] = this.data.map((v) => v.toJson()).toList();
     data['client'] = this.client;
     data['message'] = this.message;
     data['success'] = this.success;
     if (this.links != null) {
-      data['links'] = this.links.toJson();
+      data['links'] = this.links!.toJson();
     }
     if (this.meta != null) {
-      data['meta'] = this.meta.toJson();
+      data['meta'] = this.meta!.toJson();
     }
     return data;
   }
 }
 
 class Links {
-  String first;
-  String last;
-  String prev;
-  String next;
+  String? first;
+  String? last;
+  String? prev;
+  String? next;
 
-  Links({this.first, this.last, this.prev, this.next});
+  Links({
+    this.first,
+    this.last,
+    this.prev,
+    this.next,
+  });
 
   Links.fromJson(Map<String, dynamic> json) {
     first = json['first'];
@@ -73,22 +78,23 @@ class Links {
 }
 
 class Meta {
-  int currentPage;
-  int from;
-  int lastPage;
-  String path;
-  int perPage;
-  int to;
-  int total;
+  int? currentPage;
+  int? from;
+  int? lastPage;
+  String? path;
+  int? perPage;
+  int? to;
+  int? total;
 
-  Meta(
-      {this.currentPage,
-      this.from,
-      this.lastPage,
-      this.path,
-      this.perPage,
-      this.to,
-      this.total});
+  Meta({
+    this.currentPage,
+    this.from,
+    this.lastPage,
+    this.path,
+    this.perPage,
+    this.to,
+    this.total,
+  });
 
   Meta.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];

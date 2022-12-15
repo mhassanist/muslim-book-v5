@@ -19,7 +19,7 @@ class HomeView extends StatefulWidget {
 enum Language { english, france, Arabic }
 
 class _HomeViewState extends State<HomeView> {
-  Language lang;
+  late Language lang;
 
   @override
   void initState() {
@@ -32,7 +32,6 @@ class _HomeViewState extends State<HomeView> {
         lang = Language.france;
       }
     });
-
     super.initState();
   }
 
@@ -52,7 +51,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
           onTap: () {
-            Get.find<HomeController>().scaffoldKey.currentState.openDrawer();
+            Get.find<HomeController>().scaffoldKey.currentState!.openDrawer();
           },
         ),
         actions: [
@@ -61,8 +60,7 @@ class _HomeViewState extends State<HomeView> {
               setState(() {
                 MyApp.loading = true;
               });
-
-              Locale local = await getLocale();
+              // Locale local = await getLocale();
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,50 +80,55 @@ class _HomeViewState extends State<HomeView> {
                               child: Column(
                                 children: [
                                   ListTile(
-                                    title: Text(AppLocalizations.of(context)
-                                        .translate("Arabic")),
+                                    title: Text(AppLocalizations.of(context)!.translate("Arabic")),
                                     leading: Radio<Language>(
                                       value: Language.Arabic,
                                       groupValue: lang,
                                       activeColor: darkish_green,
-                                      onChanged: (Language value) {
-                                        setState(() {
-                                          lang = value;
-                                          _changeLanguage("ar");
-                                        });
-                                        Navigator.pop(context);
+                                      onChanged: (Language? value) {
+                                        if (value != null) {
+                                          setState(() {
+                                            lang = value;
+                                            _changeLanguage("ar");
+                                          });
+                                          Navigator.pop(context);
+                                        }
                                       },
                                     ),
                                   ),
                                   ListTile(
-                                    title: Text(AppLocalizations.of(context)
+                                    title: Text(AppLocalizations.of(context)!
                                         .translate("English")),
                                     leading: Radio<Language>(
                                       value: Language.english,
                                       activeColor: darkish_green,
                                       groupValue: lang,
-                                      onChanged: (Language value) {
-                                        setState(() {
-                                          lang = value;
-                                          _changeLanguage("en");
-                                        });
-                                        Navigator.pop(context);
+                                      onChanged: (Language? value) {
+                                        if (value != null) {
+                                          setState(() {
+                                            lang = value;
+                                            _changeLanguage("en");
+                                          });
+                                          Navigator.pop(context);
+                                        }
                                       },
                                     ),
                                   ),
                                   ListTile(
-                                    title: Text(AppLocalizations.of(context)
+                                    title: Text(AppLocalizations.of(context)!
                                         .translate("France")),
                                     leading: Radio<Language>(
                                       value: Language.france,
                                       groupValue: lang,
                                       activeColor: darkish_green,
-                                      onChanged: (Language value) {
-                                        setState(() {
-                                          lang = value;
-                                          _changeLanguage("fr");
-                                        });
-                                        Navigator.pop(context);
+                                      onChanged: (Language? value) {
+                                        if (value != null) {
+                                          setState(() {
+                                            lang = value;
+                                            _changeLanguage("fr");
+                                          });
+                                          Navigator.pop(context);
+                                        }
                                       },
                                     ),
                                   ),

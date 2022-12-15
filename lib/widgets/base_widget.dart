@@ -7,7 +7,7 @@ class BaseView<T extends ChangeNotifier> extends StatefulWidget {
   BaseView({
     super.key,
     required this.builder,
-    required T viewModel,
+    T? viewModel,
     this.onModelReady,
   });
 

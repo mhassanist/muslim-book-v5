@@ -8,12 +8,12 @@ import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class IslamicPostDetails extends StatefulWidget {
   final PostsOfIslamic islamicPost;
 
-  const IslamicPostDetails(this.islamicPost, {Key key}) : super(key: key);
+  const IslamicPostDetails(this.islamicPost, {super.key});
 
   @override
   _IslamicPostDetailsState createState() => _IslamicPostDetailsState();
@@ -55,7 +55,7 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              AppLocalizations.of(context)
+                              AppLocalizations.of(context)!
                                   .translate("share"),
                               style: TextStyle(fontSize: 13),
                             ),
@@ -92,7 +92,7 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
   }
 
   _buildPostImageUi() {
-    return (widget.islamicPost.featured == null ||
+    return (widget.islamicPost.featured.isEmpty ||
             widget.islamicPost.featured.endsWith('mp4'))
         ? Image.asset(
             "assets/images/splash_view/logo.png",
