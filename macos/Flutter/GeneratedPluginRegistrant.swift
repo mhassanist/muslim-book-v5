@@ -7,7 +7,7 @@ import Foundation
 
 import audio_service
 import audio_session
-import audioplayers_darwin
+import audioplayers
 import connectivity_plus_macos
 import device_info_plus
 import facebook_auth_desktop
@@ -19,7 +19,7 @@ import firebase_remote_config
 import flutter_local_notifications
 import flutter_secure_storage_macos
 import geolocator_apple
-import location
+import location_macos
 import package_info_plus
 import path_provider_macos
 import share_plus
@@ -32,7 +32,7 @@ import wakelock_macos
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   AudioServicePlugin.register(with: registry.registrar(forPlugin: "AudioServicePlugin"))
   AudioSessionPlugin.register(with: registry.registrar(forPlugin: "AudioSessionPlugin"))
-  AudioplayersDarwinPlugin.register(with: registry.registrar(forPlugin: "AudioplayersDarwinPlugin"))
+  AudioplayersPlugin.register(with: registry.registrar(forPlugin: "AudioplayersPlugin"))
   ConnectivityPlugin.register(with: registry.registrar(forPlugin: "ConnectivityPlugin"))
   DeviceInfoPlusMacosPlugin.register(with: registry.registrar(forPlugin: "DeviceInfoPlusMacosPlugin"))
   FacebookAuthDesktopPlugin.register(with: registry.registrar(forPlugin: "FacebookAuthDesktopPlugin"))

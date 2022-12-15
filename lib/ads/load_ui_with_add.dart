@@ -1,5 +1,5 @@
-// import 'package:base_app/main.dart';
-// import 'package:base_app/utils/Constants.dart';
+// import 'package:muslim_book/main.dart';
+// import 'package:muslim_book/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';

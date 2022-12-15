@@ -1,6 +1,6 @@
-// import 'package:base_app/ads/admob_rectangle.dart';
-// import 'package:base_app/locals_utils/app_localizations.dart';
-// import 'package:base_app/utils/Constants.dart';
+// import 'package:muslim_book/ads/admob_rectangle.dart';
+// import 'package:muslim_book/locals_utils/app_localizations.dart';
+// import 'package:muslim_book/utils/Constants.dart';
 import 'package:flutter/material.dart';
 
 // import 'package:flutter_native_admob/flutter_native_admob.dart';

@@ -6,11 +6,13 @@ import 'package:muslim_book/utils/prefs.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class LocationUtilities {
-  loc.Location location = loc.Location();
 
   Future checkLocationPermission({bool save = false,}) async {
     if (await Permission.locationWhenInUse.request().isGranted) {
-      if (!await location.serviceEnabled()) {
+      final status = await Permission.location.serviceStatus;
+
+      if (!(status.name != 'enabled')) {
+        // if (!await location.serviceEnabled()) {
         try {
           // Test if location services are enabled.
           final serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -18,8 +20,9 @@ class LocationUtilities {
             return await getLastKnownLocation(save: save,);
           }
         } catch (e) {}
-      } else
+      } else {
         return await getLastKnownLocation(save: save,);
+      }
     } else {
       return null;
     }
@@ -51,11 +54,14 @@ class LocationUtilities {
 
   Future getLocation(loc.LocationAccuracy accuracy) async {
     try {
-      location.changeSettings(accuracy: accuracy);
-      loc.LocationData locationData = await location.getLocation().timeout(
+      loc.LocationData locationData = await loc.getLocation(
+        settings: loc.LocationSettings(accuracy: accuracy,),
+      ).timeout(
         Duration(seconds: 3),
         onTimeout: () async {
-          return await location.getLocation().timeout(Duration(seconds: 60));
+          return await loc.getLocation(
+            settings: loc.LocationSettings(accuracy: accuracy,),
+          ).timeout(Duration(seconds: 60));
         },
       );
       return await getAddress(locationData.latitude, locationData.longitude);
