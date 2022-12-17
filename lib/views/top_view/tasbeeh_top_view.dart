@@ -1,5 +1,4 @@
 import 'package:muslim_book/providers/tasbeeh_top_provider.dart';
-import 'package:muslim_book/providers/top_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/views/top_view/tabspeeh_top_view_mobile_portrait/tasbeeh_top_view_mobile_portrait.dart';
 import 'package:flutter/material.dart';

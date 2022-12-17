@@ -9,9 +9,12 @@ import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class LoginPopUpView extends StatefulWidget {
-  final bool close;
+  final bool? close;
 
-  const LoginPopUpView({Key key, this.close}) : super(key: key);
+  const LoginPopUpView({
+    super.key,
+    this.close,
+  });
 
   @override
   _LoginPopUpViewState createState() => _LoginPopUpViewState();
@@ -73,33 +76,35 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
             height: sizeConfig.blockSizeVertical,
           ),
           buildLoginButton(
-              sizeConfig,
-              AppLocalizations.of(context)!.translate("facebook_login"),
-              FontAwesomeIcons.facebookSquare,
-              const Color(0XFF3b5998), onPressed: () async {
-            LoadingUtils util = LoadingUtils();
-            util.setIsLoading(context, true);
-            try {
-              await Provider.of<UserProvider>(context, listen: false)
-                  .openFaceBookDialogPicker()
-                  .then((value) {
-                setState(() {});
-                if (this.widget.close) {
-                  Navigator.of(context).pop();
-                }
-              });
-            } catch (e) {
-              print(e);
-            }
-            util.setIsLoading(context, false);
-          }),
+            sizeConfig,
+            AppLocalizations.of(context)!.translate("facebook_login"),
+            FontAwesomeIcons.squareFacebook,
+            const Color(0XFF3b5998),
+            onPressed: () async {
+              LoadingUtils util = LoadingUtils();
+              util.setIsLoading(context, true);
+              try {
+                await Provider.of<UserProvider>(context, listen: false)
+                    .openFaceBookDialogPicker()
+                    .then((value) {
+                  setState(() {});
+                  if (this.widget.close != null && this.widget.close!) {
+                    Navigator.of(context).pop();
+                  }
+                });
+              } catch (e) {
+                print(e);
+              }
+              util.setIsLoading(context, false);
+            },
+          ),
           SizedBox(
             height: sizeConfig.blockSizeVertical,
           ),
           buildLoginButton(
               sizeConfig,
               AppLocalizations.of(context)!.translate("google_login"),
-              FontAwesomeIcons.googlePlusSquare,
+              FontAwesomeIcons.squareGooglePlus,
               const Color(0XFFDB4437), onPressed: () async {
             LoadingUtils util = LoadingUtils();
             util.setIsLoading(context, true);
@@ -107,8 +112,8 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
                 .openGooglePickerDialog()
                 .then((value) {
               setState(() {});
-              if(this.widget.close != null){
-                if (this.widget.close) {
+              if (this.widget.close != null) {
+                if (this.widget.close != null && this.widget.close!) {
                   Navigator.of(context).pop();
                 }
               }
@@ -169,8 +174,12 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
   }
 
   Widget buildLoginButton(
-      SizingInformation sizeConfig, String text, IconData icon, Color iconColor,
-      {Function onPressed}) {
+    SizingInformation sizeConfig,
+    String text,
+    IconData icon,
+    Color iconColor, {
+    Function? onPressed,
+  }) {
     return Container(
       margin:
           EdgeInsets.symmetric(horizontal: sizeConfig.blockSizeHorizontal * 10),
@@ -178,7 +187,7 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
         padding: EdgeInsets.symmetric(
           vertical: sizeConfig.blockSizeVertical * 2,
         ),
-        onPressed: onPressed,
+        onPressed: onPressed?.call,
         fillColor: Colors.white,
         shape: StadiumBorder(),
         child: Row(

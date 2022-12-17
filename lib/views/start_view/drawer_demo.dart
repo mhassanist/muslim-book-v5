@@ -1,14 +1,9 @@
-// Copyright 2016 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart' show DragStartBehavior;
 import 'package:flutter/material.dart';
 
 const String _kAsset0 = 'people/square/trevor.png';
-const String _kAsset1 = 'people/square/stella.png';
-const String _kAsset2 = 'people/square/sandra.png';
+// const String _kAsset1 = 'people/square/stella.png';
+// const String _kAsset2 = 'people/square/sandra.png';
 const String _kGalleryAssetsPackage = 'flutter_gallery_assets';
 
 class DrawerDemo extends StatefulWidget {
@@ -19,8 +14,7 @@ class DrawerDemo extends StatefulWidget {
 }
 
 class _DrawerDemoState extends State<DrawerDemo> with TickerProviderStateMixin {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
+  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   static final Animatable<Offset> _drawerDetailsTween = Tween<Offset>(
     begin: const Offset(0.0, -1.0),
@@ -29,10 +23,10 @@ class _DrawerDemoState extends State<DrawerDemo> with TickerProviderStateMixin {
     curve: Curves.fastOutSlowIn,
   ));
 
-  AnimationController _controller;
-  Animation<double> _drawerContentsOpacity;
-  Animation<Offset> _drawerDetailsPosition;
-  bool _showDrawerContents = true;
+  late AnimationController _controller;
+  late Animation<double> _drawerContentsOpacity;
+  late Animation<Offset> _drawerDetailsPosition;
+  // bool _showDrawerContents = true;
 
   @override
   void initState() {
@@ -54,23 +48,26 @@ class _DrawerDemoState extends State<DrawerDemo> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  IconData _backIcon() {
-    switch (Theme.of(context).platform) {
-      case TargetPlatform.android:
-      case TargetPlatform.fuchsia:
-        return Icons.arrow_back;
-      case TargetPlatform.iOS:
-        return Icons.arrow_back_ios;
-    }
-    assert(false);
-    return null;
-  }
+  // IconData _backIcon() {
+  //   switch (Theme.of(context).platform) {
+  //     case TargetPlatform.android:
+  //     case TargetPlatform.fuchsia:
+  //       return Icons.arrow_back;
+  //     case TargetPlatform.iOS:
+  //     case TargetPlatform.linux:
+  //     case TargetPlatform.macOS:
+  //     case TargetPlatform.windows:
+  //       return Icons.arrow_back_ios;
+  //   }
+  // }
 
   void _showNotImplementedMessage() {
     Navigator.pop(context); // Dismiss the drawer.
-    _scaffoldKey.currentState.showSnackBar(const SnackBar(
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
       content: Text("The drawer's items don't do anything"),
-    ));
+    ),
+    );
   }
 
   @override
@@ -192,7 +189,7 @@ class _DrawerDemoState extends State<DrawerDemo> with TickerProviderStateMixin {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.center,
+                                        CrossAxisAlignment.center,
                                     children: <Widget>[
                                       SizedBox(width: 10),
                                       Text('خروج'),
@@ -250,22 +247,22 @@ class _DrawerDemoState extends State<DrawerDemo> with TickerProviderStateMixin {
   //       });
   // }
 
-  void _onOtherAccountsTap(BuildContext context) {
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Account switching not implemented.'),
-          actions: <Widget>[
-            FlatButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // void _onOtherAccountsTap(BuildContext context) {
+  //   showDialog<void>(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text('Account switching not implemented.'),
+  //         actions: <Widget>[
+  //           ElevatedButton(
+  //             child: const Text('OK'),
+  //             onPressed: () {
+  //               Navigator.pop(context);
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 }

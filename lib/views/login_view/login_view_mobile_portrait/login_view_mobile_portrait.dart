@@ -15,7 +15,7 @@ class LoginViewMobilePortrait extends StatefulWidget {
 }
 
 class _LoginViewMobilePortraitState extends State<LoginViewMobilePortrait> {
-  LoginMobilePortraitUi ui;
+  late LoginMobilePortraitUi ui;
   GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
   final AppFormControllers controller = AppFormControllers();
   @override

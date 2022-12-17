@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-Widget appBar(
+PreferredSizeWidget appBar(
   context,
   SizingInformation sizeConfig,
   String title, {

@@ -12,10 +12,11 @@ import 'package:responsive_builder/responsive_builder.dart';
 import '../../../utils/sizing_info_extension.dart';
 
 class LoginMobilePortraitUi {
-  SizingInformation sizeConfig;
-  final BuildContext context;
-  UserProvider userProvider;
+  late SizingInformation sizeConfig;
+  late final BuildContext context;
+  late UserProvider userProvider;
   final AppFormControllers controller;
+
   LoginMobilePortraitUi(this.context, this.controller) {
     userProvider = Provider.of<UserProvider>(context);
   }
@@ -118,7 +119,7 @@ class LoginMobilePortraitUi {
   }
 
   Future setLogging(context) async {
-    if (controller.formKey.currentState.validate()) {
+    if (controller.formKey.currentState!.validate()) {
       LoadingUtils loadingUtils = LoadingUtils();
       loadingUtils.setIsLoading(context, true);
       bool res = await userProvider.login(

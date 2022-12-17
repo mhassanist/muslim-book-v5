@@ -25,11 +25,12 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_native_admob/flutter_native_admob.dart';
-import 'package:flutter_native_admob/native_admob_options.dart';
+// import 'package:flutter_native_admob/flutter_native_admob.dart';
+// import 'package:flutter_native_admob/native_admob_options.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
+import 'package:native_ads_flutter/native_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -44,23 +45,25 @@ class StartViewMobilePortraitView extends StatefulWidget {
 
 class _StartViewMobilePortraitViewState
     extends State<StartViewMobilePortraitView> with WidgetsBindingObserver {
-  List<Widget> _pages;
+  List<Widget> _pages = [];
   bool isAdd = false;
-  RemoteConfig remoteConfig;
-  static NativeAdmob _ad;
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-  FlutterLocalNotificationsPlugin();
+  late FirebaseRemoteConfig remoteConfig;
+  static late NativeAdmob _ad;
+  final controller = NativeAdmobController();
+
+  final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   NotificationData data = NotificationData();
+
    @override
   void initState() {
      WidgetsBinding.instance.addPostFrameCallback((_) async {
        await PushNotificationService().initialise();
        await PushNotificationService().initNotification(context);
-       final NotificationAppLaunchDetails notificationAppLaunchDetails =
-       await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+       final notificationAppLaunchDetails = await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
        print(notificationAppLaunchDetails);
-       if(notificationAppLaunchDetails.didNotificationLaunchApp == true){
-         Map<String,dynamic> dataa = jsonDecode(notificationAppLaunchDetails.payload);
+       if(notificationAppLaunchDetails != null &&
+           notificationAppLaunchDetails.didNotificationLaunchApp == true) {
+         Map<String,dynamic> dataa = jsonDecode(notificationAppLaunchDetails.notificationResponse!.payload!);
          String postId = dataa["post_id"];
          String catName = dataa["cat_name"];
          String catId = dataa["cat_id"];
@@ -83,6 +86,8 @@ class _StartViewMobilePortraitViewState
       adUnitID: AdManager.getAdUnitId(BannerName.Top),
       numberAds: 1,
       type: NativeAdmobType.full,
+      error: Container(),
+      controller: controller,
     );
     super.initState();
 
@@ -228,7 +233,7 @@ class _StartViewMobilePortraitViewState
                   //showUnselectedLabels: false,
                   selectedItemColor: Constants.CANVAS_COLOR,
                   currentIndex: Provider.of<UserProvider>(context).selectedPage,
-                  unselectedItemColor: Theme.of(context).accentColor,
+                  unselectedItemColor: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ),
@@ -345,7 +350,7 @@ class _StartViewMobilePortraitViewState
                           onPressed: () {
                             Navigator.of(context).pop(false);
                           },
-                          fillColor: Theme.of(context).accentColor,
+                          fillColor: Theme.of(context).colorScheme.secondary,
                           child: Text(
                             AppLocalizations.of(context)!.translate("cancel"),
                             style: TextStyle(
@@ -430,7 +435,7 @@ class _StartViewMobilePortraitViewState
         icon: SvgPicture.asset(
           "assets/images/start_view/mushaf.svg",
           width: sizeConfig.blockSizeHorizontal * 7,
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         activeIcon: SvgPicture.asset(
           "assets/images/start_view/mushaf.svg",
@@ -443,7 +448,7 @@ class _StartViewMobilePortraitViewState
         icon: SvgPicture.asset(
           "assets/images/start_view/compass_icon.svg",
           width: sizeConfig.blockSizeHorizontal * 6,
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         activeIcon: SvgPicture.asset(
           "assets/images/start_view/compass_icon.svg",
@@ -456,7 +461,7 @@ class _StartViewMobilePortraitViewState
         icon: Icon(
           Icons.home,
           size: sizeConfig.blockSizeHorizontal * 8,
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         activeIcon: Icon(
           Icons.home,
@@ -469,7 +474,7 @@ class _StartViewMobilePortraitViewState
         icon: SvgPicture.asset(
           "assets/images/start_view/quizes_icon.svg",
           width: sizeConfig.blockSizeHorizontal * 8,
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         activeIcon: SvgPicture.asset(
           "assets/images/start_view/quizes_icon.svg",
@@ -482,7 +487,7 @@ class _StartViewMobilePortraitViewState
         icon: SvgPicture.asset(
           "assets/images/start_view/azkar.svg",
           width: sizeConfig.blockSizeHorizontal * 6,
-          color: Theme.of(context).accentColor,
+          color: Theme.of(context).colorScheme.secondary,
         ),
         activeIcon: SvgPicture.asset(
           "assets/images/start_view/azkar.svg",
