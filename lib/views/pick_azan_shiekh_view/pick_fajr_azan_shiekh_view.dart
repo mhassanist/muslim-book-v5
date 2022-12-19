@@ -1,22 +1,15 @@
-import 'dart:io';
-
 import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/local_storage/local_storage_manager.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
-import 'package:muslim_book/models/azan_sound.dart';
 import 'package:muslim_book/providers/azan_fajr_sounds_provider.dart';
 import 'package:muslim_book/providers/azan_sounds_provider.dart';
-import 'package:muslim_book/providers/pick_azan_shiekh_provider.dart';
 import 'package:muslim_book/providers/pick_fajr_azan_shiekh_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/widgets/base_widget.dart';
-import 'package:muslim_book/widgets/general_wigets/loading_button.dart';
 import 'package:muslim_book/widgets/load_more_azan_sounds_button.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:path/path.dart' show join;
@@ -31,13 +24,13 @@ class PickFajrAzanShiekhView extends StatefulWidget {
 
 class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
     with TickerProviderStateMixin {
-  PickFajrAzanShiekhProvider _fajrAzanSoundFromAssetsProvider; //from assets
-  AzanFairSoundsProvider _moreFajrAzanSoundsProvider; //from web or local database
+  PickFajrAzanShiekhProvider? _fajrAzanSoundFromAssetsProvider; //from assets
+  AzanFairSoundsProvider? _moreFajrAzanSoundsProvider; //from web or local database
 
   AudioPlayer audioPlayer = AudioPlayer();
   List<AnimationController> animationList = [];
   List<AnimationController> animationListWeb = [];
-  String currentPlayingItemId;
+  String currentPlayingItemId = '';
 
   bool displayingFromAssets = false;
   bool screenNoLongerActive=false;
@@ -74,7 +67,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
       },
       child: BaseView<PickFajrAzanShiekhProvider>(onModelReady: (model) {
         _fajrAzanSoundFromAssetsProvider = model;
-        _fajrAzanSoundFromAssetsProvider.loadAssetsFajrSheikhId();
+        _fajrAzanSoundFromAssetsProvider?.loadAssetsFajrSheikhId();
       }, builder: (_, model, __) {
         return SafeArea(
           child: Scaffold(
@@ -107,7 +100,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
         actions: <Widget>[
-          FlatButton(
+          ElevatedButton(
             child: Text(
               AppLocalizations.of(context)!.translate("save"),
               style: TextStyle(color: Constants.CANVAS_COLOR),
@@ -115,11 +108,11 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
             onPressed: () {
               //on clicking save button
               if (displayingFromAssets)
-                _fajrAzanSoundFromAssetsProvider.saveAssetsFajrSheikhId(context);
+                _fajrAzanSoundFromAssetsProvider?.saveAssetsFajrSheikhId(context);
               else
-                _moreFajrAzanSoundsProvider.saveDownloadedFajrShiekhJson(
-                    _moreFajrAzanSoundsProvider
-                        .getAzanSound(_moreFajrAzanSoundsProvider.pickedAzanShiekhIndex)
+                _moreFajrAzanSoundsProvider?.saveDownloadedFajrShiekhJson(
+                    _moreFajrAzanSoundsProvider!
+                        .getAzanSound(_moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex)
                         .toJSON(),
                     context);
             },
@@ -148,12 +141,12 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
   }
 
   Future playAzanFromLocalDatabase(index) async {
-    if (_moreFajrAzanSoundsProvider.getAzanSound(index).localPath == null) {
-      await _moreFajrAzanSoundsProvider.downloadFile(index);
+    if (_moreFajrAzanSoundsProvider!.getAzanSound(index).localPath.isNotEmpty) {
+      await _moreFajrAzanSoundsProvider!.downloadFile(index);
     }
     if(!screenNoLongerActive)
-      await audioPlayer.play(_moreFajrAzanSoundsProvider.getAzanSound(index).localPath);
-    _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex = index;
+      await audioPlayer.play(_moreFajrAzanSoundsProvider!.getAzanSound(index).localPath);
+    _moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex = index;
     setState(() {
       animationListWeb[index].forward();
     });
@@ -167,14 +160,14 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
   }
 
   _buildGetMoreAzanSoundsButton(sizeConfig) {
-    var state = _moreFajrAzanSoundsProvider.viewState == ViewState.Idle
+    var state = _moreFajrAzanSoundsProvider!.viewState == ViewState.Idle
         ? CrossFadeState.showFirst
         : CrossFadeState.showSecond;
     return LoadMoreAzanSoundsButton(
         text: "press_here",
         onTap: () {
-          if (_moreFajrAzanSoundsProvider.viewState == ViewState.Idle) {
-            _moreFajrAzanSoundsProvider.loadAzanSounds();
+          if (_moreFajrAzanSoundsProvider!.viewState == ViewState.Idle) {
+            _moreFajrAzanSoundsProvider!.loadAzanSounds();
             setState(() {
               state = CrossFadeState.showSecond;
             });
@@ -207,7 +200,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
                         child: Text(
-                            AppLocalizations.of(context)
+                            AppLocalizations.of(context)!
                                 .translate("click_here_for_more_azan_sheikh"),
                             style: TextStyle(
                               fontSize: 18,
@@ -219,15 +212,15 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
                   else
                   return ListTile(
                     selected:
-                        _fajrAzanSoundFromAssetsProvider.pickedAzanShiekhIndex ==
+                        _fajrAzanSoundFromAssetsProvider!.pickedAzanShiekhIndex ==
                             index,
                     onTap: () {
-                      _fajrAzanSoundFromAssetsProvider.pickedAzanShiekhIndex =
+                      _fajrAzanSoundFromAssetsProvider!.pickedAzanShiekhIndex =
                           index;
                       if (Constants.FAJR_SHIEKH_NAMES[index]["id"] ==
                           currentPlayingItemId) {
                         audioPlayer.stop();
-                        currentPlayingItemId = null;
+                        currentPlayingItemId = '';
                         animationList[index].reverse();
                       } else {
                         playAzan(Constants.FAJR_SHIEKH_NAMES[index]["id"], index);
@@ -246,7 +239,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
                         if (Constants.FAJR_SHIEKH_NAMES[index]["id"] ==
                             currentPlayingItemId) {
                           audioPlayer.stop();
-                          currentPlayingItemId = null;
+                          currentPlayingItemId = '';
                           animationList[index].reverse();
                         } else {
                           playAzan(Constants.FAJR_SHIEKH_NAMES[index]["id"], index);
@@ -269,60 +262,60 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
 
   _buildAzanSoundsList(sizeConfig) {
     //initially check if there is local azan sounds stored
-    if (_moreFajrAzanSoundsProvider.loadedState == DataLoadingState.notLoaded) {
-      _moreFajrAzanSoundsProvider.checkForLocal();
+    if (_moreFajrAzanSoundsProvider!.loadedState == DataLoadingState.notLoaded) {
+      _moreFajrAzanSoundsProvider!.checkForLocal();
       return Container();
       //if there is no local downloaded files, load from assets and show
       // load more button
-    } else if (_moreFajrAzanSoundsProvider.loadedState ==
+    } else if (_moreFajrAzanSoundsProvider!.loadedState ==
         DataLoadingState.canBeLoadedFromWeb) {
       return _buildAzanSoundsListFromAssets(sizeConfig);
       //if there are local files, load from local database
-    } else if (_moreFajrAzanSoundsProvider.loadedState ==
+    } else if (_moreFajrAzanSoundsProvider!.loadedState ==
         DataLoadingState.localAvailable) {
       displayingFromAssets = false;
 
-      _moreFajrAzanSoundsProvider.azanSounds.forEach((f) {
+      _moreFajrAzanSoundsProvider!.azanSounds.forEach((f) {
         animationListWeb.add(AnimationController(
             vsync: this, duration: Duration(milliseconds: 300)));
       });
       return ListView.builder(
-          itemCount: _moreFajrAzanSoundsProvider.azanSounds.length,
+          itemCount: _moreFajrAzanSoundsProvider!.azanSounds.length,
           itemBuilder: (context, index) {
             return ListTile(
-              selected: _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex == index,
+              selected: _moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex == index,
               onTap: () async {
-                if (_moreFajrAzanSoundsProvider.pickedAzanShiekhIndex == index) {
+                if (_moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex == index) {
                   audioPlayer.stop();
-                  _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex = null;
+                  _moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex = null;
                   animationListWeb[index].reverse();
                 } else {
                   playAzanFromLocalDatabase(index);
                 }
               },
               title: Text(
-                _moreFajrAzanSoundsProvider.azanSounds[index].name,
+                _moreFajrAzanSoundsProvider!.azanSounds[index].name,
                 overflow: TextOverflow.ellipsis,
               ),
-              leading: index == _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex
+              leading: index == _moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex
                   ? Icon(Icons.check)
                   : null,
-              trailing: _moreFajrAzanSoundsProvider.filesStates[index] ==
+              trailing: _moreFajrAzanSoundsProvider!.filesStates[index] ==
                           FileDownloadState.downloaded ||
-                      _moreFajrAzanSoundsProvider.filesStates[index] ==
+                      _moreFajrAzanSoundsProvider!.filesStates[index] ==
                           FileDownloadState.initial
                   ? IconButton(
                       onPressed: () {
                         if (index ==
-                            _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex) {
+                            _moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex) {
                           audioPlayer.stop();
-                          _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex = null;
+                          _moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex = null;
                           animationListWeb[index].reverse();
                         } else {
                           playAzanFromLocalDatabase(index);
                         }
                       },
-                      icon: _moreFajrAzanSoundsProvider.filesStates[index] ==
+                      icon: _moreFajrAzanSoundsProvider!.filesStates[index] ==
                               FileDownloadState.initial
                           ? Icon(
                               Icons.arrow_circle_down,

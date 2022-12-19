@@ -11,26 +11,26 @@ import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/widgets/standardButton_widget.dart';
 import 'package:facebook_audience_network/ad/ad_banner.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
+// import 'package:share/share.dart';
 
 import '../../../models/competitions_model.dart';
 import '../../../utils/sizing_info_extension.dart';
 
 class CompetitionUI {
-  CompetitionProvider provider;
-  SizingInformation sizeConfig;
+  late CompetitionProvider provider;
+  late SizingInformation sizeConfig;
   BuildContext context;
-  String facebookAdsId;
+  late String facebookAdsId;
 
   CompetitionUI(
-      this.context,
-      ) {
+    this.context,
+  ) {
     provider = Provider.of<CompetitionProvider>(context);
   }
 
@@ -49,8 +49,6 @@ class CompetitionUI {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-
-
         Container(
           height: sizeConfig.blockSizeVertical * 5,
           width: sizeConfig.blockSizeHorizontal * 70,
@@ -125,7 +123,7 @@ class CompetitionUI {
         children: <Widget>[
           Flexible(
             child: Text(
-              provider.questions[provider.questionIndex].question,
+              provider.questions[provider.questionIndex].question ?? '',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: sizeConfig.blockSizeHorizontal * 5,
@@ -152,7 +150,7 @@ class CompetitionUI {
         itemCount: provider.questions[provider.questionIndex].answers.length,
         itemBuilder: (context, index) {
           AnswerModel answerModel =
-          provider.questions[provider.questionIndex].answers[index];
+              provider.questions[provider.questionIndex].answers[index];
           return answer(answerModel, index, () async {
             if (provider.current != 0) {
               provider.disablePickingAnswers = true;
@@ -160,14 +158,14 @@ class CompetitionUI {
               provider.chosenPosition = index;
               provider.stopTimer();
               provider.setAnswerId =
-                  provider.questions[provider.questionIndex].answers[index].id;
+                  provider.questions[provider.questionIndex].answers[index].id ?? -1;
               provider.postAnswer();
             }
           });
         });
   }
 
-  Color getColor(position, result) {
+  Color? getColor(position, result) {
     if (provider.chosenPosition == null) {
       return Colors.grey[300];
     } else if (result == 1) {
@@ -181,7 +179,7 @@ class CompetitionUI {
     return Colors.grey[300];
   }
 
-  Widget answer(AnswerModel answer, int index, Function onPressed) {
+  Widget answer(AnswerModel answer, int index, Function? onPressed) {
     if (answer.result == 1) {
       provider.correctAnswerPosition = index;
     }
@@ -195,13 +193,13 @@ class CompetitionUI {
       //width: sizeConfig.blockSizeHorizontal * 60,
       child: IgnorePointer(
         ignoring: provider.disablePickingAnswers,
-        child: RaisedButton(
-          elevation: 4,
-          color: getColor(index, answer.result),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          onPressed: onPressed,
+        child: ElevatedButton(
+          // elevation: 4,
+          // color: getColor(index, answer.result),
+          // shape: RoundedRectangleBorder(
+          //   borderRadius: BorderRadius.circular(10),
+          // ),
+          onPressed: onPressed?.call,
           child: Text(
             "${answer.answers}",
             style: TextStyle(
@@ -239,20 +237,19 @@ class CompetitionUI {
                 sizeConfig: sizeConfig,
                 color: provider.disablePickingAnswers || provider.current == 0
                     ? Theme.of(context).primaryColor
-                    : Theme.of(context).accentColor,
+                    : Theme.of(context).colorScheme.secondary,
                 title: provider.disablePickingAnswers || provider.current == 0
                     ? AppLocalizations.of(context)!.translate("next_question")
-                    : AppLocalizations.of(context)
-                    .translate("choose_correct_answer"),
-                onPressed:
-                provider.disablePickingAnswers || provider.current == 0
+                    : AppLocalizations.of(context)!
+                        .translate("choose_correct_answer"),
+                onPressed: provider.disablePickingAnswers ||
+                        provider.current == 0
                     ? () async {
-
-                  int totalQuestions = provider.questionIndex;
+                        int totalQuestions = provider.questionIndex;
                         if (provider.questionIndex == 2 &&
                             !provider.isExiteOpened) {
                           provider.isExiteOpened = true;
-                           await showDialog(
+                          await showDialog(
                             context: context,
                             builder: (context) => new AlertDialog(
                               contentPadding: EdgeInsets.all(0.0),
@@ -263,9 +260,11 @@ class CompetitionUI {
                                 height: 400,
                                 child: LoadUiWithAdd(
                                   mainView: AddWidgetEdit(
-                                    title: AppLocalizations.of(context)!.translate("competition"),
+                                    title: AppLocalizations.of(context)!
+                                        .translate("competition"),
                                     bannerName: BannerName.COMPETITION,
-                                    buttomTitle: AppLocalizations.of(context)!.translate("follow"),
+                                    buttomTitle: AppLocalizations.of(context)!
+                                        .translate("follow"),
                                     exit: go,
                                   ),
                                 ),
@@ -274,8 +273,8 @@ class CompetitionUI {
                           );
                         }
                         provider.startTimer();
-                    await provider.changeIndex();
-                  // }
+                        await provider.changeIndex();
+                        // }
                       }
                     : null),
             secondChild: Container(
@@ -284,7 +283,7 @@ class CompetitionUI {
                   vertical: sizeConfig.blockSizeVertical * 4),
               child: CircularProgressIndicator(
                 valueColor:
-                AlwaysStoppedAnimation<Color>(Constants.PRIMARY_DARK_COLOR),
+                    AlwaysStoppedAnimation<Color>(Constants.PRIMARY_DARK_COLOR),
               ),
             ),
             crossFadeState: provider.viewState == ViewState.Loading
@@ -305,7 +304,7 @@ class CompetitionUI {
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: SimpleDialog(
             shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             children: <Widget>[
               Container(
                 margin: EdgeInsets.symmetric(
@@ -373,7 +372,7 @@ class CompetitionUI {
                       Navigator.pop(context);
                     },
                     fillColor: Theme.of(context).primaryColor,
-                     child: Text(
+                    child: Text(
                       AppLocalizations.of(context)!.translate("start_now"),
                       style: TextStyle(
                         fontSize: sizeConfig.blockSizeHorizontal * 6,
@@ -384,7 +383,6 @@ class CompetitionUI {
                   ),
                 ),
               ),
-
 
 //                  faceBookAdsWidget(locator<RemoteConfigService>()
 //                      .underStartCompetitionAdsId),
@@ -440,10 +438,10 @@ class CompetitionUI {
                               .translate("points_in_Muslim-Book_competition") +
                           ' ' +*/
                       AppLocalizations.of(context)!.translate("i_have_won") +
-                          AppLocalizations.of(context)
+                          AppLocalizations.of(context)!
                               .translate("in_Muslim-Book_competition") +
                           ' ' +
-                          AppLocalizations.of(context)
+                          AppLocalizations.of(context)!
                               .translate("invite_to_download_app"));
                 },
                 padding: EdgeInsets.symmetric(
@@ -511,10 +509,10 @@ class CompetitionUI {
                     width: sizeConfig.blockSizeHorizontal * 2,
                   ),
                   Expanded(
-                    child: FlatButton(
-                      padding: EdgeInsets.symmetric(
-                        vertical: sizeConfig.blockSizeVertical * 2,
-                      ),
+                    child: ElevatedButton(
+                      // padding: EdgeInsets.symmetric(
+                      //   vertical: sizeConfig.blockSizeVertical * 2,
+                      // ),
                       onPressed: () {
                         provider.openFaceBookAd();
                         goToStart(context);
@@ -638,7 +636,8 @@ class CompetitionUI {
       ),
     ));
   }
-  go(){
+
+  go() {
     Provider.of<UserProvider>(context, listen: false).selectedPage = 2;
   }
 
@@ -659,7 +658,7 @@ class CompetitionUI {
               print("FaceBookError: $value");
               break;
             case BannerAdResult.LOADED:
-               break;
+              break;
             case BannerAdResult.CLICKED:
               break;
             case BannerAdResult.LOGGING_IMPRESSION:
@@ -689,7 +688,7 @@ class CompetitionUI {
                 left: sizeConfig.blockSizeVertical * 2,
                 right: sizeConfig.blockSizeVertical * 2),
             child: Text(
-              AppLocalizations.of(context)
+              AppLocalizations.of(context)!
                   .translate("no_more_questions_come_back_later"),
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -713,10 +712,10 @@ class CompetitionUI {
                   horizontal: sizeConfig.blockSizeHorizontal * 2),
               shape: RoundedRectangleBorder(
                 borderRadius:
-                BorderRadius.circular(sizeConfig.blockSizeVertical),
+                    BorderRadius.circular(sizeConfig.blockSizeVertical),
               ),
               onPressed: () {
-                Share.share(AppLocalizations.of(context)
+                Share.share(AppLocalizations.of(context)!
                     .translate("invite_to_download_app"));
               },
               fillColor: Theme.of(context).primaryColor,

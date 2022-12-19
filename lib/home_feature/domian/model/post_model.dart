@@ -5,7 +5,7 @@ class Post {
   int? userId;
   String? userImage;
   String? userName;
-  bool? liked;
+  late bool liked;
   bool? reported;
   int? reports;
   bool? editable;
@@ -17,7 +17,7 @@ class Post {
     this.userId,
     this.userImage,
     this.userName,
-    this.liked,
+    this.liked = false,
     this.reported,
     this.reports,
     this.editable,
@@ -26,7 +26,7 @@ class Post {
   Post.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     content = json['content'];
-    likes = json['likes'];
+    likes = json['likes'] ?? false;
     userId = json['user_id'];
     userImage = json['user_image'];
     userName = json['user_name'];

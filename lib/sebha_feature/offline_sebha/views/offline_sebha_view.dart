@@ -324,7 +324,7 @@ class _OfflineSebhaViewState extends State<OfflineSebhaView> {
             image: AssetImage("assets/images/sebha_view/button_pattern.png"),
             fit: BoxFit.contain),
       ),
-      child: FlatButton(
+      child: ElevatedButton(
         shape: CircleBorder(),
         onPressed: () async {
           await Provider.of<SebhaProvider>(context, listen: false)

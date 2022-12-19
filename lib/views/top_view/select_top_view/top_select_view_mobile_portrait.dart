@@ -105,7 +105,7 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
   }
 
   _buildItem(int index) {
-    return FlatButton(
+    return ElevatedButton(
       padding: EdgeInsets.zero,
       onPressed: () {
         switch (index) {

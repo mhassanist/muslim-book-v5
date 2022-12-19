@@ -1,17 +1,18 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/providers/myProfile_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:screenshot/screenshot.dart';
-import 'package:share/share.dart';
+
+// import 'package:share/share.dart';
 import 'package:share_extend/share_extend.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../utils/sizing_info_extension.dart';
 
 class MyProfileUI {
@@ -32,14 +33,14 @@ class MyProfileUI {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              if (provider.scoreModelData.flag != null)
+              if (provider.scoreModelData!.flag != null)
                 Container(
                   width: sizeConfig.blockSizeHorizontal * 7.5,
                   height: sizeConfig.blockSizeHorizontal * 7.5,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                          image: NetworkImage(provider.scoreModelData.flag
+                          image: NetworkImage(provider.scoreModelData!.flag!
                               .replaceAll("http://", "https://")),
                           fit: BoxFit.cover)),
                 ),
@@ -47,7 +48,7 @@ class MyProfileUI {
                 margin: EdgeInsets.symmetric(
                     horizontal: sizeConfig.blockSizeHorizontal * 2),
                 child: AutoSizeText(
-                  provider.scoreModelData.name,
+                  provider.scoreModelData!.name ?? '',
                   maxLines: 1,
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -59,7 +60,7 @@ class MyProfileUI {
             ],
           ),
         ),
-        if (provider.scoreModelData.email != null)
+        if (provider.scoreModelData!.email != null)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
@@ -74,7 +75,7 @@ class MyProfileUI {
                   Padding(
                     padding: const EdgeInsets.only(left: 15, right: 15),
                     child: Text(
-                      "${provider.scoreModelData.email}",
+                      "${provider.scoreModelData!.email}",
                       style: TextStyle(
                         fontSize: sizeConfig.blockSizeHorizontal * 4,
                       ),
@@ -98,10 +99,10 @@ class MyProfileUI {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             pointsDetailsColumn(
-                "total_points", "${provider.scoreModelData.points}"),
+                "total_points", "${provider.scoreModelData!.points}"),
             betweenPointsDetailsDivider(),
             pointsDetailsColumn(
-                "competition_rank", "${provider.scoreModelData.rank}"),
+                "competition_rank", "${provider.scoreModelData!.rank}"),
             //betweenPointsDetailsDivider(),
             /*pointsDetailsColumn("answered_questions",
                 "${provider.scoreModelData.correctAnswer + provider.scoreModelData.wrongAnswer}"),
@@ -113,19 +114,16 @@ class MyProfileUI {
         SizedBox(
           height: 10,
         ),
-
-
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             pointsDetailsColumn(
-                "remind_points", "${provider.scoreModelData.reminds}"),
+                "remind_points", "${provider.scoreModelData!.reminds}"),
             betweenPointsDetailsDivider(),
-            pointsDetailsColumn("remind_rank",
-                "${provider.scoreModelData.remindsRank}"),
+            pointsDetailsColumn(
+                "remind_rank", "${provider.scoreModelData!.remindsRank}"),
 
             //betweenPointsDetailsDivider(),
-
           ],
         ),
         profileDivider(),
@@ -199,12 +197,12 @@ class MyProfileUI {
         Container(
           width: sizeConfig.blockSizeHorizontal * 15,
           height: sizeConfig.blockSizeHorizontal * 15,
-          child: RaisedButton(
+          child: ElevatedButton(
             child: Icon(FontAwesomeIcons.facebookF),
             onPressed: () async => faceBookShare(),
-            color: const Color(0XFF4266b2),
-            textColor: Constants.CANVAS_COLOR,
-            shape: CircleBorder(side: BorderSide.none),
+            // color: const Color(0XFF4266b2),
+            // textColor: Constants.CANVAS_COLOR,
+            // shape: CircleBorder(side: BorderSide.none),
           ),
         ),
         SizedBox(
@@ -213,12 +211,12 @@ class MyProfileUI {
         Container(
           width: sizeConfig.blockSizeHorizontal * 15,
           height: sizeConfig.blockSizeHorizontal * 15,
-          child: RaisedButton(
+          child: ElevatedButton(
             child: Icon(FontAwesomeIcons.twitter),
             onPressed: () async => shareApp(),
-            color: Colors.blueAccent,
-            textColor: Constants.CANVAS_COLOR,
-            shape: CircleBorder(side: BorderSide.none),
+            // color: Colors.blueAccent,
+            // textColor: Constants.CANVAS_COLOR,
+            // shape: CircleBorder(side: BorderSide.none),
           ),
         ),
         SizedBox(
@@ -227,15 +225,15 @@ class MyProfileUI {
         Container(
           width: sizeConfig.blockSizeHorizontal * 15,
           height: sizeConfig.blockSizeHorizontal * 15,
-          child: RaisedButton(
+          child: ElevatedButton(
             child: Icon(
               FontAwesomeIcons.whatsapp,
               size: sizeConfig.blockSizeHorizontal * 7,
             ),
             onPressed: () async => shareApp(),
-            color: const Color(0XFF4FCE5D),
-            textColor: Constants.CANVAS_COLOR,
-            shape: CircleBorder(side: BorderSide.none),
+            // color: const Color(0XFF4FCE5D),
+            // textColor: Constants.CANVAS_COLOR,
+            // shape: CircleBorder(side: BorderSide.none),
           ),
         )
       ],
@@ -243,18 +241,22 @@ class MyProfileUI {
   }
 
   Future shareApp() async {
-    File screenShot = await screenshotController.capture();
-
-    ShareExtend.share(screenShot.path, "image",
-        extraText:
-            AppLocalizations.of(context)!.translate("invite_to_download_app"));
+    Uint8List? screenShot = await screenshotController.capture();
+    File x = File.fromRawPath(screenShot!);
+    ShareExtend.share(
+      x.path,
+      "image",
+      extraText: AppLocalizations.of(context)!.translate(
+        "invite_to_download_app",
+      ),
+    );
   }
 
   Widget imageWidget() {
     return Container(
       child: Center(
         child: Stack(
-          overflow: Overflow.visible,
+          // overflow: Overflow.visible,
           fit: StackFit.passthrough,
           //fit: StackFit.loose,
           children: <Widget>[
@@ -264,9 +266,9 @@ class MyProfileUI {
                   color: Theme.of(context).accentColor,
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                      image: provider.scoreModelData.image != null
+                      image: provider.scoreModelData!.image != null
                           ? NetworkImage(
-                              provider.scoreModelData.image
+                              provider.scoreModelData!.image!
                                   .replaceAll("http://", "https://"),
                             )
                           : AssetImage("assets/images/profile_image.png"),
@@ -344,6 +346,9 @@ class MyProfileUI {
 
   Future faceBookShare() async {
     Share.share(
-        AppLocalizations.of(context)!.translate("invite_to_download_app"));
+      AppLocalizations.of(context)!.translate(
+        "invite_to_download_app",
+      ),
+    );
   }
 }

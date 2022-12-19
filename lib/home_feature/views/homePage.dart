@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:muslim_book/ads/admob_rectangle.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
 import 'package:muslim_book/home_feature/controllers/providers_get_post.dart';
@@ -17,7 +18,6 @@ import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/views/login_pop_up_view/login_pop_up_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
@@ -27,7 +27,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class HomePage extends ConsumerWidget {
   HomeRepository homeRepository = HomeRepository();
-  PostsNotifier postschanges;
+  late PostsNotifier postschanges;
   int pageIndex = 1;
   int islamicPageIndex = 1;
   List<Widget> postsListWidget = [];
@@ -73,22 +73,22 @@ class HomePage extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
+  Widget build(BuildContext context, WidgetRef ref) {
     double width = MediaQuery.of(context).size.width;
-    postschanges = watch(getPosts);
+    postschanges = ref.watch(getPosts);
     if (postschanges.isloading == true) {
       postschanges.getPosts(pageIndex);
     }
-    if(postschanges.posts.data != null){
+    if (postschanges.posts.data.isNotEmpty) {
       if (postschanges.posts.data.isNotEmpty) {
-        if(postschanges.posts.meta.currentPage == 1){
+        if (postschanges.posts.meta!.currentPage == 1) {
           postsListWidget = [];
           postsListIDS = [];
         }
         for (int i = 1; i <= postschanges.posts.data.length; i++) {
           if (!postsListIDS.contains(postschanges.posts.data[i - 1].id)) {
             postsListWidget.add(buildPostItem(postschanges.posts.data[i - 1]));
-            postsListIDS.add(postschanges.posts.data[i - 1].id);
+            postsListIDS.add(postschanges.posts.data[i - 1].id ?? -1);
 
             //add ad every 10 posts
             if (pageIndex.isOdd && (i == 10 || i == 20)) {
@@ -197,44 +197,53 @@ class HomePage extends ConsumerWidget {
                                                       .spaceBetween,
                                               children: [
                                                 Expanded(
-                                                    child: Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(vertical: 5),
-                                                  child: TextField(
-                                                    textDirection:
-                                                        TextDirection.rtl,
-                                                    readOnly: true,
-                                                    onTap: () async {
-                                                      ProviderUser.Provider.of<
-                                                                      UserProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .isLoggedIn
-                                                          ? Navigator.of(context).push(
-                                                              CustomPageRoute(
-                                                                  child:
-                                                                      CreatePostView(
-                                                                    postschanges:
-                                                                        postschanges,
-                                                                  ),
-                                                                  direction:
-                                                                      AxisDirection
-                                                                          .up))
-                                                          : showSheet(context);
-                                                    },
-                                                    decoration: InputDecoration(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 5),
+                                                    child: TextField(
+                                                      textDirection:
+                                                          TextDirection.rtl,
+                                                      readOnly: true,
+                                                      onTap: () async {
+                                                        ProviderUser
+                                                                    .Provider.of<
+                                                                        UserProvider>(
+                                                                    context,
+                                                                    listen:
+                                                                        false)
+                                                                .isLoggedIn
+                                                            ? Navigator.of(context).push(
+                                                                CustomPageRoute(
+                                                                    child:
+                                                                        CreatePostView(
+                                                                      postschanges:
+                                                                          postschanges,
+                                                                    ),
+                                                                    direction:
+                                                                        AxisDirection
+                                                                            .up))
+                                                            : showSheet(
+                                                                context);
+                                                      },
+                                                      decoration:
+                                                          InputDecoration(
                                                         border:
                                                             InputBorder.none,
-                                                        hintText: AppLocalizations
-                                                                .of(context)
-                                                            .translate(
-                                                                "be_goodness"),
+                                                        hintText:
+                                                            AppLocalizations.of(
+                                                                    context)!
+                                                                .translate(
+                                                          "be_goodness",
+                                                        ),
                                                         hintStyle: TextStyle(
-                                                            fontSize: 13,
-                                                            color:
-                                                                dark_blue_green)),
+                                                          fontSize: 13,
+                                                          color:
+                                                              dark_blue_green,
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
-                                                )),
+                                                ),
                                                 SizedBox(
                                                   width: 5,
                                                 ),
@@ -249,7 +258,7 @@ class HomePage extends ConsumerWidget {
                                                   child: Center(
                                                     child: Text(
                                                       AppLocalizations.of(
-                                                              context)
+                                                              context)!
                                                           .translate("Post"),
                                                       style: TextStyle(
                                                           color: Colors.white,
@@ -270,10 +279,12 @@ class HomePage extends ConsumerWidget {
                                 Expanded(
                                     child: postschanges.errormessage != null
                                         ? Center(
-                                            child: Text(AppLocalizations.of(
-                                                    context)
-                                                .translate(
-                                                    postschanges.errormessage)),
+                                            child: Text(
+                                              AppLocalizations.of(context)!
+                                                  .translate(
+                                                postschanges.errormessage ?? '',
+                                              ),
+                                            ),
                                           )
                                         : postschanges.isPosts
                                             ? postschanges.posts != null &&
@@ -284,7 +295,8 @@ class HomePage extends ConsumerWidget {
                                                 ? _buildPostsList()
                                                 : postsListWidget.isNotEmpty
                                                     ? _buildPostsList()
-                                                    : postschanges.isPostListError ==
+                                                    : postschanges
+                                                                .isPostListError ==
                                                             false
                                                         ? Container(
                                                             child: Center(
@@ -292,7 +304,8 @@ class HomePage extends ConsumerWidget {
                                                                 indicator:
                                                                     BallBeatIndicator(),
                                                                 size: 70.0,
-                                                                color: Constants.PRIMARY_DARK_COLOR,
+                                                                color: Constants
+                                                                    .PRIMARY_DARK_COLOR,
                                                               ),
                                                             ),
                                                           )
@@ -391,7 +404,8 @@ class HomePage extends ConsumerWidget {
                       CircleAvatar(
                         radius: 16.0,
                         backgroundImage: NetworkImage(
-                            _post.userImage != null ? _post.userImage : ""),
+                          _post.userImage != null ? _post.userImage! : '',
+                        ),
                         backgroundColor: Colors.transparent,
                       ),
                       Padding(
@@ -403,7 +417,7 @@ class HomePage extends ConsumerWidget {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 5),
                               child: Text(
-                                _post.userName,
+                                _post.userName ?? '',
                                 style: TextStyle(
                                     color: darkish_green,
                                     fontSize: 13,
@@ -423,7 +437,7 @@ class HomePage extends ConsumerWidget {
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      _post.content,
+                      _post.content ?? '',
                       maxLines: 10,
                       style: TextStyle(fontSize: 16),
                     ),
@@ -442,7 +456,7 @@ class HomePage extends ConsumerWidget {
                       flex: 1,
                       child: InkWell(
                         onTap: () {
-                          Share.share(_post.content +
+                          Share.share(_post.content! +
                               "\n \n " +
                               "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book");
                         },
@@ -453,7 +467,7 @@ class HomePage extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  AppLocalizations.of(context)
+                                  AppLocalizations.of(context)!
                                       .translate("share"),
                                   style: TextStyle(fontSize: 13),
                                 ),
@@ -481,8 +495,8 @@ class HomePage extends ConsumerWidget {
                         onTap: () {
                           setstate(() {
                             _post.liked
-                                ? postschanges.unlikePost(_post.id)
-                                : postschanges.likePost(_post.id);
+                                ? postschanges.unlikePost(_post.id ?? -1)
+                                : postschanges.likePost(_post.id ?? -1);
 
                             _post.liked = !_post.liked;
                           });
@@ -601,7 +615,8 @@ class HomePage extends ConsumerWidget {
                           },
                           fillColor: Theme.of(context).primaryColor,
                           child: Text(
-                            AppLocalizations.of(context)!.translate("Login_key"),
+                            AppLocalizations.of(context)!
+                                .translate("Login_key"),
                             style: TextStyle(
                               fontSize: 15,
                               color: Constants.CANVAS_COLOR,
@@ -723,7 +738,7 @@ class HomePage extends ConsumerWidget {
                     child: Column(
                       children: [
                         Text(
-                          category.name,
+                          category.name ?? '',
                           style: TextStyle(
                               color: darkish_green,
                               fontSize: 12,
@@ -733,7 +748,7 @@ class HomePage extends ConsumerWidget {
                           height: 5,
                         ),
                         Text(
-                          category.description,
+                          category.description ?? '',
                           style: TextStyle(
                             fontSize: 10,
                           ),
@@ -748,9 +763,10 @@ class HomePage extends ConsumerWidget {
                             Expanded(
                                 child: InkWell(
                                     onTap: () {
-                                      Share.share(category.name +
-                                          "\n \n " +
-                                          "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book");
+                                      Share.share(category.name ??
+                                          '' +
+                                              "\n \n " +
+                                              "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book");
                                     },
                                     child: Container(
                                         padding: const EdgeInsets.symmetric(
@@ -801,20 +817,21 @@ class HomePage extends ConsumerWidget {
       enablePullUp: true,
       controller: _postsRefreshController,
       footer: CustomFooter(
-        builder: (BuildContext context, LoadStatus mode) {
+        builder: (BuildContext context, LoadStatus? mode) {
           Widget body;
           if (mode == LoadStatus.noMore) {
             body =
                 Text(AppLocalizations.of(context)!.translate("no_more_posts"));
           } else if (mode == LoadStatus.idle) {
-            body = Text(AppLocalizations.of(context)!.translate("pull_up-load"));
+            body =
+                Text(AppLocalizations.of(context)!.translate("pull_up-load"));
           } else if (mode == LoadStatus.loading) {
             body = CupertinoActivityIndicator();
           } else if (mode == LoadStatus.failed) {
             body = Text("Load Failed!Click retry!");
           } else if (mode == LoadStatus.canLoading) {
-            body = Text(
-                AppLocalizations.of(context)!.translate("release_to_load_more"));
+            body = Text(AppLocalizations.of(context)!
+                .translate("release_to_load_more"));
           } else {
             body = Text("No more Data");
           }
@@ -839,20 +856,21 @@ class HomePage extends ConsumerWidget {
       enablePullUp: true,
       controller: _islamicPostsRefreshController,
       footer: CustomFooter(
-        builder: (BuildContext context, LoadStatus mode) {
+        builder: (BuildContext context, LoadStatus? mode) {
           Widget body;
           if (mode == LoadStatus.noMore) {
             body =
                 Text(AppLocalizations.of(context)!.translate("no_more_posts"));
           } else if (mode == LoadStatus.idle) {
-            body = Text(AppLocalizations.of(context)!.translate("pull_up-load"));
+            body =
+                Text(AppLocalizations.of(context)!.translate("pull_up-load"));
           } else if (mode == LoadStatus.loading) {
             body = CupertinoActivityIndicator();
           } else if (mode == LoadStatus.failed) {
             body = Text("Load Failed!Click retry!");
           } else if (mode == LoadStatus.canLoading) {
-            body = Text(
-                AppLocalizations.of(context)!.translate("release_to_load_more"));
+            body = Text(AppLocalizations.of(context)!
+                .translate("release_to_load_more"));
           } else {
             body = Text("No more Data");
           }
@@ -903,8 +921,8 @@ class HomePage extends ConsumerWidget {
                             },
                             child: Container(
                                 child: (islamicPost.featured == null ||
-                                        islamicPost.featured.endsWith('mp4')||
-                                    islamicPost.featured == "")
+                                        islamicPost.featured.endsWith('mp4') ||
+                                        islamicPost.featured == "")
                                     ? Image.asset(
                                         "assets/images/splash_view/logo.png",
                                         color: Colors.grey[100],
@@ -939,7 +957,7 @@ class HomePage extends ConsumerWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        AppLocalizations.of(context)
+                                        AppLocalizations.of(context)!
                                             .translate("share"),
                                         style: TextStyle(fontSize: 13),
                                       ),
@@ -980,7 +998,7 @@ class HomePage extends ConsumerWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
-                                      AppLocalizations.of(context)
+                                      AppLocalizations.of(context)!
                                           .translate("like"),
                                       style: TextStyle(
                                           color: islamicPost.liked
@@ -1013,8 +1031,10 @@ class CustomPageRoute extends PageRouteBuilder {
   final Widget child;
   final AxisDirection direction;
 
-  CustomPageRoute({this.child, this.direction = AxisDirection.up})
-      : super(
+  CustomPageRoute({
+    required this.child,
+    this.direction = AxisDirection.up,
+  }) : super(
           transitionDuration: Duration(milliseconds: 400),
           pageBuilder: (context, animation, secondaryAnimation) => child,
         );

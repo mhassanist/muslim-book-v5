@@ -1,21 +1,12 @@
-import 'package:muslim_book/azan_feature/views/azan_view.dart';
-import 'package:muslim_book/home_feature/views/home_view.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
-import 'package:muslim_book/models/month_azan_model.dart';
 import 'package:muslim_book/network_utils/azan_apis.dart';
 import 'package:muslim_book/network_utils/settings_apis.dart';
 import 'package:muslim_book/providers/user_provider.dart';
-import 'package:muslim_book/sebha_feature/online_sebha/views/online_sebha_view.dart';
-import 'package:muslim_book/sebha_feature/views/archieve_view.dart';
-import 'package:muslim_book/sebha_feature/views/sebha_view.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
-import 'package:muslim_book/views/azan_settings_views/adjust_battery_view.dart';
 import 'package:muslim_book/views/start_view/start_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
@@ -54,8 +45,7 @@ class _SplashViewState extends State<SplashView>
         await AzanApis().getAzan();
     }
     var checkOverLay = await Constants.platform.invokeMethod("checkOverlay");
-    var checkBattery =
-        await Constants.platform.invokeMethod("checkBatteryEditing");
+    await Constants.platform.invokeMethod("checkBatteryEditing");
 
     if (await locator<SettingsApis>().getAppVersion()) {
       _showVersionDialog(context);
@@ -133,7 +123,7 @@ class _SplashViewState extends State<SplashView>
     ByteData data2 = await rootBundle.load("assets/audio/after_azan.mp3");
     List<int> bytes2 =
         data2.buffer.asUint8List(data2.offsetInBytes, data2.lengthInBytes);
-    var afterAzan = await File(dbPath2).writeAsBytes(bytes2);
+    await File(dbPath2).writeAsBytes(bytes2);
      for (var item in AppLocalizations.of(context)!.isEnglish()?Constants.EN_SHIEKH_NAMES: Constants.AR_SHIEKH_NAMES) {
       var dbPath = join(tempPath, "azan_${item["id"]}.mp3");
       ByteData data =
@@ -221,7 +211,7 @@ class _SplashViewState extends State<SplashView>
               content:
                   Text(AppLocalizations.of(context)!.translate("please_update")),
               actions: <Widget>[
-                FlatButton(
+                ElevatedButton(
                   child: Text(
                     AppLocalizations.of(context)!.translate("update_now"),
                     style: TextStyle(color: Colors.white),
@@ -229,7 +219,7 @@ class _SplashViewState extends State<SplashView>
                   onPressed: () {
                     LaunchReview.launch();
                   },
-                  color: Constants.ACCENT_COLOR,
+                  // color: Constants.ACCENT_COLOR,
                 ),
               ],
             ),

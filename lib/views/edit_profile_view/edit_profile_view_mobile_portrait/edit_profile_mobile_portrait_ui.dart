@@ -28,10 +28,10 @@ class EditProfileMobilePortraitUi {
   EditProfileMobilePortraitUi(
       this.sizeConfig, this.context, this.provider, this.controllers) {
     controllers.emailController.text =
-        Provider.of<UserProvider>(context).user.email;
+        Provider.of<UserProvider>(context).user.email ?? '';
 
     controllers.nameController.text =
-        Provider.of<UserProvider>(context).user.name;
+        Provider.of<UserProvider>(context).user.name ?? '';
   }
 
   Widget imageWidget() {
@@ -39,7 +39,7 @@ class EditProfileMobilePortraitUi {
       padding: const EdgeInsets.only(top: 30, bottom: 20),
       child: Center(
         child: Stack(
-          overflow: Overflow.visible,
+          // overflow: Overflow.visible,
           fit: StackFit.passthrough,
           //fit: StackFit.loose,
           children: <Widget>[
@@ -90,7 +90,7 @@ class EditProfileMobilePortraitUi {
           image: DecorationImage(
               image: NetworkImage(
                 Provider.of<UserProvider>(context).user.image ??
-                    Provider.of<UserProvider>(context).user.flag,
+                    Provider.of<UserProvider>(context).user.flag ?? '',
               ),
               fit: BoxFit.cover),
           shape: BoxShape.circle),
@@ -99,14 +99,17 @@ class EditProfileMobilePortraitUi {
     );
   }
 
-  Widget showImage(Future<File> _imageFile) {
+  Widget showImage(Future<File>? _imageFile) {
+    if (_imageFile == null) {
+      return Offstage();
+    }
     return FutureBuilder<File>(
       future: _imageFile,
       builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.data != null) {
           return ClipOval(
-            child: Image.file(snapshot.data, fit: BoxFit.cover),
+            child: Image.file(snapshot.data!, fit: BoxFit.cover),
           );
         } else
           return userImageOrFlag();
@@ -115,10 +118,8 @@ class EditProfileMobilePortraitUi {
   }
 
   _pickImage(ImageSource _imageSource) async {
-    Future<File> file = ImagePicker.pickImage(source: _imageSource);
-    if (file != null) {
-      provider.setUserProfileImage = file;
-    }
+    final file = ImagePicker().pickImage(source: _imageSource,);
+    provider.setUserProfileImage = file!;
   }
 
   _openChooseImagePopup() {

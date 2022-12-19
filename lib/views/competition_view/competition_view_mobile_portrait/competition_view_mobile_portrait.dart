@@ -33,7 +33,7 @@ class CompetitionViewMobilePortrait extends StatefulWidget {
 
 class _CompetitionViewMobilePortraitState
     extends State<CompetitionViewMobilePortrait> {
-  CompetitionUI ui;
+  late CompetitionUI ui;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -101,7 +101,7 @@ class _CompetitionViewMobilePortraitState
                   ),
                 ),
                 onTap: () {
-                  Get.find<HomeController>().scaffoldKey.currentState.openDrawer();
+                  Get.find<HomeController>().scaffoldKey.currentState!.openDrawer();
                 },
               ),
               actions: [

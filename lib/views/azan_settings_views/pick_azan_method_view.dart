@@ -21,7 +21,7 @@ class PickAzanMethodView extends StatefulWidget {
 }
 
 class _PickAzanMethodViewState extends State<PickAzanMethodView> {
-  PickAzanMethodsProvider _provider;
+  late PickAzanMethodsProvider _provider;
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +50,7 @@ class _PickAzanMethodViewState extends State<PickAzanMethodView> {
                     Container(
                       margin: EdgeInsets.only(top: 20, left: 30, right: 30),
                       child: titleContainer(
-                          AppLocalizations.of(context)
+                          AppLocalizations.of(context)!
                               .translate("calculating_pray_method"),
                           sizeConfig,
                           context),
@@ -64,7 +64,7 @@ class _PickAzanMethodViewState extends State<PickAzanMethodView> {
                     Container(
                       padding: EdgeInsets.only(top: 20, left: 30, right: 30),
                       child: titleContainer(
-                          AppLocalizations.of(context)
+                          AppLocalizations.of(context)!
                               .translate("almazhab_in_your_country"),
                           sizeConfig,
                           context),
@@ -194,7 +194,7 @@ class _PickAzanMethodViewState extends State<PickAzanMethodView> {
                 margin: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 2),
                 child: Center(
                   child: Text(
-                    "${_provider.pickedAzanShiekh != null ? _provider.pickedAzanShiekh["name"] :AppLocalizations.of(context)!.isEnglish()? Constants.EN_SHIEKH_NAMES[1]["name"]:Constants.AR_SHIEKH_NAMES[1]["name"]}",
+                    "${_provider.pickedAzanShiekh.isNotEmpty ? _provider.pickedAzanShiekh["name"] : AppLocalizations.of(context)!.isEnglish() ? Constants.EN_SHIEKH_NAMES[1]["name"] : Constants.AR_SHIEKH_NAMES[1]["name"]}",
                     style: TextStyle(
                         color: Constants.PRIMARY_DARK_COLOR,
                         fontWeight: FontWeight.w700,
@@ -207,24 +207,30 @@ class _PickAzanMethodViewState extends State<PickAzanMethodView> {
                   margin: EdgeInsets.only(top: 15),
                   width: sizeConfig.blockSizeHorizontal * 80,
                   height: sizeConfig.blockSizeVertical * 7,
-                  child: RaisedButton(
+                  child: ElevatedButton(
                     onPressed: () async {
                       int newShiekhIndex = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  PickAzanShiekhView("3",false)));
-                      List<AzanSound> sounds = await LocalStorageManager().loadAzanSoundsList();
-                      if(sounds!=null && sounds[newShiekhIndex]!=null){
-                        _provider.pickedAzanShiekh = sounds[newShiekhIndex].toJSON();
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              PickAzanShiekhView("3", false),
+                        ),
+                      );
+                      List<AzanSound>? sounds =
+                          await LocalStorageManager().loadAzanSoundsList();
+                      if (sounds != null && sounds[newShiekhIndex] != null) {
+                        _provider.pickedAzanShiekh =
+                            sounds[newShiekhIndex].toJSON();
                       }
                       if (sounds == null && newShiekhIndex != null) {
                         _provider.pickedAzanShiekh =
-                        AppLocalizations.of(context)!.isEnglish()?  Constants.EN_SHIEKH_NAMES[newShiekhIndex]:Constants.AR_SHIEKH_NAMES[newShiekhIndex];
+                            AppLocalizations.of(context)!.isEnglish()
+                                ? Constants.EN_SHIEKH_NAMES[newShiekhIndex]
+                                : Constants.AR_SHIEKH_NAMES[newShiekhIndex];
                       }
                     },
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5))),
-                    color: Constants.CANVAS_COLOR,
+                    // shape: RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.all(Radius.circular(5))),
+                    // color: Constants.CANVAS_COLOR,
                     child: Text(
                       AppLocalizations.of(context)!.translate("select_shiekh"),
                       style: TextStyle(
@@ -272,13 +278,16 @@ class _PickAzanMethodViewState extends State<PickAzanMethodView> {
       return SaveSettingsButton(
         text: "save_timing_settings",
         onTap: () {
-          if (_provider.pickedMethod == null ||
-              _provider.pickedMazhab == null) {
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text(
-                AppLocalizations.of(context)!.translate("mazhab_method_empty"),
+          if (_provider.pickedMethod.isEmpty ||
+              _provider.pickedMazhab.isEmpty) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  AppLocalizations.of(context)!
+                      .translate("mazhab_method_empty"),
+                ),
               ),
-            ));
+            );
           } else
             _provider.saveSettings(context);
         },
@@ -291,67 +300,71 @@ class _PickAzanMethodViewState extends State<PickAzanMethodView> {
 
   fajrAzanShiekhPart(SizingInformation sizeConfig) {
     return Container(
-        width: sizeConfig.blockSizeHorizontal * 50,
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(top: 20, left: 30, right: 30),
-                child: Text(
-                  AppLocalizations.of(context)!.translate("azan_shiekh_fajr"),
-                  style: TextStyle(
-                      fontSize: sizeConfig.blockSizeHorizontal * 5,
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor),
-                ),
+      width: sizeConfig.blockSizeHorizontal * 50,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(top: 20, left: 30, right: 30),
+            child: Text(
+              AppLocalizations.of(context)!.translate("azan_shiekh_fajr"),
+              style: TextStyle(
+                  fontSize: sizeConfig.blockSizeHorizontal * 5,
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 2),
+            child: Center(
+              child: Text(
+                "${_provider.pickedFajrAzanShiekh != null ? _provider.pickedFajrAzanShiekh["name"] : Constants.FAJR_SHIEKH_NAMES[0]["name"]}",
+                style: TextStyle(
+                    color: Constants.PRIMARY_DARK_COLOR,
+                    fontWeight: FontWeight.w700,
+                    fontSize: sizeConfig.blockSizeHorizontal * 4),
               ),
-              Container(
-                margin: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 2),
-                child: Center(
-                  child: Text(
-                    "${_provider.pickedFajrAzanShiekh != null ?
-                    _provider.pickedFajrAzanShiekh["name"] : Constants.FAJR_SHIEKH_NAMES[0]["name"]}",
-                    style: TextStyle(
-                        color: Constants.PRIMARY_DARK_COLOR,
-                        fontWeight: FontWeight.w700,
-                        fontSize: sizeConfig.blockSizeHorizontal * 4),
-                  ),
-                ),
-              ),
-              Center(
-                child: Container(
-                  margin: EdgeInsets.only(top: 15),
-                  width: sizeConfig.blockSizeHorizontal * 80,
-                  height: sizeConfig.blockSizeVertical * 7,
-                  child: RaisedButton(
-                    onPressed: () async {
-                      int newShiekhIndex = await Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  PickFajrAzanShiekhView()));
-                      List<AzanSound> sounds = await LocalStorageManager().loadFajrAzanSoundsList();
-                      if(sounds!=null && sounds[newShiekhIndex]!=null){
-                        _provider.pickedFajrAzanShiekh = sounds[newShiekhIndex].toJSON();
-                      }
-                      if (sounds == null && newShiekhIndex != null) {
-                        _provider.pickedFajrAzanShiekh =
-                        Constants.FAJR_SHIEKH_NAMES[newShiekhIndex];
-                      }
-                    },
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(5))),
-                    color: Constants.CANVAS_COLOR,
-                    child: Text(
-                      AppLocalizations.of(context)!.translate("select_shiekh"),
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontSize: sizeConfig.blockSizeHorizontal * 4,
-                      ),
+            ),
+          ),
+          Center(
+            child: Container(
+              margin: EdgeInsets.only(top: 15),
+              width: sizeConfig.blockSizeHorizontal * 80,
+              height: sizeConfig.blockSizeVertical * 7,
+              child: ElevatedButton(
+                onPressed: () async {
+                  int newShiekhIndex = await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          PickFajrAzanShiekhView(),
                     ),
+                  );
+                  List<AzanSound>? sounds =
+                      await LocalStorageManager().loadFajrAzanSoundsList();
+                  if (sounds != null && sounds[newShiekhIndex] != null) {
+                    _provider.pickedFajrAzanShiekh =
+                        sounds[newShiekhIndex].toJSON();
+                  }
+                  if (sounds == null && newShiekhIndex != null) {
+                    _provider.pickedFajrAzanShiekh =
+                        Constants.FAJR_SHIEKH_NAMES[newShiekhIndex];
+                  }
+                },
+                // shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.all(Radius.circular(5))),
+                // color: Constants.CANVAS_COLOR,
+                child: Text(
+                  AppLocalizations.of(context)!.translate("select_shiekh"),
+                  style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontSize: sizeConfig.blockSizeHorizontal * 4,
                   ),
                 ),
-              )
-            ]));
-
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -7,7 +7,6 @@ import 'package:muslim_book/utils/app_form_controller.dart';
 import 'package:muslim_book/views/edit_profile_view/edit_profile_view_mobile_portrait/edit_profile_mobile_portrait_ui.dart';
 import 'package:muslim_book/widgets/appBar_widget.dart';
 import 'package:muslim_book/widgets/base_widget.dart';
-import 'package:muslim_book/widgets/logo_widgwt.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -20,7 +19,7 @@ class EditProfileViewMobilePortrait extends StatefulWidget {
 
 class _EditProfileViewMobilePortraitState
     extends State<EditProfileViewMobilePortrait> {
-  EditProfileMobilePortraitUi ui;
+  late EditProfileMobilePortraitUi ui;
   final AppFormControllers controllers = AppFormControllers();
   final GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
 

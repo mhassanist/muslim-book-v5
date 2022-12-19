@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/providers/myProfile_provider.dart';
@@ -17,8 +15,8 @@ class MyProfilePage extends StatefulWidget {
 }
 
 class _MyProfilePageState extends State<MyProfilePage> {
-  MyProfileUI ui;
-  MyProfileProvider provider;
+  late MyProfileUI ui;
+  late MyProfileProvider provider;
   ScreenshotController screenshotController = ScreenshotController();
 
   @override

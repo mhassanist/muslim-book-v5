@@ -6,7 +6,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 
 class CompetitionStartView extends StatefulWidget {
-  CompetitionStartView({Key key}) : super(key: key);
+  CompetitionStartView({super.key});
 
   @override
   _CompetitionStartViewState createState() => _CompetitionStartViewState();

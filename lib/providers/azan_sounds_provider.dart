@@ -17,38 +17,38 @@ enum DataLoadingState { notLoaded, localAvailable, canBeLoadedFromWeb }
 enum FileDownloadState { downloaded, initial, downloading }
 
 class AzanSoundsProvider extends ViewStateProvider {
-  List<AzanSound>? azanSounds;
-  int _pickedAzanShiekhIndex = 0;
+  List<AzanSound> azanSounds = [];
+  int? _pickedAzanShiekhIndex = 0;
 
   DataLoadingState loadedState = DataLoadingState.notLoaded;
-  List<FileDownloadState>? filesStates;
-  int get pickedAzanShiekhIndex => _pickedAzanShiekhIndex;
+  List<FileDownloadState> filesStates = [];
+  int? get pickedAzanShiekhIndex => _pickedAzanShiekhIndex;
   static var httpClient = new HttpClient();
 
 
-  set pickedAzanShiekhIndex(int value) {
+  set pickedAzanShiekhIndex(int? value) {
     _pickedAzanShiekhIndex = value;
     notifyListeners();
   }
 
  loadAzanSounds() async {
     setViewState(ViewState.Loading);
-    azanSounds = await LocalStorageManager().loadAzanSoundsList();
-    if (azanSounds!= null && filesStates != null) {
-      for(AzanSound sound in azanSounds!){
-        filesStates!.add(FileDownloadState.initial);
+    azanSounds = await LocalStorageManager().loadAzanSoundsList() ?? [];
+    if (filesStates.isNotEmpty) {
+      for(AzanSound sound in azanSounds){
+        filesStates.add(FileDownloadState.initial);
       }
       loadedState = DataLoadingState.localAvailable;
       setViewState(ViewState.Idle);
       print("from local storage");
     } else {
       azanSounds = await AzanSoundsAPI().requestAzanSounds();
-      if (azanSounds!= null && filesStates != null) {
-        for(AzanSound sound in azanSounds!){
-          filesStates!.add(FileDownloadState.initial);
+      if (filesStates.isNotEmpty) {
+        for(AzanSound sound in azanSounds){
+          filesStates.add(FileDownloadState.initial);
         }
         //save azan sounds locally
-        await LocalStorageManager().saveAzanSoundsList(azanSounds!);
+        await LocalStorageManager().saveAzanSoundsList(azanSounds);
         loadedState = DataLoadingState.localAvailable;
 
         setViewState(ViewState.Idle);
@@ -60,21 +60,21 @@ class AzanSoundsProvider extends ViewStateProvider {
   void checkForLocal(String azanId) async{
     var azanList = await LocalStorageManager().loadAzanSoundsList();
     String savedAzanSheikh = locator<Prefs>().getAzanShiekhJSON(azanId);
-    if ( azanList != null && filesStates != null) {
+    if ( azanList != null && filesStates.isNotEmpty) {
       loadedState = DataLoadingState.localAvailable;
       azanSounds = azanList;
 
-      for (AzanSound sound in azanSounds!) {
-        if(sound.localPath!=null)
-          filesStates!.add(FileDownloadState.downloaded);
+      for (AzanSound sound in azanSounds) {
+        if(sound.localPath.isNotEmpty)
+          filesStates.add(FileDownloadState.downloaded);
         else
-          filesStates!.add(FileDownloadState.initial);
+          filesStates.add(FileDownloadState.initial);
 
         if(savedAzanSheikh.isNotEmpty){
           Map<String,dynamic>? localSavedSheikh = jsonDecode(savedAzanSheikh);
 
           if(localSavedSheikh != null && localSavedSheikh['id'].toString() == sound.id.toString()){
-            _pickedAzanShiekhIndex = azanSounds!.indexOf(sound);
+            _pickedAzanShiekhIndex = azanSounds.indexOf(sound);
           }
         }
 
@@ -88,9 +88,9 @@ class AzanSoundsProvider extends ViewStateProvider {
   }
 
   Future<File> downloadFile(int soundIndex) async {
-    filesStates![soundIndex] = FileDownloadState.downloading;
+    filesStates[soundIndex] = FileDownloadState.downloading;
     notifyListeners();
-    AzanSound sound = azanSounds![soundIndex];
+    AzanSound sound = azanSounds[soundIndex];
     sound.fileUrl = sound.fileUrl
         .replaceFirst("http://", "https://");
 
@@ -104,14 +104,14 @@ class AzanSoundsProvider extends ViewStateProvider {
     File file = new File(join(dir,filename));
     await file.writeAsBytes(bytes);
     sound.localPath = file.path;
-    filesStates![soundIndex] = FileDownloadState.downloaded;
+    filesStates[soundIndex] = FileDownloadState.downloaded;
     LocalStorageManager().updateAzanSoundsList(sound);
     notifyListeners();
     return file;
   }
 
   AzanSound getAzanSound(index) {
-    return azanSounds![index];
+    return azanSounds[index];
   }
 
   Future<void> saveDownloadedShiekhJson(Map<String, dynamic> json , String azanId , BuildContext context, bool saveToAll) async {

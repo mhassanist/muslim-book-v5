@@ -16,14 +16,14 @@ import 'package:path_provider/path_provider.dart';
 
 class AzanFairSoundsProvider extends ViewStateProvider {
   late List<AzanSound> azanSounds;
-  late int _pickedAzanShiekhIndex;
+  late int? _pickedAzanShiekhIndex;
 
   DataLoadingState loadedState = DataLoadingState.notLoaded;
   late List<FileDownloadState> filesStates;
 
-  int get pickedAzanShiekhIndex => _pickedAzanShiekhIndex;
+  int? get pickedAzanShiekhIndex => _pickedAzanShiekhIndex;
 
-  set pickedAzanShiekhIndex(int value) {
+  set pickedAzanShiekhIndex(int? value) {
     _pickedAzanShiekhIndex = value;
     notifyListeners();
   }

@@ -1,14 +1,12 @@
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/utils/Constants.dart';
-import 'package:muslim_book/utils/locator.dart';
-import 'package:muslim_book/utils/prefs.dart';
 import 'package:muslim_book/views/azan_settings_views/pick_country_view.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../utils/sizing_info_extension.dart';
 
 class AzanDrawOverView extends StatefulWidget {
-  const AzanDrawOverView({Key key}) : super(key: key);
+  const AzanDrawOverView({super.key});
 
   @override
   _AzanDrawOverViewState createState() => _AzanDrawOverViewState();

@@ -11,8 +11,8 @@ class AzanViewMobilePortrait extends StatefulWidget {
 }
 
 class _AzanViewMobilePortraitState extends State<AzanViewMobilePortrait> {
-  AzanMobilePortraitUi ui;
-  AzanProvider provider;
+  late AzanMobilePortraitUi ui;
+  late AzanProvider provider;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class _AzanViewMobilePortraitState extends State<AzanViewMobilePortrait> {
         model.startRemainingStream();
       }, builder: (_, model, __) {
         var returnedData = model.getAzanList();
-        if (returnedData != null) {
+        if (returnedData.isNotEmpty) {
           return Scaffold(
             body: Column(
               children: <Widget>[ui.upperPart(), ui.azanTimesPart()],

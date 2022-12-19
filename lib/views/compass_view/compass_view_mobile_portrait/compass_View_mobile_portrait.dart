@@ -209,7 +209,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
                             ),
                             Container(
                               height: unitSize * 7,
-                              child: FlatButton(
+                              child: ElevatedButton(
                                 onPressed: () async {
                                   _fetchPermissionStatus();
                                 },

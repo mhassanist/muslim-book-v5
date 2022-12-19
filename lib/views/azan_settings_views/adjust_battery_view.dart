@@ -1,7 +1,5 @@
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/views/azan_settings_views/xiaomi_settings_view.dart';
-import 'package:device_info/device_info.dart';
-import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
@@ -13,7 +11,10 @@ import '../../utils/sizing_info_extension.dart';
 class AdjustBatteryView extends StatefulWidget {
   final bool isStart;
 
-  const AdjustBatteryView({Key key, this.isStart}) : super(key: key);
+  const AdjustBatteryView({
+    super.key,
+    this.isStart = false,
+  });
 
   @override
   _AdjustBatteryViewState createState() => _AdjustBatteryViewState();
@@ -59,7 +60,8 @@ class _AdjustBatteryViewState extends State<AdjustBatteryView>
                           constraints: BoxConstraints.expand(),
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(
-                                sizeConfig.blockSizeHorizontal * 5),
+                              sizeConfig.blockSizeHorizontal * 5,
+                            ),
                             child: Image.asset(
                               "assets/images/onboarding/praying_man.png",
                               fit: BoxFit.contain,
@@ -75,7 +77,7 @@ class _AdjustBatteryViewState extends State<AdjustBatteryView>
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
-                                AppLocalizations.of(context)
+                                AppLocalizations.of(context)!
                                     .translate("allowing_app_to_work_always"),
                                 textAlign: TextAlign.center,
                                 style: textStyle(
@@ -89,7 +91,8 @@ class _AdjustBatteryViewState extends State<AdjustBatteryView>
                                     horizontal:
                                         sizeConfig.blockSizeHorizontal * 15),
                                 child: Text(
-                                  AppLocalizations.of(context)!.translate("toOpenNotification"),
+                                  AppLocalizations.of(context)!
+                                      .translate("toOpenNotification"),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
@@ -114,7 +117,8 @@ class _AdjustBatteryViewState extends State<AdjustBatteryView>
                           shape: StadiumBorder(),
                           fillColor: Colors.white,
                           child: Text(
-                            AppLocalizations.of(context)!.translate("allow_notification"),
+                            AppLocalizations.of(context)!
+                                .translate("allow_notification"),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -130,7 +134,7 @@ class _AdjustBatteryViewState extends State<AdjustBatteryView>
                           alignment: Alignment.topLeft,
                           child: InkWell(
                               onTap: () async {
-                                 widget.isStart
+                                widget.isStart
                                     ? await goToNextPage(context)
                                     : Navigator.of(context).pop();
                               },

@@ -1,13 +1,12 @@
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:package_info/package_info.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../utils/sizing_info_extension.dart';
 import 'package:android_intent/android_intent.dart';
 
 class XiaomiSettingsView extends StatefulWidget {
-  const XiaomiSettingsView({Key key}) : super(key: key);
+  const XiaomiSettingsView({super.key});
 
   @override
   _XiaomiSettingsViewState createState() => _XiaomiSettingsViewState();

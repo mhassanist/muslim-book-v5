@@ -8,7 +8,6 @@ import 'package:muslim_book/widgets/base_widget.dart';
 import 'package:muslim_book/widgets/general_wigets/loading_button.dart';
 import 'package:muslim_book/widgets/on_boarding_view/azan_methods_drop_down.dart';
 import 'package:muslim_book/widgets/on_boarding_view/save_settings_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../utils/sizing_info_extension.dart';
@@ -19,10 +18,10 @@ class PickCountryView extends StatefulWidget {
 }
 
 class _PickCountryViewState extends State<PickCountryView> {
-  LocationProvider _provider;
-  PickAzanMethodsProvider pickAzanMethodsProvider;
+  late LocationProvider _provider;
+  late PickAzanMethodsProvider pickAzanMethodsProvider;
 
-  SizingInformation sizeConfig;
+  late SizingInformation sizeConfig;
 
   //GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -66,7 +65,7 @@ class _PickCountryViewState extends State<PickCountryView> {
                           Container(
                             padding: EdgeInsets.only(top:5, left: 30, right: 30),
                             child: titleContainer2(
-                                AppLocalizations.of(context)
+                                AppLocalizations.of(context)!
                                     .translate("calculating_pray_method"),
                                 sizeConfig,
                                 context),

@@ -10,10 +10,10 @@ class ItemScrollPhysics extends ScrollPhysics {
   final double targetPixelsLimit;
 
   const ItemScrollPhysics({
-    ScrollPhysics parent,
-    this.itemHeight,
+    required ScrollPhysics parent,
+    required this.itemHeight,
     this.targetPixelsLimit = 3.0,
-  }) : assert(itemHeight != null && itemHeight > 0),
+  }) : assert(itemHeight > 0),
         super(parent: parent);
 
   @override

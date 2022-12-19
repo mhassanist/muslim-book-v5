@@ -55,7 +55,7 @@ class AzanProvider extends ViewStateProvider {
     });
   }
 
-  List<Map<String, String>>? getAzanList() {
+  List<Map<String, String>> getAzanList() {
     try {
       List<Map<String, String>> azanList = [
         {
@@ -99,7 +99,7 @@ class AzanProvider extends ViewStateProvider {
       return azanList;
     } catch (ex) {
       print("error is $ex");
-      return null;
+      return [];
     }
   }
 

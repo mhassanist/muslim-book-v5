@@ -3,27 +3,27 @@ import 'dart:convert';
 class AzanSound {
   int? id;
   int? fajr;
-  String? name;
+  String name;
   String? key;
   String fileUrl;
-  String? localPath;
+  String localPath;
 
   AzanSound({
     this.id,
     this.fajr,
-    this.name,
+    this.name = '',
     this.key,
     required this.fileUrl,
-    this.localPath,
+    this.localPath = '',
   });
 
   factory AzanSound.fromMap(Map<String, dynamic> json) => AzanSound(
         id: json["id"],
         fajr: json["fajr"],
-        name: json["name"],
+        name: json["name"] ?? '',
         key: json["key"],
         fileUrl: json["file"],
-        localPath: json["local_path"],
+        localPath: json["local_path"] ?? '',
       );
 
   Map<String, dynamic> toJSON() {

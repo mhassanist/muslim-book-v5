@@ -11,7 +11,6 @@ import 'package:muslim_book/utils/prefs.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 import 'package:muslim_book/widgets/base_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
@@ -19,12 +18,16 @@ import 'package:loading/loading.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class EditTimePrayer extends StatefulWidget {
-  final void Function() updateAzan;
-  final Azan azan;
+  final void Function()? updateAzan;
+  final Azan? azan;
   final bool showAppBar;
 
-  const EditTimePrayer({Key key, this.azan, this.showAppBar, this.updateAzan})
-      : super(key: key);
+  const EditTimePrayer({
+    super.key,
+    this.azan,
+    required this.showAppBar,
+    this.updateAzan,
+  });
 
   @override
   _EditTimePrayerState createState() => _EditTimePrayerState();
@@ -32,11 +35,12 @@ class EditTimePrayer extends StatefulWidget {
 
 class _EditTimePrayerState extends State<EditTimePrayer> {
   final AzanController controller = Get.find<AzanController>();
-  PickAzanMethodsProvider _provider;
+  late PickAzanMethodsProvider _provider;
   List<Azan> azanValue = [];
   bool _isSaveing = false;
 
   DateTime _now = DateTime.now();
+
   @override
   void initState() {
     super.initState();
@@ -44,19 +48,19 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
 
   @override
   Widget build(BuildContext context) {
-    azanValue = controller.getAzanList(context);
+    azanValue = controller.getAzanList(context)  ?? [];
     final size = MediaQuery.of(context).size;
     final isSmall = size.width <= 450;
     return new WillPopScope(
         onWillPop: () {
-          if (widget.showAppBar) widget.updateAzan();
+          if (widget.showAppBar) widget.updateAzan?.call();
           Navigator.pop(context);
           return Future.value(false);
         },
         child: Scaffold(
             appBar: widget.showAppBar ? _buildAppBar(context) : null,
             body: ResponsiveBuilder(builder: (context, sizeConfig) {
-              return azanValue == null
+              return azanValue.isEmpty
                   ? Container()
                   : BaseView<PickAzanMethodsProvider>(onModelReady: (model) {
                       _provider = model;
@@ -145,7 +149,7 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                                                   setState(() {
                                                     _isSaveing = false;
                                                   });
-                                                  widget.updateAzan();
+                                                  widget.updateAzan?.call();
                                                   Navigator.pop(context);
                                                 });
                                               });
@@ -232,13 +236,12 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
       preferredSize: Size.fromHeight(kToolbarHeight),
       child: AppBar(
         backgroundColor: const Color(0XFF347D53),
-
         title: Text(
           AppLocalizations.of(context)!.translate("edite_tieme_prayer"),
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
         actions: <Widget>[
-          FlatButton(
+          ElevatedButton(
             child: Text(
               AppLocalizations.of(context)!.translate("save"),
               style: TextStyle(color: Constants.CANVAS_COLOR),
@@ -253,7 +256,7 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                   setState(() {
                     _isSaveing = false;
                   });
-                  widget.updateAzan();
+                  widget.updateAzan?.call();
                   Navigator.pop(context);
                 });
               });
@@ -273,7 +276,7 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
       padding: EdgeInsets.symmetric(vertical: 12),
       decoration: BoxDecoration(
         border: widget.azan != null
-            ? azan.id == widget.azan.id
+            ? azan.id == widget.azan!.id
                 ? Border.all(
                     width: .5,
                     color: Constants.PRIMARY_DARK_COLOR,

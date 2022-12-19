@@ -24,8 +24,8 @@ class PickAzanShiekhView extends StatefulWidget {
   const PickAzanShiekhView(
     this.azanId,
     this.applyToAll, {
-    Key key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   _PickAzanShiekhViewState createState() => _PickAzanShiekhViewState();
@@ -33,13 +33,13 @@ class PickAzanShiekhView extends StatefulWidget {
 
 class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
     with TickerProviderStateMixin {
-  PickAzanShiekhProvider _azanSoundFromAssetsProvider; //from assets
-  AzanSoundsProvider _moreSoundsProvider; //from web or local database
+  late PickAzanShiekhProvider _azanSoundFromAssetsProvider; //from assets
+  late AzanSoundsProvider _moreSoundsProvider; //from web or local database
 
   AudioPlayer audioPlayer = AudioPlayer();
   List<AnimationController> animationList = [];
   List<AnimationController> animationListWeb = [];
-  String currentPlayingItemId;
+  String? currentPlayingItemId = '';
 
   bool displayingFromAssets = false;
 
@@ -110,7 +110,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
         actions: <Widget>[
-          FlatButton(
+          ElevatedButton(
             child: Text(
               AppLocalizations.of(context)!.translate("save"),
               style: TextStyle(color: Constants.CANVAS_COLOR),
@@ -282,7 +282,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
               Padding(
                 padding: const EdgeInsets.only(top: 10.0),
                 child: Text(
-                    AppLocalizations.of(context)
+                    AppLocalizations.of(context)!
                         .translate("click_here_for_more_azan_sheikh"),
                     style: TextStyle(
                       fontSize: 18,
@@ -312,11 +312,11 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
     } else if (_moreSoundsProvider.loadedState ==
         DataLoadingState.localAvailable) {
       if (_moreSoundsProvider.azanSounds == null ||
-          _moreSoundsProvider.azanSounds.length == 0) {
+          _moreSoundsProvider.azanSounds!.length == 0) {
         _moreSoundsProvider.loadAzanSounds();
       }
       displayingFromAssets = false;
-      _moreSoundsProvider.azanSounds.forEach((f) {
+      _moreSoundsProvider.azanSounds!.forEach((f) {
         animationListWeb.add(AnimationController(
             vsync: this, duration: Duration(milliseconds: 300)));
       });

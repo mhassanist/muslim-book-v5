@@ -14,8 +14,8 @@ class Tasbeeh extends DataClass implements Insertable<Tasbeeh> {
   final int totalCounter;
   final int counted;
   Tasbeeh(
-      {@required this.id,
-      @required this.name,
+      {required this.id,
+      required this.name,
       @required this.note,
       @required this.totalCounter,
       @required this.counted});

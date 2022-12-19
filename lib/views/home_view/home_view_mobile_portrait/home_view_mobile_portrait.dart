@@ -20,7 +20,7 @@ class HomeViewMobilePortrait extends StatefulWidget {
 }
 
 class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
-  SizingInformation sizeConfig;
+  late SizingInformation sizeConfig;
   bool visible = locator<Prefs>().getShowSettings();
 
   @override
@@ -39,7 +39,7 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
-                      FlatButton(
+                      ElevatedButton(
                         onPressed: () async {
                           if (locator<Prefs>().getIsFirstTime()) {
                             Navigator.pushNamed(context, "/pick_country_view");
@@ -63,9 +63,9 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                               ),
                               Text(
                                 locator<Prefs>().getIsFirstTime()
-                                    ? AppLocalizations.of(context)
+                                    ? AppLocalizations.of(context)!
                                         .translate("adjust_azan")
-                                    : AppLocalizations.of(context)
+                                    : AppLocalizations.of(context)!
                                         .translate("azan_times"),
                                 style: TextStyle(
                                   fontSize: sizeConfig.blockSizeHorizontal * 6,
@@ -96,7 +96,7 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                           sizeConfig,
                           4,
                           "assets/images/start_view/leaderboard_icon.svg",
-                          "first"),
+                          "first",),
                     ],
                   ),
                   SizedBox(
@@ -105,7 +105,7 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      FlatButton(
+                      ElevatedButton(
                         onPressed: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (c) => QuranSectionScreen()));
@@ -136,7 +136,7 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                         ),
                       ),
                       if (locator<Prefs>().getShowSettings())
-                        FlatButton(
+                        ElevatedButton(
                           onPressed: () {
                             Navigator.pushNamed(context, '/settings');
                           },
@@ -151,7 +151,7 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                                   color: Theme.of(context).primaryColorDark,
                                 ),
                                 Text(
-                                  AppLocalizations.of(context)
+                                  AppLocalizations.of(context)!
                                       .translate("settings"),
                                   style: TextStyle(
                                     fontSize:
@@ -185,10 +185,10 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
   }
 
   Widget item(
-      SizingInformation sizeConfig, int position, String svgPhoto, String title,
-      {Function onTap}) {
-    return FlatButton(
-      onPressed: onTap ??
+      SizingInformation sizeConfig, int? position, String svgPhoto, String title,
+      {Function? onTap}) {
+    return ElevatedButton(
+      onPressed: onTap != null ? onTap.call :
           () {
             Provider.of<UserProvider>(context, listen: false).selectedPage =
                 position;

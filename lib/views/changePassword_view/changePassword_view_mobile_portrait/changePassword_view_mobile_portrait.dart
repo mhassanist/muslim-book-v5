@@ -10,38 +10,35 @@ import 'changePassword_mobile_portrait_ui.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   @override
-  _ChangePasswordPageState createState() =>
-      _ChangePasswordPageState();
+  _ChangePasswordPageState createState() => _ChangePasswordPageState();
 }
 
-class _ChangePasswordPageState
-    extends State<ChangePasswordPage> {
-  ChangePasswordUI ui;
+class _ChangePasswordPageState extends State<ChangePasswordPage> {
+  late ChangePasswordUI ui;
 
   @override
   Widget build(BuildContext context) {
-        final GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
+    final GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
 
     return ResponsiveBuilder(builder: (context, sizeConfig) {
       return BaseView<ChangePasswordProvider>(onModelReady: (model) async {
-        
-        ui = ChangePasswordUI(model, sizeConfig, context) ;
-       
-      },
-       builder: (_, model, __) {
+        ui = ChangePasswordUI(model, sizeConfig, context);
+      }, builder: (_, model, __) {
         return SafeArea(
-                  child: Scaffold(
-            appBar: appBar( context, sizeConfig, AppLocalizations.of(context)!.translate("change_password"),key: key),
-                    body: Container(
+          child: Scaffold(
+            appBar: appBar(context, sizeConfig,
+                AppLocalizations.of(context)!.translate("change_password"),
+                key: key),
+            body: Container(
               color: Constants.CANVAS_COLOR,
               child: ListView(
                 padding: EdgeInsets.only(bottom: 20),
                 children: <Widget>[
                   // ui.screenHeader(),
-                   ui.userImage(),
-                   ui.textWidget(),
-                   ui.inputTextForm(),
-                   ui.sendDataButtons(),
+                  ui.userImage(),
+                  ui.textWidget(),
+                  ui.inputTextForm(),
+                  ui.sendDataButtons(),
                 ],
               ),
             ),

@@ -27,7 +27,7 @@ class _PickLocationViaMapViewState extends State<PickLocationViaMapView> {
               style: TextStyle(fontWeight: FontWeight.w500),
             ),
             actions: <Widget>[
-              FlatButton(
+              ElevatedButton(
                 child: Text(
                   AppLocalizations.of(context)!.translate("save"),
                   style: TextStyle(color: Constants.CANVAS_COLOR),
