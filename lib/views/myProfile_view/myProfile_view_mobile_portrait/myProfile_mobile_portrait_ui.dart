@@ -4,13 +4,11 @@ import 'dart:typed_data';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/providers/myProfile_provider.dart';
-import 'package:muslim_book/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:screenshot/screenshot.dart';
 
-// import 'package:share/share.dart';
 import 'package:share_extend/share_extend.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../utils/sizing_info_extension.dart';
@@ -135,7 +133,7 @@ class MyProfileUI {
     return Container(
       width: 2,
       height: sizeConfig.blockSizeVertical * 5,
-      color: Theme.of(context).accentColor,
+      color: Theme.of(context).colorScheme.secondary,
     );
   }
 
@@ -173,7 +171,7 @@ class MyProfileUI {
       child: Container(
         height: 2,
         width: sizeConfig.blockSizeHorizontal * 90,
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).colorScheme.secondary,
       ),
     );
   }
@@ -263,16 +261,21 @@ class MyProfileUI {
             ClipRRect(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor,
+                  color: Theme.of(context).colorScheme.secondary,
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                      image: provider.scoreModelData!.image != null
-                          ? NetworkImage(
-                              provider.scoreModelData!.image!
-                                  .replaceAll("http://", "https://"),
-                            )
-                          : AssetImage("assets/images/profile_image.png"),
-                      fit: BoxFit.cover),
+                    image: NetworkImage(provider.scoreModelData!.image!.replaceAll("http://", "https://"),),
+                    fit: BoxFit.cover,
+                    onError:(error, stackTrace) => AssetImage('assets/images/profile_image.png'),
+                  ),
+
+                  // image: DecorationImage(
+                  //     image: provider.scoreModelData!.image != null
+                  //         ? NetworkImage(
+                  //             provider.scoreModelData!.image!.replaceAll("http://", "https://"),
+                  //           )
+                  //         : AssetImage("assets/images/profile_image.png"),
+                  //     fit: BoxFit.cover),
                 ),
                 height: sizeConfig.blockSizeHorizontal * 30,
                 width: sizeConfig.blockSizeHorizontal * 30,

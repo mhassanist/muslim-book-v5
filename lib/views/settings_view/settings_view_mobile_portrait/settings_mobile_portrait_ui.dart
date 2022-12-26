@@ -13,7 +13,6 @@ import 'package:muslim_book/views/pick_azan_shiekh_view/pick_azan_shiekh_view.da
 import 'package:muslim_book/views/pick_azan_shiekh_view/pick_fajr_azan_shiekh_view.dart';
 import 'package:muslim_book/widgets/general_wigets/loading_button.dart';
 import 'package:muslim_book/widgets/standardButton_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -31,8 +30,12 @@ class SettingsMobilePortraitUi {
   //times
   final randomAzanId_value3 = "3";
 
-  SettingsMobilePortraitUi(this.locationProvider,
-      {this.provider, this.sizeConfig, this.context});
+  SettingsMobilePortraitUi(
+    this.locationProvider, {
+    required this.provider,
+    required this.sizeConfig,
+    required this.context,
+  });
 
   Widget alertsPart() {
     return Container(
@@ -59,13 +62,11 @@ class SettingsMobilePortraitUi {
               provider.fajrIbtehal,
               provider.fajrIbtehalFlagChanged),
           alertItem(
-              AppLocalizations.of(context)
-                  .translate("mondays_and_thursdays_fasting_alert"),
+              AppLocalizations.of(context)!.translate("mondays_and_thursdays_fasting_alert"),
               provider.mondaysAndThursdaysFastingAlert,
               provider.mondaysAndThursdaysFastingAlertFlagChanged),
           alertItem(
-              AppLocalizations.of(context)
-                  .translate("white_days_fasting_alert"),
+              AppLocalizations.of(context)!.translate("white_days_fasting_alert"),
               provider.whiteDaysFastingAlert,
               provider.whiteDaysFastingAlertFlagChanged),
         ],
@@ -92,8 +93,7 @@ class SettingsMobilePortraitUi {
           titleContainer(
               sizeConfig,
               context,
-              AppLocalizations.of(context)
-                  .translate("calculating_pray_method")),
+              AppLocalizations.of(context)!.translate("calculating_pray_method")),
           azanMethodPart(),
           divider(sizeConfig, context),
           Container(
@@ -291,23 +291,19 @@ class SettingsMobilePortraitUi {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           alertItem(
-              AppLocalizations.of(context)
-                  .translate("voice_reminder_before_praying"),
+              AppLocalizations.of(context)!.translate("voice_reminder_before_praying"),
               provider.isRemmberActive,
               provider.isRemmberActiveFlagChanged),
           alertItem(
-              AppLocalizations.of(context)
-                  .translate("activating_al_shaarawi_voice"),
+              AppLocalizations.of(context)!.translate("activating_al_shaarawi_voice"),
               provider.isActivatingShaarawiVoice,
               provider.isActivatingShaarawiVoiceFlagChanged),
           alertItem(
-              AppLocalizations.of(context)
-                  .translate("Switch_to_silent_mode_after_residence"),
+              AppLocalizations.of(context)!.translate("Switch_to_silent_mode_after_residence"),
               provider.isSwitchSilentModeAfterResidence,
               provider.isSwitchSilentModeAfterResidenceChanged),
           alertItem(
-              AppLocalizations.of(context)
-                  .translate("Turn_off_the_call_to_prayer_on_the_phone"),
+              AppLocalizations.of(context)!.translate("Turn_off_the_call_to_prayer_on_the_phone"),
               provider.isTurnOffPrayerPhone,
               provider.isTurnOffPrayerPhoneChanged),
           Center(
@@ -316,8 +312,7 @@ class SettingsMobilePortraitUi {
                   context: context,
                   sizeConfig: sizeConfig,
                   color: Theme.of(context).primaryColor,
-                  title: AppLocalizations.of(context)
-                      .translate("Change_the_language_application"),
+                  title: AppLocalizations.of(context)!.translate("Change_the_language_application"),
                   onPressed: () async {
                     await showDialog(
                       context: context,
@@ -328,7 +323,7 @@ class SettingsMobilePortraitUi {
                                   BorderRadius.all(Radius.circular(12))),
                           content: show),
                     );
-                  })),
+                  },),),
         ],
       ),
     );
@@ -358,7 +353,7 @@ class SettingsMobilePortraitUi {
               azanId, true,
             )));
 
-    List<AzanSound> sounds = (await LocalStorageManager().loadAzanSoundsList());
+    List<AzanSound>? sounds = (await LocalStorageManager().loadAzanSoundsList());
 
     if (newShiekhIndex != null && sounds != null && sounds.length > 0) {
       provider.pickedAzanShiekhMain = {randomAzanId_value3: sounds[newShiekhIndex].name};
@@ -374,7 +369,7 @@ class SettingsMobilePortraitUi {
   void chooseFajrSheikh() async {
     int newShiekhIndex = await Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => PickFajrAzanShiekhView()));
-    List<AzanSound> sounds =
+    List<AzanSound>? sounds =
         (await LocalStorageManager().loadFajrAzanSoundsList());
     if (newShiekhIndex != null && sounds != null && sounds.length > 0) {
       provider.pickedFajrAzanShiekh = sounds[newShiekhIndex].toJSON();
@@ -421,7 +416,9 @@ class SettingsMobilePortraitUi {
             );
           }).toList(),
           onChanged: (value) {
-            provider.pickedMethod = value;
+            if (value != null) {
+              provider.pickedMethod = value;
+            }
           },
         ),
       ),
@@ -466,7 +463,9 @@ class SettingsMobilePortraitUi {
             );
           }).toList(),
           onChanged: (value) {
-            provider.latitudeAdjustmentMethod = value;
+            if (value != null) {
+              provider.latitudeAdjustmentMethod = value;
+            }
           },
         ),
       ),
@@ -511,7 +510,9 @@ class SettingsMobilePortraitUi {
             );
           }).toList(),
           onChanged: (value) {
+            if (value != null) {
             provider.pickedMazhab = value;
+            }
           },
         ),
       ),
@@ -568,7 +569,7 @@ class SettingsMobilePortraitUi {
                 await locationProvider.getLocation(context);
                 provider.saveLocation = false;
               },
-              fillColor: Theme.of(context).accentColor,
+              fillColor: Theme.of(context).colorScheme.secondary,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

@@ -33,30 +33,30 @@ class TopModelData {
   TopModelData({
     this.id,
     this.email,
-    this.image,
-    this.name,
+    this.image = '',
+    this.name = '',
     this.countryId,
     this.cityId,
     this.points,
-    this.flag,
-    this.country,
+    this.flag = '',
+    this.country = '',
     this.city,
-    this.correctAnswer,
-    this.wrongAnswer,
+    this.correctAnswer = 0,
+    this.wrongAnswer = 0,
   });
 
   int? id;
   String? email;
-  String? image;
-  String? name;
+  String image;
+  String name;
   int? countryId;
   int? cityId;
   int? points;
-  String? flag;
-  String? country;
+  String flag;
+  String country;
   String? city;
-  int? correctAnswer;
-  int? wrongAnswer;
+  int correctAnswer;
+  int wrongAnswer;
 
   factory TopModelData.fromJson(String str) => TopModelData.fromMap(json.decode(str));
 

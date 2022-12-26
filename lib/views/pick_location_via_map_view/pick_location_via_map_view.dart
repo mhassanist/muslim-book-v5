@@ -2,9 +2,9 @@ import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:search_map_place/search_map_place.dart';
+// import 'package:search_map_place/search_map_place.dart';
+import 'package:search_map_place_updated/search_map_place_updated.dart';
 
 class PickLocationViaMapView extends StatefulWidget {
   @override
@@ -13,7 +13,8 @@ class PickLocationViaMapView extends StatefulWidget {
 
 class _PickLocationViaMapViewState extends State<PickLocationViaMapView> {
 //  final Completer<GoogleMapController> _controller = Completer();
-  Place place;
+  Place? place;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -22,7 +23,7 @@ class _PickLocationViaMapViewState extends State<PickLocationViaMapView> {
           preferredSize: Size.fromHeight(kToolbarHeight ),
           child: AppBar(
             title: Text(
-              AppLocalizations.of(context)
+              AppLocalizations.of(context)!
                   .translate("select_location_manually"),
               style: TextStyle(fontWeight: FontWeight.w500),
             ),

@@ -9,9 +9,9 @@ import 'package:responsive_builder/responsive_builder.dart';
 import '../../../utils/sizing_info_extension.dart';
 
 class TopUI {
-  TopProvider provider;
-  final BuildContext context;
-  SizingInformation sizeConfig;
+  late TopProvider provider;
+  late final BuildContext context;
+  late SizingInformation sizeConfig;
 
   TopUI(this.context) {
     provider = Provider.of<TopProvider>(context);
@@ -82,12 +82,12 @@ class TopUI {
             scrollDirection: Axis.vertical,
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: provider.topList == null ? 0 : provider.topList.length,
+            itemCount: provider.topList.length,
             itemBuilder: (context, index) {
               return topItem(
                   index,
                   Constants.CANVAS_COLOR,
-                  Theme.of(context).accentColor,
+                  Theme.of(context).colorScheme.secondary,
                   // provider.topList[index].id.toString(),
                   provider.topList[index].name,
                   provider.topList[index].country,
@@ -96,7 +96,7 @@ class TopUI {
                           provider.topList[index].wrongAnswer)
                       .toString(),
                   provider.topList[index].points.toString(),
-                  provider.topList[index].image == null
+                  provider.topList[index].image.isEmpty
                       ? provider.topList[index].flag
                           .replaceAll("http://", "https://")
                       : provider.topList[index].image
@@ -109,7 +109,7 @@ class TopUI {
   }
 
   buildDailyRankWidget(SizingInformation sizeConfig,
-      {String titel, String number, String image}) {
+      {String titel = '', String number = '', String image = '',}) {
     return Container(
       margin: EdgeInsets.symmetric(
           vertical: sizeConfig.blockSizeVertical,
@@ -183,7 +183,7 @@ class TopUI {
       String correctAnswers,
       String allAnswers,
       String points,
-      [String imageString]) {
+      [String imageString = '',]) {
     var smallFont = sizeConfig.blockSizeHorizontal * 3;
     var mediumFont = sizeConfig.blockSizeHorizontal * 4;
 
@@ -217,17 +217,16 @@ class TopUI {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                             shape: BoxShape.circle,
                             image: DecorationImage(
-                                image: imageString == null
-                                    ? AssetImage(
-                                        'assets/images/general/person.jpg')
-                                    : NetworkImage(
+                                image: NetworkImage(
                                         imageString.replaceAll(
                                             "http://", "https://"),
                                       ),
-                                fit: BoxFit.cover)),
+                                onError: (_, __) => AssetImage(
+                                    'assets/images/general/person.jpg'),
+                                fit: BoxFit.cover,),),
                         height: sizeConfig.blockSizeHorizontal * 13,
                         width: sizeConfig.blockSizeHorizontal * 13,
                       )
@@ -245,7 +244,9 @@ class TopUI {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       AutoSizeText(
-                        countryName != null ? name + ' - ' + countryName : name,
+                        countryName.isNotEmpty
+                            ? name + ' - ' + countryName
+                            : name,
                         maxLines: 1,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -262,8 +263,7 @@ class TopUI {
                               Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: Text(
-                                  AppLocalizations.of(context)
-                                      .translate("no_of_points"),
+                                  AppLocalizations.of(context)!.translate("no_of_points"),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -295,8 +295,7 @@ class TopUI {
                                   Padding(
                                     padding: const EdgeInsets.all(5.0),
                                     child: Text(
-                                      AppLocalizations.of(context)
-                                          .translate("correct_answers"),
+                                      AppLocalizations.of(context)!.translate("correct_answers"),
                                       style: TextStyle(
                                           fontSize: smallFont,
                                           color: textColor),
@@ -305,8 +304,7 @@ class TopUI {
                                   Padding(
                                     padding: const EdgeInsets.all(5.0),
                                     child: Text(
-                                      AppLocalizations.of(context)
-                                          .translate("answered_questions"),
+                                      AppLocalizations.of(context)!.translate("answered_questions"),
                                       style: TextStyle(
                                           fontSize: smallFont,
                                           color: textColor),
@@ -366,7 +364,7 @@ class TopUI {
         ? topItem(
             0,
             Constants.CANVAS_COLOR,
-            Theme.of(context).accentColor,
+            Theme.of(context).colorScheme.secondary,
             provider.topList.first.name,
             provider.topList.first.country,
             provider.topList.first.correctAnswer.toString(),
@@ -380,10 +378,10 @@ class TopUI {
   }
 
   Widget myItem() {
-    return provider.userScore != null
+    return provider.userScore.id != null
         ? topItem(
             provider.userScore.rank - 1,
-            Theme.of(context).accentColor,
+            Theme.of(context).colorScheme.secondary,
             Theme.of(context).primaryColorDark,
             provider.userScore.name,
             provider.userScore.country,

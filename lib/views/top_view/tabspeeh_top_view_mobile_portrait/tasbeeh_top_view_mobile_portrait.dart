@@ -1,4 +1,3 @@
-
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/providers/tasbeeh_top_provider.dart';
@@ -19,7 +18,7 @@ class TasbeehTopPage extends StatefulWidget {
 }
 
 class _TasbeehTopPageState extends State<TasbeehTopPage> {
-  TasbeehTopUI ui;
+  late TasbeehTopUI ui;
 
   @override
   void didChangeDependencies() {

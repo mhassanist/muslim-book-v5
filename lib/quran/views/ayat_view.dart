@@ -15,21 +15,21 @@ import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class AyatView extends StatefulWidget {
   final Surah surah;
-  final int index;
+  final int? index;
   final int lastAyahPosition;
-  final bool openQuran;
-  final Surah translatedSurah;
-  final Surah transliterationSurah;
+  final bool? openQuran;
+  final Surah? translatedSurah;
+  final Surah? transliterationSurah;
 
   const AyatView({
-    Key key,
-    this.surah,
+    super.key,
+    required this.surah,
     this.index,
-    this.lastAyahPosition,
+    this.lastAyahPosition = 0,
     this.openQuran = false,
     this.translatedSurah,
     this.transliterationSurah,
-  }) : super(key: key);
+  });
 
   @override
   _AyatViewState createState() => _AyatViewState();
@@ -39,10 +39,11 @@ class _AyatViewState extends State<AyatView> {
   final ItemScrollController itemScrollController = ItemScrollController();
   final ItemPositionsListener itemPositionListener =
       ItemPositionsListener.create();
-  Ayah selectedAyah;
+  Ayah? selectedAyah;
   DateTime startTime = DateTime.now();
-  DateTime endTime;
-  AudioCache _audioCache;
+  DateTime? endTime;
+  late AudioCache _audioCache;
+
   @override
   void initState() {
     super.initState();
@@ -56,16 +57,24 @@ class _AyatViewState extends State<AyatView> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        allowFontScaling: true,
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height);
+    // ScreenUtil.init(context,
+    //     allowFontScaling: true,
+    //     width: MediaQuery.of(context).size.width,
+    //     height: MediaQuery.of(context).size.height);
+    ScreenUtil.init(
+      context,
+      designSize: Size(
+        MediaQuery.of(context).size.width,
+        MediaQuery.of(context).size.height,
+      ),
+    );
+
     return StreamBuilder(
       stream: AudioService.playbackStateStream,
       builder: (c, AsyncSnapshot<PlaybackState> snapshot) {
         final playing = snapshot.data?.playing ?? false;
         AudioProcessingState processingState =
-            snapshot.data?.processingState ?? AudioProcessingState.stopped;
+            snapshot.data?.processingState ?? AudioProcessingState.idle;
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
@@ -101,11 +110,13 @@ class _AyatViewState extends State<AyatView> {
                       AppLocalizations.of(context)!.translate("go_to_ayah"),
                       style: TextStyle(color: Colors.white),
                     ),
-                    onChanged: (Ayah val) async {
-                      itemScrollController.jumpTo(
-                          index: widget.surah.number == 1
-                              ? val.numberInSurah - 1
-                              : val.numberInSurah);
+                    onChanged: (Ayah? val) async {
+                      if (val != null) {
+                        itemScrollController.jumpTo(
+                            index: widget.surah.number == 1
+                                ? val.numberInSurah - 1
+                                : val.numberInSurah);
+                      }
                     },
                     items: widget.surah.ayahs
                         .map((e) => DropdownMenuItem(
@@ -118,23 +129,23 @@ class _AyatViewState extends State<AyatView> {
             iconTheme: IconThemeData(color: Colors.white),
             backgroundColor: const Color(0XFF347D53),
             actions: <Widget>[
-              if (processingState != AudioProcessingState.none &&
-                  processingState != AudioProcessingState.stopped)
+              if (processingState != AudioProcessingState.idle &&
+                  processingState != AudioProcessingState.error)
                 IconButton(
                     icon: Icon(Icons.stop),
                     onPressed: () {
                       AudioService.stop();
                     }),
               IconButton(
-                  icon: Icon(processingState == AudioProcessingState.none ||
-                          processingState == AudioProcessingState.stopped
+                  icon: Icon(processingState == AudioProcessingState.idle ||
+                          processingState == AudioProcessingState.error
                       ? Icons.headset
                       : playing
                           ? Icons.pause
                           : Icons.play_arrow),
                   onPressed: () {
-                    if (processingState == AudioProcessingState.none ||
-                        processingState == AudioProcessingState.stopped) {
+                    if (processingState == AudioProcessingState.idle ||
+                        processingState == AudioProcessingState.error) {
                       Provider.of<QuranProvider>(context, listen: false)
                           .startListeningToAyah(
                               surah: widget.surah, ayah: widget.surah.ayahs[0]);

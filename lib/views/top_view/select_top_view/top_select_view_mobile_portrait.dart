@@ -5,13 +5,13 @@ import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/providers/tasbeeh_top_provider.dart';
 import 'package:muslim_book/providers/top_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
-import 'package:muslim_book/views/top_view/competition_top_view_mobile_portrait/competition_top_mobile_portrait_ui.dart';
+// import 'package:muslim_book/views/top_view/competition_top_view_mobile_portrait/competition_top_mobile_portrait_ui.dart';
 import 'package:muslim_book/views/top_view/compeition_top_view.dart';
 import 'package:muslim_book/views/top_view/tasbeeh_top_view.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:muslim_book/widgets/share_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_admob/native_admob_controller.dart';
+// import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -106,7 +106,7 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
 
   _buildItem(int index) {
     return ElevatedButton(
-      padding: EdgeInsets.zero,
+      // padding: EdgeInsets.zero,
       onPressed: () {
         switch (index) {
           case 0:

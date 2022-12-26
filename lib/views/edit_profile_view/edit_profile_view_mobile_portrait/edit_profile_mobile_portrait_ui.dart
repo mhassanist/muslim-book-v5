@@ -2,15 +2,12 @@ import 'dart:io';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/countries_model.dart';
-import 'package:muslim_book/network_utils/api_service.dart';
 import 'package:muslim_book/providers/edit_profile_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/InputValidation.dart';
 import 'package:muslim_book/utils/app_form_controller.dart';
 import 'package:muslim_book/utils/loading_utils.dart';
-import 'package:muslim_book/utils/locator.dart';
-import 'package:muslim_book/utils/prefs.dart';
 import 'package:muslim_book/widgets/standardButton_widget.dart';
 import 'package:muslim_book/widgets/app_text_field.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +45,7 @@ class EditProfileMobilePortraitUi {
                     ? userImageOrFlag()
                     : Container(
                         decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).colorScheme.secondary,
                             shape: BoxShape.circle),
                         child: showImage(provider.getUserProfileImage),
                         height: sizeConfig.blockSizeHorizontal * 60,
@@ -63,7 +60,7 @@ class EditProfileMobilePortraitUi {
                 width: sizeConfig.blockSizeHorizontal * 12,
                 decoration: BoxDecoration(
                     border: Border.all(
-                        width: 2, color: Theme.of(context).accentColor),
+                        width: 2, color: Theme.of(context).colorScheme.secondary,),
                     color: Constants.CANVAS_COLOR,
                     shape: BoxShape.circle),
                 child: IconButton(
@@ -73,7 +70,7 @@ class EditProfileMobilePortraitUi {
                   icon: Icon(
                     Icons.edit,
                     size: sizeConfig.blockSizeHorizontal * 7,
-                    color: Theme.of(context).accentColor,
+                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ),
               ),
@@ -99,27 +96,32 @@ class EditProfileMobilePortraitUi {
     );
   }
 
-  Widget showImage(Future<File>? _imageFile) {
+  Widget showImage(File? _imageFile) {
     if (_imageFile == null) {
       return Offstage();
     }
-    return FutureBuilder<File>(
-      future: _imageFile,
-      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.data != null) {
-          return ClipOval(
-            child: Image.file(snapshot.data!, fit: BoxFit.cover),
-          );
-        } else
-          return userImageOrFlag();
-      },
+    return ClipOval(
+      child: Image.file(_imageFile, fit: BoxFit.cover),
     );
+    // return FutureBuilder<File>(
+    //   future: _imageFile,
+    //   builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+    //     if (snapshot.connectionState == ConnectionState.done &&
+    //         snapshot.data != null) {
+    //       return ClipOval(
+    //         child: Image.file(snapshot.data!, fit: BoxFit.cover),
+    //       );
+    //     } else
+    //       return userImageOrFlag();
+    //   },
+    // );
   }
 
   _pickImage(ImageSource _imageSource) async {
-    final file = ImagePicker().pickImage(source: _imageSource,);
-    provider.setUserProfileImage = file!;
+    final file = await ImagePicker().pickImage(source: _imageSource,);
+    if (file != null) {
+      provider.setUserProfileImage = File(file.path);
+    }
   }
 
   _openChooseImagePopup() {
@@ -162,7 +164,7 @@ class EditProfileMobilePortraitUi {
               ),
             ),
             Divider(
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             SimpleDialogOption(
               onPressed: () {
@@ -252,7 +254,7 @@ class EditProfileMobilePortraitUi {
                 ),
                 value: provider.selectedCountry,
                 onChanged: (val) {
-                  provider.selectedCountry = val;
+                  provider.selectedCountry = val!;
                 },
                 isExpanded: true,
                 items: provider.countries.map((f) {
@@ -264,7 +266,7 @@ class EditProfileMobilePortraitUi {
                           padding: EdgeInsets.symmetric(
                               horizontal: sizeConfig.blockSizeHorizontal * 2),
                           child: CircleAvatar(
-                            backgroundImage: NetworkImage(f.flag),
+                            backgroundImage: NetworkImage(f.flag ?? ''),
                           ),
                           margin: EdgeInsets.symmetric(
                               vertical: sizeConfig.blockSizeVertical),
@@ -275,7 +277,7 @@ class EditProfileMobilePortraitUi {
                             padding: EdgeInsets.symmetric(
                                 horizontal: sizeConfig.blockSizeHorizontal),
                             child: Text(
-                              f.name,
+                              f.name ?? '',
                               style: new TextStyle(
                                   color: Colors.black,
                                   fontSize: sizeConfig.blockSizeHorizontal * 4),
@@ -312,14 +314,14 @@ class EditProfileMobilePortraitUi {
 
   Future<void> saveEdit(GlobalKey<ScaffoldState> key) async{
     if (provider.selectedCountry == null) {
-      key.currentState.showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
               AppLocalizations.of(context)!.translate("country_is_required"))));
-    } else if (controllers.formKey.currentState.validate()) {
+    } else if (controllers.formKey.currentState!.validate()) {
       LoadingUtils loadingUtils = LoadingUtils();
-      loadingUtils.setIsLoading(key.currentContext, true);
+      loadingUtils.setIsLoading(key.currentContext!, true);
      var res =await provider.checkEdit(controllers.nameController.text);
-      loadingUtils.setIsLoading(key.currentContext, false);
+      loadingUtils.setIsLoading(key.currentContext!, false);
       if (res) {
         Navigator.pop(context);
       }

@@ -14,7 +14,7 @@ import 'islamic_offline/islamics_offline_screen.dart';
 import 'islamics_screen.dart';
 
 class IslamicsView extends StatefulWidget {
-  const IslamicsView({Key key}) : super(key: key);
+  const IslamicsView({super.key});
 
   @override
   _IslamicsViewState createState() => _IslamicsViewState();

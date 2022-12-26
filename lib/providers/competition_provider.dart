@@ -16,18 +16,18 @@ import 'package:flutter/material.dart';
 import 'package:quiver/async.dart';
 
 class CompetitionProvider extends ViewStateProvider {
-  final UserProvider _userProvider;
-  CompetitionUI ui;
+  late final UserProvider _userProvider;
+  late CompetitionUI ui;
   AudioCache _audioPlayer = AudioCache();
   int? _chosenPosition;
-  int _correctAnswerPosition;
+  int? _correctAnswerPosition;
   bool _isDisposed = false;
   bool _isDialogOpened = false;
   bool _isExiteOpened = false;
-  List<QuestionModel> _questions;
-  List<AnswerModel> _answers;
-  AnswerResultModelData _answerResultModelData;
-  Color _color;
+  List<QuestionModel> _questions = [];
+  List<AnswerModel> _answers = [];
+  AnswerResultModelData _answerResultModelData = AnswerResultModelData();
+  Color? _color;
   bool _isAnsweredClicked = false;
   int _questionIndex = 0;
   int _answerId = 0;
@@ -35,10 +35,10 @@ class CompetitionProvider extends ViewStateProvider {
   int _current = 60;
   int _correctAnswerCounter = 0;
   bool _agreeToStart = false;
-  CountdownTimer _countDownTimer;
+  CountdownTimer? _countDownTimer;
   bool _disablePickingAnswers = false;
 
-  answer.AnswerModelData _scoreModelData;
+  late answer.AnswerModelData _scoreModelData;
 
   CompetitionProvider(this._userProvider) {
     super.setViewState(ViewState.Loading);
@@ -51,7 +51,7 @@ class CompetitionProvider extends ViewStateProvider {
     notifyListeners();
   }
 
-  int _totalQuestions;
+  int _totalQuestions = 0;
 
   int get totalQuestions => _totalQuestions;
 
@@ -97,14 +97,14 @@ class CompetitionProvider extends ViewStateProvider {
 
   int get answerId => _answerId;
 
-  Color get color => _color;
+  Color? get color => _color;
 
   @override
   void dispose() {
     print("provider disposed");
     _isDisposed = true;
     if (_countDownTimer != null) {
-      _countDownTimer.cancel();
+      _countDownTimer!.cancel();
     }
     notifyListeners();
     super.dispose();
@@ -192,7 +192,7 @@ class CompetitionProvider extends ViewStateProvider {
       Duration(seconds: 1),
     );
 
-    var sub = _countDownTimer.listen(null);
+    var sub = _countDownTimer!.listen(null);
     sub.onData((duration) {
       _current = _start - duration.elapsed.inSeconds;
       notifyListeners();
@@ -202,13 +202,15 @@ class CompetitionProvider extends ViewStateProvider {
       if (questionIndex > 1 && questionIndex % 5 == 0 && questionIndex != 10) {
         openFaceBookAd();
       }
-      if (questions != null) {
+      if (questions.isNotEmpty) {
         if (_chosenPosition == null) chosenPosition = _correctAnswerPosition;
-        if (questions[questionIndex].answers[_chosenPosition].result == 1 &&
+        if (_chosenPosition != null &&
+            questions[questionIndex].answers[_chosenPosition!].result == 1 &&
             _isAnsweredClicked) {
           _correctAnswerCounter++;
           playCorrectAnswerVoice();
-        } else if (questions[questionIndex].answers[_chosenPosition].result ==
+        } else if (_chosenPosition != null &&
+            questions[questionIndex].answers[_chosenPosition!].result ==
             0 &&
             _isAnsweredClicked) {
           _correctAnswerCounter = 0;

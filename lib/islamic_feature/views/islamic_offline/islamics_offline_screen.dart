@@ -12,7 +12,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'islamic_cat_posts.dart';
 
 class IslamicsOfflineScreen extends StatefulWidget {
-  const IslamicsOfflineScreen({Key key}) : super(key: key);
+  const IslamicsOfflineScreen({super.key});
 
   @override
   _IslamicsOfflineScreenState createState() => _IslamicsOfflineScreenState();

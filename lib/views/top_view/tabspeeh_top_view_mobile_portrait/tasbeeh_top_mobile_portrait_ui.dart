@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/providers/tasbeeh_top_provider.dart';
-import 'package:muslim_book/providers/top_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -10,13 +9,14 @@ import 'package:responsive_builder/responsive_builder.dart';
 import '../../../utils/sizing_info_extension.dart';
 
 class TasbeehTopUI {
-  TasbeehTopProvider provider;
-  final BuildContext context;
-  SizingInformation sizeConfig;
+  late TasbeehTopProvider provider;
+  late final BuildContext context;
+  late SizingInformation sizeConfig;
 
   TasbeehTopUI(this.context) {
     provider = Provider.of<TasbeehTopProvider>(context);
   }
+
   final Color prymaryColor = const Color(0XFF347D53);
   final _greenColor = const Color(0XFF86CF72);
 
@@ -41,11 +41,13 @@ class TasbeehTopUI {
                         child: Column(
                       children: [
                         buildDailyRankWidget(sizeConfig,
-                            titel: AppLocalizations.of(context)!.translate("Weekly_Achievement"),
+                            titel: AppLocalizations.of(context)!
+                                .translate("Weekly_Achievement"),
                             number: "${provider.userScore.rank}",
                             image: "rank_medal.png"),
                         buildDailyRankWidget(sizeConfig,
-                            titel: AppLocalizations.of(context)!.translate("Weekly_Achievement"),
+                            titel: AppLocalizations.of(context)!
+                                .translate("Weekly_Achievement"),
                             number: "${provider.userScore.points}",
                             image: "flag_medal.png"),
                       ],
@@ -88,12 +90,12 @@ class TasbeehTopUI {
               return topItem(
                   index,
                   Constants.CANVAS_COLOR,
-                  Theme.of(context).accentColor,
+                  Theme.of(context).colorScheme.secondary,
                   // provider.topList[index].id.toString(),
                   provider.topList[index].name,
                   provider.topList[index].country,
                   provider.topList[index].points.toString(),
-                  provider.topList[index].image == null
+                  provider.topList[index].image.isEmpty
                       ? provider.topList[index].flag
                           .replaceAll("http://", "https://")
                       : provider.topList[index].image
@@ -105,8 +107,12 @@ class TasbeehTopUI {
     );
   }
 
-  buildDailyRankWidget(SizingInformation sizeConfig,
-      {String titel, String number, String image}) {
+  buildDailyRankWidget(
+    SizingInformation sizeConfig, {
+    String titel = '',
+    String number = '',
+    String image = '',
+  }) {
     return Container(
       margin: EdgeInsets.symmetric(
           vertical: sizeConfig.blockSizeVertical,
@@ -172,13 +178,14 @@ class TasbeehTopUI {
   }
 
   Widget topItem(
-      index,
-      Color backgroundColor,
-      Color textColor,
-      String name,
-      String countryName,
-      String points,
-      [String imageString]) {
+    index,
+    Color backgroundColor,
+    Color textColor,
+    String name,
+    String countryName,
+    String points, [
+    String imageString = '',
+  ]) {
     var smallFont = sizeConfig.blockSizeHorizontal * 3;
     var mediumFont = sizeConfig.blockSizeHorizontal * 4;
 
@@ -212,17 +219,17 @@ class TasbeehTopUI {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: imageString == null
-                                    ? AssetImage(
-                                        'assets/images/general/person.jpg')
-                                    : NetworkImage(
-                                        imageString.replaceAll(
-                                            "http://", "https://"),
-                                      ),
-                                fit: BoxFit.cover)),
+                          color: Theme.of(context).colorScheme.secondary,
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              imageString.replaceAll("http://", "https://"),
+                            ),
+                            onError: (_, __) =>
+                                AssetImage('assets/images/general/person.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                         height: sizeConfig.blockSizeHorizontal * 13,
                         width: sizeConfig.blockSizeHorizontal * 13,
                       )
@@ -257,7 +264,8 @@ class TasbeehTopUI {
                               Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: Text(
-                                  AppLocalizations.of(context)!.translate("numberPraises"),
+                                  AppLocalizations.of(context)!
+                                      .translate("numberPraises"),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -297,7 +305,7 @@ class TasbeehTopUI {
         ? topItem(
             0,
             Constants.CANVAS_COLOR,
-            Theme.of(context).accentColor,
+            Theme.of(context).colorScheme.secondary,
             provider.topList.first.name,
             provider.topList.first.country,
             provider.topList.first.points.toString(),
@@ -310,7 +318,7 @@ class TasbeehTopUI {
     return provider.userScore != null
         ? topItem(
             provider.userScore.rank - 1,
-            Theme.of(context).accentColor,
+            Theme.of(context).colorScheme.secondary,
             Theme.of(context).primaryColorDark,
             provider.userScore.name,
             provider.userScore.country,

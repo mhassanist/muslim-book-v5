@@ -70,6 +70,24 @@ class LocationUtilities {
     }
   }
 
+  Future getLocationData(loc.LocationAccuracy accuracy) async {
+    try {
+      loc.LocationData locationData = await loc.getLocation(
+        settings: loc.LocationSettings(accuracy: accuracy,),
+      ).timeout(
+        Duration(seconds: 3),
+        onTimeout: () async {
+          return await loc.getLocation(
+            settings: loc.LocationSettings(accuracy: accuracy,),
+          ).timeout(Duration(seconds: 60));
+        },
+      );
+      return locationData;
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<Placemark?> getAddress(lat, long) async {
     try {
       final placeMarks = await placemarkFromCoordinates(lat, long)

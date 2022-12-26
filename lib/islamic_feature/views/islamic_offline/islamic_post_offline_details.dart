@@ -10,8 +10,7 @@ class IslamicPostOfflineDetails extends StatefulWidget {
   final Map<String, dynamic> data;
   final String catName;
 
-  const IslamicPostOfflineDetails(this.data, this.catName, {Key key})
-      : super(key: key);
+  const IslamicPostOfflineDetails(this.data, this.catName, {super.key,});
 
   @override
   State<IslamicPostOfflineDetails> createState() =>

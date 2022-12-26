@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:muslim_book/ads/admob_rectangle.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
 import 'package:muslim_book/home_feature/controllers/providers_get_post.dart';
@@ -9,20 +10,20 @@ import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/widgets/app_scaffold_title.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/all.dart';
+// import 'package:flutter_riverpod/all.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:loading/indicator/ball_beat_indicator.dart';
 import 'package:loading/loading.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 
 class IslamicItemDetails extends ConsumerWidget {
   final Categore category;
 
   IslamicItemDetails(this.category);
 
-  PostsNotifier postschanges;
+  late final PostsNotifier postschanges;
   static int islamicPageIndex = 1;
 
   static List<Widget> islamicPostsListWidget = [];
@@ -34,12 +35,12 @@ class IslamicItemDetails extends ConsumerWidget {
       RefreshController(initialRefresh: false);
 
   void _onIslamicPostsRefresh() async {
-    await postschanges.getIslamicCategoryPosts(++islamicPageIndex, category.id);
+    await postschanges.getIslamicCategoryPosts(++islamicPageIndex, category.id ?? -1);
     _islamicCatListRefreshController.loadComplete();
   }
 
   Future<void> _onIslamicPostsLoading() async {
-    await postschanges.getIslamicCategoryPosts(++islamicPageIndex, category.id);
+    await postschanges.getIslamicCategoryPosts(++islamicPageIndex, category.id ?? -1);
 
     if (postschanges.islamicCatPosts.isEmpty) {
       _islamicCatListRefreshController.loadNoData();
@@ -49,10 +50,10 @@ class IslamicItemDetails extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, ScopedReader watch) {
-    postschanges = watch(getPosts);
+  Widget build(BuildContext context, WidgetRef ref) {
+    postschanges = ref.watch(getPosts);
     if (postschanges.isIslamicCatItemsLoading == true) {
-      postschanges.getIslamicCategoryPosts(islamicPageIndex, category.id);
+      postschanges.getIslamicCategoryPosts(islamicPageIndex, category.id??-1);
     }
     if (postschanges.islamicCatPosts.isNotEmpty) {
       for (int i = 1; i <= postschanges.islamicCatPosts.length; i++) {
@@ -73,7 +74,7 @@ class IslamicItemDetails extends ConsumerWidget {
     }
     return ResponsiveBuilder(builder: (context, SizingInformation sizeConfig) {
       return WillPopScope(
-        onWillPop: () {
+        onWillPop: () async {
           islamicPostsList = [];
           islamicPostsListWidget = [];
           postschanges.islamicCatPosts = [];
@@ -81,7 +82,7 @@ class IslamicItemDetails extends ConsumerWidget {
           postschanges.isIslamicCatItemsLoading = true;
           Navigator.pop(context);
           //return CatsSubCatsBloc().categoryName = null;
-          return null;
+          return false;
         },
         child: Scaffold(
           appBar: AppBar(
@@ -132,7 +133,7 @@ class IslamicItemDetails extends ConsumerWidget {
         enablePullUp: true,
         controller: _islamicCatListRefreshController,
         footer: CustomFooter(
-          builder: (BuildContext context, LoadStatus mode) {
+          builder: (BuildContext context, LoadStatus? mode) {
             Widget body;
             if (mode == LoadStatus.noMore) {
               body =
@@ -145,7 +146,7 @@ class IslamicItemDetails extends ConsumerWidget {
             } else if (mode == LoadStatus.failed) {
               body = Text("Load Failed!Click retry!");
             } else if (mode == LoadStatus.canLoading) {
-              body = Text(AppLocalizations.of(context)
+              body = Text(AppLocalizations.of(context)!
                   .translate("release_to_load_more"));
             } else {
               body = Text("No more Data");
@@ -232,7 +233,7 @@ class IslamicItemDetails extends ConsumerWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    AppLocalizations.of(context)
+                                    AppLocalizations.of(context)!
                                         .translate("share"),
                                     style: TextStyle(fontSize: 13),
                                   ),
@@ -273,7 +274,7 @@ class IslamicItemDetails extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  AppLocalizations.of(context)
+                                  AppLocalizations.of(context)!
                                       .translate("like"),
                                   style: TextStyle(
                                       color: islamicPost.liked

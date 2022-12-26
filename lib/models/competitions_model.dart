@@ -170,7 +170,7 @@ class Meta {
   String? path;
   int? perPage;
   int? to;
-  int? total;
+  int total;
 
   Meta({
     this.currentPage,
@@ -179,7 +179,7 @@ class Meta {
     this.path,
     this.perPage,
     this.to,
-    this.total,
+    this.total = 0,
   });
 
   factory Meta.fromJson(String str) => Meta.fromMap(json.decode(str));

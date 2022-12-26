@@ -6,32 +6,32 @@ class UserScoreModel {
     this.id,
     this.email,
     this.image,
-    this.name,
+    this.name = '',
     this.countryId,
     this.cityId,
-    this.points,
-    this.flag,
-    this.country,
+    this.points = 0,
+    this.flag = '',
+    this.country = '',
     this.city,
-    this.correctAnswer,
-    this.wrongAnswer,
-    this.rank,
+    this.correctAnswer = 0,
+    this.wrongAnswer = 0,
+    this.rank = 0,
     this.total
   });
 
   int? id;
   String? email;
   dynamic image;
-  String? name;
+  String name;
   int? countryId;
   int? cityId;
-  int? points;
-  String? flag;
-  String? country;
+  int points;
+  String flag;
+  String country;
   String? city;
-  int? correctAnswer;
-  int? wrongAnswer;
-  int? rank;
+  int correctAnswer;
+  int wrongAnswer;
+  int rank;
   int? total;
 
 

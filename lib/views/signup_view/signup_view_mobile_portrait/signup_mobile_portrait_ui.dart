@@ -18,12 +18,14 @@ import '../../../locals_utils/app_localizations.dart';
 import '../../../utils/sizing_info_extension.dart';
 
 class SignupMobilePortraitUi {
-  UserProvider userProvider;
-  SizingInformation sizeConfig;
+  late UserProvider userProvider;
+  late SizingInformation sizeConfig;
   final BuildContext context;
   final AppFormControllers controllers;
+
   SignupMobilePortraitUi(this.context, this.controllers) {
     userProvider = Provider.of<UserProvider>(context);
+    // sizeConfig = SizingInformation();
   }
 
   Widget imageWidget() {
@@ -31,7 +33,7 @@ class SignupMobilePortraitUi {
       padding: const EdgeInsets.only(top: 20, bottom: 15),
       child: Center(
         child: Stack(
-          overflow: Overflow.visible,
+          // overflow: Overflow.visible,
           fit: StackFit.passthrough,
           //fit: StackFit.loose,
           children: <Widget>[
@@ -63,17 +65,16 @@ class SignupMobilePortraitUi {
           child: Column(
             children: <Widget>[
               AppTextField(
-
                 formKey: controllers.formKey,
                 controller: controllers.nameController,
                 currentNode: controllers.nameNode,
                 nextNode: controllers.emailNode,
-                hint: AppLocalizations.of(context)
+                hint: AppLocalizations.of(context)!
                     .translate("enter_account_name"),
                 icon: Icons.account_box,
                 sizeConfig: sizeConfig,
                 validator: (value) {
-                  return   InputValidation.userNameValidation(
+                  return InputValidation.userNameValidation(
                       controllers.nameController, context);
                 },
                 inputType: TextInputType.text,
@@ -91,7 +92,7 @@ class SignupMobilePortraitUi {
                 icon: Icons.email,
                 sizeConfig: sizeConfig,
                 validator: (value) {
-                  return   InputValidation.emailValidation(
+                  return InputValidation.emailValidation(
                       controllers.emailController, context);
                 },
               ),
@@ -109,7 +110,7 @@ class SignupMobilePortraitUi {
                 icon: Icons.lock,
                 sizeConfig: sizeConfig,
                 validator: (value) {
-                  return   InputValidation.passwordValidation(
+                  return InputValidation.passwordValidation(
                       controllers.passwordController, context);
                 },
                 textInputAction: TextInputAction.next,
@@ -129,7 +130,7 @@ class SignupMobilePortraitUi {
                 icon: Icons.lock,
                 sizeConfig: sizeConfig,
                 validator: (value) {
-                return  InputValidation.confirmPasswordValidation(
+                  return InputValidation.confirmPasswordValidation(
                       controllers.confirmPasswordController,
                       controllers.passwordController,
                       context);
@@ -162,7 +163,7 @@ class SignupMobilePortraitUi {
                           ),
                         ),
                         Text(
-                          AppLocalizations.of(context)
+                          AppLocalizations.of(context)!
                               .translate("country_name"),
                           style: TextStyle(
                             fontSize: sizeConfig.blockSizeHorizontal * 4,
@@ -172,7 +173,9 @@ class SignupMobilePortraitUi {
                     ),
                     value: userProvider.selectedCountry,
                     onChanged: (val) {
-                      userProvider.selectedCountry = val;
+                      if (val != null) {
+                        userProvider.selectedCountry = val;
+                      }
                     },
                     isExpanded: true,
                     items: userProvider.countries.map((f) {
@@ -185,7 +188,7 @@ class SignupMobilePortraitUi {
                                   horizontal:
                                       sizeConfig.blockSizeHorizontal * 2),
                               child: CircleAvatar(
-                                backgroundImage: NetworkImage(f.flag),
+                                backgroundImage: NetworkImage(f.flag ?? ''),
                               ),
                               margin: EdgeInsets.symmetric(
                                   vertical: sizeConfig.blockSizeVertical),
@@ -196,7 +199,7 @@ class SignupMobilePortraitUi {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: sizeConfig.blockSizeHorizontal),
                                 child: Text(
-                                  f.name,
+                                  f.name ?? '',
                                   style: new TextStyle(
                                       color: Colors.black,
                                       fontSize:
@@ -257,21 +260,24 @@ class SignupMobilePortraitUi {
 
   Future setRegister(GlobalKey<ScaffoldState> key) async {
     if (userProvider.selectedCountry == null) {
-      key.currentState.showSnackBar(SnackBar(
-          content: Text(
-              AppLocalizations.of(context)!.translate("country_is_required"))));
-    } else if (controllers.formKey.currentState.validate()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+            content: Text(AppLocalizations.of(context)!
+                .translate("country_is_required"))),
+      );
+    } else if (controllers.formKey.currentState!.validate()) {
       LoadingUtils loadingUtils = LoadingUtils();
-      loadingUtils.setIsLoading(key.currentContext, true);
+      loadingUtils.setIsLoading(key.currentContext!, true);
       bool res = await userProvider.register({
         "email": controllers.emailController.text.trim(),
         "name": controllers.nameController.text.trim(),
         "country_id": "${userProvider.selectedCountry.id}",
         "city_id": "1",
         "password": controllers.passwordController.text.trim(),
-        "password_confirmation": controllers.confirmPasswordController.text.trim(),
+        "password_confirmation":
+            controllers.confirmPasswordController.text.trim(),
       });
-      loadingUtils.setIsLoading(key.currentContext, false);
+      loadingUtils.setIsLoading(key.currentContext!, false);
       if (res) {
         Navigator.pop(context);
       }
@@ -279,8 +285,8 @@ class SignupMobilePortraitUi {
   }
 
   void getCountries() async {
-    CountriesModel model = await locator<ApiService>().getCountries(AppLocalizations.of(context)!.locale.languageCode);
-    userProvider.countries = model?.data;
+    CountriesModel? model = await locator<ApiService>()
+        .getCountries(AppLocalizations.of(context)!.locale.languageCode);
+    userProvider.countries = model?.data ?? [];
   }
-
 }

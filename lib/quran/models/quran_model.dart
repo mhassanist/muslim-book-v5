@@ -82,7 +82,7 @@ class Ayah {
   Ayah({
     this.number,
     required this.text,
-    this.numberInSurah,
+    this.numberInSurah = 1,
     this.juz,
     this.manzil,
     this.page,
@@ -96,7 +96,7 @@ class Ayah {
   @HiveField(1)
   String text;
   @HiveField(2)
-  int? numberInSurah;
+  int numberInSurah;
   @HiveField(3)
   int? juz;
   @HiveField(4)

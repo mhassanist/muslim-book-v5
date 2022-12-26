@@ -15,7 +15,7 @@ class SignupViewMobilePortrait extends StatefulWidget {
 }
 
 class _SignupViewMobilePortraitState extends State<SignupViewMobilePortrait> {
-  SignupMobilePortraitUi ui;
+  late SignupMobilePortraitUi ui;
   GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
   final AppFormControllers controllers = AppFormControllers();
 

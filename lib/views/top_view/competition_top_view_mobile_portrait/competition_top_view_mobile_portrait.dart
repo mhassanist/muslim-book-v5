@@ -1,5 +1,3 @@
-import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/providers/top_provider.dart';
@@ -20,7 +18,7 @@ class CompetitionTopPage extends StatefulWidget {
 }
 
 class _CompetitionTopPageState extends State<CompetitionTopPage> {
-  TopUI ui;
+  late TopUI ui;
 
   @override
   void didChangeDependencies() {

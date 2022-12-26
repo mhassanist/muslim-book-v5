@@ -14,7 +14,7 @@ import 'package:loading/loading.dart';
 class IslamicCatPosts extends StatefulWidget {
   final Map<String, dynamic> data;
 
-  const IslamicCatPosts(this.data, {Key key}) : super(key: key);
+  const IslamicCatPosts(this.data, {super.key});
 
   @override
   _IslamicCatPostsState createState() => _IslamicCatPostsState();

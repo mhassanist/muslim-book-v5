@@ -11,7 +11,6 @@ import 'package:muslim_book/views/settings_view/settings_view_mobile_portrait/se
 import 'package:muslim_book/widgets/base_widget.dart';
 import 'package:muslim_book/widgets/custom_expansion_panel_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -22,16 +21,16 @@ import '../../../widgets/appBar_widget.dart';
 
 class ExpansionpanelItem {
   bool isExpanded;
-  final String title;
-  final Widget content;
+  final String? title;
+  final Widget? content;
   final Icon leading;
-  final String icon;
+  final String? icon;
 
   ExpansionpanelItem({
-    this.isExpanded,
+    required this.isExpanded,
     this.title,
     this.content,
-    this.leading,
+    required this.leading,
     this.icon,
   });
 }
@@ -44,8 +43,8 @@ class SettingsViewMobilePortrait extends StatefulWidget {
 
 class _SettingsViewMobilePortraitState
     extends State<SettingsViewMobilePortrait> {
-  SettingsMobilePortraitUi ui;
-  Language lang;
+  late SettingsMobilePortraitUi ui;
+  Language? lang;
 
   @override
   void initState() {
@@ -111,7 +110,7 @@ class _SettingsViewMobilePortraitState
                 value: Language.Arabic,
                 groupValue: lang,
                 activeColor: darkish_green,
-                onChanged: (Language value) {
+                onChanged: (Language? value) {
                   _changeLanguage("ar");
                   Navigator.pop(context);
                 },
@@ -123,7 +122,7 @@ class _SettingsViewMobilePortraitState
                 value: Language.english,
                 activeColor: darkish_green,
                 groupValue: lang,
-                onChanged: (Language value) {
+                onChanged: (Language? value) {
                   _changeLanguage("en");
                   Navigator.pop(context);
                 },
@@ -135,7 +134,7 @@ class _SettingsViewMobilePortraitState
                 value: Language.france,
                 groupValue: lang,
                 activeColor: darkish_green,
-                onChanged: (Language value) {
+                onChanged: (Language? value) {
                   _changeLanguage("fr");
                   Navigator.pop(context);
                 },
@@ -185,8 +184,7 @@ class _SettingsViewMobilePortraitState
                 leading: Icon(Icons.arrow_back_ios)),
             ExpansionpanelItem(
                 isExpanded: false,
-                title: AppLocalizations.of(context)
-                    .translate("edite_tieme_prayer"),
+                title: AppLocalizations.of(context)!.translate("edite_tieme_prayer"),
                 content: ui.azanTime(),
                 leading: Icon(Icons.arrow_back_ios)),
             ExpansionpanelItem(
@@ -243,7 +241,7 @@ class _SettingsViewMobilePortraitState
                                           child: Row(
                                             children: [
                                               SvgPicture.asset(
-                                                item.icon,
+                                                item.icon ?? '',
                                                 height: 26.0,
                                                 color: Colors.white,
                                                 allowDrawingOutsideViewBox:
@@ -253,8 +251,7 @@ class _SettingsViewMobilePortraitState
                                                 width: 10,
                                               ),
                                               Text(
-                                                contents[items.indexOf(item)]
-                                                    .title,
+                                                contents[items.indexOf(item)].title??'',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 16,

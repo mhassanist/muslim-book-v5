@@ -34,7 +34,6 @@ import 'package:native_ads_flutter/native_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-import '../../../utils/Constants.dart';
 import '../../../utils/sizing_info_extension.dart';
 
 class StartViewMobilePortraitView extends StatefulWidget {
@@ -132,8 +131,9 @@ class _StartViewMobilePortraitViewState
   check() async {
     var showCompetition =
         await Constants.platform.invokeMethod(Constants.Open_Competition);
-     List<dynamic> phoneNumbersList = await Constants.platform
-        .invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
+     // List<dynamic> phoneNumbersList = await Constants.platform
+     //    .invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
+    await Constants.platform.invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
     if (showCompetition != null) {
       Provider.of<UserProvider>(context, listen: false).selectedPage = 3;
     }
@@ -279,8 +279,10 @@ class _StartViewMobilePortraitViewState
     if (Provider.of<UserProvider>(context, listen: false).selectedPage != 2) {
       Provider.of<UserProvider>(context, listen: false).selectedPage = 2;
     } else {
-      return (MyApp.exitBottomSheet(context)) ?? false;
+      MyApp.exitBottomSheet(context);
+      return false;
     }
+    return false;
   }
 
   Future<bool> _onWillPop2() async {
@@ -297,8 +299,7 @@ class _StartViewMobilePortraitViewState
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
                     child: Text(
-                      AppLocalizations.of(context)
-                          .translate("are_you_sure_exit"),
+                      AppLocalizations.of(context)!.translate("are_you_sure_exit"),
                       style: TextStyle(
                         fontSize: sizeConfig.blockSizeHorizontal * 6,
                         color: Theme.of(context).primaryColorDark,
@@ -392,8 +393,7 @@ class _StartViewMobilePortraitViewState
                       },
                       fillColor: Theme.of(context).primaryColor,
                       child: Text(
-                        AppLocalizations.of(context)
-                            .translate("rating_muslim_book?"),
+                        AppLocalizations.of(context)!.translate("rating_muslim_book?"),
                         style: TextStyle(
                           fontSize: sizeConfig.blockSizeHorizontal * 5,
                           color: Constants.CANVAS_COLOR,
@@ -407,6 +407,7 @@ class _StartViewMobilePortraitViewState
           )) ??
           false;
     }
+    return false;
   }
 
   List<String> _pagesNames(context) => [

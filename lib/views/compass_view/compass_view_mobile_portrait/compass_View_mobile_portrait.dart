@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:geocoding/geocoding.dart';
 import 'package:muslim_book/ads/admob_rectangle.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
@@ -10,13 +11,13 @@ import 'package:muslim_book/utils/location_utilities.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_compass/flutter_compass.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:geocoder/geocoder.dart';
-import 'package:geolocation/geolocation.dart';
+// import 'package:geocoder/geocoder.dart';
+// import 'package:geolocation/geolocation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart' as loc;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:sensors/sensors.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 class CompassViewMobilePortrait extends StatefulWidget {
   @override
@@ -26,10 +27,10 @@ class CompassViewMobilePortrait extends StatefulWidget {
 
 class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
   bool _hasPermissions = false;
-  String currentLocLatLong;
-  double currentLocLat, currentLocLng;
+  String currentLocLatLong = '';
+  double? currentLocLat, currentLocLng;
   double degToKaabaBaring = 0;
-  bool _gettingLocation;
+  late bool _gettingLocation;
 
   @override
   void initState() {
@@ -47,13 +48,14 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
 
   getCurrentLocation() async {
     _gettingLocation = true;
-    LocationUtilities().getLocation(loc.LocationAccuracy.HIGH).then((response) {
+    LocationUtilities().getLocationData(loc.LocationAccuracy.high).then((response) {
       if (response != null) {
         if (mounted) {
           setState(() {
-            currentLocLat = (response as Address).coordinates.latitude;
-            currentLocLng = (response as Address).coordinates.longitude;
-            currentLocLatLong = "${(response as Address).addressLine}";
+            currentLocLat = (response as loc.LocationData).latitude;
+            currentLocLng = response.longitude;
+            // currentLocLatLong = "${(response as Address).addressLine}";
+            currentLocLatLong = "{(response as Address).addressLine}";
             _gettingLocation = false;
           });
         }
@@ -84,7 +86,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
               ),
             ),
             onTap: () {
-              Get.find<HomeController>().scaffoldKey.currentState.openDrawer();
+              Get.find<HomeController>().scaffoldKey.currentState!.openDrawer();
             },
           ),
           backgroundColor:
@@ -108,7 +110,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
 
   Widget _buildCompass(double unitSize) {
 
-    return StreamBuilder<double>(
+    return StreamBuilder<CompassEvent>(
       stream: FlutterCompass.events,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -128,21 +130,22 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
         }
 
         if (currentLocLat != null && currentLocLng != null) {
-          Geolocator()
-              .bearingBetween(currentLocLat, currentLocLng, Constants.KAABA_LAT,
-                  Constants.KAABA_LNG)
-              .then((bearing) {
-//            print("Bearing :: $bearing");
-
-            if (mounted) {
-              setState(() {
-                degToKaabaBaring = bearing;
-              });
-            }
-          });
+          final bearing = Geolocator.bearingBetween(
+            currentLocLat!,
+            currentLocLng!,
+            Constants.KAABA_LAT,
+            Constants.KAABA_LNG,
+          );
+          if (mounted) {
+            setState(() {
+              degToKaabaBaring = bearing;
+            });
+          }
         }
 
-        double direction = snapshot.data;
+        // double direction = snapshot.data;
+        // double? direction = snapshot.data!.heading;
+        double direction = snapshot.data!.heading ?? 0;
 //
 //        Permission.locationWhenInUse.request().then((status) {
 //          if (status.isGranted)
@@ -213,9 +216,9 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
                                 onPressed: () async {
                                   _fetchPermissionStatus();
                                 },
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(Radius.circular(5))),
-                                color: Theme.of(context).primaryColor,
+                                // shape: RoundedRectangleBorder(
+                                //     borderRadius: BorderRadius.all(Radius.circular(5))),
+                                // color: Theme.of(context).primaryColor,
                                 child: Text(
                                   AppLocalizations.of(context)!.translate("give_perm"),
                                   style: TextStyle(
@@ -242,7 +245,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
   void _fetchPermissionStatus() {
     Permission.locationWhenInUse.request().then((status) async {
       if (status.isGranted) {
-        if (await loc.Location().serviceEnabled()) {
+        if (await Geolocator.isLocationServiceEnabled()) {
           if (mounted) {
             setState(
                 () => _hasPermissions = status == PermissionStatus.granted);
@@ -250,13 +253,11 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
           }
         } else {
           try{
-            GeolocationResult result = await Geolocation.enableLocationServices();
-            if (result.isSuccessful) {
+            final result = await loc.requestPermission();
+            if (result.authorized) {
               _fetchPermissionStatus();
             }
-
           } catch(e){
-
           }
         }
       }
