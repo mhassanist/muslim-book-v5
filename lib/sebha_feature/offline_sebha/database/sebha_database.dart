@@ -33,7 +33,7 @@ LazyDatabase _openConnection() {
 
 @UseMoor(tables: [Tsabeeh])
 class SebhaDataBase extends _$SebhaDataBase {
-  SharedPreferences prefs;
+  late SharedPreferences prefs;
 
   SebhaDataBase() : super(_openConnection()) {
     initializeDatabase();
@@ -69,7 +69,7 @@ class SebhaDataBase extends _$SebhaDataBase {
   void initializeDatabase() async {
     prefs = await SharedPreferences.getInstance();
     if (prefs.getBool("tsabeehDatabaseInitialized") == null ||
-        !prefs.getBool("tsabeehDatabaseInitialized")) {
+        !prefs.getBool("tsabeehDatabaseInitialized")!) {
       List<Map<String, dynamic>> tsabeeh = [
         {
           "name": "سبحان الله",

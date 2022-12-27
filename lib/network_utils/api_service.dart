@@ -269,7 +269,7 @@ class ApiService {
     }
   }
 
-  Future<SebhaTopModelData?> getSebhaProfile() async {
+  Future<SebhaTopModelData> getSebhaProfile() async {
     try {
       var res = await _dio.get(
         "reminds/me",
@@ -282,7 +282,7 @@ class ApiService {
       SebhaTopModelData model = SebhaTopModelData.fromMap(res.data["data"]);
       return model;
     } catch (e) {
-      return null;
+      return SebhaTopModelData();
     }
   }
 }

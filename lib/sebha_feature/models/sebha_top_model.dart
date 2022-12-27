@@ -43,26 +43,26 @@ class SebhaTopModel {
 
 class SebhaTopModelData {
   SebhaTopModelData({
-    this.total,
+    this.total = 0,
     this.id,
-    this.email,
-    this.image,
-    this.name,
+    this.email = '',
+    this.image = '',
+    this.name = '',
     this.countryId,
-    this.flag,
-    this.country,
-    this.rank,
+    this.flag = '',
+    this.country = '',
+    this.rank = 0,
   });
 
-  int? total;
+  late int total;
   int? id;
-  String? email;
-  String? image;
-  String? name;
+  late String email;
+  late String image;
+  late String name;
   int? countryId;
-  String? flag;
-  String? country;
-  int? rank;
+  late String flag;
+  late String country;
+  late int rank;
 
   factory SebhaTopModelData.fromJson(String str) =>
       SebhaTopModelData.fromMap(json.decode(str));

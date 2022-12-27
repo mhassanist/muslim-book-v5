@@ -7,11 +7,11 @@
 /// meta : {"latitude":51.508515,"longitude":-0.1254872,"timezone":"Europe/London","method":{"id":2,"name":"Islamic Society of North America (ISNA)","params":{"Fajr":15,"Isha":15}},"latitudeAdjustmentMethod":"ANGLE_BASED","midnightMode":"STANDARD","school":"STANDARD","offset":{"Imsak":0,"Fajr":0,"Sunrise":0,"Dhuhr":0,"Asr":0,"Maghrib":0,"Sunset":0,"Isha":0,"Midnight":0}}
 
 class RamadanData {
-  Timings? _timings;
+  late Timings _timings;
   Date? _date;
   Meta? _meta;
 
-  Timings? get timings => _timings;
+  Timings get timings => _timings;
 
   Date? get date => _date;
 
@@ -22,23 +22,21 @@ class RamadanData {
     Date? date,
     Meta? meta,
   }) {
-    _timings = timings;
+    _timings = timings ?? Timings();
     _date = date;
     _meta = meta;
   }
 
   RamadanData.fromJson(dynamic json) {
     _timings =
-        json["timings"] != null ? Timings.fromJson(json["timings"]) : null;
+        json["timings"] != null ? Timings.fromJson(json["timings"]) : Timings();
     _date = json["date"] != null ? Date.fromJson(json["date"]) : null;
     // _meta = json["meta"] != null ? Meta.fromJson(json["meta"]) : null;
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    if (_timings != null) {
-      map["timings"] = _timings!.toJson();
-    }
+    map["timings"] = _timings.toJson();
     if (_date != null) {
       map["date"] = _date!.toJson();
     }

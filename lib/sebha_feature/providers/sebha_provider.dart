@@ -1,7 +1,5 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:muslim_book/network_utils/api_service.dart';
-import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/sebha_feature/offline_sebha/database/sebha_database.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
@@ -12,16 +10,17 @@ import 'package:intl/intl.dart';
 class SebhaProvider extends ChangeNotifier {
   bool _showCongratulations = false;
   int _currentIndex = 0;
-  Tasbeeh _currentTasbeeh;
-  AudioCache _audioCache;
+  late Tasbeeh _currentTasbeeh;
+  late AudioCache _audioCache;
   final CarouselController controller = CarouselController();
   bool _allowClickSound = locator<Prefs>().allowTasbeehClickSound;
-  List<Tasbeeh> _tsabeehList;
+  List<Tasbeeh> _tsabeehList = [];
 
   SebhaProvider() {
     checkTasbeehHistory();
     setAudioCache();
   }
+
   void setAudioCache() {
     _audioCache = AudioCache(
         prefix: "audio/",
@@ -33,7 +32,7 @@ class SebhaProvider extends ChangeNotifier {
     if (_tsabeehList.isNotEmpty) currentTasbeeh = _tsabeehList[currentIndex];
   }
 
-  Future increaseTasbeeh({int count}) async {
+  Future increaseTasbeeh({int? count}) async {
     if (_allowClickSound) _audioCache.play('click.mp3');
     await locator<SebhaDataBase>().updateTasbeeh(_currentTasbeeh.copyWith(
         counted: count ?? _currentTasbeeh.counted + 1));
@@ -51,7 +50,7 @@ class SebhaProvider extends ChangeNotifier {
   }
 
   void checkTasbeehHistory() async {
-    String lastUpdate = locator<Prefs>().lastUpdatedTasbeehDate;
+    String lastUpdate = locator<Prefs>().lastUpdatedTasbeehDate ?? '';
     String todayDate = DateFormat("yyyy-MM-dd").format(DateTime.now());
 
     if (lastUpdate != todayDate) {
@@ -83,12 +82,14 @@ class SebhaProvider extends ChangeNotifier {
   }
 
   Tasbeeh get currentTasbeeh => _currentTasbeeh;
+
   set currentTasbeeh(Tasbeeh value) {
     _currentTasbeeh = value;
     notifyListeners();
   }
 
   bool get allowClickSound => _allowClickSound;
+
   void setAllowClickSound() {
     _allowClickSound = !_allowClickSound;
     locator<Prefs>().setTasbeehClickSound(!_allowClickSound);

@@ -16,8 +16,8 @@ import 'package:muslim_book/utils/sizing_info_extension.dart';
 class NewTasbeehView extends StatefulWidget {
   final SizingInformation sizeConfig;
   final bool isLocal;
-  const NewTasbeehView({Key key, this.sizeConfig, this.isLocal = true})
-      : super(key: key);
+  const NewTasbeehView({super.key, required this.sizeConfig, this.isLocal = true,});
+
   @override
   _NewTasbeehViewState createState() => _NewTasbeehViewState();
 }
@@ -209,7 +209,7 @@ class _NewTasbeehViewState extends State<NewTasbeehView> {
       child: FittedBox(
         child: FloatingActionButton(
           backgroundColor: Constants.ICON_COLOR,
-          onPressed: function,
+          onPressed: function.call,
           child: FittedBox(
             child: Icon(
               icon,
@@ -222,11 +222,11 @@ class _NewTasbeehViewState extends State<NewTasbeehView> {
     );
   }
 
-  bool isNumeric(String s) {
+  bool isNumeric(String? s) {
     if (s == null) {
       return false;
     }
-    return int.parse(s, onError: (e) => null) != null;
+    return int.tryParse(s) != null;
   }
 
   Future saveZikr() async {

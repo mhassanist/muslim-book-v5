@@ -105,7 +105,7 @@ class AyahAdapter extends TypeAdapter<Ayah> {
     return Ayah(
       number: fields[0] as int?,
       text: fields[1] as String,
-      numberInSurah: fields[2] as int?,
+      numberInSurah: fields[2] as int,
       juz: fields[3] as int?,
       manzil: fields[4] as int?,
       page: fields[5] as int?,

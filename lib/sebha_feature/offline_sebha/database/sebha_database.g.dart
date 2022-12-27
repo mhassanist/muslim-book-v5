@@ -6,7 +6,7 @@ part of 'sebha_database.dart';
 // MoorGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
+// ignore_for_file: type=lint
 class Tasbeeh extends DataClass implements Insertable<Tasbeeh> {
   final int id;
   final String name;
@@ -16,61 +16,48 @@ class Tasbeeh extends DataClass implements Insertable<Tasbeeh> {
   Tasbeeh(
       {required this.id,
       required this.name,
-      @required this.note,
-      @required this.totalCounter,
-      @required this.counted});
+      required this.note,
+      required this.totalCounter,
+      required this.counted});
   factory Tasbeeh.fromData(Map<String, dynamic> data, GeneratedDatabase db,
-      {String prefix}) {
+      {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    final intType = db.typeSystem.forDartType<int>();
-    final stringType = db.typeSystem.forDartType<String>();
     return Tasbeeh(
-      id: intType.mapFromDatabaseResponse(data['${effectivePrefix}id']),
-      name: stringType.mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      note: stringType.mapFromDatabaseResponse(data['${effectivePrefix}note']),
-      totalCounter: intType
-          .mapFromDatabaseResponse(data['${effectivePrefix}total_counter']),
-      counted:
-          intType.mapFromDatabaseResponse(data['${effectivePrefix}counted']),
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+      note: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}note'])!,
+      totalCounter: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}total_counter'])!,
+      counted: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}counted'])!,
     );
   }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || id != null) {
-      map['id'] = Variable<int>(id);
-    }
-    if (!nullToAbsent || name != null) {
-      map['name'] = Variable<String>(name);
-    }
-    if (!nullToAbsent || note != null) {
-      map['note'] = Variable<String>(note);
-    }
-    if (!nullToAbsent || totalCounter != null) {
-      map['total_counter'] = Variable<int>(totalCounter);
-    }
-    if (!nullToAbsent || counted != null) {
-      map['counted'] = Variable<int>(counted);
-    }
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    map['note'] = Variable<String>(note);
+    map['total_counter'] = Variable<int>(totalCounter);
+    map['counted'] = Variable<int>(counted);
     return map;
   }
 
   TsabeehCompanion toCompanion(bool nullToAbsent) {
     return TsabeehCompanion(
-      id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
-      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
-      totalCounter: totalCounter == null && nullToAbsent
-          ? const Value.absent()
-          : Value(totalCounter),
-      counted: counted == null && nullToAbsent
-          ? const Value.absent()
-          : Value(counted),
+      id: Value(id),
+      name: Value(name),
+      note: Value(note),
+      totalCounter: Value(totalCounter),
+      counted: Value(counted),
     );
   }
 
   factory Tasbeeh.fromJson(Map<String, dynamic> json,
-      {ValueSerializer serializer}) {
+      {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return Tasbeeh(
       id: serializer.fromJson<int>(json['id']),
@@ -81,7 +68,7 @@ class Tasbeeh extends DataClass implements Insertable<Tasbeeh> {
     );
   }
   @override
-  Map<String, dynamic> toJson({ValueSerializer serializer}) {
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
@@ -93,7 +80,11 @@ class Tasbeeh extends DataClass implements Insertable<Tasbeeh> {
   }
 
   Tasbeeh copyWith(
-          {int id, String name, String note, int totalCounter, int counted}) =>
+          {int? id,
+          String? name,
+          String? note,
+          int? totalCounter,
+          int? counted}) =>
       Tasbeeh(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -114,14 +105,9 @@ class Tasbeeh extends DataClass implements Insertable<Tasbeeh> {
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(
-      id.hashCode,
-      $mrjc(
-          name.hashCode,
-          $mrjc(
-              note.hashCode, $mrjc(totalCounter.hashCode, counted.hashCode)))));
+  int get hashCode => Object.hash(id, name, note, totalCounter, counted);
   @override
-  bool operator ==(dynamic other) =>
+  bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Tasbeeh &&
           other.id == this.id &&
@@ -146,20 +132,20 @@ class TsabeehCompanion extends UpdateCompanion<Tasbeeh> {
   });
   TsabeehCompanion.insert({
     this.id = const Value.absent(),
-    @required String name,
-    @required String note,
-    @required int totalCounter,
-    @required int counted,
+    required String name,
+    required String note,
+    required int totalCounter,
+    required int counted,
   })  : name = Value(name),
         note = Value(note),
         totalCounter = Value(totalCounter),
         counted = Value(counted);
   static Insertable<Tasbeeh> custom({
-    Expression<int> id,
-    Expression<String> name,
-    Expression<String> note,
-    Expression<int> totalCounter,
-    Expression<int> counted,
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? note,
+    Expression<int>? totalCounter,
+    Expression<int>? counted,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -171,11 +157,11 @@ class TsabeehCompanion extends UpdateCompanion<Tasbeeh> {
   }
 
   TsabeehCompanion copyWith(
-      {Value<int> id,
-      Value<String> name,
-      Value<String> note,
-      Value<int> totalCounter,
-      Value<int> counted}) {
+      {Value<int>? id,
+      Value<String>? name,
+      Value<String>? note,
+      Value<int>? totalCounter,
+      Value<int>? counted}) {
     return TsabeehCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -220,93 +206,61 @@ class TsabeehCompanion extends UpdateCompanion<Tasbeeh> {
 }
 
 class $TsabeehTable extends Tsabeeh with TableInfo<$TsabeehTable, Tasbeeh> {
-  final GeneratedDatabase _db;
-  final String _alias;
-  $TsabeehTable(this._db, [this._alias]);
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $TsabeehTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
-  GeneratedIntColumn _id;
   @override
-  GeneratedIntColumn get id => _id ??= _constructId();
-  GeneratedIntColumn _constructId() {
-    return GeneratedIntColumn('id', $tableName, false,
-        hasAutoIncrement: true, declaredAsPrimaryKey: true);
-  }
-
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      type: const IntType(),
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _nameMeta = const VerificationMeta('name');
-  GeneratedTextColumn _name;
   @override
-  GeneratedTextColumn get name => _name ??= _constructName();
-  GeneratedTextColumn _constructName() {
-    return GeneratedTextColumn(
-      'name',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _noteMeta = const VerificationMeta('note');
-  GeneratedTextColumn _note;
   @override
-  GeneratedTextColumn get note => _note ??= _constructNote();
-  GeneratedTextColumn _constructNote() {
-    return GeneratedTextColumn(
-      'note',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<String?> note = GeneratedColumn<String?>(
+      'note', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
   final VerificationMeta _totalCounterMeta =
       const VerificationMeta('totalCounter');
-  GeneratedIntColumn _totalCounter;
   @override
-  GeneratedIntColumn get totalCounter =>
-      _totalCounter ??= _constructTotalCounter();
-  GeneratedIntColumn _constructTotalCounter() {
-    return GeneratedIntColumn(
-      'total_counter',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<int?> totalCounter = GeneratedColumn<int?>(
+      'total_counter', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _countedMeta = const VerificationMeta('counted');
-  GeneratedIntColumn _counted;
   @override
-  GeneratedIntColumn get counted => _counted ??= _constructCounted();
-  GeneratedIntColumn _constructCounted() {
-    return GeneratedIntColumn(
-      'counted',
-      $tableName,
-      false,
-    );
-  }
-
+  late final GeneratedColumn<int?> counted = GeneratedColumn<int?>(
+      'counted', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, name, note, totalCounter, counted];
   @override
-  $TsabeehTable get asDslTable => this;
+  String get aliasedName => _alias ?? 'tsabeeh';
   @override
-  String get $tableName => _alias ?? 'tsabeeh';
-  @override
-  final String actualTableName = 'tsabeeh';
+  String get actualTableName => 'tsabeeh';
   @override
   VerificationContext validateIntegrity(Insertable<Tasbeeh> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id'], _idMeta));
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
     }
     if (data.containsKey('name')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name'], _nameMeta));
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
     if (data.containsKey('note')) {
       context.handle(
-          _noteMeta, note.isAcceptableOrUnknown(data['note'], _noteMeta));
+          _noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
     } else if (isInserting) {
       context.missing(_noteMeta);
     }
@@ -314,13 +268,13 @@ class $TsabeehTable extends Tsabeeh with TableInfo<$TsabeehTable, Tasbeeh> {
       context.handle(
           _totalCounterMeta,
           totalCounter.isAcceptableOrUnknown(
-              data['total_counter'], _totalCounterMeta));
+              data['total_counter']!, _totalCounterMeta));
     } else if (isInserting) {
       context.missing(_totalCounterMeta);
     }
     if (data.containsKey('counted')) {
       context.handle(_countedMeta,
-          counted.isAcceptableOrUnknown(data['counted'], _countedMeta));
+          counted.isAcceptableOrUnknown(data['counted']!, _countedMeta));
     } else if (isInserting) {
       context.missing(_countedMeta);
     }
@@ -330,21 +284,20 @@ class $TsabeehTable extends Tsabeeh with TableInfo<$TsabeehTable, Tasbeeh> {
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Tasbeeh map(Map<String, dynamic> data, {String tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : null;
-    return Tasbeeh.fromData(data, _db, prefix: effectivePrefix);
+  Tasbeeh map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return Tasbeeh.fromData(data, attachedDatabase,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
   $TsabeehTable createAlias(String alias) {
-    return $TsabeehTable(_db, alias);
+    return $TsabeehTable(attachedDatabase, alias);
   }
 }
 
 abstract class _$SebhaDataBase extends GeneratedDatabase {
   _$SebhaDataBase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
-  $TsabeehTable _tsabeeh;
-  $TsabeehTable get tsabeeh => _tsabeeh ??= $TsabeehTable(this);
+  late final $TsabeehTable tsabeeh = $TsabeehTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override

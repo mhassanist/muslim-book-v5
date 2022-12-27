@@ -24,7 +24,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 
 class OnlineSebhaView extends StatefulWidget {
-  const OnlineSebhaView({Key key}) : super(key: key);
+  const OnlineSebhaView({super.key});
 
   @override
   _OnlineSebhaViewState createState() => _OnlineSebhaViewState();
@@ -441,7 +441,7 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
             fit: BoxFit.contain),
       ),
       child: ElevatedButton(
-        shape: CircleBorder(),
+        // shape: CircleBorder(),
         onPressed: () async {
           await Provider.of<OnlineSebhaProvider>(context, listen: false)
               .increaseTasbeeh();

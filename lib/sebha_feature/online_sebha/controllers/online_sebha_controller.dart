@@ -1,7 +1,6 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/network_utils/api_service.dart';
-import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/sebha_feature/online_sebha/models/tasabeeh_model.dart';
 import 'package:muslim_book/utils/prefs.dart';
 import 'package:carousel_slider/carousel_controller.dart';
@@ -11,16 +10,16 @@ import 'package:muslim_book/utils/locator.dart';
 class OnlineSebhaProvider extends ChangeNotifier {
   bool _showCongratulations = false;
   int _currentIndex = 0;
-  TasbeehModel _currentTasbeeh;
-  AudioCache _audioCache;
+  late TasbeehModel _currentTasbeeh;
+  late AudioCache _audioCache;
   final CarouselController controller = CarouselController();
   bool _allowClickSound = locator<Prefs>().allowTasbeehClickSound;
-  List<TasbeehModel> _tsabeehList;
+  List<TasbeehModel> _tsabeehList = [];
   bool _mounted = true;
 
   OnlineSebhaProvider() {
     setAudioCache();
-    if (_tsabeehList == null || _tsabeehList.isEmpty) {
+    if (_tsabeehList.isEmpty) {
       uploadLastSebhaCount();
       getTsabeehList();
     }
@@ -39,7 +38,7 @@ class OnlineSebhaProvider extends ChangeNotifier {
     }
   }
 
-  Future increaseTasbeeh({int count}) async {
+  Future increaseTasbeeh({int? count}) async {
     if (_allowClickSound) _audioCache.play('click.mp3');
     _currentTasbeeh.counted = count ?? _currentTasbeeh.counted + 1;
     _currentTasbeeh.totalCounted = count ?? _currentTasbeeh.totalCounted + 1;
@@ -99,7 +98,7 @@ class OnlineSebhaProvider extends ChangeNotifier {
   Future uploadLastSebhaCount() async {
     if (_mounted) if (locator<Prefs>().sebhaCount > 0) {
       locator<ApiService>().updateSebhaCount().then((value) async {
-        if (value) await locator<Prefs>().setSebhaCount(null);
+        if (value) await locator<Prefs>().setSebhaCount(0);
       });
     }
   }

@@ -15,7 +15,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 
 class ArchieveView extends StatefulWidget {
-  ArchieveView({Key key}) : super(key: key);
+  ArchieveView({super.key});
 
   @override
   _ArchieveViewState createState() => _ArchieveViewState();
@@ -85,15 +85,18 @@ class _ArchieveViewState extends State<ArchieveView> {
                             height: sizeConfig.blockSizeVertical * 40,
                             child: Center(child: CircularProgressIndicator()),
                           );
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: snapshot.data.length,
-                          itemBuilder: (_, index) {
-                            return buildUserRankWidget(
-                                sizeConfig, snapshot.data[index], index);
-                          },
-                        );
+                        if (snapshot.data != null) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (_, index) {
+                              return buildUserRankWidget(
+                                  sizeConfig, snapshot.data![index], index);
+                            },
+                          );
+                        }
+                        return SizedBox();
                       },
                     )
                   ],
@@ -111,13 +114,14 @@ class _ArchieveViewState extends State<ArchieveView> {
         future: locator<ApiService>().getSebhaProfile(),
         builder: (context, snapshot) {
           if (snapshot.data == null ||
-              snapshot.connectionState == ConnectionState.waiting)
+              snapshot.connectionState == ConnectionState.waiting) {
             return Container(
               height: sizeConfig.blockSizeVertical * 30,
               child: Center(
                 child: CircularProgressIndicator(),
               ),
             );
+          }
           return Container(
             margin: EdgeInsets.symmetric(
                 horizontal: sizeConfig.blockSizeHorizontal * 6),
@@ -130,18 +134,18 @@ class _ArchieveViewState extends State<ArchieveView> {
                 padding: EdgeInsets.all(sizeConfig.blockSizeHorizontal * 2),
                 child: Row(
                   children: [
-                    buildCircularProgress(sizeConfig, snapshot.data),
+                    buildCircularProgress(sizeConfig, snapshot.data!),
                     Expanded(
                         child: Column(
                       children: [
                         buildDailyRankWidget(sizeConfig,
                             titel:AppLocalizations.of(context)!.translate("rank_weekly"),
-                            number: "${snapshot.data.rank}",
-                            image: "rank_medal.png"),
+                            number: "${snapshot.data!.rank}",
+                            image: "rank_medal.png",),
                         buildDailyRankWidget(sizeConfig,
                             titel: AppLocalizations.of(context)!.translate("Weekly_Achievement"),
-                            number: "${snapshot.data.total}",
-                            image: "flag_medal.png"),
+                            number: "${snapshot.data!.total}",
+                            image: "flag_medal.png",),
                       ],
                     ))
                   ],
@@ -183,7 +187,7 @@ class _ArchieveViewState extends State<ArchieveView> {
   }
 
   buildDailyRankWidget(SizingInformation sizeConfig,
-      {String titel, String number, String image}) {
+      {String titel = '', String number = '', String image = '',}) {
     return Container(
       margin: EdgeInsets.symmetric(
           vertical: sizeConfig.blockSizeVertical,

@@ -22,8 +22,8 @@ class _SebhaViewState extends State<SebhaView> {
             ),
           );
         if (snapshot.data != null &&
-            snapshot.data.isNotEmpty &&
-            snapshot.data[0].rawAddress.isNotEmpty)
+            snapshot.data!.isNotEmpty &&
+            snapshot.data![0].rawAddress.isNotEmpty)
           return OnlineSebhaView();
         else
           return OfflineSebhaView();

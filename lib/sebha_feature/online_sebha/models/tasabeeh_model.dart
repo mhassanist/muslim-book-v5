@@ -6,16 +6,16 @@ import 'dart:convert';
 
 class TasabeehModel {
   TasabeehModel({
-    this.tasbeehList,
-    this.client,
-    this.message,
-    this.success,
+    this.tasbeehList = const [],
+    this.client = '',
+    this.message = '',
+    this.success = false,
   });
 
-  List<TasbeehModel> tasbeehList;
-  String client;
-  String message;
-  bool success;
+  List<TasbeehModel> tasbeehList = [];
+  String client = '';
+  String message = '';
+  bool success = false;
 
   factory TasabeehModel.fromJson(String str) =>
       TasabeehModel.fromMap(json.decode(str));
@@ -40,21 +40,22 @@ class TasabeehModel {
 
 class TasbeehModel {
   TasbeehModel(
-      {this.id,
-      this.content,
-      this.count,
-      this.note,
-      this.editable,
+      {this.id = -1,
+      this.content = '',
+      this.count = 0,
+      this.note = '',
+      this.editable = false,
       this.counted = 0,
-      this.totalCounted = 0});
+      this.totalCounted = 0,
+      });
 
-  int id;
-  String content;
-  int count;
-  String note;
-  bool editable;
-  int counted;
-  int totalCounted;
+  late int id;
+  late String content;
+  late int count;
+  late String note;
+  late bool editable;
+  late int counted;
+  late int totalCounted;
 
   factory TasbeehModel.fromJson(String str) =>
       TasbeehModel.fromMap(json.decode(str));
