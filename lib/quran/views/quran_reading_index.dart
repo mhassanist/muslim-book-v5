@@ -4,12 +4,11 @@ import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/quran/provider/quran_pages_pic_bloc.dart';
 import 'package:muslim_book/quran/views/quran_page_pic_view.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QuranReadingIndex extends StatefulWidget {
-  const QuranReadingIndex({Key key}) : super(key: key);
+  const QuranReadingIndex({super.key}) ;
 
   @override
   _QuranReadingIndexState createState() => _QuranReadingIndexState();
@@ -44,7 +43,7 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
 
       Future.delayed(Duration(seconds: 1), () {
         SharedPreferences.getInstance().then((value) {
-          if (value != null && value.getInt("LAST_READ_PAGE") != null) {
+          if (value.getInt("LAST_READ_PAGE") != null) {
             QuranPagesPicBloc().setState(APIStatus.initial);
 
             Navigator.push(context, _createRoute(value.getInt("LAST_READ_PAGE")));

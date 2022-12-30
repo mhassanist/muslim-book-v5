@@ -14,13 +14,12 @@ class PushNotificationService {
   //PushNotificationModel notificationModel = PushNotificationModel();
   static NotificationData data = NotificationData();
 
-  static Future<dynamic> myBackgroundMessageHandler(
-      Map<String, dynamic> massage) async {
-    String title = massage['data']['title'];
-    String body = massage['data']['body'];
-    String postId = massage['data']['post_id'];
-    String catId = massage['data']['cat_id'];
-    String catName = massage['data']['cat_name'];
+  static Future<void> myBackgroundMessageHandler(RemoteMessage massage) async {
+    String title = massage.data['title'];
+    String body = massage.data['body'];
+    String postId = massage.data['post_id'];
+    String catId = massage.data['cat_id'];
+    String catName = massage.data['cat_name'];
     data.title = title;
     data.body = body;
     data.postId = postId;
@@ -32,12 +31,11 @@ class PushNotificationService {
     } catch (e) {
       print(e);
     }
-
-    // Or do other work.
   }
 
   Future initialise() async {
     // await _fcm.requestNotificationPermissions();
+    FirebaseMessaging.instance.requestPermission(announcement: true);
     await _fcm.requestPermission(
       alert: true,
       announcement: false,
@@ -62,81 +60,115 @@ class PushNotificationService {
       print(e);
     });
 
-    _fcm.configure(
-      onBackgroundMessage: myBackgroundMessageHandler,
-      onMessage: (Map<String, dynamic> massage) async {
-        String title = massage['data']['title'];
-        String body = massage['data']['body'];
-        String postId = massage['data']['post_id'];
-        String catId = massage['data']['cat_id'];
-        String catName = massage['data']['cat_name'];
-        print("onMessage: $massage");
-        data.title = title;
-        data.body = body;
-        data.postId = postId;
-        data.catId = catId;
-        data.catName = catName;
+    /// Background
+    FirebaseMessaging.onBackgroundMessage(myBackgroundMessageHandler);
 
-        _showNotification(data);
-      },
-      onLaunch: (Map<String, dynamic> massage) async {
-        String title = massage['data']['title'];
-        String body = massage['data']['body'];
-        String postId = massage['data']['post_id'];
-        String catId = massage['data']['cat_id'];
-        String catName = massage['data']['cat_name'];
-        data.title = title;
-        data.body = body;
-        data.postId = postId;
-        data.catId = catId;
-        data.catName = catName;
-        print("onLaunch");
-
-        //LocalDataStore().saveNotificationType(notificationModel.data.notificationType);
-        _showNotification(data);
-      },
-      onResume: (Map<String, dynamic> massage) async {
-        String title = massage['data']['title'];
-        String body = massage['data']['body'];
-        String postId = massage['data']['post_id'];
-        String catId = massage['data']['cat_id'];
-        String catName = massage['data']['cat_name'];
-        data.title = title;
-        data.body = body;
-        data.postId = postId;
-        data.catId = catId;
-        data.catName = catName;
-        print("onResume");
-
-        _showNotification(data);
-      },
-    );
+    /// On Message
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification notification = message.notification;
-      AndroidNotification android = message.notification?.android;
+      String title = message.data['title'];
+      String body = message.data['body'];
+      String postId = message.data['post_id'];
+      String catId = message.data['cat_id'];
+      String catName = message.data['cat_name'];
+      print("onMessage: $message");
+      data.title = title;
+      data.body = body;
+      data.postId = postId;
+      data.catId = catId;
+      data.catName = catName;
+      _showNotification(data);
     });
+
+    /// On Message Opened App
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      String title = message.data['title'];
+      String body = message.data['body'];
+      String postId = message.data['post_id'];
+      String catId = message.data['cat_id'];
+      String catName = message.data['cat_name'];
+      print("onMessage: $message");
+      data.title = title;
+      data.body = body;
+      data.postId = postId;
+      data.catId = catId;
+      data.catName = catName;
+      _showNotification(data);
+    });
+
+    // _fcm.configure(
+    //   onBackgroundMessage: myBackgroundMessageHandler,
+    //   onMessage: (Map<String, dynamic> massage) async {
+    //     String title = massage['data']['title'];
+    //     String body = massage['data']['body'];
+    //     String postId = massage['data']['post_id'];
+    //     String catId = massage['data']['cat_id'];
+    //     String catName = massage['data']['cat_name'];
+    //     print("onMessage: $massage");
+    //     data.title = title;
+    //     data.body = body;
+    //     data.postId = postId;
+    //     data.catId = catId;
+    //     data.catName = catName;
+    //
+    //     _showNotification(data);
+    //   },
+    //   onLaunch: (Map<String, dynamic> massage) async {
+    //     String title = massage['data']['title'];
+    //     String body = massage['data']['body'];
+    //     String postId = massage['data']['post_id'];
+    //     String catId = massage['data']['cat_id'];
+    //     String catName = massage['data']['cat_name'];
+    //     data.title = title;
+    //     data.body = body;
+    //     data.postId = postId;
+    //     data.catId = catId;
+    //     data.catName = catName;
+    //     print("onLaunch");
+    //
+    //     //LocalDataStore().saveNotificationType(notificationModel.data.notificationType);
+    //     _showNotification(data);
+    //   },
+    //   onResume: (Map<String, dynamic> massage) async {
+    //     String title = massage['data']['title'];
+    //     String body = massage['data']['body'];
+    //     String postId = massage['data']['post_id'];
+    //     String catId = massage['data']['cat_id'];
+    //     String catName = massage['data']['cat_name'];
+    //     data.title = title;
+    //     data.body = body;
+    //     data.postId = postId;
+    //     data.catId = catId;
+    //     data.catName = catName;
+    //     print("onResume");
+    //
+    //     _showNotification(data);
+    //   },
+    // );
   }
 
   Future initNotification(BuildContext context) async {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('app_not_logo');
-    final IOSInitializationSettings iOSInitialize = IOSInitializationSettings(
-        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    final MacOSInitializationSettings initializationSettingsMacOS =
-        MacOSInitializationSettings();
+    // final IOSInitializationSettings iOSInitialize = IOSInitializationSettings(
+    //     onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    // final MacOSInitializationSettings initializationSettingsMacOS =
+    //     MacOSInitializationSettings();
     final InitializationSettings initializationsSettings =
         InitializationSettings(
-            android: initializationSettingsAndroid,
-            iOS: iOSInitialize,
-            macOS: initializationSettingsMacOS);
+          android: initializationSettingsAndroid,
+          // iOS: iOSInitialize,
+          // macOS: initializationSettingsMacOS,
+        );
     await flutterNotification
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
         ?.getActiveNotifications();
 
-    await flutterNotification.initialize(initializationsSettings,
-        onSelectNotification: (String payload) =>
-            notificationSelected(payload, context));
+    await flutterNotification.initialize(
+      initializationsSettings,
+      // onSelectNotification: (String? payload) =>
+      //     notificationSelected(payload ?? '', context),
+    );
   }
 
   void _handleNavigation(BuildContext context, String payload) {
@@ -168,18 +200,24 @@ class PushNotificationService {
   }
 
   static Future _showNotification(NotificationData notificationModel) async {
-    AndroidNotificationDetails androidDetails = new AndroidNotificationDetails(
-        "channelId", notificationModel.title, notificationModel.body,
-        playSound: true,
-        importance: Importance.max,
-        priority: Priority.high,
-        showWhen: false,
-        autoCancel: true,
-        ongoing: false);
+    AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+      "channelId",
+      notificationModel.title,
+      // notificationModel.body,
+      // playSound: true,
+      // importance: Importance.max,
+      // priority: Priority.high,
+      // showWhen: false,
+      // autoCancel: true,
+      // ongoing: false,
+    );
 
-    var iosDetails = new IOSNotificationDetails(presentSound: true);
+    // var iosDetails = new IOSNotificationDetails(presentSound: true);
     var generalNotificationDetails =
-        new NotificationDetails(android: androidDetails, iOS: iosDetails);
+        NotificationDetails(
+          android: androidDetails,
+          // iOS: iosDetails,
+        );
 
     await flutterNotification.show(0, notificationModel.title,
         notificationModel.body, generalNotificationDetails,

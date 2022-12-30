@@ -181,110 +181,110 @@ class _SurahWidgetState extends State<SurahWidget> {
           );
         });
 
-    return InkWell(
-      onTap: () async {
-        await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (c) => AyatView(
-              translatedSurah: widget.translationSurah,
-              transliterationSurah: widget.transliterationSurah,
-              surah: widget.sura!,
-              index: widget.index,
-              lastAyahPosition: widget.sura?.progress ?? 0,
-            ),
-          ),
-        );
-        setState(() {});
-      },
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(10)),
-        child: Row(
-          children: <Widget>[
-            Container(
-              width: ScreenUtil().setWidth(50),
-              child: Text(
-                "${widget.sura?.number}",
-                style: TextStyle(
-                  fontSize: ScreenUtil().setSp(21),
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    child: Text(
-                      widget.sura?.englishName??'',
-                      style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: ScreenUtil().setSp(20)),
-                      textAlign: TextAlign.start,
-                    ),
-                    width: double.infinity,
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                        horizontal: ScreenUtil().setWidth(5),
-                        vertical: ScreenUtil().setHeight(5)),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            widget.sura?.englishNameTranslation??'',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: ScreenUtil().setWidth(5)),
-                          padding: EdgeInsets.symmetric(
-                              horizontal: ScreenUtil().setWidth(5),
-                              vertical: ScreenUtil().setWidth(2)),
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black, width: 0),
-                              color: Colors.white),
-                          child: Text("${widget.sura?.ayahs.length}"),
-                        )
-                      ],
-                    ),
-                  ),
-                  FAProgressBar(
-                    progressColor: Theme.of(context).primaryColor,
-                    direction: Axis.horizontal,
-                    borderRadius: BorderRadius.zero,
-                    maxValue: widget.sura!.ayahs.length + 0.0,
-                    currentValue: widget.sura?.progress == null
-                        ? 0
-                        : (widget.sura!.progress!) + 1,
-                    size: ScreenUtil().setHeight(15),
-                    displayText: " / ${widget.sura?.ayahs.length}",
-                  )
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                padding:
-                    EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
-                child: Text(
-                  widget.sura?.name ?? ''
-                      .replaceAll("سُورَةُ", "")
-                      .replaceAll("سورة", ""),
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontFamily: "quran",
-                      fontSize: ScreenUtil().setSp(20)),
-                  textAlign: TextAlign.end,
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+    // return InkWell(
+    //   onTap: () async {
+    //     await Navigator.of(context).push(
+    //       MaterialPageRoute(
+    //         builder: (c) => AyatView(
+    //           translatedSurah: widget.translationSurah,
+    //           transliterationSurah: widget.transliterationSurah,
+    //           surah: widget.sura!,
+    //           index: widget.index,
+    //           lastAyahPosition: widget.sura?.progress ?? 0,
+    //         ),
+    //       ),
+    //     );
+    //     setState(() {});
+    //   },
+    //   child: Container(
+    //     margin: EdgeInsets.symmetric(vertical: ScreenUtil().setHeight(10)),
+    //     child: Row(
+    //       children: <Widget>[
+    //         Container(
+    //           width: ScreenUtil().setWidth(50),
+    //           child: Text(
+    //             "${widget.sura?.number}",
+    //             style: TextStyle(
+    //               fontSize: ScreenUtil().setSp(21),
+    //             ),
+    //             textAlign: TextAlign.center,
+    //           ),
+    //         ),
+    //         Expanded(
+    //           flex: 2,
+    //           child: Column(
+    //             children: <Widget>[
+    //               Container(
+    //                 child: Text(
+    //                   widget.sura?.englishName??'',
+    //                   style: TextStyle(
+    //                       color: Theme.of(context).primaryColor,
+    //                       fontSize: ScreenUtil().setSp(20)),
+    //                   textAlign: TextAlign.start,
+    //                 ),
+    //                 width: double.infinity,
+    //               ),
+    //               Container(
+    //                 margin: EdgeInsets.symmetric(
+    //                     horizontal: ScreenUtil().setWidth(5),
+    //                     vertical: ScreenUtil().setHeight(5)),
+    //                 child: Row(
+    //                   children: <Widget>[
+    //                     Container(
+    //                       child: Text(
+    //                         widget.sura?.englishNameTranslation??'',
+    //                         maxLines: 1,
+    //                         overflow: TextOverflow.ellipsis,
+    //                       ),
+    //                     ),
+    //                     Container(
+    //                       margin: EdgeInsets.symmetric(
+    //                           horizontal: ScreenUtil().setWidth(5)),
+    //                       padding: EdgeInsets.symmetric(
+    //                           horizontal: ScreenUtil().setWidth(5),
+    //                           vertical: ScreenUtil().setWidth(2)),
+    //                       decoration: BoxDecoration(
+    //                           border: Border.all(color: Colors.black, width: 0),
+    //                           color: Colors.white),
+    //                       child: Text("${widget.sura?.ayahs.length}"),
+    //                     )
+    //                   ],
+    //                 ),
+    //               ),
+    //               FAProgressBar(
+    //                 progressColor: Theme.of(context).primaryColor,
+    //                 direction: Axis.horizontal,
+    //                 borderRadius: BorderRadius.zero,
+    //                 maxValue: widget.sura!.ayahs.length + 0.0,
+    //                 currentValue: widget.sura?.progress == null
+    //                     ? 0
+    //                     : (widget.sura!.progress!) + 1,
+    //                 size: ScreenUtil().setHeight(15),
+    //                 displayText: " / ${widget.sura?.ayahs.length}",
+    //               )
+    //             ],
+    //           ),
+    //         ),
+    //         Expanded(
+    //           flex: 1,
+    //           child: Container(
+    //             padding:
+    //                 EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(20)),
+    //             child: Text(
+    //               widget.sura?.name ?? ''
+    //                   .replaceAll("سُورَةُ", "")
+    //                   .replaceAll("سورة", ""),
+    //               style: TextStyle(
+    //                   color: Colors.black,
+    //                   fontFamily: "quran",
+    //                   fontSize: ScreenUtil().setSp(20)),
+    //               textAlign: TextAlign.end,
+    //             ),
+    //           ),
+    //         )
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }

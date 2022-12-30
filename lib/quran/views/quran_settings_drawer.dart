@@ -3,7 +3,7 @@ import 'package:muslim_book/quran/provider/quran_provider.dart';
 import 'package:muslim_book/quran/views/quran_settings_generated_list.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
-import 'package:expandable/expandable.dart';
+// import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -247,55 +247,55 @@ class _QuranSettingsDrawerState extends State<QuranSettingsDrawer> {
       );
     });
 
-    return ExpandablePanel(
-      header: Text("إختر الترجمة"),
-      expanded: ListView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemBuilder: (c, index) {
-          return ListTile(
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(5)),
-            title: Text(
-              Provider.of<QuranProvider>(context).allTranslation[index].name,
-              style: TextStyle(color: Theme.of(context).primaryColor),
-            ),
-            subtitle: Text(Provider.of<QuranProvider>(context)
-                .allTranslation[index]
-                .englishName),
-            trailing: Provider.of<QuranProvider>(context)
-                    .downloadedTranslation
-                    .containsKey(Provider.of<QuranProvider>(context)
-                        .allTranslation[index]
-                        .identifier)
-                ? Radio(
-                    value: Provider.of<QuranProvider>(context)
-                        .allTranslation[index]
-                        .identifier,
-                    groupValue: _translationGroupValue,
-                    onChanged: (val) async {
-                      await Provider.of<QuranProvider>(context, listen: false)
-                          .updateSelectedTranslation(
-                              Provider.of<QuranProvider>(context, listen: false)
-                                  .allTranslation[index]
-                                  .identifier);
-                    })
-                : IconButton(
-                    icon: Icon(Icons.file_download),
-                    onPressed: () async {
-                      await Provider.of<QuranProvider>(context, listen: false)
-                          .downLoadTranslation(
-                              "${Provider.of<QuranProvider>(context, listen: false).allTranslation[index].identifier}",
-                              context,
-                              true);
-                    }),
-          );
-        },
-        itemCount: Provider.of<QuranProvider>(context).allTranslation == null
-            ? 0
-            : Provider.of<QuranProvider>(context).allTranslation.length,
-      ),
-    );
+    // return ExpandablePanel(
+    //   header: Text("إختر الترجمة"),
+    //   expanded: ListView.builder(
+    //     shrinkWrap: true,
+    //     physics: NeverScrollableScrollPhysics(),
+    //     itemBuilder: (c, index) {
+    //       return ListTile(
+    //         contentPadding:
+    //             EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(5)),
+    //         title: Text(
+    //           Provider.of<QuranProvider>(context).allTranslation[index].name,
+    //           style: TextStyle(color: Theme.of(context).primaryColor),
+    //         ),
+    //         subtitle: Text(Provider.of<QuranProvider>(context)
+    //             .allTranslation[index]
+    //             .englishName),
+    //         trailing: Provider.of<QuranProvider>(context)
+    //                 .downloadedTranslation
+    //                 .containsKey(Provider.of<QuranProvider>(context)
+    //                     .allTranslation[index]
+    //                     .identifier)
+    //             ? Radio(
+    //                 value: Provider.of<QuranProvider>(context)
+    //                     .allTranslation[index]
+    //                     .identifier,
+    //                 groupValue: _translationGroupValue,
+    //                 onChanged: (val) async {
+    //                   await Provider.of<QuranProvider>(context, listen: false)
+    //                       .updateSelectedTranslation(
+    //                           Provider.of<QuranProvider>(context, listen: false)
+    //                               .allTranslation[index]
+    //                               .identifier);
+    //                 })
+    //             : IconButton(
+    //                 icon: Icon(Icons.file_download),
+    //                 onPressed: () async {
+    //                   await Provider.of<QuranProvider>(context, listen: false)
+    //                       .downLoadTranslation(
+    //                           "${Provider.of<QuranProvider>(context, listen: false).allTranslation[index].identifier}",
+    //                           context,
+    //                           true);
+    //                 }),
+    //       );
+    //     },
+    //     itemCount: Provider.of<QuranProvider>(context).allTranslation == null
+    //         ? 0
+    //         : Provider.of<QuranProvider>(context).allTranslation.length,
+    //   ),
+    // );
   }
 
   Widget buildTransliterationWidget(BuildContext context) {
@@ -326,57 +326,57 @@ class _QuranSettingsDrawerState extends State<QuranSettingsDrawer> {
         ),
       );
     });
-    return ExpandablePanel(
-      header: Text("إختر الترجمة الحرفية"),
-      expanded: ListView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        itemBuilder: (c, index) {
-          return ListTile(
-            contentPadding:
-                EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(5)),
-            title: Text(
-              Provider.of<QuranProvider>(context)
-                  .allTransliteration[index]
-                  .name,
-              style: TextStyle(color: Theme.of(context).primaryColor),
-            ),
-            subtitle: Text(Provider.of<QuranProvider>(context)
-                .allTransliteration[index]
-                .englishName),
-            trailing: Provider.of<QuranProvider>(context)
-                    .downloadedTranslation
-                    .containsKey(Provider.of<QuranProvider>(context)
-                        .allTransliteration[index]
-                        .identifier)
-                ? Radio(
-                    value: Provider.of<QuranProvider>(context)
-                        .allTransliteration[index]
-                        .identifier,
-                    groupValue: _transliterationGroupValue,
-                    onChanged: (val) async {
-                      await Provider.of<QuranProvider>(context, listen: false)
-                          .updateSelectedTransliteration(
-                              Provider.of<QuranProvider>(context, listen: false)
-                                  .allTransliteration[index]
-                                  .identifier);
-                    })
-                : IconButton(
-                    icon: Icon(Icons.file_download),
-                    onPressed: () async {
-                      await Provider.of<QuranProvider>(context, listen: false)
-                          .downLoadTranslation(
-                              "${Provider.of<QuranProvider>(context, listen: false).allTransliteration[index].identifier}",
-                              context,
-                              false);
-                    }),
-          );
-        },
-        itemCount:
-            Provider.of<QuranProvider>(context).allTransliteration == null
-                ? 0
-                : Provider.of<QuranProvider>(context).allTransliteration.length,
-      ),
-    );
+    // return ExpandablePanel(
+    //   header: Text("إختر الترجمة الحرفية"),
+    //   expanded: ListView.builder(
+    //     shrinkWrap: true,
+    //     physics: NeverScrollableScrollPhysics(),
+    //     itemBuilder: (c, index) {
+    //       return ListTile(
+    //         contentPadding:
+    //             EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(5)),
+    //         title: Text(
+    //           Provider.of<QuranProvider>(context)
+    //               .allTransliteration[index]
+    //               .name,
+    //           style: TextStyle(color: Theme.of(context).primaryColor),
+    //         ),
+    //         subtitle: Text(Provider.of<QuranProvider>(context)
+    //             .allTransliteration[index]
+    //             .englishName),
+    //         trailing: Provider.of<QuranProvider>(context)
+    //                 .downloadedTranslation
+    //                 .containsKey(Provider.of<QuranProvider>(context)
+    //                     .allTransliteration[index]
+    //                     .identifier)
+    //             ? Radio(
+    //                 value: Provider.of<QuranProvider>(context)
+    //                     .allTransliteration[index]
+    //                     .identifier,
+    //                 groupValue: _transliterationGroupValue,
+    //                 onChanged: (val) async {
+    //                   await Provider.of<QuranProvider>(context, listen: false)
+    //                       .updateSelectedTransliteration(
+    //                           Provider.of<QuranProvider>(context, listen: false)
+    //                               .allTransliteration[index]
+    //                               .identifier);
+    //                 })
+    //             : IconButton(
+    //                 icon: Icon(Icons.file_download),
+    //                 onPressed: () async {
+    //                   await Provider.of<QuranProvider>(context, listen: false)
+    //                       .downLoadTranslation(
+    //                           "${Provider.of<QuranProvider>(context, listen: false).allTransliteration[index].identifier}",
+    //                           context,
+    //                           false);
+    //                 }),
+    //       );
+    //     },
+    //     itemCount:
+    //         Provider.of<QuranProvider>(context).allTransliteration == null
+    //             ? 0
+    //             : Provider.of<QuranProvider>(context).allTransliteration.length,
+    //   ),
+    // );
   }
 }

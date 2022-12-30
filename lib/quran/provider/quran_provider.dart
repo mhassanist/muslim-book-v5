@@ -27,8 +27,8 @@ class QuranProvider extends ViewStateProvider {
 
   // }
   QuranDao _quranDao = locator<QuranDao>();
-  bool _allowTranslation;
-  bool _allowTransliteration;
+  bool _allowTranslation = false;
+  bool _allowTransliteration = false;
   bool _allowRepeatAyah = locator<Prefs>().allowRepeatingAyah;
 
   bool get allowRepeatAyah => _allowRepeatAyah;
@@ -45,42 +45,42 @@ class QuranProvider extends ViewStateProvider {
   bool get allowTranslation => _allowTranslation;
 
   bool get allowTransliteration => _allowTransliteration;
-  QuranTypeData _selectedReciter;
+  QuranTypeData? _selectedReciter = QuranTypeData();
 
-  String get selectedReciter => _selectedReciter.identifier;
+  String get selectedReciter => _selectedReciter?.identifier ?? '';
 
-  List<model.Surah> _allSuras;
+  List<model.Surah> _allSuras = [];
 
   List<model.Surah> get allSuras => _allSuras;
 
-  List<QuranTypeData> _allReciters;
+  List<QuranTypeData> _allReciters=[];
 
   List<QuranTypeData> get allReciters => _allReciters;
 
-  List<QuranTypeData> _allTranslation;
+  List<QuranTypeData> _allTranslation = [];
 
   List<QuranTypeData> get allTranslation => _allTranslation;
 
-  Map<dynamic, dynamic> _downloadedTranslation;
+  Map<dynamic, dynamic> _downloadedTranslation = {};
 
   Map<dynamic, dynamic> get downloadedTranslation => _downloadedTranslation;
 
-  List<QuranTypeData> _allTransliteration;
+  List<QuranTypeData> _allTransliteration = [];
 
   List<QuranTypeData> get allTransliteration => _allTransliteration;
 
-  List<model.Surah> _enSuras;
+  List<model.Surah> _enSuras = [];
 
   List<model.Surah> get enSuras => _enSuras;
 
-  List<model.Surah> _enTransliteration;
+  List<model.Surah> _enTransliteration = [];
 
   List<model.Surah> get enTransliteration => _enTransliteration;
 
-  Stream<QuranUserModel> get quranUserModelStream =>
+  Stream<QuranUserModel>? get quranUserModelStream =>
       _quranDao.quranUserModelStream;
 
-  QuranUserModel get quranUserModel => _quranDao.quranUserModel;
+  QuranUserModel? get quranUserModel => _quranDao.quranUserModel;
 
   Future changeUserProgress(int surah, int ayah) async {
     await _quranDao.updateUserProgress(surah, ayah);
@@ -115,9 +115,9 @@ class QuranProvider extends ViewStateProvider {
 
     _selectedReciter = _quranDao.quranUserModel?.selectedReciter;
 
-    _allTranslation = _quranDao.getAllTranslations;
+    _allTranslation = _quranDao.getAllTranslations ?? [];
 
-    _allTransliteration = _quranDao.getAllTransliterations;
+    _allTransliteration = _quranDao.getAllTransliterations ?? [];
 
     _allowTranslation = _quranDao.quranUserModel?.allowTranslation ?? false;
 
@@ -125,7 +125,7 @@ class QuranProvider extends ViewStateProvider {
         _quranDao.quranUserModel?.allowTransliteration ?? false;
 
     _downloadedTranslation =
-        _quranDao.downloadedTransliterationAndTranslation ?? {};
+        _quranDao.downloadedTransliterationAndTranslation;
     setViewState(ViewState.Idle);
   }
 
@@ -147,7 +147,7 @@ class QuranProvider extends ViewStateProvider {
     await _quranDao.saveUserProgress(index, progress);
   }
 
-  void startListeningToAyah({model.Ayah ayah, model.Surah surah}) async {
+  void startListeningToAyah({model.Ayah? ayah, model.Surah? surah}) async {
     if (AudioService.running) {
       await AudioService.stop();
       await Future.delayed(Duration(milliseconds: 400));
@@ -158,8 +158,8 @@ class QuranProvider extends ViewStateProvider {
       backgroundTaskEntrypoint: quranStartListeningPoint,
       params: {
         'sheikhId': "$selectedReciter",
-        "ayahIndex": ayah.numberInSurah,
-        "surah": surah.number,
+        "ayahIndex": ayah?.numberInSurah ?? 0,
+        "surah": surah?.number ?? 0,
         "quranModel": _quranDao.quranModelAsJson
       },
     );

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AyatViewBottomSheet extends StatelessWidget {
-  final Function saveProgress;
+  final Function? saveProgress;
 
-  const AyatViewBottomSheet({Key key, this.saveProgress}) : super(key: key);
+  const AyatViewBottomSheet({super.key, this.saveProgress});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class AyatViewBottomSheet extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: Icon(Icons.history),
-            onTap: saveProgress,
+            onTap: saveProgress?.call,
             title: Text(
               "إحفظها كآخر آية",
               style: TextStyle(color: Colors.black),

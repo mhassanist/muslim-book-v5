@@ -1,7 +1,8 @@
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/providers/pick_azan_methods_provider.dart';
 import 'package:muslim_book/providers/view_state_provider.dart';
-import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/location_utilities.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
@@ -28,11 +29,14 @@ class LocationProvider extends ViewStateProvider {
     if (geoLocation != null) {
       double lat = (geoLocation.coordinates as LatLng).latitude;
       double long = (geoLocation.coordinates as LatLng).longitude;
-      final coordinates = Coordinates(lat, long);
-      var addresses = await Geocoder.google(Constants.GOOGLE_API_KEY,
-              language: locator<Prefs>().getLang())
-          .findAddressesFromCoordinates(coordinates);
-      pickedCountryName = addresses[0].countryCode;
+      // final coordinates = Coordinates(lat, long);
+      // var addresses = await Geocoder.google(Constants.GOOGLE_API_KEY,
+      //         language: locator<Prefs>().getLang())
+      //     .findAddressesFromCoordinates(coordinates);
+      // pickedCountryName = addresses[0].countryCode;
+
+      final placeMarks = await placemarkFromCoordinates(lat, long);
+      pickedCountryName = placeMarks[0].isoCountryCode ?? '';
       setLatLing(lat, long);
     }
   }
@@ -90,13 +94,17 @@ class LocationProvider extends ViewStateProvider {
     countryName = AppLocalizations.of(context)!.translate("getting_location");
     var response = await LocationUtilities().checkLocationPermission();
     if (response != null) {
+      final place = response as Placemark;
       countryName =
-          "${(response as Address).countryName} - ${(response as Address).adminArea} - ${(response as Address).subAdminArea}";
-      pickedCountryName = (response as Address).countryName;
-      String countryCode = (response as Address).countryCode;
+          "${place.country ?? ''} - ${place.administrativeArea ?? ''} - ${place.subAdministrativeArea ?? ''}";
+      pickedCountryName = place.country ?? '';
+      String countryCode = place.isoCountryCode ?? '';
       locator<Prefs>().setCountryCode(countryCode);
-      setLatLing((response as Address).coordinates.latitude,
-          (response as Address).coordinates.longitude);
+
+      final position = await Geolocator.getLastKnownPosition();
+      if (position != null) {
+        setLatLing(position.latitude, position.longitude);
+      }
       // saveCountry(context);
     } else {
       setLatLing(30.7930351, 30.964337);

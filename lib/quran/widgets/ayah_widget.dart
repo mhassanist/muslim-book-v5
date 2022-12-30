@@ -5,7 +5,7 @@ import 'package:muslim_book/quran/models/quran_model.dart';
 import 'package:muslim_book/quran/provider/quran_provider.dart';
 import 'package:muslim_book/quran/views/ayat_view.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_screenutil/screenutil.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
@@ -54,19 +54,19 @@ class _BuildAyahWidgetState extends State<BuildAyahWidget> {
             if (widget.playerStatus.data != null &&
                 widget.playerStatus.data!.playing &&
                 snapshot.data != null) {
-              if (snapshot.data!.extras["surahIndex"] == widget.surahIndex) {
+              if (snapshot.data!.extras?["surahIndex"] == widget.surahIndex) {
                 jumpToNextAyah(snapshot);
-              } else if (snapshot.data!.extras["renewSurah"] == 1) {
+              } else if (snapshot.data!.extras?["renewSurah"] == 1) {
                 renewSurasView(context, snapshot);
               }
             }
             if (mounted && widget.playerStatus != null) {
               setState(() {
                 isAyahPlaying = (widget.playerStatus.data != null &&
-                    widget.playerStatus.data.playing &&
+                    widget.playerStatus.data!.playing &&
                     snapshot.data != null &&
-                    (int.parse(snapshot.data.id) == widget.ayahIndex &&
-                        snapshot.data.title == widget.surah.name));
+                    (int.parse(snapshot.data!.id) == widget.ayahIndex &&
+                        snapshot.data!.title == widget.surah.name));
               });
             }
           });
@@ -180,34 +180,37 @@ class _BuildAyahWidgetState extends State<BuildAyahWidget> {
   void jumpToNextAyah(AsyncSnapshot<MediaItem> snapshot) {
     widget.listController.jumpTo(
       index: widget.surah.number == 1
-          ? int.parse("${snapshot.data.id}")
-          : int.parse(snapshot.data.id) > 3
-              ? int.parse("${snapshot.data.id}") + 1
-              : int.parse("${snapshot.data.id}"),
+          ? int.parse("${snapshot.data!.id}")
+          : int.parse(snapshot.data!.id) > 3
+              ? int.parse("${snapshot.data!.id}") + 1
+              : int.parse("${snapshot.data!.id}"),
     );
   }
 
   void renewSurasView(BuildContext context, AsyncSnapshot<MediaItem> snapshot) {
-    Surah translatedNextSurah;
-    Surah transliterationNextSurah;
+    Surah? translatedNextSurah;
+    Surah? transliterationNextSurah;
     if (Provider.of<QuranProvider>(context, listen: false).allowTranslation) {
       translatedNextSurah = (Provider.of<QuranProvider>(context, listen: false)
                   .downloadedTranslation[
               Provider.of<QuranProvider>(context, listen: false)
                   .selectedTranslation] as QuranModel)
-          .surahs[snapshot.data.extras["surahIndex"]];
+          .surahs[snapshot.data?.extras?["surahIndex"]];
     }
-    if (Provider.of<QuranProvider>(context, listen: false).allowTransliteration)
+    if (Provider.of<QuranProvider>(context, listen: false).allowTransliteration) {
       transliterationNextSurah =
-          (Provider.of<QuranProvider>(context, listen: false)
-                      .downloadedTranslation[
-                  Provider.of<QuranProvider>(context, listen: false)
-                      .selectedTransliteration] as QuranModel)
-              .surahs[snapshot.data.extras["surahIndex"]];
+      (Provider
+          .of<QuranProvider>(context, listen: false)
+          .downloadedTranslation[
+      Provider
+          .of<QuranProvider>(context, listen: false)
+          .selectedTransliteration] as QuranModel)
+          .surahs[snapshot.data?.extras?["surahIndex"]];
+    }
     super.didChangeDependencies();
 
     Surah nextSurah = Provider.of<QuranProvider>(context, listen: false)
-        .allSuras[snapshot.data.extras["surahIndex"]];
+        .allSuras[snapshot.data?.extras?["surahIndex"]];
     Navigator.pop(context);
     Navigator.push(
       context,
@@ -216,8 +219,8 @@ class _BuildAyahWidgetState extends State<BuildAyahWidget> {
           translatedSurah: translatedNextSurah,
           transliterationSurah: transliterationNextSurah,
           surah: nextSurah,
-          index: snapshot.data.extras["surahIndex"],
-          lastAyahPosition: nextSurah.progress,
+          index: snapshot.data?.extras?["surahIndex"],
+          lastAyahPosition: nextSurah.progress ?? 0,
           openQuran: true,
         ),
       ),
@@ -297,11 +300,13 @@ class _BuildAyahWidgetState extends State<BuildAyahWidget> {
     setState(() {
       showAyahSuraPosition = true;
     });
-    File screenShot = await screenshotController.capture();
-    ShareExtend.share(
-      screenShot.path,
-      "image",
-    );
+    final screenShot = await screenshotController.capture();
+    if (screenShot != null) {
+      ShareExtend.share(
+        File.fromRawPath(screenShot).path,
+        "image",
+      );
+    }
 
     setState(() {
       showAyahSuraPosition = false;

@@ -101,7 +101,7 @@ class QuranDao {
     });
   }
 
-  List<QuranTypeData>? get getAllReciters => _recitersModel?.data;
+  List<QuranTypeData> get getAllReciters => _recitersModel?.data ?? [];
 
   List<QuranTypeData>? get getAllTranslations =>
       _translationAndTransliterationModel?.data
@@ -113,7 +113,7 @@ class QuranDao {
           .where((element) => element.type == "transliteration")
           .toList();
 
-  List<quranModel.Surah>? get getAllSuras => _quranModel?.surahs;
+  List<quranModel.Surah> get getAllSuras => _quranModel?.surahs ?? [];
 
   List<quranModel.Surah> get getEnglishTranslation => [];
 

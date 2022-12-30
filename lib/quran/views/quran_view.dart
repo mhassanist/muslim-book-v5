@@ -28,10 +28,16 @@ class _QuranViewState extends State<QuranView> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenUtil.init(context,
-        allowFontScaling: true,
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height);
+    ScreenUtil.init(
+      context,
+      designSize: Size(
+        MediaQuery.of(context).size.width,
+        MediaQuery.of(context).size.height,
+      ),
+        // allowFontScaling: true,
+        // width: MediaQuery.of(context).size.width,
+        // height: MediaQuery.of(context).size.height,
+    );
     return AudioServiceWidget(
       child: Scaffold(
         key: _scaffoldKey,
@@ -74,7 +80,7 @@ class _QuranViewState extends State<QuranView> {
               ),
             ),
             onTap: () {
-              Get.find<HomeController>().scaffoldKey.currentState.openDrawer();
+              Get.find<HomeController>().scaffoldKey.currentState!.openDrawer();
             },
           ),
           actions: <Widget>[
@@ -116,7 +122,7 @@ class _QuranViewState extends State<QuranView> {
   Widget getBody() {
     if (Provider.of<QuranProvider>(context).viewState == ViewState.Loading) {
       return QuranLoadingView();
-    } else if (Provider.of<QuranProvider>(context).allSuras != null &&
+    } else if (Provider.of<QuranProvider>(context).allSuras.isNotEmpty &&
         Provider.of<QuranProvider>(context).allSuras.length == 114) {
       return SurasView();
     } else {

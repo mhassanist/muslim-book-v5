@@ -44,6 +44,7 @@ class _BuildAyahWidgetState extends State<BuildAyahWidget> {
   Color prymaryColor = const Color(0XFF347D53);
   bool showAyahSuraPosition = false;
   bool isAyahPlaying = false;
+
   @override
   Widget build(BuildContext context) {
     if (widget.surah.number != 1 && widget.ayah.numberInSurah == 1) {
@@ -191,8 +192,8 @@ class _BuildAyahWidgetState extends State<BuildAyahWidget> {
   }
 
   void renewSurasView(BuildContext context, AsyncSnapshot<MediaItem> snapshot) {
-    Surah translatedNextSurah;
-    Surah transliterationNextSurah;
+    late Surah translatedNextSurah;
+    late Surah transliterationNextSurah;
     if (Provider.of<QuranProvider>(context, listen: false).allowTranslation) {
       translatedNextSurah = (Provider.of<QuranProvider>(context, listen: false)
                   .downloadedTranslation[
@@ -209,7 +210,7 @@ class _BuildAyahWidgetState extends State<BuildAyahWidget> {
               .surahs[(snapshot.data!.extras as Map)["surahIndex"]];
     super.didChangeDependencies();
 
-    Surah nextSurah = Provider.of<QuranProvider>(context, listen: false)
+    late Surah nextSurah = Provider.of<QuranProvider>(context, listen: false)
         .allSuras[(snapshot.data!.extras as Map)["surahIndex"]];
     Navigator.pop(context);
     Navigator.push(
@@ -220,7 +221,7 @@ class _BuildAyahWidgetState extends State<BuildAyahWidget> {
           transliterationSurah: transliterationNextSurah,
           surah: nextSurah,
           index: (snapshot.data!.extras as Map)["surahIndex"],
-          lastAyahPosition: nextSurah.progress,
+          lastAyahPosition: nextSurah.progress ?? 0,
           openQuran: true,
         ),
       ),
@@ -300,11 +301,13 @@ class _BuildAyahWidgetState extends State<BuildAyahWidget> {
     setState(() {
       showAyahSuraPosition = true;
     });
-    File screenShot = await screenshotController.capture();
-    ShareExtend.share(
-      screenShot.path,
-      "image",
-    );
+    final screenShot = await screenshotController.capture();
+    if (screenShot != null) {
+      ShareExtend.share(
+        File.fromRawPath(screenShot).path,
+        "image",
+      );
+    }
 
     setState(() {
       showAyahSuraPosition = false;

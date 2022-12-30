@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class QuranPagePicView extends StatefulWidget {
   final int quranPage;
-  const QuranPagePicView(this.quranPage, {Key key}) : super(key: key);
+  const QuranPagePicView(this.quranPage, {super.key});
 
   @override
   State<QuranPagePicView> createState() => _QuranPagePicViewState();
@@ -21,14 +21,14 @@ class QuranPagePicView extends StatefulWidget {
 
 class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProviderStateMixin{
 
-  DragStartDetails startVerticalDragDetails;
-  DragUpdateDetails updateVerticalDragDetails;
-  Uint8List quranPagePic;
+  DragStartDetails? startVerticalDragDetails;
+  DragUpdateDetails? updateVerticalDragDetails;
+  Uint8List? quranPagePic;
   bool _visible = true;
-  int _currentPageNumber;
-  AnimationController _controller;
-  AnimationController _linearProgressController;
-  String directory;
+  late int _currentPageNumber;
+  late AnimationController _controller;
+  late AnimationController _linearProgressController;
+  String? directory;
 
 
   @override
@@ -117,8 +117,8 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
                 updateVerticalDragDetails = dragDetails;
               },
               onVerticalDragEnd: (endDetails) {
-                double dx = updateVerticalDragDetails.globalPosition.dx -
-                    startVerticalDragDetails.globalPosition.dx;
+                double dx = updateVerticalDragDetails!.globalPosition.dx -
+                    startVerticalDragDetails!.globalPosition.dx;
 
                 if (dx < 0 && _currentPageNumber > 1) {
                   QuranPagesPicBloc().downloadQuranSinglePage(_currentPageNumber-1).then((value) {
@@ -147,7 +147,7 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
                   quranPagePic == null
                       ? Container()
                       : Image.memory(
-                          quranPagePic,
+                          quranPagePic!,
                           height: MediaQuery.of(context).size.height,
                           fit: BoxFit.fill,
                         ),
@@ -219,9 +219,9 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
 
 class SlidingAppBar extends StatelessWidget implements PreferredSizeWidget {
   SlidingAppBar({
-    this.child,
-    this.controller,
-    this.visible,
+    required this.child,
+    required this.controller,
+    required this.visible,
   });
 
   final PreferredSizeWidget child;
@@ -245,9 +245,9 @@ class SlidingAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class SlidingLoadingBar extends StatelessWidget implements PreferredSizeWidget {
   SlidingLoadingBar({
-    this.child,
-    this.controller,
-    this.visible,
+    required this.child,
+    required this.controller,
+    required this.visible,
   });
 
   final PreferredSizeWidget child;

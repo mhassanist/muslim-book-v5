@@ -11,7 +11,7 @@ class QuranPagesPicBloc with ChangeNotifier{
   int totalQuranPages = 604;
   bool _isCurrentPageDownloaded = false;
   bool isFullQuranDownloaded = false;
-  Uint8List _currentPage;
+  late Uint8List _currentPage;
   APIStatus _currentPageState = APIStatus.initial;
   APIStatus _fullPagesState = APIStatus.initial;
 
@@ -47,7 +47,7 @@ class QuranPagesPicBloc with ChangeNotifier{
 
   Future checkIfFullQuranDownloaded() async{
     setFullPagesState(APIStatus.loading);
-    final directory = (await getExternalStorageDirectories()).last.path;
+    final directory = (await getExternalStorageDirectories())?.last.path;
     Directory d = await Directory('$directory').create(recursive: true);
     int quranPagesLength = d.listSync().length;
     if(quranPagesLength == totalQuranPages){

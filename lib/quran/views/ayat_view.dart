@@ -227,11 +227,11 @@ class _AyatViewState extends State<AyatView> {
               },
               child: BuildAyahWidget(
                   transliteratedAyah: widget.transliterationSurah == null
-                      ? null
-                      : widget.transliterationSurah.ayahs[index].text,
+                      ? ''
+                      : widget.transliterationSurah!.ayahs[index].text,
                   translatedAyah: widget.translatedSurah == null
-                      ? null
-                      : widget.translatedSurah.ayahs[index].text,
+                      ? ''
+                      : widget.translatedSurah!.ayahs[index].text,
                   listController: itemScrollController,
                   ayah: widget.surah.ayahs[index],
                   surah: widget.surah,
@@ -301,7 +301,7 @@ class _AyatViewState extends State<AyatView> {
   Future saveLastUserProgress({bool override = false}) async {
     if (widget.surah.progress == null ||
         override ||
-        widget.surah.progress <
+        widget.surah.progress! <
             itemPositionListener.itemPositions.value.last.index) {
       await Provider.of<QuranProvider>(context, listen: false)
           .saveSurahProgress(
@@ -318,7 +318,7 @@ class _AyatViewState extends State<AyatView> {
     endTime = DateTime.now();
     //print(endTime.difference(startTime).inMinutes);
     //print(endTime.difference(startTime).inMinutes.abs());
-    if (endTime.difference(startTime).inMinutes.abs() >= 1) {
+    if (endTime!.difference(startTime).inMinutes.abs() >= 1) {
       _audioCache.play('allah_make_you_from_heaven.wav');
     }
   }

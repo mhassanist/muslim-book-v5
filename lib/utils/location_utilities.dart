@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 class LocationUtilities {
 
+  // getLastKnownLocation
   Future checkLocationPermission({bool save = false,}) async {
     if (await Permission.locationWhenInUse.request().isGranted) {
       final status = await Permission.location.serviceStatus;
@@ -28,6 +29,7 @@ class LocationUtilities {
     }
   }
 
+  // getLocation
   Future getLastKnownLocation({bool save = false,}) async {
     try {
       Position? result = await Geolocator.getLastKnownPosition().timeout(
@@ -52,6 +54,7 @@ class LocationUtilities {
     }
   }
 
+  // getAddress
   Future getLocation(loc.LocationAccuracy accuracy) async {
     try {
       loc.LocationData locationData = await loc.getLocation(

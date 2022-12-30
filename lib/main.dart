@@ -98,11 +98,10 @@ Future<FirebaseRemoteConfig> setupRemoteConfig() async {
   });
   try {
     // Using default duration to force fetching from remote server.
-    await remoteConfig.fetch(expiration: const Duration(seconds: 0));
-    await remoteConfig.activateFetched();
-  } on FetchThrottledException catch (exception) {
-    // . throttled.
-    //print(exception);
+    await remoteConfig.fetch(
+      // expiration: const Duration(seconds: 0),
+    );
+    await remoteConfig.fetchAndActivate();
   } catch (exception) {
     print('Unable to fetch remote config. Cached or default values will be '
         'used');
@@ -112,17 +111,18 @@ Future<FirebaseRemoteConfig> setupRemoteConfig() async {
 
 class MyApp extends StatefulWidget {
   // Locale localeLoadedd;
-  static FirebaseAnalytics analytics = FirebaseAnalytics();
-  static FirebaseAnalyticsObserver observer =
-      FirebaseAnalyticsObserver(analytics: analytics);
+  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
   static bool loading = false;
   static bool loadingAddMobe = false;
 
   // MyApp(this.localeLoadedd);
 
-  static Future setLocale(BuildContext context, Locale newLocale) {
-    _MyAppState state = context.findAncestorStateOfType<_MyAppState>();
-    state.setLocale(newLocale);
+  static Future setLocale(BuildContext context, Locale newLocale) async {
+    final state = context.findAncestorStateOfType<_MyAppState>();
+    if (state != null) {
+      state.setLocale(newLocale);
+    }
   }
 
   static void _launchURL() async {
@@ -200,7 +200,8 @@ class MyApp extends StatefulWidget {
                                       null) {
                                 DateTime before =
                                     DateTime.fromMillisecondsSinceEpoch(
-                                        locator<Prefs>().getDateOfClickLike());
+                                      locator<Prefs>().getDateOfClickLike() ?? 0,
+                                    );
                                 DateTime now = DateTime.now();
                                 Duration timeDifference =
                                     now.difference(before);
@@ -230,7 +231,7 @@ class MyApp extends StatefulWidget {
                                 DateTime before =
                                     DateTime.fromMillisecondsSinceEpoch(
                                         locator<Prefs>()
-                                            .getDateOfClickNotLike());
+                                            .getDateOfClickNotLike() ?? 0);
                                 DateTime now = DateTime.now();
                                 Duration timeDifference =
                                     now.difference(before);
@@ -260,7 +261,7 @@ class MyApp extends StatefulWidget {
                                       null) {
                                 DateTime dateOfLike =
                                     DateTime.fromMillisecondsSinceEpoch(
-                                        locator<Prefs>().getDateOfClickLike());
+                                        locator<Prefs>().getDateOfClickLike() ?? 0);
                                 DateTime now = DateTime.now();
                                 Duration likeTimeDifference =
                                     now.difference(dateOfLike);
@@ -269,7 +270,7 @@ class MyApp extends StatefulWidget {
                                 DateTime dateOfNotLike =
                                     DateTime.fromMillisecondsSinceEpoch(
                                         locator<Prefs>()
-                                            .getDateOfClickNotLike());
+                                            .getDateOfClickNotLike() ?? 0);
                                 DateTime dateOfNotLikeNow = DateTime.now();
                                 Duration notLikeTimeDifference =
                                     dateOfNotLikeNow.difference(dateOfNotLike);
@@ -383,7 +384,7 @@ class MyApp extends StatefulWidget {
             await locator<Prefs>().setCountOfOpenDialog(1);
           } else {
             await locator<Prefs>().setCountOfOpenDialog(
-                locator<Prefs>().getCountOfOpenDialog() + 1);
+                (locator<Prefs>().getCountOfOpenDialog() ?? 0) + 1);
           }
           if (locator<Prefs>().getDateOfClickNotLike() == null) {
             await locator<Prefs>()
@@ -392,7 +393,7 @@ class MyApp extends StatefulWidget {
           } else {
             if (locator<Prefs>().getCountOfClickNotLike() != null) {
               await locator<Prefs>().setCountOfClickNotLike(
-                  locator<Prefs>().getCountOfClickNotLike() + 1);
+                  (locator<Prefs>().getCountOfClickNotLike() ?? 0) + 1);
             }
           }
           SystemNavigator.pop();
@@ -402,7 +403,7 @@ class MyApp extends StatefulWidget {
             await locator<Prefs>().setCountOfOpenDialog(1);
           } else {
             await locator<Prefs>().setCountOfOpenDialog(
-                locator<Prefs>().getCountOfOpenDialog() + 1);
+                (locator<Prefs>().getCountOfOpenDialog() ?? 0) + 1);
           }
           if (locator<Prefs>().getDateOfClickLike() == null) {
             await locator<Prefs>()
@@ -411,7 +412,7 @@ class MyApp extends StatefulWidget {
           } else {
             if (locator<Prefs>().getCountOfClickLike() != null) {
               await locator<Prefs>().setCountOfClickLike(
-                  locator<Prefs>().getCountOfClickLike() + 1);
+                  (locator<Prefs>().getCountOfClickLike() ?? 0) + 1);
             }
           }
           _launchURL();
@@ -429,9 +430,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   AzanController _azanController = Get.put(AzanController());
   HomeController _homeController = Get.put(HomeController());
-  String showCompetition, openAzkar;
+  String? showCompetition;
+  String? openAzkar;
   var checkOverLay;
-  Locale localeLoaded;
+  Locale? localeLoaded;
 
   @override
   void initState() {
@@ -474,7 +476,7 @@ class _MyAppState extends State<MyApp> {
       openAzkar = await Constants.platform.invokeMethod(Constants.open_Azkar);
       checkOverLay = await Constants.platform.invokeMethod("checkOverlay");
     } on PlatformException catch (e) {
-      message = e.message;
+      message = e.message ?? '';
     }
     return message;
   }
@@ -536,12 +538,12 @@ class _MyAppState extends State<MyApp> {
             GlobalCupertinoLocalizations.delegate,
             AppLocalizations.delegate, // Add this line
           ],
-          builder: (BuildContext context, Widget child) {
+          builder: (BuildContext context, Widget? child) {
             //print("shaimmmmmmmmmmmmmmmaaaa 2   " + localeLoaded.languageCode);
 
-            return new Directionality(
-              textDirection: setTextDirection(localeLoaded),
-              child: child,
+            return Directionality(
+              textDirection: setTextDirection(localeLoaded ?? Locale('ar')),
+              child: child ?? Container(),
             );
           },
           localeResolutionCallback: (locale, supportedLocales) {

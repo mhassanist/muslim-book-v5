@@ -3,7 +3,6 @@ import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/quran/models/quran_model.dart';
 import 'package:muslim_book/quran/provider/quran_provider.dart';
 import 'package:muslim_book/quran/widgets/surah_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -16,8 +15,8 @@ class SurasView extends StatefulWidget {
 }
 
 class _SurasViewState extends State<SurasView> {
-  List<Surah> translationList;
-  List<Surah> transliterationList;
+  List<Surah> translationList = [];
+  List<Surah> transliterationList = [];
 
   @override
   void didChangeDependencies() {
@@ -50,29 +49,29 @@ class _SurasViewState extends State<SurasView> {
                     stream: Provider.of<QuranProvider>(context)
                         .quranUserModelStream,
                     builder: (context, snapshot) {
-                      if (snapshot.data.lastReadSurahId != null &&
-                          snapshot.data.lastReadAyahId != null) {
+                      if (snapshot.data != null &&
+                          snapshot.data!.lastReadSurahId != null &&
+                          snapshot.data!.lastReadAyahId != null) {
                         return RawMaterialButton(
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (c) => AyatView(
-                                  transliterationSurah: transliterationList ==
-                                          null
+                                  transliterationSurah: transliterationList.isEmpty
                                       ? null
                                       : transliterationList[
-                                          snapshot.data.lastReadSurahId - 1],
-                                  translatedSurah: translationList == null
+                                          snapshot.data!.lastReadSurahId! - 1],
+                                  translatedSurah: translationList.isEmpty
                                       ? null
                                       : translationList[
-                                          snapshot.data.lastReadSurahId - 1],
-                                  index: snapshot.data.lastReadSurahId - 1,
+                                          snapshot.data!.lastReadSurahId! - 1],
+                                  index: snapshot.data!.lastReadSurahId! - 1,
                                   lastAyahPosition:
-                                      snapshot.data.lastReadAyahId - 1,
+                                      snapshot.data!.lastReadAyahId! - 1,
                                   surah: Provider.of<QuranProvider>(context,
                                               listen: false)
                                           .allSuras[
-                                      snapshot.data.lastReadSurahId - 1],
+                                      snapshot.data!.lastReadSurahId! - 1],
                                 ),
                               ),
                             );
@@ -124,7 +123,7 @@ class _SurasViewState extends State<SurasView> {
                                             horizontal:
                                                 ScreenUtil().setWidth(25)),
                                         child: Text(
-                                          '${Provider.of<QuranProvider>(context).allSuras.singleWhere((element) => element.number == snapshot.data.lastReadSurahId).name}',
+                                          '${Provider.of<QuranProvider>(context).allSuras.singleWhere((element) => element.number == snapshot.data!.lastReadSurahId).name}',
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
@@ -136,7 +135,7 @@ class _SurasViewState extends State<SurasView> {
                                             horizontal:
                                                 ScreenUtil().setWidth(25)),
                                         child: Text(
-                                          'رقم الآية : ${snapshot.data.lastReadSurahId == 1 ? snapshot.data.lastReadAyahId + 1 : snapshot.data.lastReadAyahId}',
+                                          'رقم الآية : ${snapshot.data!.lastReadSurahId == 1 ? (snapshot.data!.lastReadAyahId!) + 1 : snapshot.data!.lastReadAyahId!}',
                                           style: TextStyle(
                                               color: Colors.white60,
                                               fontWeight: FontWeight.bold,
@@ -203,10 +202,10 @@ class _SurasViewState extends State<SurasView> {
                       playerStatus: audioSnapshot,
                       index: index,
                       sura: Provider.of<QuranProvider>(context).allSuras[index],
-                      translationSurah: translationList != null
+                      translationSurah: translationList.isNotEmpty
                           ? translationList[index]
                           : null,
-                      transliterationSurah: transliterationList != null
+                      transliterationSurah: transliterationList.isNotEmpty
                           ? transliterationList[index]
                           : null,
                     );

@@ -10,7 +10,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class QuranSectionScreen extends StatefulWidget {
-  const QuranSectionScreen({Key key}) : super(key: key);
+  const QuranSectionScreen({super.key});
 
   @override
   State<QuranSectionScreen> createState() => _QuranSectionScreenState();
