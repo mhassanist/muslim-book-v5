@@ -31,7 +31,7 @@ class QuranAudioService extends BackgroundAudioTask {
     playCount = prefs.getInt(Constants.REPEAT_AYAh_COUNT) ?? 3;
     playerCount = 1;
 
-    await _audioPlayer.setReleaseMode(ReleaseMode.STOP);
+    await _audioPlayer.setReleaseMode(ReleaseMode.stop);
     implementParams(params ?? {});
     onCompleteListener();
     AudioServiceBackground.setState(
@@ -41,7 +41,7 @@ class QuranAudioService extends BackgroundAudioTask {
         processingState: AudioProcessingState.loading,);
 
     ayahUrl = "$baseUrl$sheikhId/${surah?.ayahs[ayahIndex].number}";
-    await _audioPlayer.play("$ayahUrl");
+    await _audioPlayer.play(UrlSource("$ayahUrl"));
     setMediaItem();
 
     AudioServiceBackground.setState(
@@ -102,7 +102,7 @@ class QuranAudioService extends BackgroundAudioTask {
       processingState: AudioProcessingState.ready,
       systemActions: [MediaAction.seek],
     );
-    await _audioPlayer.play(ayahUrl);
+    await _audioPlayer.play(UrlSource(ayahUrl));
     renewSurah = 0;
   }
 
@@ -125,7 +125,7 @@ class QuranAudioService extends BackgroundAudioTask {
   }
 
   void onCompleteListener() {
-    _audioPlayer.onPlayerCompletion.listen((event) {
+    _audioPlayer.onPlayerComplete.listen((event) {
       if (prefs.getBool(Constants.ALLOW_REPEAT_AYA) ?? false) {
         if (playerCount < playCount) {
           // print(

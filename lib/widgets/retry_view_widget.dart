@@ -55,7 +55,7 @@ class _RetryViewWidgetState extends State<RetryViewWidget> {
               Padding(padding: EdgeInsets.only(top: 20)),
               LoadingButton(
                 firstWidget: ElevatedButton(
-                  onPressed: widget.function?.call,
+                  onPressed: () => widget.function?.call(),
                   child: Text(
                     AppLocalizations.of(context)!.translate("retry"),
                     style: TextStyle(color: Constants.CANVAS_COLOR),
@@ -80,7 +80,7 @@ class _RetryViewWidgetState extends State<RetryViewWidget> {
     if (widget.provider.mounted) {
       Future.delayed(
         Duration(milliseconds: 300),
-        widget.function?.call,
+        () => widget.function?.call(),
       );
     }
     super.dispose();
@@ -121,7 +121,7 @@ Widget modelNotPresentWidget(
           Padding(padding: EdgeInsets.only(top: 20)),
           LoadingButton(
             firstWidget: ElevatedButton(
-              onPressed: function?.call,
+              onPressed: () => function?.call(),
               child: Text(
                 AppLocalizations.of(context)!.translate("retry"),
                 style: TextStyle(color: Constants.CANVAS_COLOR),

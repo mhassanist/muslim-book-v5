@@ -187,7 +187,7 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
         padding: EdgeInsets.symmetric(
           vertical: sizeConfig.blockSizeVertical * 2,
         ),
-        onPressed: onPressed?.call,
+        onPressed: () => onPressed?.call(),
         fillColor: Colors.white,
         shape: StadiumBorder(),
         child: Row(

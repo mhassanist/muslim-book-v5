@@ -26,7 +26,7 @@ class _RetryViewWidgetState extends State<RetryViewWidget> {
   @override
   void dispose() {
     if (widget.provider.mounted) {
-      Future.delayed(Duration(milliseconds: 300), widget.function?.call);
+      Future.delayed(Duration(milliseconds: 300), () => widget.function?.call());
     }
     super.dispose();
   }

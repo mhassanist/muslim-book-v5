@@ -36,7 +36,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
   late PickAzanShiekhProvider _azanSoundFromAssetsProvider; //from assets
   late AzanSoundsProvider _moreSoundsProvider; //from web or local database
 
-  AudioPlayer audioPlayer = AudioPlayer();
+  final audioPlayer = AudioPlayer();
   List<AnimationController> animationList = [];
   List<AnimationController> animationListWeb = [];
   String? currentPlayingItemId = '';
@@ -141,7 +141,10 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
   Future playAzan(id, index) async {
     String tempPath = (await getApplicationDocumentsDirectory()).path;
     String path = join(tempPath, "azan_$id.mp3");
-    if (!screenNoLongerActive) await audioPlayer.play(path, isLocal: true);
+    if (!screenNoLongerActive) {
+      // await audioPlayer.play(path, isLocal: true);
+      await audioPlayer.play(DeviceFileSource(path));
+    }
 
     animationList[index].forward();
     setState(() {
@@ -160,7 +163,8 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
       await _moreSoundsProvider.downloadFile(index);
     }
     if (!screenNoLongerActive)
-      await audioPlayer.play(_moreSoundsProvider.getAzanSound(index).localPath);
+      // await audioPlayer.play(_moreSoundsProvider.getAzanSound(index).localPath);
+    await audioPlayer.play(DeviceFileSource(_moreSoundsProvider.getAzanSound(index).localPath));
     _moreSoundsProvider.pickedAzanShiekhIndex = index;
     setState(() {
       animationListWeb[index].forward();

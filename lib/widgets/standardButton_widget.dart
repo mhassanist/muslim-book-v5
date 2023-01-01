@@ -24,7 +24,7 @@ Widget standardButton({
           borderRadius: BorderRadius.circular(10),
         ),
         child: ElevatedButton(
-          onPressed: onPressed?.call,
+          onPressed: () => onPressed?.call(),
           child: Row(
             mainAxisAlignment: isGo
                 ? MainAxisAlignment.spaceBetween

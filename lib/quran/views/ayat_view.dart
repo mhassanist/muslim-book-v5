@@ -1,12 +1,11 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:audioplayers/audio_cache.dart';
+// import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/quran/models/quran_model.dart';
 import 'package:muslim_book/quran/provider/quran_provider.dart';
 import 'package:muslim_book/quran/widgets/ayah_widget.dart';
 import 'package:muslim_book/quran/widgets/ayat_view_bottom_sheet.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -42,14 +41,16 @@ class _AyatViewState extends State<AyatView> {
   Ayah? selectedAyah;
   DateTime startTime = DateTime.now();
   DateTime? endTime;
-  late AudioCache _audioCache;
+  // late AudioCache _audioCache;
+  final player = AudioPlayer();
 
   @override
   void initState() {
     super.initState();
-    _audioCache = AudioCache(
-        prefix: "audio/",
-        fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP));
+    player.setSource(AssetSource('assest/audio/allah_make_you_from_heaven.wav'));
+    // _audioCache = AudioCache(
+    //     prefix: "audio/",
+    //     fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP));
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await listenToPosition();
     });
@@ -319,7 +320,8 @@ class _AyatViewState extends State<AyatView> {
     //print(endTime.difference(startTime).inMinutes);
     //print(endTime.difference(startTime).inMinutes.abs());
     if (endTime!.difference(startTime).inMinutes.abs() >= 1) {
-      _audioCache.play('allah_make_you_from_heaven.wav');
+      // _audioCache.play('allah_make_you_from_heaven.wav');
+      player.resume();
     }
   }
 }

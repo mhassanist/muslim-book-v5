@@ -1,4 +1,4 @@
-import 'package:audioplayers/audio_cache.dart';
+// import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/network_utils/api_service.dart';
 import 'package:muslim_book/sebha_feature/online_sebha/models/tasabeeh_model.dart';
@@ -11,7 +11,8 @@ class OnlineSebhaProvider extends ChangeNotifier {
   bool _showCongratulations = false;
   int _currentIndex = 0;
   late TasbeehModel _currentTasbeeh;
-  late AudioCache _audioCache;
+  // late AudioCache _audioCache;
+  final player = AudioPlayer();
   final CarouselController controller = CarouselController();
   bool _allowClickSound = locator<Prefs>().allowTasbeehClickSound;
   List<TasbeehModel> _tsabeehList = [];
@@ -25,9 +26,9 @@ class OnlineSebhaProvider extends ChangeNotifier {
     }
   }
   void setAudioCache() {
-    _audioCache = AudioCache(
-        prefix: "audio/",
-        fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP));
+    // _audioCache = AudioCache(
+    //     prefix: "audio/",
+    //     fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP));
   }
 
   void getTsabeehList() async {
@@ -39,7 +40,10 @@ class OnlineSebhaProvider extends ChangeNotifier {
   }
 
   Future increaseTasbeeh({int? count}) async {
-    if (_allowClickSound) _audioCache.play('click.mp3');
+    if (_allowClickSound) {
+      // _audioCache.play('click.mp3');
+      await player.play(AssetSource('assets/audio/click.mp3'));
+    }
     _currentTasbeeh.counted = count ?? _currentTasbeeh.counted + 1;
     _currentTasbeeh.totalCounted = count ?? _currentTasbeeh.totalCounted + 1;
 
@@ -47,7 +51,8 @@ class OnlineSebhaProvider extends ChangeNotifier {
     await locator<Prefs>().setSebhaCount(locator<Prefs>().sebhaCount + 1);
     if (_currentTasbeeh.counted == _currentTasbeeh.count) {
       // controller.nextPage();
-      _audioCache.play('allah_make_you_from_heaven.wav');
+      // _audioCache.play('allah_make_you_from_heaven.wav');
+      await player.play(AssetSource('assets/audio/allah_make_you_from_heaven.wav'));
       _currentTasbeeh.counted = 0;
       showCongratulations = true;
       await Future.delayed(Duration(seconds: 4));

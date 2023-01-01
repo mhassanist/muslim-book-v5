@@ -1,8 +1,8 @@
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:muslim_book/ads/admob_rectangle.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:muslim_book/widgets/app_scaffold_title.dart';
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -23,7 +23,7 @@ class _IslamicPostOfflineDetailsState extends State<IslamicPostOfflineDetails> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await DataConnectionChecker().hasConnection.then((value) {
+      await InternetConnectionChecker().hasConnection.then((value) {
         if (value == true) {
           setState(() {
             isInternetConnected = true;

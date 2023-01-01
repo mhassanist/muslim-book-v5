@@ -199,7 +199,7 @@ class CompetitionUI {
           // shape: RoundedRectangleBorder(
           //   borderRadius: BorderRadius.circular(10),
           // ),
-          onPressed: onPressed?.call,
+          onPressed: () => onPressed?.call(),
           child: Text(
             "${answer.answers}",
             style: TextStyle(

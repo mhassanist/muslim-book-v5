@@ -161,9 +161,9 @@ class _CustomExpansionTileTwoState extends State<CustomExpansionTileTwo>
 
   AnimationController _controller;
   Animation<double> _iconTurns;
-  Animation<double> _iconTurns2;
+  // Animation<double> _iconTurns2;
   Animation<double> _heightFactor;
-  Animation<Color> _borderColor;
+  // Animation<Color> _borderColor;
   Animation<Color> _headerColor;
   Animation<Color> _iconColor;
   Animation<Color> _backgroundColor;
@@ -176,8 +176,8 @@ class _CustomExpansionTileTwoState extends State<CustomExpansionTileTwo>
     _controller = AnimationController(duration: _kExpand, vsync: this);
     _heightFactor = _controller.drive(_easeInTween);
     _iconTurns = _controller.drive(_halfTween.chain(_easeInTween));
-    _iconTurns2 = _controller.drive(_halfTween.chain(_easeOutTween));
-    _borderColor = _controller.drive(_borderColorTween.chain(_easeOutTween));
+    // _iconTurns2 = _controller.drive(_halfTween.chain(_easeOutTween));
+    // _borderColor = _controller.drive(_borderColorTween.chain(_easeOutTween));
     _headerColor = _controller.drive(_headerColorTween.chain(_easeInTween));
     _iconColor = _controller.drive(_iconColorTween.chain(_easeInTween));
     _backgroundColor =
@@ -214,7 +214,7 @@ class _CustomExpansionTileTwoState extends State<CustomExpansionTileTwo>
   }
 
   Widget _buildChildren(BuildContext context, Widget child) {
-    final Color borderSideColor = _borderColor.value ?? Colors.transparent;
+    // final Color borderSideColor = _borderColor.value ?? Colors.transparent;
 
     return Container(
       decoration: BoxDecoration(
@@ -332,10 +332,10 @@ class _CustomExpansionTileTwoState extends State<CustomExpansionTileTwo>
     _borderColorTween.end = theme.dividerColor;
     _headerColorTween
       ..begin = theme.textTheme.subtitle1.color
-      ..end = theme.accentColor;
+      ..end = theme.colorScheme.secondary;
     _iconColorTween
       ..begin = theme.unselectedWidgetColor
-      ..end = theme.accentColor;
+      ..end = theme.colorScheme.secondary;
     _backgroundColorTween.end = widget.backgroundColor;
     super.didChangeDependencies();
   }

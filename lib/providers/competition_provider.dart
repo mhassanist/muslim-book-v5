@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/models/answer_model.dart' as answer;
 import 'package:muslim_book/models/answer_result_model.dart';
@@ -16,9 +16,11 @@ import 'package:flutter/material.dart';
 import 'package:quiver/async.dart';
 
 class CompetitionProvider extends ViewStateProvider {
-  late final UserProvider _userProvider;
+  late final UserProvider? _userProvider;
   late CompetitionUI ui;
-  AudioCache _audioPlayer = AudioCache();
+  // AudioCache _audioPlayer = AudioCache();
+  // AudioPlayer _audioPlayer = AudioPlayer();
+  final player = AudioPlayer();
   int? _chosenPosition;
   int? _correctAnswerPosition;
   bool _isDisposed = false;
@@ -233,24 +235,29 @@ class CompetitionProvider extends ViewStateProvider {
   }
 
   Future playCorrectAnswerVoice() async {
-    await _audioPlayer.play("audio/questions/correct.mp3");
+    // await _audioPlayer.play("audio/questions/correct.mp3");
+    await player.play(AssetSource('assets/audio/questions/correct.mp3'));
     await Future.delayed(Duration(seconds: 1));
     if (_correctAnswerCounter == 3) {
-      await _audioPlayer.play("audio/u_made_achievment.wav");
+      // await _audioPlayer.play("audio/u_made_achievment.wav");
+      await player.play(AssetSource('assets/audio/u_made_achievment.wav'));
       _correctAnswerCounter = 0;
     }
   }
 
   Future playWrongAnswerVoice() async {
-    await _audioPlayer.play("audio/questions/wrong.mp3");
+    // await _audioPlayer.play("audio/questions/wrong.mp3");
+    await player.play(AssetSource('assets/audio/questions/wrong.mp3'));
   }
 
   Future playTryAgainVoice() async {
-    await _audioPlayer.play("audio/questions/try_again.mp3");
+    // await _audioPlayer.play("audio/questions/try_again.mp3");
+    await player.play(AssetSource('assets/audio/questions/try_again.mp3'));
   }
 
   Future playAllQuestionsEndVoice() async {
-    await _audioPlayer.play("audio/questions/share.mp3");
+    // await _audioPlayer.play("audio/questions/share.mp3");
+    await player.play(AssetSource('assets/audio/questions/share.mp3'));
   }
 
   void openDialog() {

@@ -349,7 +349,7 @@ class SideDrawerMenu {
     return Material(
       color: Theme.of(context).primaryColorDark,
       child: InkWell(
-        onTap: function?.call,
+        onTap: () => function?.call(),
         child: Container(
           height: sizeConfig.blockSizeVertical * 6,
           width: sizeConfig.blockSizeHorizontal * 65,

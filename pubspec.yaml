@@ -14,8 +14,7 @@ dependencies:
   android_alarm_manager_plus: ^2.1.0
   android_intent: ^2.0.2
   animated_text_kit: ^4.2.2
-#  audioplayers: ^1.1.1
-  audioplayers: ^0.18.0
+  audioplayers: ^1.1.1
   auto_size_text: ^3.0.0
   audio_service: ^0.18.7
 
@@ -33,7 +32,7 @@ dependencies:
   cupertino_icons: ^1.0.5
 
   #  No null Safety
-  data_connection_checker: ^0.3.4
+#  data_connection_checker: ^0.3.4
   date_time_picker: ^2.1.0
   debounce_throttle: ^2.0.0
   device_info_plus: ^8.0.0
@@ -46,7 +45,9 @@ dependencies:
 
   facebook_audience_network: ^1.0.1
   # No null safety
-  fancy_dialog: ^1.0.4
+  fancy_dialog:
+    git: https://github.com/DokkarRachidReda/Fancy-Flutter-Alert-Dialog
+
   ffi: ^2.0.1
   firebase_admob_config: ^1.2.0
   firebase_analytics: ^10.0.7
@@ -104,12 +105,12 @@ dependencies:
 
   intl: ^0.17.0
   image_picker: ^0.8.6
+  internet_connection_checker: ^1.0.0+1
 
   location: ^5.0.0-dev.8
   #  location_permissions: ^4.0.1       disconnected
   launch_review: ^3.0.1
-  #  No null Safety
-  loading: ^1.0.2
+#  loading_animation_widget: ^1.2.0+4
   localstorage: ^4.0.0+1
   list_tile_more_customizable: ^3.0.0
   listview_utils: ^1.0.0-nullsafety
@@ -119,7 +120,7 @@ dependencies:
   native_ads_flutter: ^1.0.7
 
   path_provider: ^2.0.11
-  provider: ^6.0.4
+  provider: ^6.0.5
   package_info_plus: ^3.0.2
 
   permission_handler: ^10.2.0
@@ -131,10 +132,6 @@ dependencies:
   search_map_place_updated: ^0.0.4
 
   translator: ^0.1.7
-
-
-  # disconnected
-  progress_dialog: ^1.2.4
 
   recase: ^4.1.0
 

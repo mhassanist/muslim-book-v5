@@ -1,4 +1,4 @@
-import 'package:audioplayers/audio_cache.dart';
+// import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -15,16 +15,18 @@ class ShareDialog extends StatefulWidget {
 }
 
 class _ShareDialogState extends State<ShareDialog> {
-  late AudioCache _audioCache;
+  // late AudioCache _audioCache;
+  final player = AudioPlayer();
 
   @override
   void initState() {
-    _audioCache = AudioCache(
-      prefix: "audio/",
-      fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP),
-    );
+    // _audioCache = AudioCache(
+    //   prefix: "audio/",
+    //   fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP),
+    // );
 
-    _audioCache.play('share_app.wav');
+    // _audioCache.play('share_app.wav');
+    player.play(AssetSource('assets/audio/share_app.wav'));
 
     super.initState();
   }
@@ -142,8 +144,12 @@ class _ShareDialogState extends State<ShareDialog> {
                           child: FittedBox(
                             child: FloatingActionButton(
                               onPressed: () {
-                                _audioCache.clearCache();
-                                _audioCache.clear('share_app.wav');
+                                // _audioCache.clearCache();
+                                // _audioCache.clear('share_app.wav');
+                                // _audioCache.clearAll();
+                                // _audioCache.clear(Uri.file('share_app.wav'));
+                                player.stop();
+                                player.release();
                                 Navigator.pop(context);
                               },
                               backgroundColor: Colors.white,

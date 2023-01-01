@@ -10,7 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class QuranAudioService extends BackgroundAudioTask {
   late SharedPreferences prefs;
 
-  final _audioPlayer = AudioPlayer();
+  // final _audioPlayer = AudioPlayer();
+  final player = AudioPlayer();
   final String baseUrl = "https://cdn.alquran.cloud/media/audio/ayah/";
   String ayahUrl = '';
   int surahNumber = 0;
@@ -30,7 +31,7 @@ class QuranAudioService extends BackgroundAudioTask {
     playCount = prefs.getInt(Constants.REPEAT_AYAh_COUNT) ?? 3;
     playerCount = 1;
 
-    await _audioPlayer.setReleaseMode(ReleaseMode.STOP);
+    // await _audioPlayer.setReleaseMode(ReleaseMode.STOP);
     implementParams(params ?? {});
     onCompleteListener();
     AudioServiceBackground.setState(
@@ -40,7 +41,8 @@ class QuranAudioService extends BackgroundAudioTask {
         processingState: AudioProcessingState.loading);
 
     ayahUrl = "$baseUrl$sheikhId/${surah?.ayahs[ayahIndex].number}";
-    await _audioPlayer.play("$ayahUrl");
+    // await _audioPlayer.play("$ayahUrl");
+    await player.play(UrlSource("$ayahUrl"));
     setMediaItem();
 
     AudioServiceBackground.setState(
@@ -71,12 +73,14 @@ class QuranAudioService extends BackgroundAudioTask {
         playing: false,
         processingState: AudioProcessingState.ready);
     // Pause the audio.
-    _audioPlayer.pause();
+    // _audioPlayer.pause();
+    player.pause();
   }
 
   @override
   Future<void> onStop() async {
-    _audioPlayer.stop();
+    // _audioPlayer.stop();
+    player.release();
     if (ayahIndex == surah?.ayahs.length) {
       await AudioServiceBackground.setState(
           controls: [replayControl],
@@ -100,7 +104,8 @@ class QuranAudioService extends BackgroundAudioTask {
       processingState: AudioProcessingState.ready,
       systemActions: [MediaAction.seekForward],
     );
-    await _audioPlayer.play(ayahUrl);
+    // await _audioPlayer.play(ayahUrl);
+    await player.play(UrlSource(ayahUrl));
     renewSurah = 0;
   }
 
@@ -123,7 +128,7 @@ class QuranAudioService extends BackgroundAudioTask {
   }
 
   void onCompleteListener() {
-    _audioPlayer.onPlayerCompletion.listen((event) {
+    player.onPlayerComplete.listen((event) {
       if (prefs.getBool(Constants.ALLOW_REPEAT_AYA) ?? false) {
         if (playerCount < playCount) {
          // print(

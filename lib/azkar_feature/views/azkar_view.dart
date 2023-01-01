@@ -1,4 +1,4 @@
-import 'package:audioplayers/audio_cache.dart';
+// import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/ads/admob_rectangle.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
@@ -34,15 +34,18 @@ class _AzkarViewState extends State<AzkarView> {
   late Zikr currentZikr;
   int currentIndex = 0;
   final CarouselController controller = CarouselController();
-  late AudioCache _audioCache;
+  // late AudioCache _audioCache;
+  // late AudioPlayer audioPlayer;
+  final player = AudioPlayer();
 
   @override
   void initState() {
     super.initState();
-    _audioCache = AudioCache(
-      prefix: "audio/",
-      fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP),
-    );
+    // audioPlayer = AudioPlayer(mode: PlayerMode.LOW_LATENCY);
+    // _audioCache = AudioCache(
+    //   prefix: "audio/",
+    //   fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP),
+    // );
     getAzkarContent();
   }
 
@@ -294,7 +297,7 @@ class _AzkarViewState extends State<AzkarView> {
       child: FittedBox(
           child: FloatingActionButton(
         heroTag: "1 ${zikr.content}",
-        onPressed: () {
+        onPressed: () async {
           if (zikr.counted < zikr.counter - 1) {
             setState(() {
               zikr.counted = zikr.counted + 1;
@@ -302,8 +305,12 @@ class _AzkarViewState extends State<AzkarView> {
           } else {
             controller.nextPage();
             if (currentIndex == azkar!.length - 1) {
-              _audioCache.play('allah_make_you_from_heaven.wav');
-
+              // _audioCache.play('allah_make_you_from_heaven.wav');
+              // audioPlayer.play(
+              //   'assets/audio/allah_make_you_from_heaven.wav',
+              //   isLocal: true,
+              // );
+              await player.play(AssetSource('sounds/coin.wav'));
               Navigator.pop(context);
             }
           }

@@ -78,7 +78,7 @@ class AppTextField extends StatelessWidget {
         },
         validator: validator,
         onFieldSubmitted: textInputAction == TextInputAction.done
-            ? onSubmit?.call
+            ? onSubmit?.call()
             : (s) => FocusScope.of(context).requestFocus(nextNode),
       ),
     );

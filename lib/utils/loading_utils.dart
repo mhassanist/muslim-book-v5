@@ -1,13 +1,12 @@
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:flutter/material.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:progress_dialog/progress_dialog.dart';
+import 'package:muslim_book/widgets/progress_dialog_pkg/progress_dialog.dart';
 
 import 'Constants.dart';
 
 class LoadingUtils {
   setIsLoading(BuildContext context, bool condition) {
-    ProgressDialog pr = new ProgressDialog(context,
+    final pr = ProgressDialog(context,
         isDismissible: false, type: ProgressDialogType.Normal);
     if (condition) {
       pr.style(

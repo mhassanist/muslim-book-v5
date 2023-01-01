@@ -77,7 +77,7 @@ class AppScaffold extends StatelessWidget {
     if (Provider.of<UserProvider>(context).isLoggedIn) {
       return GestureDetector(
         onTap: onProfileTap != null
-            ? onProfileTap?.call
+            ? () => onProfileTap?.call()
             : () => Navigator.pushNamed(context, "/myProfile_view"),
         child: Provider.of<UserProvider>(context).user.image == null
             ? placeHolder()

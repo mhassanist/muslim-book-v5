@@ -1,10 +1,11 @@
 import 'package:admob_flutter/admob_flutter.dart';
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+// import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:muslim_book/ads/ad_manager.dart';
 import 'package:muslim_book/ads/admob_rectangle.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
 import 'package:muslim_book/azkar_feature/providers/azkar_provider.dart';
+import 'package:muslim_book/firebase_options.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
 import 'package:muslim_book/locals_utils/language_constants.dart';
 import 'package:muslim_book/providers/azan_fajr_sounds_provider.dart';
@@ -53,29 +54,43 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   _initAdMob();
-  await AndroidAlarmManager.initialize();
-  AdManager.remoteConfig = await setupRemoteConfig();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  Routes.createRoutes();
-  setupLocator();
-  await locator<Prefs>().setSharedPreferences();
-  Locale loaded = await getLocale();
-  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  FacebookAudienceNetwork.init();
-  runApp(
-    ProviderScope(child: MyApp()), // Wrap your app
-  );
+  // await AndroidAlarmManager.initialize();
 
-  await AndroidAlarmManager.periodic(
-    const Duration(minutes: 1),
-    0,
-    () async {
-      await Constants.platform.invokeMethod("fireAzan");
-      await Constants.platform.invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
-      await Constants.platform.invokeMethod("fireAzkarPopUp");
-    },
+  // AdManager.remoteConfig = await setupRemoteConfig();
+  // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  // Routes.createRoutes();
+  // setupLocator();
+  // await locator<Prefs>().setSharedPreferences();
+  // Locale loaded = await getLocale();
+  // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  // FacebookAudienceNetwork.init();
+
+  runApp(
+    MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(),
+        body: Container(
+          child: Center(
+            child: const Text('Good Year'),
+          ),
+        ),
+      ),
+    ),
   );
+  // runApp(
+  //   ProviderScope(child: MyApp()), // Wrap your app
+  // );
+
+  // await AndroidAlarmManager.periodic(
+  //   const Duration(minutes: 1),
+  //   0,
+  //   () async {
+  //     await Constants.platform.invokeMethod("fireAzan");
+  //     await Constants.platform.invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
+  //     await Constants.platform.invokeMethod("fireAzkarPopUp");
+  //   },
+  // );
 }
 
 _initAdMob() {
@@ -84,7 +99,9 @@ _initAdMob() {
 }
 
 Future<FirebaseRemoteConfig> setupRemoteConfig() async {
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   FirebaseRemoteConfig remoteConfig = await FirebaseRemoteConfig.instance;
   remoteConfig.setDefaults(<String, dynamic>{
     'down_Competition_1': 'ca-app-pub-8586064191208277/2234874389',
@@ -376,7 +393,7 @@ class MyApp extends StatefulWidget {
       context: context,
       builder: (BuildContext context) => FancyDialog(
         title: AppLocalizations.of(context)!.translate("thanx_to_use_app"),
-        descreption:
+        description:
             AppLocalizations.of(context)!.translate("rate_app_description"),
         okColor: Theme.of(context).primaryColor,
         okFun: () async {
@@ -573,3 +590,7 @@ class _MyAppState extends State<MyApp> {
 }
 
 // lib/network_utils/ApiService (getTasbeehList, getTopSebha, getSebhaProfile)
+// lib/ramadan/widgets/ayah_widget
+// lib/ramadan/widgets/surah_widget
+// lib/quran/widgets/ayah_widget
+// lib/quran/widgets/surah_widget

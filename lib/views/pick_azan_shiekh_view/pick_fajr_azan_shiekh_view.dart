@@ -27,7 +27,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
   PickFajrAzanShiekhProvider? _fajrAzanSoundFromAssetsProvider; //from assets
   AzanFairSoundsProvider? _moreFajrAzanSoundsProvider; //from web or local database
 
-  AudioPlayer audioPlayer = AudioPlayer();
+  final audioPlayer = AudioPlayer();
   List<AnimationController> animationList = [];
   List<AnimationController> animationListWeb = [];
   String currentPlayingItemId = '';
@@ -127,7 +127,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
     //WE DONT USE IDS BUT LEFT IF THERE IS FUTURE ADDITIONS
     String path = join(tempPath, "azan_mshary_fajr.mp3");
     if(!screenNoLongerActive)
-    await audioPlayer.play(path, isLocal: true);
+    await audioPlayer.play(DeviceFileSource(path));
     animationList[index].forward();
     setState(() {
       currentPlayingItemId = id;
@@ -145,7 +145,8 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
       await _moreFajrAzanSoundsProvider!.downloadFile(index);
     }
     if(!screenNoLongerActive)
-      await audioPlayer.play(_moreFajrAzanSoundsProvider!.getAzanSound(index).localPath);
+      // await audioPlayer.play(_moreFajrAzanSoundsProvider!.getAzanSound(index).localPath);
+    await audioPlayer.play(DeviceFileSource(_moreFajrAzanSoundsProvider!.getAzanSound(index).localPath));
     _moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex = index;
     setState(() {
       animationListWeb[index].forward();

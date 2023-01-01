@@ -1,14 +1,13 @@
 import 'dart:async';
 
-import 'package:loading/indicator/ball_beat_indicator.dart';
-import 'package:loading/loading.dart';
 import 'package:muslim_book/ads/ad_manager.dart';
-
 // import 'package:muslim_book/main.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
+import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 import 'package:native_ads_flutter/native_ads.dart';
 
 // import 'package:flutter_native_admob/flutter_native_admob.dart';

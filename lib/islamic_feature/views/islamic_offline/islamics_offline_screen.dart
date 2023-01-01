@@ -1,9 +1,9 @@
 import 'dart:convert';
 
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:muslim_book/ads/admob_rectangle.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
-import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -24,7 +24,7 @@ class _IslamicsOfflineScreenState extends State<IslamicsOfflineScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await DataConnectionChecker().hasConnection.then((value) {
+      await InternetConnectionChecker().hasConnection.then((value) {
         if (value == true) {
           setState(() {
             isInternetConnected = true;

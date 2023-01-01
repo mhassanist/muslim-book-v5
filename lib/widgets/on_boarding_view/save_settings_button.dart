@@ -34,7 +34,7 @@ class SaveSettingsButton extends StatelessWidget {
                 sizeConfig.blockSizeHorizontal * 2,
               ),
             ),
-            onPressed: onTap.call,
+            onPressed: () => onTap.call(),
             fillColor: Theme.of(context).primaryColor,
             child: Text(
               AppLocalizations.of(context)!.translate("$text"),

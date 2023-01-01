@@ -1,4 +1,4 @@
-import 'package:audioplayers/audio_cache.dart';
+// import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/models/countries_model.dart';
@@ -11,13 +11,14 @@ import 'package:muslim_book/utils/locator.dart';
 
 class TopProvider extends ViewStateProvider {
   TopProvider(this._userProvider) {
-    _audioCache = AudioCache(
-        prefix: "audio/",
-        fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP),);
+    // _audioCache = AudioCache(
+    //     prefix: "audio/",
+    //     fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP),);
     getTop();
   }
   final UserProvider? _userProvider;
-  late AudioCache _audioCache;
+  // late AudioCache _audioCache;
+  final player = AudioPlayer();
 
   List<TopModelData> _topList = [];
   List<CountryModel> _countries = [];
@@ -55,7 +56,8 @@ class TopProvider extends ViewStateProvider {
         _topList = _apiResponseModel.data;
         _userScore = _apiResponseModel.userScoreModel ?? UserScoreModel();
         if (_userScore.points > 1000) {
-          _audioCache.play("u_made_achievment.wav");
+          // _audioCache.play("u_made_achievment.wav");
+          await player.play(AssetSource('assets/audio/u_made_achievment.wav'));
         }
       }
       setViewState(ViewState.Idle);
@@ -70,7 +72,8 @@ class TopProvider extends ViewStateProvider {
         _topList = _apiResponseModel.data;
         _userScore = _apiResponseModel.userScoreModel ?? UserScoreModel();
         if (_userScore.points > 1000) {
-          _audioCache.play("u_made_achievment.wav");
+          // _audioCache.play("u_made_achievment.wav");
+          await player.play(AssetSource('assets/audio/u_made_achievment.wav'));
         }
       }
       setViewState(ViewState.Idle);

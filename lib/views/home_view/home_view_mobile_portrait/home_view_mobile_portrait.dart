@@ -188,7 +188,7 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
       SizingInformation sizeConfig, int? position, String svgPhoto, String title,
       {Function? onTap}) {
     return ElevatedButton(
-      onPressed: onTap != null ? onTap.call :
+      onPressed: onTap != null ? onTap.call() :
           () {
             Provider.of<UserProvider>(context, listen: false).selectedPage =
                 position;

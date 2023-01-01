@@ -50,135 +50,136 @@ class _BuildAyahWidgetState extends State<BuildAyahWidget> {
     if (widget.surah.number != 1 && widget.ayah.numberInSurah == 1) {
       widget.ayah.text = widget.ayah.text.split("لرَّحِيمِ").last;
     }
-    return StreamBuilder<MediaItem>(
-        stream: AudioService.currentMediaItemStream,
-        builder: (context, AsyncSnapshot<MediaItem> snapshot) {
-          WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-            if (widget.playerStatus.data != null &&
-                widget.playerStatus.data!.playing &&
-                snapshot.data != null) {
-              if ((snapshot.data!.extras as Map)["surahIndex"] == widget.surahIndex) {
-                jumpToNextAyah(snapshot);
-              } else if ((snapshot.data!.extras as Map)["renewSurah"] == 1) {
-                renewSurasView(context, snapshot);
-              }
-            }
-            if (mounted && widget.playerStatus != null) {
-              setState(() {
-                isAyahPlaying = (widget.playerStatus.data != null &&
-                    widget.playerStatus.data!.playing &&
-                    snapshot.data != null &&
-                    (int.parse(snapshot.data!.id) == widget.ayahIndex &&
-                        snapshot.data!.title == widget.surah.name));
-              });
-            }
-          });
-
-          return Container(
-            color: isAyahPlaying ? Colors.yellow[100] : Colors.white,
-            child: Column(
-              children: <Widget>[
-                if ((isNewJuz(context)))
-                  Container(
-                    padding: EdgeInsets.symmetric(
-                        vertical: ScreenUtil().setHeight(7),
-                        horizontal: ScreenUtil().setWidth(20)),
-                    width: double.infinity,
-                    color: Theme.of(context).primaryColor.withOpacity(.9),
-                    child: Text(
-
-                      "${AppLocalizations.of(context)!.translate("part_no")} ${widget.ayah.juz}",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: ScreenUtil().setSp(20)),
-                    ),
-                  ),
-                Screenshot(
-                  controller: screenshotController,
-                  child: Container(
-                    padding: EdgeInsets.symmetric(
-                        horizontal: ScreenUtil().setWidth(13),
-                        vertical: ScreenUtil().setHeight(5)),
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          color:
-                              isAyahPlaying ? Colors.yellow[100] : Colors.white,
-                          width: double.infinity,
-                          padding: EdgeInsets.symmetric(
-                              vertical: ScreenUtil().setHeight(10)),
-                          child: Text(
-                            "${widget.ayah.text}",
-                            style: TextStyle(
-                              fontFamily: "quran",
-                              color:
-                                  isAyahPlaying ? prymaryColor : Colors.black,
-                              height: 1.9,
-                              fontWeight: FontWeight.normal,
-                              fontSize: ScreenUtil().setSp(25),
-                            ),
-                            textAlign: TextAlign.right,
-                          ),
-                        ),
-                        if (Provider.of<QuranProvider>(context)
-                            .allowTransliteration)
-                          Container(
-                            color: isAyahPlaying
-                                ? Colors.yellow[100]
-                                : Colors.white,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: ScreenUtil().setWidth(18)),
-                            width: double.infinity,
-                            child: Text(
-                              "${widget.transliteratedAyah}",
-                              style: TextStyle(
-                                color: Theme.of(context).primaryColor,
-                                fontSize: ScreenUtil().setSp(16),
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-                        if (Provider.of<QuranProvider>(context)
-                            .allowTranslation)
-                          Container(
-                            color: isAyahPlaying
-                                ? Colors.yellow[100]
-                                : Colors.white,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: ScreenUtil().setWidth(18)),
-                            width: double.infinity,
-                            child: Text(
-                              "${widget.translatedAyah}",
-                              style: TextStyle(
-                                fontSize: ScreenUtil().setSp(16),
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                          ),
-                        if (showAyahSuraPosition)
-                          Container(
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            padding: EdgeInsets.symmetric(
-                                vertical: ScreenUtil().setHeight(18),
-                                horizontal: ScreenUtil().setWidth(18)),
-                            width: double.infinity,
-                            child: Text(
-                              "القرآن الكريم ${widget.surahIndex + 1}:${widget.ayahIndex + 1} ",
-                              style: TextStyle(
-                                fontSize: ScreenUtil().setSp(20),
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                          )
-                      ],
-                    ),
-                  ),
-                ),
-                buildAyahHeader(widget.ayah, isAyahPlaying),
-              ],
-            ),
-          );
-        });
+    return Container();
+    // return StreamBuilder<MediaItem>(
+    //     stream: AudioService.currentMediaItemStream,
+    //     builder: (context, AsyncSnapshot<MediaItem> snapshot) {
+    //       WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //         if (widget.playerStatus.data != null &&
+    //             widget.playerStatus.data!.playing &&
+    //             snapshot.data != null) {
+    //           if ((snapshot.data!.extras as Map)["surahIndex"] == widget.surahIndex) {
+    //             jumpToNextAyah(snapshot);
+    //           } else if ((snapshot.data!.extras as Map)["renewSurah"] == 1) {
+    //             renewSurasView(context, snapshot);
+    //           }
+    //         }
+    //         if (mounted && widget.playerStatus != null) {
+    //           setState(() {
+    //             isAyahPlaying = (widget.playerStatus.data != null &&
+    //                 widget.playerStatus.data!.playing &&
+    //                 snapshot.data != null &&
+    //                 (int.parse(snapshot.data!.id) == widget.ayahIndex &&
+    //                     snapshot.data!.title == widget.surah.name));
+    //           });
+    //         }
+    //       });
+    //
+    //       return Container(
+    //         color: isAyahPlaying ? Colors.yellow[100] : Colors.white,
+    //         child: Column(
+    //           children: <Widget>[
+    //             if ((isNewJuz(context)))
+    //               Container(
+    //                 padding: EdgeInsets.symmetric(
+    //                     vertical: ScreenUtil().setHeight(7),
+    //                     horizontal: ScreenUtil().setWidth(20)),
+    //                 width: double.infinity,
+    //                 color: Theme.of(context).primaryColor.withOpacity(.9),
+    //                 child: Text(
+    //
+    //                   "${AppLocalizations.of(context)!.translate("part_no")} ${widget.ayah.juz}",
+    //                   style: TextStyle(
+    //                       color: Colors.white,
+    //                       fontSize: ScreenUtil().setSp(20)),
+    //                 ),
+    //               ),
+    //             Screenshot(
+    //               controller: screenshotController,
+    //               child: Container(
+    //                 padding: EdgeInsets.symmetric(
+    //                     horizontal: ScreenUtil().setWidth(13),
+    //                     vertical: ScreenUtil().setHeight(5)),
+    //                 child: Column(
+    //                   children: <Widget>[
+    //                     Container(
+    //                       color:
+    //                           isAyahPlaying ? Colors.yellow[100] : Colors.white,
+    //                       width: double.infinity,
+    //                       padding: EdgeInsets.symmetric(
+    //                           vertical: ScreenUtil().setHeight(10)),
+    //                       child: Text(
+    //                         "${widget.ayah.text}",
+    //                         style: TextStyle(
+    //                           fontFamily: "quran",
+    //                           color:
+    //                               isAyahPlaying ? prymaryColor : Colors.black,
+    //                           height: 1.9,
+    //                           fontWeight: FontWeight.normal,
+    //                           fontSize: ScreenUtil().setSp(25),
+    //                         ),
+    //                         textAlign: TextAlign.right,
+    //                       ),
+    //                     ),
+    //                     if (Provider.of<QuranProvider>(context)
+    //                         .allowTransliteration)
+    //                       Container(
+    //                         color: isAyahPlaying
+    //                             ? Colors.yellow[100]
+    //                             : Colors.white,
+    //                         padding: EdgeInsets.symmetric(
+    //                             horizontal: ScreenUtil().setWidth(18)),
+    //                         width: double.infinity,
+    //                         child: Text(
+    //                           "${widget.transliteratedAyah}",
+    //                           style: TextStyle(
+    //                             color: Theme.of(context).primaryColor,
+    //                             fontSize: ScreenUtil().setSp(16),
+    //                           ),
+    //                           textAlign: TextAlign.left,
+    //                         ),
+    //                       ),
+    //                     if (Provider.of<QuranProvider>(context)
+    //                         .allowTranslation)
+    //                       Container(
+    //                         color: isAyahPlaying
+    //                             ? Colors.yellow[100]
+    //                             : Colors.white,
+    //                         padding: EdgeInsets.symmetric(
+    //                             horizontal: ScreenUtil().setWidth(18)),
+    //                         width: double.infinity,
+    //                         child: Text(
+    //                           "${widget.translatedAyah}",
+    //                           style: TextStyle(
+    //                             fontSize: ScreenUtil().setSp(16),
+    //                           ),
+    //                           textAlign: TextAlign.left,
+    //                         ),
+    //                       ),
+    //                     if (showAyahSuraPosition)
+    //                       Container(
+    //                         color: Theme.of(context).scaffoldBackgroundColor,
+    //                         padding: EdgeInsets.symmetric(
+    //                             vertical: ScreenUtil().setHeight(18),
+    //                             horizontal: ScreenUtil().setWidth(18)),
+    //                         width: double.infinity,
+    //                         child: Text(
+    //                           "القرآن الكريم ${widget.surahIndex + 1}:${widget.ayahIndex + 1} ",
+    //                           style: TextStyle(
+    //                             fontSize: ScreenUtil().setSp(20),
+    //                           ),
+    //                           textAlign: TextAlign.left,
+    //                         ),
+    //                       )
+    //                   ],
+    //                 ),
+    //               ),
+    //             ),
+    //             buildAyahHeader(widget.ayah, isAyahPlaying),
+    //           ],
+    //         ),
+    //       );
+    //     });
   }
 
   void jumpToNextAyah(AsyncSnapshot<MediaItem> snapshot) {

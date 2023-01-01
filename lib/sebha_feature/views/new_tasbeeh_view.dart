@@ -209,7 +209,7 @@ class _NewTasbeehViewState extends State<NewTasbeehView> {
       child: FittedBox(
         child: FloatingActionButton(
           backgroundColor: Constants.ICON_COLOR,
-          onPressed: function.call,
+          onPressed: () => function.call(),
           child: FittedBox(
             child: Icon(
               icon,

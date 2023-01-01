@@ -15,7 +15,7 @@ class AyatViewBottomSheet extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: Icon(Icons.history),
-            onTap: saveProgress?.call,
+            onTap: () => saveProgress?.call(),
             title: Text(
               "إحفظها كآخر آية",
               style: TextStyle(color: Colors.black),

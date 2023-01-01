@@ -1,15 +1,16 @@
 import 'dart:convert';
 
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:muslim_book/ads/admob_rectangle.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
 import 'package:muslim_book/islamic_feature/views/islamic_offline/islamic_post_offline_details.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/widgets/app_scaffold_title.dart';
-import 'package:data_connection_checker/data_connection_checker.dart';
+// import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:loading/indicator/ball_beat_indicator.dart';
-import 'package:loading/loading.dart';
+import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
+import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 
 class IslamicCatPosts extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -31,7 +32,7 @@ class _IslamicCatPostsState extends State<IslamicCatPosts> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await DataConnectionChecker().hasConnection.then((value) {
+      await InternetConnectionChecker().hasConnection.then((value) {
         if (value == true) {
           setState(() {
             isInternetConnected = true;

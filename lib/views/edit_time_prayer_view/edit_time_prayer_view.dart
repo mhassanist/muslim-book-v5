@@ -10,11 +10,11 @@ import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 import 'package:muslim_book/widgets/base_widget.dart';
+import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
+import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:loading/indicator/ball_beat_indicator.dart';
-import 'package:loading/loading.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class EditTimePrayer extends StatefulWidget {
