@@ -1,4 +1,4 @@
-import 'package:admob_flutter/admob_flutter.dart';
+// import 'package:admob_flutter/admob_flutter.dart';
 // import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:muslim_book/ads/ad_manager.dart';
 import 'package:muslim_book/ads/admob_rectangle.dart';
@@ -56,9 +56,9 @@ void main() async {
   _initAdMob();
   // await AndroidAlarmManager.initialize();
 
-  // AdManager.remoteConfig = await setupRemoteConfig();
-  // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  // Routes.createRoutes();
+  AdManager.remoteConfig = await setupRemoteConfig();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  Routes.createRoutes();
   // setupLocator();
   // await locator<Prefs>().setSharedPreferences();
   // Locale loaded = await getLocale();
@@ -94,7 +94,7 @@ void main() async {
 }
 
 _initAdMob() {
-  Admob.initialize();
+  // Admob.initialize();
   MobileAds.instance.initialize();
 }
 
