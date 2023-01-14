@@ -1,4 +1,3 @@
-
 package com.muslim_book.muslim_book.models.ramadan_model;
 
 import android.os.Parcelable;

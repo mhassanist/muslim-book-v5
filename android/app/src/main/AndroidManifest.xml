@@ -1,6 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.muslim_book.muslim_book">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -15,23 +14,40 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
         android:name="android.permission.VIBRATE"
-        android:maxSdkVersion="18" />
+        android:maxSdkVersion="18" tools:targetApi="donut" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
+    <!--BLUETOOTH PERMISSION-->
+    <!-- Request legacy Bluetooth permissions on older devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!-- Needed only if your app looks for Bluetooth devices.
+             If your app doesn't use Bluetooth scan results to derive physical
+             location information, you can strongly assert that your app
+             doesn't derive physical location. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <!-- Needed only if your app makes the device discoverable to Bluetooth
+      devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <!-- Needed only if your app communicates with already-paired Bluetooth
+           devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <!--bibo01 : hardware option-->
+    <uses-feature android:name="android.hardware.bluetooth"
+        android:required="false" tools:targetApi="eclair" />
+    <uses-feature android:name="android.hardware.bluetooth_le"
+        android:required="false" tools:targetApi="eclair" />
+
     <application
         android:name=".Application"
-        android:allowBackup="false"
-        android:dataExtractionRules="@xml/data_extraction_rules"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:largeHeap="true"
-        tools:ignore="DataExtractionRules"
-        tools:targetApi="s">
+        tools:targetApi="honeycomb">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -57,21 +73,56 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!--  Gms Ads  -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-8586064191208277~4831882751" />
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+
+        <!--  Google API Key  -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBmvh-bg4aW703O9N0VHuReE7W890aNIo8" />
 
-        <!-- A custom Android Notification Channel to deliver FCM notifications on a non-default channel -->
+        <!-- A Notification Channel to deliver FCM notifications -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="high_importance_channel" />
 
+        <!--  Facebook  -->
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_app_id" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            tools:ignore="MissingClass" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true"
+            tools:ignore="MissingClass">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
+            </intent-filter>
+        </activity>
+
+        <!-- J o d a Time -->
+        <!--<provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            android:exported="false"
+            android:process="your-process-name-here"
+            tools:node="merge" />-->
+
+        <!--  App Services and receives  -->
         <service
             android:name=".services.azan.AzanService"
             android:enabled="true"
@@ -159,8 +210,18 @@
                 <action android:name="android.intent.action.NOTIFY" />
             </intent-filter>
         </receiver>
+        <service
+            android:name=".services.azan.AzanIntentService"
+            android:exported="false" />
+        <service
+            android:name=".services.ramadan.ramadan_cannon.RamadanCannonIntentService"
+            android:exported="false" />
+        <service
+            android:name=".services.ramadan.ramadan_mshart.RamadanMshartIntentService"
+            android:exported="false" />
 
 
+        <!--  Alarm Services  -->
         <service
             android:name="dev.fluttercommunity.plus.androidalarmmanager.AlarmService"
             android:exported="false"
@@ -181,35 +242,7 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name=".services.azan.AzanIntentService"
-            android:exported="false" />
-        <service
-            android:name=".services.ramadan.ramadan_cannon.RamadanCannonIntentService"
-            android:exported="false" />
-        <service
-            android:name=".services.ramadan.ramadan_mshart.RamadanMshartIntentService"
-            android:exported="false" />
-
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            tools:ignore="MissingClass" />
-        <activity
-            android:name="com.facebook.CustomTabActivity"
-            android:exported="true"
-            tools:ignore="MissingClass">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="@string/fb_login_protocol_scheme" />
-            </intent-filter>
-        </activity>
-
+        <!--   Media Service  -->
         <service android:name="com.ryanheise.audioservice.AudioService"
             android:foregroundServiceType="mediaPlayback"
             android:exported="false" tools:ignore="Instantiatable">

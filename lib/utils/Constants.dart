@@ -1,6 +1,16 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 int userRank = 0;
+
+const localesPath = 'assets/langs';
+const fallbackLocale = Locale('ar', 'SA');
+const appLocals = {
+  'ar': Locale('ar', 'SA'),
+  'en': Locale('en', 'US'),
+  'fr': Locale('fr', 'FR'),
+};
+
 
 class Constants {
   static const Color ICON_COLOR = const Color(0XFF5D9775);

@@ -20,10 +20,11 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="180dp"
         android:fontFamily="@font/almarai"
-        android:text="حان الآن موعد آذان"
+        android:text="@string/current_azan_is_now"
         android:textColor="#FFFFFF"
         android:textFontWeight="700"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        tools:targetApi="p" />
 
     <TextView
         android:id="@+id/azan_name"
@@ -36,7 +37,8 @@
         android:textColor="#FFAA3F"
         android:textFontWeight="700"
         android:textSize="50sp"
-        tools:text="العصر" />
+        tools:text="العصر"
+        tools:targetApi="p" />
 
     <at.markushi.ui.CircleButton
         android:id="@+id/close_azan_slider"
@@ -60,7 +62,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="40dp"
         android:background="@drawable/rounded_pop_up"
-        android:text="حسنا"
+        android:text="@string/ok_text"
         android:textColor="#347D53"
         android:textSize="22sp"
         android:textStyle="bold" />

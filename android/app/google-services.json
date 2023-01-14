@@ -94,6 +94,13 @@
             {
               "client_id": "429140413449-50p5omidhhqs5r229ppk0anl64ff503g.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "429140413449-qh4ssotvsetikv7o1clj4sqe8kb51f0t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.muslimbook.muslimBook"
+              }
             }
           ]
         }
@@ -124,6 +131,13 @@
             {
               "client_id": "429140413449-50p5omidhhqs5r229ppk0anl64ff503g.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "429140413449-qh4ssotvsetikv7o1clj4sqe8kb51f0t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.muslimbook.muslimBook"
+              }
             }
           ]
         }

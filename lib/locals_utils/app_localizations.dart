@@ -11,9 +11,9 @@ class AppLocalizations {
     return Localizations.of<AppLocalizations>(context, AppLocalizations);
   }
 
-  static const LocalizationsDelegate<AppLocalizations> delegate =
-      _AppLocaalizationsDelegate();
-  late Map<String, String>? _localizedStrings;
+  static const delegate = _AppLocalizationsDelegate();
+
+  Map<String, String>? _localizedStrings;
 
    Future<bool> load() async {
     String jsonString =
@@ -37,9 +37,8 @@ class AppLocalizations {
   }
 }
 
-class _AppLocaalizationsDelegate
-    extends LocalizationsDelegate<AppLocalizations> {
-  const _AppLocaalizationsDelegate();
+class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
 
   @override
   bool isSupported(Locale locale) {
@@ -48,7 +47,7 @@ class _AppLocaalizationsDelegate
 
   @override
   Future<AppLocalizations> load(Locale locale) async {
-    AppLocalizations localizations = AppLocalizations(locale);
+    final localizations = AppLocalizations(locale);
     await localizations.load();
     return localizations;
   }

@@ -9,6 +9,7 @@ import static com.muslim_book.muslim_book.classes.Constants.AZAN_CHANNEL_NAME;
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_CHANNEL_ID;
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_ID;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -77,6 +78,7 @@ public class CompetitionPopUpService {
     notificationManagerCompat.notify( AZAN_NOTIFICATION_ID +  100 +  100, notification);
   }
 
+  @SuppressLint("SuspiciousIndentation")
   private void setNotificationBuilder() {
     String contentText = "من الممكن أن يكون لديك أسئلة جديدة";
     String contentTitle = "مسلم بوك";

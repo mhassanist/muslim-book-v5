@@ -15,6 +15,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.PowerManager;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ import com.muslim_book.muslim_book.services.azan.OverLayService;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import io.flutter.embedding.engine.dart.DartExecutor;
 import io.flutter.plugin.common.MethodChannel;
@@ -61,30 +63,30 @@ public class ChannelMethods {
 
         new MethodChannel(flutterEngine, CHANNEL).setMethodCallHandler(
                 (call, result) -> {
-                     switch (call.method) {
+                    switch (call.method) {
                         case "fireCannonRamadan":
-                            if(RAMADAN_CONNAN_FLAG){
+                            if (RAMADAN_CONNAN_FLAG) {
                                 new RamadanCannonUtils(mContext);
                                 result.success(true);
                                 break;
-                            }else {
+                            } else {
                                 result.success(false);
                                 break;
                             }
 
                         case "fireMshartRamadan":
-                            if(RAMADAN_MASHRAAT_FLAG){
+                            if (RAMADAN_MASHRAAT_FLAG) {
                                 new RamadanMshartUtils(mContext);
                                 result.success(true);
                                 break;
-                            }else {
+                            } else {
                                 result.success(false);
                                 break;
                             }
-                         case "readPhoneState":
-                             mContext.sendBroadcast(new Intent(mContext, PhoneStateBroadcastReceiver.class));
-                             result.success(true);
-                             break;
+                        case "readPhoneState":
+                            mContext.sendBroadcast(new Intent(mContext, PhoneStateBroadcastReceiver.class));
+                            result.success(true);
+                            break;
                         case "askOverlay":
                             try {
                                 Intent intentOverLayService = new Intent(mContext, OverLayService.class);
@@ -92,7 +94,8 @@ public class ChannelMethods {
                                 ContextCompat.startForegroundService(mContext, intentOverLayService);
                                 boolean value = canDrawOverLays();
                                 result.success(value);
-                            } catch (Exception e) {}
+                            } catch (Exception e) {
+                            }
                             break;
                         case "checkOverlay":
                             boolean overlayCheck = checkDrawOverLays();
@@ -142,13 +145,16 @@ public class ChannelMethods {
                             openXiaomiSettings();
                             result.success(true);
                             break;
-                      case "AllowPhoneState":
-                          requestMutePermissions();
+                        case "AllowPhoneState":
+                            requestMutePermissions();
                             result.success(true);
                             break;
                         case "fireAzkarPopUp":
                             mContext.sendBroadcast(new Intent(mContext, AzkarAlarm.class));
                             result.success(true);
+                            break;
+                        default:
+                            result.notImplemented();
                             break;
                     }
                 });
@@ -161,7 +167,8 @@ public class ChannelMethods {
         intent.setData(uri);
         mContext.startActivity(intent);
     }
-    public void Info(){
+
+    public void Info() {
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle("Info Aplikasi");
         builder.setIcon(R.drawable.azan_icon1);
@@ -169,7 +176,7 @@ public class ChannelMethods {
         builder.setCancelable(false);
         builder.setPositiveButton("Exit", null);
         AlertDialog dialog = builder.show();
-        TextView messageView = (TextView)dialog.findViewById(android.R.id.message);
+        TextView messageView = (TextView) dialog.findViewById(android.R.id.message);
         messageView.setGravity(Gravity.CENTER);
     }
 
@@ -191,7 +198,6 @@ public class ChannelMethods {
 
     private boolean canDrawOverLays() {
 
-         
 
         if (VERSION.SDK_INT >= VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(mContext)) {
@@ -208,7 +214,6 @@ public class ChannelMethods {
     }
 
 
-
     private void RequestPermission() {
         // Check if Android M or higher
         if (VERSION.SDK_INT >= VERSION_CODES.M) {
@@ -216,15 +221,15 @@ public class ChannelMethods {
             // Launch the settings activity if the user prefers
 
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" +mContext.getPackageName()));
+                    Uri.parse("package:" + mContext.getPackageName()));
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
             intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-             myMainActivity.startActivityForResult(intent, 2323);
+            myMainActivity.startActivityForResult(intent, 2323);
 
- 
-         }
+
+        }
     }
 
     private boolean checkDrawOverLays() {
@@ -247,21 +252,23 @@ public class ChannelMethods {
 //
 //        }
     }
+
     private void requestForDoNotDisturbPermissionOrSetDoNotDisturbForApi23AndUp() {
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         // if user granted access else ask for permission
         if (VERSION.SDK_INT >= VERSION_CODES.M) {
-            if ( notificationManager.isNotificationPolicyAccessGranted()) {
+            if (notificationManager.isNotificationPolicyAccessGranted()) {
                 AudioManager audioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
                 audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-            } else{
+            } else {
                 // Open Setting screen to ask for permisssion
                 Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-                myMainActivity.startActivityForResult( intent, 9098 );
+                myMainActivity.startActivityForResult(intent, 9098);
             }
         }
     }
+
     private boolean allowBatteryEditing() {
 
         if (VERSION.SDK_INT >= VERSION_CODES.M) {

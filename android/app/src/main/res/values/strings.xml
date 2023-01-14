@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">مسلم بوك</string>
+  <string name="ok_text">حسنا</string>
   <string name="press_here_to_close_azan">اضغط هنا للإغلاق</string>
   <string name="azan_is_too_near">أقترب موعد الأذان</string>
   <string name="azan_is_now">حان موعد الأذان</string>
+  <string name="current_azan_is_now">حان الآن موعد آذان</string>
   <string name="fasting_tomorrow">لا تنس صيام غداً</string>
   <string name="monday">يوم الأثنين</string>
   <string name="thursday">يوم الخميس</string>

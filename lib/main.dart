@@ -1,13 +1,29 @@
+import 'dart:ui';
+
 // import 'package:admob_flutter/admob_flutter.dart';
-// import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:muslim_book/ads/ad_manager.dart';
+import 'package:connectivity_wrapper/connectivity_wrapper.dart';
+import 'package:facebook_audience_network/facebook_audience_network.dart';
+import 'package:fancy_dialog/FancyGif.dart';
+import 'package:fancy_dialog/fancy_dialog.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim_book/ads/admob_rectangle.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
-import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
 import 'package:muslim_book/azkar_feature/providers/azkar_provider.dart';
 import 'package:muslim_book/firebase_options.dart';
-import 'package:muslim_book/home_feature/controllers/home_controller.dart';
-import 'package:muslim_book/locals_utils/language_constants.dart';
+import 'package:muslim_book/locals_utils/app_localizations.dart';
+import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/providers/azan_fajr_sounds_provider.dart';
 import 'package:muslim_book/providers/azan_sounds_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
@@ -17,92 +33,42 @@ import 'package:muslim_book/ramadan/provider/ramadan_provider.dart';
 import 'package:muslim_book/sebha_feature/online_sebha/controllers/online_sebha_controller.dart';
 import 'package:muslim_book/sebha_feature/providers/sebha_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
+import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
 import 'package:muslim_book/utils/sailor.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 import 'package:muslim_book/views/splash_view/splash_view.dart';
 import 'package:muslim_book/views/start_view/start_view.dart';
-import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:facebook_audience_network/facebook_audience_network.dart';
-import 'package:fancy_dialog/FancyGif.dart';
-import 'package:fancy_dialog/fancy_dialog.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_analytics/observer.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import 'ads/ad_manager.dart';
+import 'azan_feature/controllers/azan_controller.dart';
+import 'home_feature/controllers/home_controller.dart';
 import 'islamic_feature/bloc/islamic_post_details_bloc.dart';
-import 'locals_utils/app_localizations.dart';
-import 'models/banner_names_enum.dart';
-import 'utils/Constants.dart';
-import 'utils/locator.dart';
+import 'locals_utils/language_constants.dart';
 
-const String LAGUAGE_CODE = 'languageCode';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  _initAdMob();
-  // await AndroidAlarmManager.initialize();
-
-  AdManager.remoteConfig = await setupRemoteConfig();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  Routes.createRoutes();
-  // setupLocator();
-  // await locator<Prefs>().setSharedPreferences();
-  // Locale loaded = await getLocale();
-  // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  // FacebookAudienceNetwork.init();
-
-  runApp(
-    MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(),
-        body: Container(
-          child: Center(
-            child: const Text('Good Year'),
-          ),
-        ),
-      ),
-    ),
-  );
-  // runApp(
-  //   ProviderScope(child: MyApp()), // Wrap your app
-  // );
-
-  // await AndroidAlarmManager.periodic(
-  //   const Duration(minutes: 1),
-  //   0,
-  //   () async {
-  //     await Constants.platform.invokeMethod("fireAzan");
-  //     await Constants.platform.invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
-  //     await Constants.platform.invokeMethod("fireAzkarPopUp");
-  //   },
-  // );
+void _passErrorsToCrashlytics() {
+  // Pass all uncaught "fatal" errors from the framework to Crashlytics
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 }
 
-_initAdMob() {
+Future<void> _initAdMob() async {
   // Admob.initialize();
   MobileAds.instance.initialize();
 }
 
-Future<FirebaseRemoteConfig> setupRemoteConfig() async {
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  FirebaseRemoteConfig remoteConfig = await FirebaseRemoteConfig.instance;
+Future<FirebaseRemoteConfig> _setupRemoteConfig() async {
+  final remoteConfig = FirebaseRemoteConfig.instance;
   remoteConfig.setDefaults(<String, dynamic>{
     'down_Competition_1': 'ca-app-pub-8586064191208277/2234874389',
     'Sabha': 'ca-app-pub-8586064191208277/9405322350',
@@ -120,20 +86,55 @@ Future<FirebaseRemoteConfig> setupRemoteConfig() async {
     );
     await remoteConfig.fetchAndActivate();
   } catch (exception) {
-    print('Unable to fetch remote config. Cached or default values will be '
+    if (kDebugMode) {
+      print('Unable to fetch remote config. Cached or default values will be '
         'used');
+    }
   }
   return remoteConfig;
 }
 
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  AdManager.remoteConfig = await _setupRemoteConfig();
+
+  /// Catch errors via Crashlytics
+  _passErrorsToCrashlytics();
+
+  /// Ads
+  _initAdMob();
+
+  /// Make App Portrait
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  /// Init App Routes
+  Routes.createRoutes();
+
+  /// Get it Singletons
+  await setupLocator();
+  await locator<Prefs>().setSharedPreferences();
+  FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  await FacebookAudienceNetwork.init();
+  // final loaded = await getLocale();
+
+  runApp(
+    ProviderScope(child: MyApp(localeLoaded: await getLocale()),), // Wrap your app
+  );
+}
+
 class MyApp extends StatefulWidget {
-  // Locale localeLoadedd;
+  final Locale localeLoaded;
   static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
   static bool loading = false;
   static bool loadingAddMobe = false;
 
-  // MyApp(this.localeLoadedd);
+  const MyApp({super.key, required this.localeLoaded,});
 
   static Future setLocale(BuildContext context, Locale newLocale) async {
     final state = context.findAncestorStateOfType<_MyAppState>();
@@ -143,8 +144,7 @@ class MyApp extends StatefulWidget {
   }
 
   static void _launchURL() async {
-    if (!await launch(
-        "https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book"))
+    if (!await launchUrl(Uri.parse('https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book'), mode: LaunchMode.externalApplication,))
       print('Could not launch');
   }
 
@@ -212,26 +212,26 @@ class MyApp extends StatefulWidget {
                               SystemNavigator.pop();
                             } else {
                               if (locator<Prefs>().getDateOfClickLike() !=
-                                      null &&
+                                  null &&
                                   locator<Prefs>().getDateOfClickNotLike() ==
                                       null) {
                                 DateTime before =
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                      locator<Prefs>().getDateOfClickLike() ?? 0,
-                                    );
+                                DateTime.fromMillisecondsSinceEpoch(
+                                  locator<Prefs>().getDateOfClickLike() ?? 0,
+                                );
                                 DateTime now = DateTime.now();
                                 Duration timeDifference =
-                                    now.difference(before);
+                                now.difference(before);
                                 print(timeDifference.inDays);
 
                                 if (timeDifference != null) {
                                   if ((timeDifference.inDays >= 30 &&
-                                          locator<Prefs>()
-                                                  .getCountOfClickLike() ==
-                                              1) ||
+                                      locator<Prefs>()
+                                          .getCountOfClickLike() ==
+                                          1) ||
                                       (timeDifference.inDays >= 90 &&
                                           locator<Prefs>()
-                                                  .getCountOfClickLike() ==
+                                              .getCountOfClickLike() ==
                                               2)) {
                                     _showRateAppDialog(context);
                                   } else {
@@ -241,28 +241,28 @@ class MyApp extends StatefulWidget {
                                   SystemNavigator.pop();
                                 }
                               } else if (locator<Prefs>()
-                                          .getDateOfClickNotLike() !=
-                                      null &&
+                                  .getDateOfClickNotLike() !=
+                                  null &&
                                   locator<Prefs>().getDateOfClickLike() ==
                                       null) {
                                 DateTime before =
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                        locator<Prefs>()
-                                            .getDateOfClickNotLike() ?? 0);
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    locator<Prefs>()
+                                        .getDateOfClickNotLike() ?? 0);
                                 DateTime now = DateTime.now();
                                 Duration timeDifference =
-                                    now.difference(before);
+                                now.difference(before);
                                 print(timeDifference.inDays);
 
                                 if (timeDifference != null) {
                                   if ((timeDifference.inDays >= 15 && locator<Prefs>().getCountOfClickNotLike() == 1) ||
                                       (timeDifference.inDays >= 30 &&
                                           locator<Prefs>()
-                                                  .getCountOfClickNotLike() ==
+                                              .getCountOfClickNotLike() ==
                                               2) ||
                                       (timeDifference.inDays >= 45 &&
                                           locator<Prefs>()
-                                                  .getCountOfClickNotLike() ==
+                                              .getCountOfClickNotLike() ==
                                               3)) {
                                     _showRateAppDialog(context);
                                   } else {
@@ -272,29 +272,29 @@ class MyApp extends StatefulWidget {
                                   SystemNavigator.pop();
                                 }
                               } else if (locator<Prefs>()
-                                          .getDateOfClickLike() !=
-                                      null &&
+                                  .getDateOfClickLike() !=
+                                  null &&
                                   locator<Prefs>().getDateOfClickNotLike() !=
                                       null) {
                                 DateTime dateOfLike =
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                        locator<Prefs>().getDateOfClickLike() ?? 0);
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    locator<Prefs>().getDateOfClickLike() ?? 0);
                                 DateTime now = DateTime.now();
                                 Duration likeTimeDifference =
-                                    now.difference(dateOfLike);
+                                now.difference(dateOfLike);
                                 print(likeTimeDifference.inDays);
 
                                 DateTime dateOfNotLike =
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                        locator<Prefs>()
-                                            .getDateOfClickNotLike() ?? 0);
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    locator<Prefs>()
+                                        .getDateOfClickNotLike() ?? 0);
                                 DateTime dateOfNotLikeNow = DateTime.now();
                                 Duration notLikeTimeDifference =
-                                    dateOfNotLikeNow.difference(dateOfNotLike);
+                                dateOfNotLikeNow.difference(dateOfNotLike);
                                 print(notLikeTimeDifference.inDays);
 
                                 if (locator<Prefs>().getCountOfClickLike() ==
-                                        1 &&
+                                    1 &&
                                     locator<Prefs>().getCountOfClickNotLike() ==
                                         1) {
                                   if (likeTimeDifference.inDays >= 30 &&
@@ -307,8 +307,8 @@ class MyApp extends StatefulWidget {
                                     SystemNavigator.pop();
                                   }
                                 } else if (locator<Prefs>()
-                                            .getCountOfClickLike() ==
-                                        2 &&
+                                    .getCountOfClickLike() ==
+                                    2 &&
                                     locator<Prefs>().getCountOfClickNotLike() ==
                                         1) {
                                   if (likeTimeDifference.inDays >= 90 &&
@@ -321,8 +321,8 @@ class MyApp extends StatefulWidget {
                                     SystemNavigator.pop();
                                   }
                                 } else if (locator<Prefs>()
-                                            .getCountOfClickLike() ==
-                                        1 &&
+                                    .getCountOfClickLike() ==
+                                    1 &&
                                     locator<Prefs>().getCountOfClickNotLike() ==
                                         2) {
                                   if (likeTimeDifference.inDays >= 30) {
@@ -394,7 +394,7 @@ class MyApp extends StatefulWidget {
       builder: (BuildContext context) => FancyDialog(
         title: AppLocalizations.of(context)!.translate("thanx_to_use_app"),
         description:
-            AppLocalizations.of(context)!.translate("rate_app_description"),
+        AppLocalizations.of(context)!.translate("rate_app_description"),
         okColor: Theme.of(context).primaryColor,
         okFun: () async {
           if (locator<Prefs>().getCountOfOpenDialog() == null) {
@@ -450,12 +450,15 @@ class _MyAppState extends State<MyApp> {
   String? showCompetition;
   String? openAzkar;
   var checkOverLay;
-  Locale? localeLoaded;
+  late Locale localeLoaded;
 
   @override
   void initState() {
     super.initState();
-    invokeMethod();
+    // invokeMethod();
+    localeLoaded = widget.localeLoaded;
+    // WidgetsBinding.instance.addPostFrameCallback((_) => invokeMethod());
+    SchedulerBinding.instance.addPostFrameCallback((_) => invokeMethod());
   }
 
   setLocale(Locale _locale) {
@@ -489,7 +492,7 @@ class _MyAppState extends State<MyApp> {
     String message = '';
     try {
       showCompetition =
-          await Constants.platform.invokeMethod(Constants.Open_Competition);
+      await Constants.platform.invokeMethod(Constants.Open_Competition);
       openAzkar = await Constants.platform.invokeMethod(Constants.open_Azkar);
       checkOverLay = await Constants.platform.invokeMethod("checkOverlay");
     } on PlatformException catch (e) {
@@ -498,14 +501,8 @@ class _MyAppState extends State<MyApp> {
     return message;
   }
 
-  loadLocal() async {
-    Locale loaded = await getLocale();
-    localeLoaded = loaded;
-  }
-
   @override
   Widget build(BuildContext context) {
-    loadLocal();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<UserProvider>(
@@ -542,11 +539,13 @@ class _MyAppState extends State<MyApp> {
             return AppLocalizations.of(context)!.translate("muslim_book");
           },
           debugShowCheckedModeBanner: false,
-          supportedLocales: [
-            const Locale("ar"),
-            const Locale("en"),
-            const Locale("fr")
-          ],
+          // supportedLocales: [
+          //   const Locale("ar"),
+          //   const Locale("en"),
+          //   const Locale("fr")
+          // ],
+          // supportedLocales: AppLocalizations.supportedLocales,
+          supportedLocales: [Locale('en'),Locale('ar'), Locale('fr')],
           locale: localeLoaded,
           navigatorObservers: <NavigatorObserver>[MyApp.observer],
           localizationsDelegates: [
@@ -578,8 +577,8 @@ class _MyAppState extends State<MyApp> {
           ),
           home: checkOverLay != null
               ? showCompetition != null || openAzkar != null
-                  ? StartView()
-                  : SplashView()
+              ? StartView()
+              : SplashView()
               : SplashView(),
           navigatorKey: Routes.sailor.navigatorKey,
           onGenerateRoute: Routes.sailor.generator(),

@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,17 +49,6 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyA8ZJuQO-LLb8oTGVYjhahjccSFm5TA6kE',
-    appId: '1:429140413449:web:407b58370bbff951cb7cd8',
-    messagingSenderId: '429140413449',
-    projectId: 'muslim-book-ab937',
-    authDomain: 'muslim-book-ab937.firebaseapp.com',
-    databaseURL: 'https://muslim-book-ab937.firebaseio.com',
-    storageBucket: 'muslim-book-ab937.appspot.com',
-    measurementId: 'G-D0GC9Z5YEG',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCC4GCIxjEvULoLY2K6lc2k7iSeH4V4ZHY',
     appId: '1:429140413449:android:e2dea7bd290858e3cb7cd8',
@@ -64,18 +59,6 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBx87TQTpgfQZOS5sVtsHwbYHYrgRhBjTQ',
-    appId: '1:429140413449:ios:cfafa98f7e099e81cb7cd8',
-    messagingSenderId: '429140413449',
-    projectId: 'muslim-book-ab937',
-    databaseURL: 'https://muslim-book-ab937.firebaseio.com',
-    storageBucket: 'muslim-book-ab937.appspot.com',
-    androidClientId: '429140413449-1rt5i3tinkq40ipvjnplk4bs9h1h0kt8.apps.googleusercontent.com',
-    iosClientId: '429140413449-qh4ssotvsetikv7o1clj4sqe8kb51f0t.apps.googleusercontent.com',
-    iosBundleId: 'com.muslimbook.muslimBook',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBx87TQTpgfQZOS5sVtsHwbYHYrgRhBjTQ',
     appId: '1:429140413449:ios:cfafa98f7e099e81cb7cd8',
     messagingSenderId: '429140413449',

@@ -6,6 +6,7 @@ import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_CH
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_ID;
 import static com.muslim_book.muslim_book.classes.Constants.FLUTTER_SHARED_PREFERENCES;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -107,6 +108,7 @@ public class AzanServiceUtils {
             notificationManager.createNotificationChannel(notificationChannel);
         }
     };
+    @SuppressLint("SuspiciousIndentation")
     private void setNotificationBuilder() {
         String contentText;
         String contentTitle;

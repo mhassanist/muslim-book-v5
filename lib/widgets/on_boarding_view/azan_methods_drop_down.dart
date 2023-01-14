@@ -24,7 +24,7 @@ class MethodsDropDown extends StatelessWidget {
         child: DropdownButtonHideUnderline(
           child: DropdownButton(
             isExpanded: true,
-            value: model.pickedMethod,
+            value: model.pickedMethod.isNotEmpty ? model.pickedMethod : null,
             hint: Text(
               AppLocalizations.of(context)!.translate("calculating_pray_method"),
               style: textStyle(sizeConfig),
