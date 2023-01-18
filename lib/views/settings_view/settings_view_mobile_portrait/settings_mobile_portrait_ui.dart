@@ -437,7 +437,8 @@ class SettingsMobilePortraitUi {
           border: Border.all(color: Constants.ACCENT_COLOR, width: 1)),
       child: DropdownButtonHideUnderline(
         child: DropdownButton(
-          value: provider.latitudeAdjustmentMethod,
+          value: provider.latitudeAdjustmentMethod.isNotEmpty
+              ? provider.latitudeAdjustmentMethod : null,
           hint: Text(
             AppLocalizations.of(context)!.translate("un_used"),
             style: TextStyle(

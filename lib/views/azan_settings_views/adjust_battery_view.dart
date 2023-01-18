@@ -199,7 +199,8 @@ class _AdjustBatteryViewState extends State<AdjustBatteryView>
     locator<Prefs>().setIsFirstTime(false);
 
     if (await Constants.platform.invokeMethod("checkIsXiaomi")) {
-      Get.offAll(XiaomiSettingsView());
+      // Get.offAll(XiaomiSettingsView());
+      Get.offAll(() => XiaomiSettingsView());
     } else {
       Navigator.of(context).pushReplacementNamed("/start_view");
     }

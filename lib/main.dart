@@ -129,8 +129,8 @@ Future<void> main() async {
 
 class MyApp extends StatefulWidget {
   final Locale localeLoaded;
-  static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
-  static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
+  // static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
+  // static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
   static bool loading = false;
   static bool loadingAddMobe = false;
 
@@ -547,7 +547,7 @@ class _MyAppState extends State<MyApp> {
           // supportedLocales: AppLocalizations.supportedLocales,
           supportedLocales: [Locale('en'),Locale('ar'), Locale('fr')],
           locale: localeLoaded,
-          navigatorObservers: <NavigatorObserver>[MyApp.observer],
+          // navigatorObservers: <NavigatorObserver>[MyApp.observer],
           localizationsDelegates: [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,

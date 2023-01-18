@@ -34,10 +34,9 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
 
   @override
   void initState() {
-
     super.initState();
-    _fetchPermissionStatus();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _fetchPermissionStatus();
       accelerometerEvents.listen((AccelerometerEvent event) {
         if (mounted) {
           setState(() {});
@@ -137,9 +136,12 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
             Constants.KAABA_LNG,
           );
           if (mounted) {
-            setState(() {
+            try {
               degToKaabaBaring = bearing;
-            });
+              setState(() {});
+            } catch(_) {
+              print('setState() called during build');
+            }
           }
         }
 

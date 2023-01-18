@@ -58,7 +58,8 @@ class _SplashViewState extends State<SplashView>
         // } else if (!checkBattery)
         //   Get.dialog(AdjustBatteryView(isStart: true,));
       }else {
-        Get.offAll(StartView());
+        // Get.offAll(StartView());
+        Get.offAll(() => StartView());
       }
     }
   }

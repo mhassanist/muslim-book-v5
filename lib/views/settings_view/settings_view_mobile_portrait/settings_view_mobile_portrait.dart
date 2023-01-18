@@ -164,6 +164,11 @@ class _SettingsViewMobilePortraitState
           );
         }, builder: (_, model, __) {
           model.fillTheSettingsData();
+          // return Scaffold(
+          //   body: Center(
+          //     child: Text('${model.alreadyFilledData}'),
+          //   ),
+          // );
           contents = [
             ExpansionpanelItem(
                 isExpanded: false,

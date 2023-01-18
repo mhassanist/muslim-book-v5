@@ -40,8 +40,10 @@ class SettingsProvider extends ViewStateProvider {
 
   fillTheSettingsData() async {
     if (!alreadyFilledData) {
+      // print('AhmedLog');
       _isActivatingShaarawiVoice =
           locator<Prefs>().getActivatingAlShaarawiVoiceFlag();
+      // print('AhmedLog 1');
       _isSwitchSilentModeAfterResidence =
           locator<Prefs>().getSwitchSilentModeAfterResidenceFlag();
       _isTurnOffPrayerPhone = locator<Prefs>().getTurnOffPrayerPhoneFlag();
