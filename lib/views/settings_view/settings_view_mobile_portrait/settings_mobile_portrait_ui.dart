@@ -417,7 +417,7 @@ class SettingsMobilePortraitUi {
           }).toList(),
           onChanged: (value) {
             if (value != null) {
-              provider.pickedMethod = value;
+              provider.pickedMethod = value as Map<String, dynamic>;
             }
           },
         ),
@@ -465,7 +465,7 @@ class SettingsMobilePortraitUi {
           }).toList(),
           onChanged: (value) {
             if (value != null) {
-              provider.latitudeAdjustmentMethod = value;
+              provider.latitudeAdjustmentMethod = value as Map<String, dynamic>;
             }
           },
         ),
@@ -512,7 +512,7 @@ class SettingsMobilePortraitUi {
           }).toList(),
           onChanged: (value) {
             if (value != null) {
-            provider.pickedMazhab = value;
+            provider.pickedMazhab = value as Map<String, dynamic>;
             }
           },
         ),

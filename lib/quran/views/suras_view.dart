@@ -199,7 +199,7 @@ class _SurasViewState extends State<SurasView> {
                 delegate: SliverChildBuilderDelegate(
                   (c, index) {
                     return SurahWidget(
-                      playerStatus: audioSnapshot,
+                      playerStatus: audioSnapshot as AsyncSnapshot<PlaybackState>,
                       index: index,
                       sura: Provider.of<QuranProvider>(context).allSuras[index],
                       translationSurah: translationList.isNotEmpty

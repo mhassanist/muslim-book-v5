@@ -962,7 +962,7 @@ class _RamadanViewState extends State<RamadanView>
           }).toList(),
           onChanged: (value) async {
             if (value != null) {
-              _ramadanProvider.ramadanCannonSelected = value;
+              _ramadanProvider.ramadanCannonSelected = value as RamadanSoundsModel;
               _ramadanProvider.saveSelectedConnanJson(
                   _ramadanProvider.ramadanCannonSelected.toJson(), "");
               await _ramadanProvider.downloadConnanFile(
@@ -1087,7 +1087,7 @@ class _RamadanViewState extends State<RamadanView>
           }).toList(),
           onChanged: (value) {
             if (value != null) {
-              _ramadanProvider.repetitionsSelected = value;
+              _ramadanProvider.repetitionsSelected = value as Repetitions;
               _ramadanProvider.saveSelectedMashraatRepetitionsJson(
                   _ramadanProvider.repetitionsSelected.id.toString(), context);
             }
@@ -1130,7 +1130,7 @@ class _RamadanViewState extends State<RamadanView>
           }).toList(),
           onChanged: (value) async {
             if (value != null) {
-              _ramadanProvider.ramadanMashraatSelected = value;
+              _ramadanProvider.ramadanMashraatSelected = value as RamadanSoundsModel;
               playSound(_ramadanProvider.ramadanMashraatSelected.file);
               _ramadanProvider.saveSelectedMashraatJson(
                   _ramadanProvider.ramadanMashraatSelected.toJson(), "");

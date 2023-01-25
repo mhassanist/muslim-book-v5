@@ -25,9 +25,8 @@ class ZikrListWidget extends StatefulWidget {
 class _ZikrListWidgetState extends State<ZikrListWidget> {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      // padding: EdgeInsets.zero,
-      onPressed: () async {
+    return InkWell(
+      onTap: () async {
         await Get.to(AzkarView(
           zikr: widget.zikrDetails,
         ));
