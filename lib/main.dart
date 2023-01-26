@@ -82,13 +82,13 @@ Future<FirebaseRemoteConfig> _setupRemoteConfig() async {
   try {
     // Using default duration to force fetching from remote server.
     await remoteConfig.fetch(
-      // expiration: const Duration(seconds: 0),
-    );
+        // expiration: const Duration(seconds: 0),
+        );
     await remoteConfig.fetchAndActivate();
   } catch (exception) {
     if (kDebugMode) {
       print('Unable to fetch remote config. Cached or default values will be '
-        'used');
+          'used');
     }
   }
   return remoteConfig;
@@ -123,7 +123,9 @@ Future<void> main() async {
   // final loaded = await getLocale();
 
   runApp(
-    ProviderScope(child: MyApp(localeLoaded: await getLocale()),), // Wrap your app
+    ProviderScope(
+      child: MyApp(localeLoaded: await getLocale()),
+    ), // Wrap your app
   );
 }
 
@@ -134,7 +136,10 @@ class MyApp extends StatefulWidget {
   static bool loading = false;
   static bool loadingAddMobe = false;
 
-  const MyApp({super.key, required this.localeLoaded,});
+  const MyApp({
+    super.key,
+    required this.localeLoaded,
+  });
 
   static Future setLocale(BuildContext context, Locale newLocale) async {
     final state = context.findAncestorStateOfType<_MyAppState>();
@@ -144,8 +149,11 @@ class MyApp extends StatefulWidget {
   }
 
   static void _launchURL() async {
-    if (!await launchUrl(Uri.parse('https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book'), mode: LaunchMode.externalApplication,))
-      print('Could not launch');
+    if (!await launchUrl(
+      Uri.parse(
+          'https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book'),
+      mode: LaunchMode.externalApplication,
+    )) print('Could not launch');
   }
 
   static Future<Widget> exitBottomSheet(context) async {
@@ -212,26 +220,26 @@ class MyApp extends StatefulWidget {
                               SystemNavigator.pop();
                             } else {
                               if (locator<Prefs>().getDateOfClickLike() !=
-                                  null &&
+                                      null &&
                                   locator<Prefs>().getDateOfClickNotLike() ==
                                       null) {
                                 DateTime before =
-                                DateTime.fromMillisecondsSinceEpoch(
+                                    DateTime.fromMillisecondsSinceEpoch(
                                   locator<Prefs>().getDateOfClickLike() ?? 0,
                                 );
                                 DateTime now = DateTime.now();
                                 Duration timeDifference =
-                                now.difference(before);
+                                    now.difference(before);
                                 print(timeDifference.inDays);
 
                                 if (timeDifference != null) {
                                   if ((timeDifference.inDays >= 30 &&
-                                      locator<Prefs>()
-                                          .getCountOfClickLike() ==
-                                          1) ||
+                                          locator<Prefs>()
+                                                  .getCountOfClickLike() ==
+                                              1) ||
                                       (timeDifference.inDays >= 90 &&
                                           locator<Prefs>()
-                                              .getCountOfClickLike() ==
+                                                  .getCountOfClickLike() ==
                                               2)) {
                                     _showRateAppDialog(context);
                                   } else {
@@ -241,28 +249,29 @@ class MyApp extends StatefulWidget {
                                   SystemNavigator.pop();
                                 }
                               } else if (locator<Prefs>()
-                                  .getDateOfClickNotLike() !=
-                                  null &&
+                                          .getDateOfClickNotLike() !=
+                                      null &&
                                   locator<Prefs>().getDateOfClickLike() ==
                                       null) {
                                 DateTime before =
-                                DateTime.fromMillisecondsSinceEpoch(
-                                    locator<Prefs>()
-                                        .getDateOfClickNotLike() ?? 0);
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        locator<Prefs>()
+                                                .getDateOfClickNotLike() ??
+                                            0);
                                 DateTime now = DateTime.now();
                                 Duration timeDifference =
-                                now.difference(before);
+                                    now.difference(before);
                                 print(timeDifference.inDays);
 
                                 if (timeDifference != null) {
                                   if ((timeDifference.inDays >= 15 && locator<Prefs>().getCountOfClickNotLike() == 1) ||
                                       (timeDifference.inDays >= 30 &&
                                           locator<Prefs>()
-                                              .getCountOfClickNotLike() ==
+                                                  .getCountOfClickNotLike() ==
                                               2) ||
                                       (timeDifference.inDays >= 45 &&
                                           locator<Prefs>()
-                                              .getCountOfClickNotLike() ==
+                                                  .getCountOfClickNotLike() ==
                                               3)) {
                                     _showRateAppDialog(context);
                                   } else {
@@ -272,29 +281,31 @@ class MyApp extends StatefulWidget {
                                   SystemNavigator.pop();
                                 }
                               } else if (locator<Prefs>()
-                                  .getDateOfClickLike() !=
-                                  null &&
+                                          .getDateOfClickLike() !=
+                                      null &&
                                   locator<Prefs>().getDateOfClickNotLike() !=
                                       null) {
                                 DateTime dateOfLike =
-                                DateTime.fromMillisecondsSinceEpoch(
-                                    locator<Prefs>().getDateOfClickLike() ?? 0);
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        locator<Prefs>().getDateOfClickLike() ??
+                                            0);
                                 DateTime now = DateTime.now();
                                 Duration likeTimeDifference =
-                                now.difference(dateOfLike);
+                                    now.difference(dateOfLike);
                                 print(likeTimeDifference.inDays);
 
                                 DateTime dateOfNotLike =
-                                DateTime.fromMillisecondsSinceEpoch(
-                                    locator<Prefs>()
-                                        .getDateOfClickNotLike() ?? 0);
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        locator<Prefs>()
+                                                .getDateOfClickNotLike() ??
+                                            0);
                                 DateTime dateOfNotLikeNow = DateTime.now();
                                 Duration notLikeTimeDifference =
-                                dateOfNotLikeNow.difference(dateOfNotLike);
+                                    dateOfNotLikeNow.difference(dateOfNotLike);
                                 print(notLikeTimeDifference.inDays);
 
                                 if (locator<Prefs>().getCountOfClickLike() ==
-                                    1 &&
+                                        1 &&
                                     locator<Prefs>().getCountOfClickNotLike() ==
                                         1) {
                                   if (likeTimeDifference.inDays >= 30 &&
@@ -307,8 +318,8 @@ class MyApp extends StatefulWidget {
                                     SystemNavigator.pop();
                                   }
                                 } else if (locator<Prefs>()
-                                    .getCountOfClickLike() ==
-                                    2 &&
+                                            .getCountOfClickLike() ==
+                                        2 &&
                                     locator<Prefs>().getCountOfClickNotLike() ==
                                         1) {
                                   if (likeTimeDifference.inDays >= 90 &&
@@ -321,8 +332,8 @@ class MyApp extends StatefulWidget {
                                     SystemNavigator.pop();
                                   }
                                 } else if (locator<Prefs>()
-                                    .getCountOfClickLike() ==
-                                    1 &&
+                                            .getCountOfClickLike() ==
+                                        1 &&
                                     locator<Prefs>().getCountOfClickNotLike() ==
                                         2) {
                                   if (likeTimeDifference.inDays >= 30) {
@@ -394,7 +405,7 @@ class MyApp extends StatefulWidget {
       builder: (BuildContext context) => FancyDialog(
         title: AppLocalizations.of(context)!.translate("thanx_to_use_app"),
         description:
-        AppLocalizations.of(context)!.translate("rate_app_description"),
+            AppLocalizations.of(context)!.translate("rate_app_description"),
         okColor: Theme.of(context).primaryColor,
         okFun: () async {
           if (locator<Prefs>().getCountOfOpenDialog() == null) {
@@ -492,7 +503,7 @@ class _MyAppState extends State<MyApp> {
     String message = '';
     try {
       showCompetition =
-      await Constants.platform.invokeMethod(Constants.Open_Competition);
+          await Constants.platform.invokeMethod(Constants.Open_Competition);
       openAzkar = await Constants.platform.invokeMethod(Constants.open_Azkar);
       checkOverLay = await Constants.platform.invokeMethod("checkOverlay");
     } on PlatformException catch (e) {
@@ -545,7 +556,7 @@ class _MyAppState extends State<MyApp> {
           //   const Locale("fr")
           // ],
           // supportedLocales: AppLocalizations.supportedLocales,
-          supportedLocales: [Locale('en'),Locale('ar'), Locale('fr')],
+          supportedLocales: [Locale('en'), Locale('ar'), Locale('fr')],
           locale: localeLoaded,
           // navigatorObservers: <NavigatorObserver>[MyApp.observer],
           localizationsDelegates: [
@@ -570,15 +581,20 @@ class _MyAppState extends State<MyApp> {
               Theme.of(context).textTheme,
             ),
             primarySwatch: Colors.blue,
-            accentColor: Constants.ACCENT_COLOR,
+            // accentColor: Constants.ACCENT_COLOR,  (Depricated)
             primaryColor: Constants.PRIMARY_COLOR,
             primaryColorDark: Constants.PRIMARY_DARK_COLOR,
             canvasColor: Constants.CANVAS_COLOR,
+          ).copyWith(
+            colorScheme: ThemeData()
+                .colorScheme
+                .copyWith(secondary: Constants.ACCENT_COLOR),
           ),
+
           home: checkOverLay != null
               ? showCompetition != null || openAzkar != null
-              ? StartView()
-              : SplashView()
+                  ? StartView()
+                  : SplashView()
               : SplashView(),
           navigatorKey: Routes.sailor.navigatorKey,
           onGenerateRoute: Routes.sailor.generator(),

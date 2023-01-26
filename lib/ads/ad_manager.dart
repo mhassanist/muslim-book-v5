@@ -10,19 +10,27 @@ class AdManager {
   static late Widget boslaBanner;
 
   static String get appId {
-    if (Platform.isAndroid) {
-      return "ca-app-pub-8586064191208277~4831882751";
-    } else if (Platform.isIOS) {
-      return "ca-app-pub-8586064191208277~4831882751";
+    bool isProductionEnvironment = false;
+    if (isProductionEnvironment) {
+      if (Platform.isAndroid) {
+        return "ca-app-pub-8586064191208277~4831882751";
+      } else if (Platform.isIOS) {
+        return "ca-app-pub-8586064191208277~4831882751";
+      } else {
+        throw new UnsupportedError("Unsupported platform");
+      }
     } else {
-      throw new UnsupportedError("Unsupported platform");
+      return Platform.isAndroid
+          ? 'ca-app-pub-3940256099942544/6300978111'
+          : 'ca-app-pub-3940256099942544/2934735716';
     }
   }
 
   static getAdUnitId(BannerName bannerName) {
     switch (bannerName) {
       case BannerName.AZKAR:
-        return remoteConfig.getString('Azkar');
+        String adUnitId = remoteConfig.getString('Azkar');
+        return adUnitId;
       case BannerName.COMPETITION:
         return remoteConfig.getString('down_Competition_1');
       case BannerName.BOSLA:
