@@ -172,7 +172,7 @@ class MyApp extends StatefulWidget {
             ),
           ),
           child: Center(
-            child: LoadUiWithAdd(
+            child: LoadUiWithAd(
               mainView: Column(children: <Widget>[
                 Container(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),

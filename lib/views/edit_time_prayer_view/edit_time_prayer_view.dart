@@ -48,7 +48,7 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
 
   @override
   Widget build(BuildContext context) {
-    azanValue = controller.getAzanList(context)  ?? [];
+    azanValue = controller.getAzanList(context) ?? [];
     final size = MediaQuery.of(context).size;
     final isSmall = size.width <= 450;
     return new WillPopScope(
@@ -69,7 +69,7 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                     }, builder: (_, model, __) {
                       return GetBuilder<AzanController>(builder: (controller) {
                         return Container(
-                            child: LoadUiWithAdd(
+                            child: LoadUiWithAd(
                           mainView: CustomScrollView(slivers: <Widget>[
                             SliverToBoxAdapter(
                               child: Container(

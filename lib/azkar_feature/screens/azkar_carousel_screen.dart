@@ -1,9 +1,9 @@
 // import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_rectangle_updated.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/azkar_feature/models/azkar_model.dart';
-import 'package:muslim_book/ads/add_widget_edit.dart';
+import 'package:muslim_book/ads/ad_widget_edit.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/utils/Constants.dart';
@@ -17,8 +17,10 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 import 'package:share_plus/share_plus.dart';
 
-class AzkarView extends StatefulWidget {
-  AzkarView({
+import '../widgets/zikr_counter_button.dart';
+
+class AzkarCarouselScreen extends StatefulWidget {
+  AzkarCarouselScreen({
     super.key,
     required this.zikr,
   });
@@ -26,10 +28,10 @@ class AzkarView extends StatefulWidget {
   final Map<String, String> zikr;
 
   @override
-  _AzkarViewState createState() => _AzkarViewState();
+  _AzkarCarouselScreenState createState() => _AzkarCarouselScreenState();
 }
 
-class _AzkarViewState extends State<AzkarView> {
+class _AzkarCarouselScreenState extends State<AzkarCarouselScreen> {
   List<Zikr>? azkar;
   late Zikr currentZikr;
   int currentIndex = 0;
@@ -57,14 +59,13 @@ class _AzkarViewState extends State<AzkarView> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12))),
             content: Container(
-              height: 400,
-              child: LoadUiWithAdd(
-                  mainView: AddWidgetEdit(
-                title: AppLocalizations.of(context)!.translate("azkar"),
-                bannerName: BannerName.AZKAR,
-                buttomTitle: AppLocalizations.of(context)!.translate("follow"),
-              )),
-            ),
+                height: 400,
+                child: AdWidgetEdit(
+                  title: AppLocalizations.of(context)!.translate("azkar"),
+                  bannerName: BannerName.AZKAR,
+                  buttomTitle:
+                      AppLocalizations.of(context)!.translate("follow"),
+                )),
           ),
         )) ??
         false;
@@ -77,30 +78,29 @@ class _AzkarViewState extends State<AzkarView> {
         return WillPopScope(
             onWillPop: _onWillPop,
             child: AppScaffold(
-              padding: EdgeInsets.symmetric(vertical: 20),
+              padding: EdgeInsets.only(top: 20),
               title: AppScaffoldTitleWidget(title: "${widget.zikr["name"]}"),
               centerTitle: true,
               transparentBackground: true,
               child: azkar == null
                   ? Container()
-                  : LoadUiWithAdd(
+                  : LoadUiWithAd(
                       mainView: ListView(
                         children: [
                           CarouselSlider(
                             carouselController: controller,
                             options: CarouselOptions(
-                                enableInfiniteScroll: false,
-                                scrollPhysics: NeverScrollableScrollPhysics(),
-                                initialPage: currentIndex,
-                                onPageChanged: (index, _) {
-                                  setState(() {
-                                    currentIndex = index;
-                                    currentZikr = azkar![index];
-                                  });
-                                },
-                                viewportFraction: 0.9,
-                                aspectRatio: 2.0,
-                                height: sizeConfig.blockSizeVertical * 50,),
+                              enableInfiniteScroll: false,
+                              scrollPhysics: NeverScrollableScrollPhysics(),
+                              initialPage: currentIndex,
+                              // onPageChanged: (index, _) {
+                              //   currentIndex = index;
+                              //   currentZikr = azkar![index];
+                              // },
+                              viewportFraction: 0.9,
+                              aspectRatio: 2.0,
+                              height: sizeConfig.blockSizeVertical * 50,
+                            ),
                             items: azkar!.map((zikr) {
                               return Builder(
                                 builder: (BuildContext context) {
@@ -116,10 +116,13 @@ class _AzkarViewState extends State<AzkarView> {
                             }).toList(),
                           ),
                           buildControllesWidget(sizeConfig, currentZikr),
-                          Spacer(),
-                          Container(
+                          SizedBox(
+                            height: 20,
+                          ),
+                          SizedBox(
                               height: 300,
-                              child: AdMobRectangle(BannerName.BOSLA)),
+                              child: AdmobRectangleUpdated(
+                                  bannerName: BannerName.BOSLA)),
                         ],
                       ),
                     ),
@@ -130,46 +133,52 @@ class _AzkarViewState extends State<AzkarView> {
 
   Container buildControllesWidget(SizingInformation sizeConfig, Zikr zikr) {
     return Container(
-      margin: EdgeInsets.only(
-        top: sizeConfig.blockSizeVertical * 6,
-        left: sizeConfig.blockSizeHorizontal * 10,
-        right: sizeConfig.blockSizeHorizontal * 10,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Container(
-          //   child: FloatingActionButton(
-          //     heroTag: "2 ${zikr.content}",
-          //     backgroundColor: Colors.white,
-          //     onPressed: () {
-          //       controller.animateToPage(currentIndex - 1);
-          //     },
-          //     child: Image.asset(
-          //       "assets/images/azkar_view/ios_back.png",
-          //       height: sizeConfig.blockSizeVertical * 3,
-          //       fit: BoxFit.cover,
-          //     ),
-          //   ),
-          // ),
-          buildIncreaseButtonWidget(sizeConfig, zikr),
-          // Container(
-          //   child: FloatingActionButton(
-          //     heroTag: "3 ${zikr.content}",
-          //     backgroundColor: Colors.white,
-          //     onPressed: () {
-          //       controller.animateToPage(currentIndex + 1);
-          //     },
-          //     child: Image.asset(
-          //       "assets/images/azkar_view/ios_forward.png",
-          //       height: sizeConfig.blockSizeVertical * 3,
-          //       fit: BoxFit.cover,
-          //     ),
-          //   ),
-          // ),
-        ],
-      ),
-    );
+        margin: EdgeInsets.only(
+          top: sizeConfig.blockSizeVertical * 6,
+          left: sizeConfig.blockSizeHorizontal * 10,
+          right: sizeConfig.blockSizeHorizontal * 10,
+        ),
+        child: Center(
+            child: ZikrCounterButton(
+          controller: controller,
+          sizeConfig: sizeConfig,
+          azkar: azkar!,
+        ))
+        // child: Row(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        // Container(
+        //   child: FloatingActionButton(
+        //     heroTag: "2 ${zikr.content}",
+        //     backgroundColor: Colors.white,
+        //     onPressed: () {
+        //       controller.animateToPage(currentIndex - 1);
+        //     },
+        //     child: Image.asset(
+        //       "assets/images/azkar_view/ios_back.png",
+        //       height: sizeConfig.blockSizeVertical * 3,
+        //       fit: BoxFit.cover,
+        //     ),
+        //   ),
+        // ),
+        // buildIncreaseButtonWidget(sizeConfig, zikr),
+        // Container(
+        //   child: FloatingActionButton(
+        //     heroTag: "3 ${zikr.content}",
+        //     backgroundColor: Colors.white,
+        //     onPressed: () {
+        //       controller.animateToPage(currentIndex + 1);
+        //     },
+        //     child: Image.asset(
+        //       "assets/images/azkar_view/ios_forward.png",
+        //       height: sizeConfig.blockSizeVertical * 3,
+        //       fit: BoxFit.cover,
+        //     ),
+        //   ),
+        // ),
+        //   ],
+        // ),
+        );
   }
 
   Widget buildContentStack(SizingInformation sizeConfig, Zikr zikr) {
@@ -304,15 +313,15 @@ class _AzkarViewState extends State<AzkarView> {
             });
           } else {
             controller.nextPage();
-            if (currentIndex == azkar!.length - 1) {
-              // _audioCache.play('allah_make_you_from_heaven.wav');
-              // audioPlayer.play(
-              //   'assets/audio/allah_make_you_from_heaven.wav',
-              //   isLocal: true,
-              // );
-              await player.play(AssetSource('sounds/coin.wav'));
-              Navigator.pop(context);
-            }
+            // if (currentIndex == azkar!.length - 1) {
+            // _audioCache.play('allah_make_you_from_heaven.wav');
+            // audioPlayer.play(
+            //   'assets/audio/allah_make_you_from_heaven.wav',
+            //   isLocal: true,
+            // );
+            // player.play(AssetSource('sounds/coin.wav'));
+            // Navigator.pop(context);
+            // }
           }
         },
         backgroundColor: Colors.white,

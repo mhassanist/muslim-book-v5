@@ -17,6 +17,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
+
 class TopSelectionPage extends StatefulWidget {
   @override
   _TopSelectionPageState createState() => _TopSelectionPageState();
@@ -36,7 +37,6 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
 
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -70,36 +70,32 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
       padding: EdgeInsets.zero,
       backGroundColor: Colors.white,
       child: ResponsiveBuilder(builder: (context, sizeConfig) {
-     return LoadUiWithAdd(
-       mainView: CustomScrollView(
-
-         slivers: <Widget>[
-       SliverToBoxAdapter(
-       child:
-            StaggeredGridView.countBuilder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(vertical: 10),
-            crossAxisCount: 4,
-            itemCount: 2,
-            itemBuilder: (BuildContext context, int index) => _buildItem(index),
-            staggeredTileBuilder: (int index) => new StaggeredTile.count(2, 2),
-          )),
-
-           SliverToBoxAdapter(
-               child:
-               Container(
-                   child: AdMobRectangle(BannerName.Top )
-               //  ..  AdMobRectangle(BannerName.Top)
-               )),
-           SliverToBoxAdapter(
-               child:
-               SizedBox(
-                 height: 10,
-               )),
-          ],
+        return LoadUiWithAd(
+          mainView: CustomScrollView(
+            slivers: <Widget>[
+              SliverToBoxAdapter(
+                  child: StaggeredGridView.countBuilder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(vertical: 10),
+                crossAxisCount: 4,
+                itemCount: 2,
+                itemBuilder: (BuildContext context, int index) =>
+                    _buildItem(index),
+                staggeredTileBuilder: (int index) =>
+                    new StaggeredTile.count(2, 2),
+              )),
+              SliverToBoxAdapter(
+                  child: Container(child: AdMobRectangle(BannerName.Top)
+                      //  ..  AdMobRectangle(BannerName.Top)
+                      )),
+              SliverToBoxAdapter(
+                  child: SizedBox(
+                height: 10,
+              )),
+            ],
           ),
-     );
+        );
       }),
     );
   }
@@ -118,7 +114,7 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
           case 1:
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) =>_getTabseehTopPage()),
+              MaterialPageRoute(builder: (context) => _getTabseehTopPage()),
             );
             break;
           default:
@@ -169,7 +165,7 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
                     Container(
                       width: double.infinity,
                       child: Text(
-                       AppLocalizations.of(context)!.translate(tops[index]),
+                        AppLocalizations.of(context)!.translate(tops[index]),
                         style: TextStyle(
                             color: const Color(0XFF347D53),
                             fontWeight: FontWeight.bold,
@@ -193,7 +189,7 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
     return ChangeNotifierProxyProvider<UserProvider, TopProvider>(
       create: (_) => TopProvider(null),
       update: (_, user, __) => TopProvider(user),
-      child:ScreenTypeLayout(
+      child: ScreenTypeLayout(
         mobile: OrientationLayoutBuilder(
           portrait: (context) => CompetitionTopView(),
         ),
@@ -205,7 +201,7 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
     return ChangeNotifierProxyProvider<UserProvider, TasbeehTopProvider>(
       create: (_) => TasbeehTopProvider(null),
       update: (_, user, __) => TasbeehTopProvider(user),
-      child:ScreenTypeLayout(
+      child: ScreenTypeLayout(
         mobile: OrientationLayoutBuilder(
           portrait: (context) => TasbeehTopView(),
         ),

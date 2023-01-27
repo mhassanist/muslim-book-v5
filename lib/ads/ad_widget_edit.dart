@@ -1,23 +1,17 @@
-// import 'package:muslim_book/ads/admob_rectangle.dart';
-// import 'package:muslim_book/locals_utils/app_localizations.dart';
-// import 'package:muslim_book/utils/Constants.dart';
 import 'package:flutter/material.dart';
-
-// import 'package:flutter_native_admob/flutter_native_admob.dart';
-// import 'package:flutter_native_admob/native_admob_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_rectangle_updated.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/utils/Constants.dart';
 
-class AddWidgetEdit extends StatefulWidget {
+class AdWidgetEdit extends StatefulWidget {
   final String title;
   final String buttomTitle;
   final Function? exit;
   final bannerName;
   final Widget? mainView;
 
-  const AddWidgetEdit({
+  const AdWidgetEdit({
     super.key,
     this.title = '',
     this.bannerName,
@@ -27,10 +21,10 @@ class AddWidgetEdit extends StatefulWidget {
   });
 
   @override
-  _AddWidgetEditState createState() => _AddWidgetEditState();
+  _AdWidgetEditState createState() => _AdWidgetEditState();
 }
 
-class _AddWidgetEditState extends State<AddWidgetEdit> {
+class _AdWidgetEditState extends State<AdWidgetEdit> {
   @override
   void initState() {
     super.initState();
@@ -66,7 +60,7 @@ class _AddWidgetEditState extends State<AddWidgetEdit> {
           ),
           Expanded(
             child: Container(
-              child: AdMobRectangle(widget.bannerName),
+              child: AdmobRectangleUpdated(bannerName: widget.bannerName),
             ),
           ),
           Container(

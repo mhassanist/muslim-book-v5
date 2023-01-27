@@ -86,8 +86,7 @@ class _AdmobRectangleUpdatedState extends State<AdmobRectangleUpdated> {
 
   void loadBanner() {
     myBanner = BannerAd(
-      adUnitId: AdManager.appId, // HAMZA: TODO: Get unitId from firebase
-      // adUnitId: AdManager.getAdUnitId(this.widget.bannerName),
+      adUnitId: AdManager.getAdUnitId(this.widget.bannerName),
       size: AdSize.getCurrentOrientationInlineAdaptiveBannerAdSize(
           MediaQuery.of(context).size.width.floor()),
       request: AdRequest(),

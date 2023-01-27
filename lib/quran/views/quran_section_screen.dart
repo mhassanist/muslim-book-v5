@@ -30,7 +30,7 @@ class _QuranSectionScreenState extends State<QuranSectionScreen> {
       centerTitle: true,
       child: ResponsiveBuilder(
         builder: (context, sizeConfig) {
-          return LoadUiWithAdd(
+          return LoadUiWithAd(
             mainView: CustomScrollView(
               slivers: <Widget>[
                 SliverToBoxAdapter(
@@ -67,7 +67,6 @@ class _QuranSectionScreenState extends State<QuranSectionScreen> {
       onPressed: () {
         switch (index) {
           case 0:
-
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => QuranReadingIndex()),
