@@ -40,7 +40,9 @@ class AzanSound {
   }
 
   static Map<String, dynamic> toMap(String savedShiekLocalJSON) {
-    return json.decode(savedShiekLocalJSON);
+    return savedShiekLocalJSON.isNotEmpty
+        ? json.decode(savedShiekLocalJSON)
+        : {};
   }
 }
 

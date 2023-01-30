@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:muslim_book/ads/ad_manager.dart';
-// import 'package:muslim_book/main.dart';
+import 'package:muslim_book/main.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,13 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 import 'package:native_ads_flutter/native_ads.dart';
-
-// import 'package:flutter_native_admob/flutter_native_admob.dart';
-// import 'package:flutter_native_admob/native_admob_controller.dart';
-
-// import 'package:flutter_native_admob/native_admob_options.dart';
-// import 'package:loading/indicator/ball_beat_indicator.dart';
-// import 'package:loading/loading.dart';
 
 class AdMobRectangle extends StatefulWidget {
   final bannerName;
@@ -50,13 +43,13 @@ class _AdMobRectangleState extends State<AdMobRectangle> {
     switch (state) {
       case AdLoadState.loading:
         setState(() {
-          // MyApp.loadingAddMobe = true;
+          MyApp.loadingAddMobe = true;
         });
         break;
 
       case AdLoadState.loadCompleted:
         setState(() {
-          //   MyApp.loadingAddMobe = false;
+            MyApp.loadingAddMobe = false;
         });
         break;
 
