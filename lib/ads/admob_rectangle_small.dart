@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:muslim_book/ads/ad_manager.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
+import 'package:muslim_book/main.dart';
 import 'package:native_ads_flutter/native_ads.dart';
 
 // import 'package:flutter_native_admob/flutter_native_admob.dart';
@@ -41,13 +42,13 @@ class _AdMobRectangleSmallState extends State<AdMobRectangleSmall> {
     switch (state) {
       case AdLoadState.loading:
         setState(() {
-          // MyApp.loadingAddMobe = true;
+          MyApp.loadingAddMobe = true;
         });
         break;
 
       case AdLoadState.loadCompleted:
         setState(() {
-          //   MyApp.loadingAddMobe = false;
+            MyApp.loadingAddMobe = false;
         });
         break;
 
