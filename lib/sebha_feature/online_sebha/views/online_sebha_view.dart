@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/ads/ad_widget_edit.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
@@ -73,6 +74,7 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
               return WillPopScope(
                   onWillPop: _onWillPop,
                   child: AppScaffold(
+                    resizeToAvoidBottomInset: false,
                     onProfileTap: () => Get.to(MyProfileView()),
                     actions: [
                       Container(
@@ -186,90 +188,88 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
                         EdgeInsets.only(top: sizeConfig.blockSizeVertical * 4),
                     title: AppScaffoldTitleWidget(title: "المسبحة"),
                     centerTitle: true,
-                    child: (Provider.of<OnlineSebhaProvider>(context).list ==
-                                null ||
-                            Provider.of<OnlineSebhaProvider>(context)
-                                    .currentTasbeeh ==
-                                null)
-                        ? Container(
-                            width: double.infinity,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                CircularProgressIndicator(
-                                  valueColor: new AlwaysStoppedAnimation<Color>(
-                                      prymaryColor),
-                                ),
-                              ],
+                    child:
+                        // (Provider.of<OnlineSebhaProvider>(context).list ==
+                        //             null ||
+                        //         Provider.of<OnlineSebhaProvider>(context)
+                        //                 .currentTasbeeh ==
+                        //             null)
+                        //     ? Container(
+                        //         width: double.infinity,
+                        //         child: Column(
+                        //           mainAxisAlignment: MainAxisAlignment.center,
+                        //           children: [
+                        //             CircularProgressIndicator(
+                        //               valueColor: new AlwaysStoppedAnimation<Color>(
+                        //                   prymaryColor),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       )
+                        //     :
+                        Stack(
+                      children: [
+                        Column(
+                          children: [
+                            CarouselSlider(
+                              carouselController:
+                                  Provider.of<OnlineSebhaProvider>(
+                                context,
+                              ).controller,
+                              options: CarouselOptions(
+                                  initialPage: Provider.of<OnlineSebhaProvider>(
+                                    context,
+                                  ).currentIndex,
+                                  enableInfiniteScroll: true,
+                                  onPageChanged: (index, _) {
+                                    Provider.of<OnlineSebhaProvider>(context,
+                                            listen: false)
+                                        .currentIndex = index;
+                                  },
+                                  viewportFraction: 0.9,
+                                  aspectRatio: 2.0,
+                                  height: sizeConfig.blockSizeVertical * 35),
+                              items: (Provider.of<OnlineSebhaProvider>(context)
+                                  .list
+                                  .map((zikr) {
+                                return Container(
+                                  child: Column(
+                                    children: [
+                                      buildContentStack(
+                                          sizeConfig, zikr, context),
+                                    ],
+                                  ),
+                                );
+                              }).toList()),
                             ),
-                          )
-                        : Stack(
-                            children: [
-                              Column(
-                                children: [
-                                  CarouselSlider(
-                                    carouselController:
-                                        Provider.of<OnlineSebhaProvider>(
-                                      context,
-                                    ).controller,
-                                    options: CarouselOptions(
-                                        initialPage:
-                                            Provider.of<OnlineSebhaProvider>(
-                                          context,
-                                        ).currentIndex,
-                                        enableInfiniteScroll: true,
-                                        onPageChanged: (index, _) {
-                                          Provider.of<OnlineSebhaProvider>(
-                                                  context,
-                                                  listen: false)
-                                              .currentIndex = index;
-                                        },
-                                        viewportFraction: 0.9,
-                                        aspectRatio: 2.0,
-                                        height:
-                                            sizeConfig.blockSizeVertical * 35),
-                                    items: (Provider.of<OnlineSebhaProvider>(
-                                            context)
-                                        .list
-                                        .map((zikr) {
-                                      return Container(
-                                        child: Column(
-                                          children: [
-                                            buildContentStack(
-                                                sizeConfig, zikr, context),
-                                          ],
-                                        ),
-                                      );
-                                    }).toList()),
-                                  ),
-                                  Spacer(),
-                                  buildControllersContainerWidget(
-                                      sizeConfig, context),
-                                ],
-                              ),
-                              if (Provider.of<OnlineSebhaProvider>(context)
-                                  .showCongratulations)
-                                IgnorePointer(
-                                  child: Container(
-                                    width: double.infinity,
-                                    child: Image.asset(
-                                        "assets/images/sebha_view/congratulations.gif"),
-                                  ),
-                                ),
-                              if (Provider.of<OnlineSebhaProvider>(context)
-                                  .showCongratulations)
-                                IgnorePointer(
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Image.asset(
-                                      "assets/images/sebha_view/swipe.gif",
-                                      width: double.infinity,
-                                      height: 100,
-                                    ),
-                                  ),
-                                ),
-                            ],
+                            Spacer(),
+                            buildControllersContainerWidget(
+                                sizeConfig, context),
+                          ],
+                        ),
+                        if (Provider.of<OnlineSebhaProvider>(context)
+                            .showCongratulations)
+                          IgnorePointer(
+                            child: Container(
+                              width: double.infinity,
+                              child: Image.asset(
+                                  "assets/images/sebha_view/congratulations.gif"),
+                            ),
                           ),
+                        if (Provider.of<OnlineSebhaProvider>(context)
+                            .showCongratulations)
+                          IgnorePointer(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Image.asset(
+                                "assets/images/sebha_view/swipe.gif",
+                                width: double.infinity,
+                                height: 100,
+                              ),
+                            ),
+                          ),
+                      ],
+                    ),
                   ));
             },
           );
@@ -419,7 +419,7 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
                 onPressed: () async => await Provider.of<OnlineSebhaProvider>(
                         context,
                         listen: false)
-                    .increaseTasbeeh(count: 0),
+                    .increaseOrSetTasbeehValue(count: 0),
                 backgroundColor: prymaryColor,
                 child: Icon(
                   Icons.restore,
@@ -443,18 +443,17 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
             image: AssetImage("assets/images/sebha_view/button_pattern.png"),
             fit: BoxFit.contain),
       ),
-      child: ElevatedButton(
-        // shape: CircleBorder(),
-        onPressed: () async {
+      child: InkWell(
+        onTap: () async {
           await Provider.of<OnlineSebhaProvider>(context, listen: false)
-              .increaseTasbeeh();
+              .increaseOrSetTasbeehValue();
         },
         child: Card(
           elevation: 2,
           shape: CircleBorder(),
           color: Colors.white,
           child: Container(
-            width: sizeConfig.blockSizeHorizontal * 45,
+            width: sizeConfig.blockSizeHorizontal * 35,
             decoration:
                 BoxDecoration(color: Colors.white, shape: BoxShape.circle),
             padding: EdgeInsets.all(sizeConfig.blockSizeHorizontal * 4),
@@ -475,7 +474,9 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
                   center: Text(
                     "${Provider.of<OnlineSebhaProvider>(context).currentTasbeeh.totalCounted}",
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 32),
                   ),
                   progressColor: _greenColor,
                 ),

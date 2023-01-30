@@ -16,7 +16,11 @@ import 'package:muslim_book/utils/sizing_info_extension.dart';
 class NewTasbeehView extends StatefulWidget {
   final SizingInformation sizeConfig;
   final bool isLocal;
-  const NewTasbeehView({super.key, required this.sizeConfig, this.isLocal = true,});
+  const NewTasbeehView({
+    super.key,
+    required this.sizeConfig,
+    this.isLocal = true,
+  });
 
   @override
   _NewTasbeehViewState createState() => _NewTasbeehViewState();
@@ -51,146 +55,132 @@ class _NewTasbeehViewState extends State<NewTasbeehView> {
               color: Colors.white, borderRadius: BorderRadius.circular(20)),
           child: SingleChildScrollView(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.symmetric(
-                          vertical: widget.sizeConfig.blockSizeVertical * 3,
-                          horizontal:
-                              widget.sizeConfig.blockSizeHorizontal * 5),
-                      child: Text(
-                        "أكتب الذكر",
-                        style: TextStyle(
-                            color: Constants.PRIMARY_DARK_COLOR,
-                            fontWeight: FontWeight.bold,
-                            fontSize:
-                                widget.sizeConfig.blockSizeHorizontal * 6),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal:
-                              widget.sizeConfig.blockSizeHorizontal * 4.5),
-                      width: double.infinity,
-                      child: TextField(
-                        controller: _nameController,
-                        minLines: 4,
-                        maxLines: 4,
-                        decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                horizontal:
-                                    widget.sizeConfig.blockSizeHorizontal * 5,
-                                vertical:
-                                    widget.sizeConfig.blockSizeHorizontal * 5),
-                            border: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Constants.PRIMARY_COLOR),
-                                borderRadius: BorderRadius.circular(
-                                    widget.sizeConfig.blockSizeHorizontal * 5)),
-                            fillColor: Colors.white,
-                            filled: true),
-                      ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.symmetric(
-                          horizontal: widget.sizeConfig.blockSizeHorizontal * 5,
-                          vertical: widget.sizeConfig.blockSizeVertical),
-                      child: Text(
-                        "عدد مرات التكرار",
-                        style: TextStyle(
-                            fontSize: widget.sizeConfig.blockSizeHorizontal * 6,
-                            color: Constants.PRIMARY_DARK_COLOR,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                          vertical: widget.sizeConfig.blockSizeHorizontal * 5,
-                          horizontal:
-                              widget.sizeConfig.blockSizeHorizontal * 5),
-                      child: Row(
-                        children: <Widget>[
-                          buildIconButton(Icons.add, () {
-                            _numberController.text =
-                                "${int.parse(_numberController.text) + 1}";
-                          }),
-                          Expanded(
-                            child: Container(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal:
-                                      widget.sizeConfig.blockSizeHorizontal *
-                                          4.5),
-                              width: double.infinity,
-                              child: TextField(
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                keyboardType: TextInputType.number,
-                                controller: _numberController,
-                                minLines: 1,
-                                maxLines: 1,
-                                onChanged: (s) {
-                                  if (isNumeric(s))
-                                    _numberController.text = s;
-                                  else
-                                    _numberController.text = "10";
-                                },
-                                decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                      horizontal: widget
-                                              .sizeConfig.blockSizeHorizontal *
-                                          5,
-                                    ),
-                                    border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Constants.PRIMARY_COLOR),
-                                        borderRadius: BorderRadius.circular(
-                                            widget.sizeConfig
-                                                    .blockSizeHorizontal *
-                                                2)),
-                                    fillColor: Colors.white,
-                                    filled: true),
-                              ),
-                            ),
-                          ),
-                          buildIconButton(Icons.remove, () {
-                            if (int.parse(_numberController.text) > 3)
-                              _numberController.text =
-                                  "${int.parse(_numberController.text) - 1}";
-                          }),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: double.infinity,
-                      margin: EdgeInsets.symmetric(
-                          horizontal:
-                              widget.sizeConfig.blockSizeHorizontal * 10,
-                          vertical: widget.sizeConfig.blockSizeVertical * 3),
-                      child: RawMaterialButton(
-                        padding: EdgeInsets.symmetric(
-                            vertical: widget.sizeConfig.blockSizeVertical * 2),
-                        onPressed: () async {
-                          await saveZikr();
-                        },
-                        child: Text(
-                          AppLocalizations.of(context)!.translate("addZekr"),
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize:
-                                  widget.sizeConfig.blockSizeHorizontal * 4),
-                        ),
-                        shape: StadiumBorder(),
-                        fillColor: const Color(0XFF347D53),
-                      ),
-                    )
-                  ],
+                Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.symmetric(
+                      vertical: widget.sizeConfig.blockSizeVertical * 3,
+                      horizontal: widget.sizeConfig.blockSizeHorizontal * 5),
+                  child: Text(
+                    "أكتب الذكر",
+                    style: TextStyle(
+                        color: Constants.PRIMARY_DARK_COLOR,
+                        fontWeight: FontWeight.bold,
+                        fontSize: widget.sizeConfig.blockSizeHorizontal * 6),
+                  ),
                 ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: widget.sizeConfig.blockSizeHorizontal * 4.5),
+                  width: double.infinity,
+                  child: TextField(
+                    controller: _nameController,
+                    minLines: 4,
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal:
+                                widget.sizeConfig.blockSizeHorizontal * 5,
+                            vertical:
+                                widget.sizeConfig.blockSizeHorizontal * 5),
+                        border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Constants.PRIMARY_COLOR),
+                            borderRadius: BorderRadius.circular(
+                                widget.sizeConfig.blockSizeHorizontal * 5)),
+                        fillColor: Colors.white,
+                        filled: true),
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.symmetric(
+                      horizontal: widget.sizeConfig.blockSizeHorizontal * 5,
+                      vertical: widget.sizeConfig.blockSizeVertical),
+                  child: Text(
+                    "عدد مرات التكرار",
+                    style: TextStyle(
+                        fontSize: widget.sizeConfig.blockSizeHorizontal * 6,
+                        color: Constants.PRIMARY_DARK_COLOR,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(
+                      vertical: widget.sizeConfig.blockSizeHorizontal * 5,
+                      horizontal: widget.sizeConfig.blockSizeHorizontal * 5),
+                  child: Row(
+                    children: <Widget>[
+                      buildIconButton(Icons.add, () {
+                        _numberController.text =
+                            "${int.parse(_numberController.text) + 1}";
+                      }),
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal:
+                                  widget.sizeConfig.blockSizeHorizontal * 4.5),
+                          width: double.infinity,
+                          child: TextField(
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            keyboardType: TextInputType.number,
+                            controller: _numberController,
+                            minLines: 1,
+                            maxLines: 1,
+                            onChanged: (s) {
+                              if (isNumeric(s))
+                                _numberController.text = s;
+                              else
+                                _numberController.text = "10";
+                            },
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      widget.sizeConfig.blockSizeHorizontal * 5,
+                                ),
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Constants.PRIMARY_COLOR),
+                                    borderRadius: BorderRadius.circular(
+                                        widget.sizeConfig.blockSizeHorizontal *
+                                            2)),
+                                fillColor: Colors.white,
+                                filled: true),
+                          ),
+                        ),
+                      ),
+                      buildIconButton(Icons.remove, () {
+                        if (int.parse(_numberController.text) > 3)
+                          _numberController.text =
+                              "${int.parse(_numberController.text) - 1}";
+                      }),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.symmetric(
+                      horizontal: widget.sizeConfig.blockSizeHorizontal * 10,
+                      vertical: widget.sizeConfig.blockSizeVertical * 3),
+                  child: RawMaterialButton(
+                    padding: EdgeInsets.symmetric(
+                        vertical: widget.sizeConfig.blockSizeVertical * 2),
+                    onPressed: () async {
+                      await saveZikr();
+                    },
+                    child: Text(
+                      AppLocalizations.of(context)!.translate("addZekr"),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: widget.sizeConfig.blockSizeHorizontal * 4),
+                    ),
+                    shape: StadiumBorder(),
+                    fillColor: const Color(0XFF347D53),
+                  ),
+                )
               ],
             ),
           ),
@@ -254,7 +244,8 @@ class _NewTasbeehViewState extends State<NewTasbeehView> {
   }
 
   void showSnackBar() {
-    Get.snackbar(AppLocalizations.of(context)!.translate("fillAllField"), AppLocalizations.of(context)!.translate("fillAllField"),
+    Get.snackbar(AppLocalizations.of(context)!.translate("fillAllField"),
+        AppLocalizations.of(context)!.translate("fillAllField"),
         backgroundColor: Constants.PRIMARY_COLOR,
         colorText: Colors.white,
         borderRadius: 0,

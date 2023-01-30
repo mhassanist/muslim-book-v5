@@ -31,6 +31,8 @@ class _OfflineSebhaViewState extends State<OfflineSebhaView> {
     super.initState();
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
     return ResponsiveBuilder(
@@ -324,9 +326,8 @@ class _OfflineSebhaViewState extends State<OfflineSebhaView> {
             image: AssetImage("assets/images/sebha_view/button_pattern.png"),
             fit: BoxFit.contain),
       ),
-      child: ElevatedButton(
-        // shape: CircleBorder(),
-        onPressed: () async {
+      child: InkWell(
+        onTap: () async {
           await Provider.of<SebhaProvider>(context, listen: false)
               .increaseTasbeeh();
         },

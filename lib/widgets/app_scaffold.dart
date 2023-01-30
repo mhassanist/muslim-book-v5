@@ -18,6 +18,7 @@ class AppScaffold extends StatelessWidget {
     this.onProfileTap,
     this.scaffoldKey,
     this.leading,
+    this.resizeToAvoidBottomInset,
   });
 
   final Widget title;
@@ -33,12 +34,14 @@ class AppScaffold extends StatelessWidget {
   final Widget? floatingActionButton;
   final Color prymaryColor = const Color(0XFF347D53);
   final GlobalKey<ScaffoldState>? scaffoldKey;
+  final bool? resizeToAvoidBottomInset;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.green,
       child: Scaffold(
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         key: scaffoldKey ?? UniqueKey(),
         appBar: AppBar(
             leading: leading,
