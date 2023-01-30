@@ -29,7 +29,7 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
           transparentBackground: false,
           title: Text(AppLocalizations.of(context)!.translate("Feeds")),
           centerTitle: true,
-          child: LoadUiWithAdd(
+          child: LoadUiWithAd(
             mainView: ListView(
               padding: EdgeInsets.all(10),
               children: [
@@ -55,8 +55,7 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              AppLocalizations.of(context)!
-                                  .translate("share"),
+                              AppLocalizations.of(context)!.translate("share"),
                               style: TextStyle(fontSize: 13),
                             ),
                             SizedBox(
@@ -105,7 +104,10 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
 
   _buildPostContentUi() {
     return Text(widget.islamicPost.content,
-        style: TextStyle(fontSize: 16, height: 2,));
+        style: TextStyle(
+          fontSize: 16,
+          height: 2,
+        ));
   }
 
   _buildPostVideoUi() {

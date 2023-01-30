@@ -1,7 +1,7 @@
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_rectangle_updated.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/azkar_feature/providers/azkar_provider.dart';
-import 'package:muslim_book/azkar_feature/widgets/zikr_list_widget.dart';
+import 'package:muslim_book/azkar_feature/widgets/azkar_categories_grid_item.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
@@ -18,14 +18,15 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-class AzkarListView extends StatefulWidget {
-  AzkarListView({super.key});
+class AzkarCategoriesGridScreen extends StatefulWidget {
+  AzkarCategoriesGridScreen({super.key});
 
   @override
-  _AzkarListViewState createState() => _AzkarListViewState();
+  _AzkarCategoriesGridScreenState createState() =>
+      _AzkarCategoriesGridScreenState();
 }
 
-class _AzkarListViewState extends State<AzkarListView> {
+class _AzkarCategoriesGridScreenState extends State<AzkarCategoriesGridScreen> {
   @override
   void initState() {
     super.initState();
@@ -80,7 +81,7 @@ class _AzkarListViewState extends State<AzkarListView> {
           title: AppScaffoldTitleWidget(
               title: AppLocalizations.of(context)!.translate("azkar")),
           centerTitle: true,
-          child: LoadUiWithAdd(
+          child: LoadUiWithAd(
             mainView: Container(
               child: CustomScrollView(
                 slivers: <Widget>[
@@ -97,7 +98,7 @@ class _AzkarListViewState extends State<AzkarListView> {
                             .azkarList(context)
                             .length,
                         itemBuilder: (BuildContext context, int index) =>
-                            ZikrListWidget(
+                            AzkarCategoriesGridItem(
                           sizeConfig: sizeConfig,
                           zikrDetails: Provider.of<AzkarProvider>(context)
                               .azkarList(context)[index],
@@ -108,10 +109,10 @@ class _AzkarListViewState extends State<AzkarListView> {
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: Container(
-                      height: 100,
-                      child: AdMobRectangle(BannerName.AZKAR),
-                    ),
+                    child: SizedBox(
+                        height: 100,
+                        child: AdmobRectangleUpdated(
+                            bannerName: BannerName.AZKAR)),
                   ),
                 ],
               ),

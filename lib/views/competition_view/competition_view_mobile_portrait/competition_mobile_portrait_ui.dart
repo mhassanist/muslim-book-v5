@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:muslim_book/ads/add_widget_edit.dart';
+import 'package:muslim_book/ads/ad_widget_edit.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
@@ -157,8 +157,9 @@ class CompetitionUI {
               provider.isAnsweredClicked = true;
               provider.chosenPosition = index;
               provider.stopTimer();
-              provider.setAnswerId =
-                  provider.questions[provider.questionIndex].answers[index].id ?? -1;
+              provider.setAnswerId = provider
+                      .questions[provider.questionIndex].answers[index].id ??
+                  -1;
               provider.postAnswer();
             }
           });
@@ -258,8 +259,8 @@ class CompetitionUI {
                                       BorderRadius.all(Radius.circular(12))),
                               content: Container(
                                 height: 400,
-                                child: LoadUiWithAdd(
-                                  mainView: AddWidgetEdit(
+                                child: LoadUiWithAd(
+                                  mainView: AdWidgetEdit(
                                     title: AppLocalizations.of(context)!
                                         .translate("competition"),
                                     bannerName: BannerName.COMPETITION,

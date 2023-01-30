@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:muslim_book/ads/ad_manager.dart';
-import 'package:muslim_book/azkar_feature/views/azkar_list_view.dart';
+import 'package:muslim_book/azkar_feature/screens/azkar_categories_grid_screen.dart';
 import 'package:muslim_book/core/push_notification_service.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
 import 'package:muslim_book/home_feature/views/home_view.dart';
@@ -53,26 +53,31 @@ class _StartViewMobilePortraitViewState
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   NotificationData data = NotificationData();
 
-   @override
+  @override
   void initState() {
-     WidgetsBinding.instance.addPostFrameCallback((_) async {
-       await PushNotificationService().initialise();
-       await PushNotificationService().initNotification(context);
-       final notificationAppLaunchDetails = await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
-       print(notificationAppLaunchDetails);
-       if(notificationAppLaunchDetails != null &&
-           notificationAppLaunchDetails.didNotificationLaunchApp == true) {
-         Map<String,dynamic> dataa = jsonDecode(notificationAppLaunchDetails.notificationResponse!.payload!);
-         String postId = dataa["post_id"];
-         String catName = dataa["cat_name"];
-         String catId = dataa["cat_id"];
-         data.postId = postId;
-         data.catName = catName;
-         data.catId = catId;
-         Navigator.push(context, MaterialPageRoute(builder: (context) => IslamicPostDetailsFromNotification(data)));
-
-       }
-     });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await PushNotificationService().initialise();
+      await PushNotificationService().initNotification(context);
+      final notificationAppLaunchDetails = await flutterLocalNotificationsPlugin
+          .getNotificationAppLaunchDetails();
+      print(notificationAppLaunchDetails);
+      if (notificationAppLaunchDetails != null &&
+          notificationAppLaunchDetails.didNotificationLaunchApp == true) {
+        Map<String, dynamic> dataa = jsonDecode(
+            notificationAppLaunchDetails.notificationResponse!.payload!);
+        String postId = dataa["post_id"];
+        String catName = dataa["cat_name"];
+        String catId = dataa["cat_id"];
+        data.postId = postId;
+        data.catName = catName;
+        data.catId = catId;
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    IslamicPostDetailsFromNotification(data)));
+      }
+    });
     _ad = NativeAdmob(
       loading: Container(
         child: Center(
@@ -101,7 +106,6 @@ class _StartViewMobilePortraitViewState
 
   @override
   void didChangeDependencies() {
-
     super.didChangeDependencies();
   }
 
@@ -131,8 +135,8 @@ class _StartViewMobilePortraitViewState
   check() async {
     var showCompetition =
         await Constants.platform.invokeMethod(Constants.Open_Competition);
-     // List<dynamic> phoneNumbersList = await Constants.platform
-     //    .invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
+    // List<dynamic> phoneNumbersList = await Constants.platform
+    //    .invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
     await Constants.platform.invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
     if (showCompetition != null) {
       Provider.of<UserProvider>(context, listen: false).selectedPage = 3;
@@ -165,78 +169,77 @@ class _StartViewMobilePortraitViewState
       Provider.of<UserProvider>(context).isLoggedIn
           ? CompetitionView()
           : LoginPopUpView(),
-      AzkarListView(),
+      AzkarCategoriesGridScreen(),
     ];
     return WillPopScope(
       onWillPop: () {
         return _onWillPop();
       },
-      child:  Scaffold(
-              // appBar: AppBar(
-              //   actions: [
-              //
-              //     Icon(Icons.favorite),
-              //     Padding(
-              //       padding: EdgeInsets.symmetric(horizontal: 16),
-              //       child: Icon(Icons.search),
-              //     ),
-              //   ],
-              // ),
+      child: Scaffold(
+        // appBar: AppBar(
+        //   actions: [
+        //
+        //     Icon(Icons.favorite),
+        //     Padding(
+        //       padding: EdgeInsets.symmetric(horizontal: 16),
+        //       child: Icon(Icons.search),
+        //     ),
+        //   ],
+        // ),
 
-              drawer: SideDrawerMenu(
-                context,
-              ).buildDrawer(),
-              key: key,
-              // body: Container(),
-              body: Stack(
-                children: <Widget>[
-                  Container(
-                      width: double.infinity,
-                      child: _pages[
-                          Provider.of<UserProvider>(context).selectedPage]),
-                  // SafeArea(
-                  //   child: Container(
-                  //     height: kToolbarHeight,
-                  //     child: ResponsiveBuilder(builder: (context, sizeConfig) {
-                  //       return appBar(
-                  //         context,
-                  //         sizeConfig,
-                  //         _pagesNames[
-                  //             Provider.of<UserProvider>(context).selectedPage],
-                  //         backgroundColor: getPageColor(context)[
-                  //             Provider.of<UserProvider>(context).selectedPage],
-                  //         key: key,
-                  //       );
-                  //     }),
-                  //   ),
-                  // ),
-                ],
-              ),
+        drawer: SideDrawerMenu(
+          context,
+        ).buildDrawer(),
+        key: key,
+        // body: Container(),
+        body: Stack(
+          children: <Widget>[
+            Container(
+                width: double.infinity,
+                child: _pages[Provider.of<UserProvider>(context).selectedPage]),
+            // SafeArea(
+            //   child: Container(
+            //     height: kToolbarHeight,
+            //     child: ResponsiveBuilder(builder: (context, sizeConfig) {
+            //       return appBar(
+            //         context,
+            //         sizeConfig,
+            //         _pagesNames[
+            //             Provider.of<UserProvider>(context).selectedPage],
+            //         backgroundColor: getPageColor(context)[
+            //             Provider.of<UserProvider>(context).selectedPage],
+            //         key: key,
+            //       );
+            //     }),
+            //   ),
+            // ),
+          ],
+        ),
 
-              bottomNavigationBar: ResponsiveBuilder(
-                builder: (_, sizeConfig) => BottomNavigationBar(
-                  onTap: (position) async {
-                    if (position == 0) {
-                      if (locator<Prefs>().getIsFirstTime()) {
-                        Navigator.pushNamed(context, "/pick_country_view");
-                      } else {
-                        Provider.of<UserProvider>(context, listen: false)
-                            .selectedPage = 0;
-                      }
-                    } else {
-                      onPageChanged(position);
-                    }
-                  },
-                  type: BottomNavigationBarType.fixed,
-                  items: navigationItems(context, sizeConfig),
-                  backgroundColor: Theme.of(context).primaryColorDark,
-                  //showUnselectedLabels: false,
-                  selectedItemColor: Constants.CANVAS_COLOR,
-                  currentIndex: Provider.of<UserProvider>(context).selectedPage,
-                  unselectedItemColor: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-            ),
+        bottomNavigationBar: ResponsiveBuilder(
+          builder: (_, sizeConfig) => BottomNavigationBar(
+            onTap: (position) async {
+              if (position == 0) {
+                if (locator<Prefs>().getIsFirstTime()) {
+                  Navigator.pushNamed(context, "/pick_country_view");
+                } else {
+                  Provider.of<UserProvider>(context, listen: false)
+                      .selectedPage = 0;
+                }
+              } else {
+                onPageChanged(position);
+              }
+            },
+            type: BottomNavigationBarType.fixed,
+            items: navigationItems(context, sizeConfig),
+            backgroundColor: Theme.of(context).primaryColorDark,
+            //showUnselectedLabels: false,
+            selectedItemColor: Constants.CANVAS_COLOR,
+            currentIndex: Provider.of<UserProvider>(context).selectedPage,
+            unselectedItemColor: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+      ),
     );
   }
 
@@ -299,7 +302,8 @@ class _StartViewMobilePortraitViewState
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
                     child: Text(
-                      AppLocalizations.of(context)!.translate("are_you_sure_exit"),
+                      AppLocalizations.of(context)!
+                          .translate("are_you_sure_exit"),
                       style: TextStyle(
                         fontSize: sizeConfig.blockSizeHorizontal * 6,
                         color: Theme.of(context).primaryColorDark,
@@ -393,7 +397,8 @@ class _StartViewMobilePortraitViewState
                       },
                       fillColor: Theme.of(context).primaryColor,
                       child: Text(
-                        AppLocalizations.of(context)!.translate("rating_muslim_book?"),
+                        AppLocalizations.of(context)!
+                            .translate("rating_muslim_book?"),
                         style: TextStyle(
                           fontSize: sizeConfig.blockSizeHorizontal * 5,
                           color: Constants.CANVAS_COLOR,
@@ -411,12 +416,12 @@ class _StartViewMobilePortraitViewState
   }
 
   List<String> _pagesNames(context) => [
-    AppLocalizations.of(context)!.translate("quran"),
-    AppLocalizations.of(context)!.translate("Qiblah"),
-    AppLocalizations.of(context)!.translate("home"),
-    AppLocalizations.of(context)!.translate("competitions"),
-    AppLocalizations.of(context)!.translate("azkar")
-  ];
+        AppLocalizations.of(context)!.translate("quran"),
+        AppLocalizations.of(context)!.translate("Qiblah"),
+        AppLocalizations.of(context)!.translate("home"),
+        AppLocalizations.of(context)!.translate("competitions"),
+        AppLocalizations.of(context)!.translate("azkar")
+      ];
 
   List<Color> getPageColor(context) => [
         Colors.transparent,

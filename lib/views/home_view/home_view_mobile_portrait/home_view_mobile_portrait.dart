@@ -1,4 +1,4 @@
-import 'package:muslim_book/azkar_feature/views/azkar_list_view.dart';
+import 'package:muslim_book/azkar_feature/screens/azkar_categories_grid_screen.dart';
 
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/quran/views/quran_section_screen.dart';
@@ -93,10 +93,11 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                         "competitions",
                       ),
                       item(
-                          sizeConfig,
-                          4,
-                          "assets/images/start_view/leaderboard_icon.svg",
-                          "first",),
+                        sizeConfig,
+                        4,
+                        "assets/images/start_view/leaderboard_icon.svg",
+                        "first",
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -107,8 +108,10 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                     children: <Widget>[
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (c) => QuranSectionScreen()));
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (c) => QuranSectionScreen()));
                         },
                         child: Container(
                           height: sizeConfig.blockSizeHorizontal * 40,
@@ -123,7 +126,8 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                               Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: Text(
-                                  AppLocalizations.of(context)!.translate("quran"),
+                                  AppLocalizations.of(context)!
+                                      .translate("quran"),
                                   style: TextStyle(
                                     fontSize:
                                         sizeConfig.blockSizeHorizontal * 6,
@@ -170,7 +174,7 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                   ),
                   item(sizeConfig, null,
                       "assets/images/azkar_view/azkar_icon.svg", "azkar",
-                      onTap: () => Get.to(AzkarListView()))
+                      onTap: () => Get.to(AzkarCategoriesGridScreen()))
 //                Visibility(
 //                  visible: visible,
 //                  child: ,
@@ -184,15 +188,16 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
     });
   }
 
-  Widget item(
-      SizingInformation sizeConfig, int? position, String svgPhoto, String title,
+  Widget item(SizingInformation sizeConfig, int? position, String svgPhoto,
+      String title,
       {Function? onTap}) {
     return ElevatedButton(
-      onPressed: onTap != null ? onTap.call() :
-          () {
-            Provider.of<UserProvider>(context, listen: false).selectedPage =
-                position;
-          },
+      onPressed: onTap != null
+          ? onTap.call()
+          : () {
+              Provider.of<UserProvider>(context, listen: false).selectedPage =
+                  position;
+            },
       child: Container(
         height: sizeConfig.blockSizeHorizontal * 40,
         width: sizeConfig.blockSizeHorizontal * 40,

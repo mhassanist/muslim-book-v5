@@ -189,7 +189,8 @@ class _SettingsViewMobilePortraitState
                 leading: Icon(Icons.arrow_back_ios)),
             ExpansionpanelItem(
                 isExpanded: false,
-                title: AppLocalizations.of(context)!.translate("edite_tieme_prayer"),
+                title: AppLocalizations.of(context)!
+                    .translate("edite_tieme_prayer"),
                 content: ui.azanTime(),
                 leading: Icon(Icons.arrow_back_ios)),
             ExpansionpanelItem(
@@ -219,7 +220,7 @@ class _SettingsViewMobilePortraitState
               ),
               body: Container(
                 color: Constants.CANVAS_COLOR,
-                child: LoadUiWithAdd(
+                child: LoadUiWithAd(
                   mainView: CustomScrollView(slivers: <Widget>[
                     SliverToBoxAdapter(
                       child: CustomExpansionPanelList(
@@ -256,7 +257,9 @@ class _SettingsViewMobilePortraitState
                                                 width: 10,
                                               ),
                                               Text(
-                                                contents[items.indexOf(item)].title??'',
+                                                contents[items.indexOf(item)]
+                                                        .title ??
+                                                    '',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 16,

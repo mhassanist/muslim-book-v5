@@ -5,26 +5,30 @@ import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 
-class LoadUiWithAdd extends StatefulWidget {
+class LoadUiWithAd extends StatefulWidget {
   final Widget mainView;
 
-  const LoadUiWithAdd({super.key, required this.mainView,});
+  const LoadUiWithAd({
+    super.key,
+    required this.mainView,
+  });
 
   @override
-  _LoadUiWithAddState createState() => _LoadUiWithAddState();
+  _LoadUiWithAdState createState() => _LoadUiWithAdState();
 }
 
-class _LoadUiWithAddState extends State<LoadUiWithAdd> {
-  bool loadingAddMobe = true ;
+class _LoadUiWithAdState extends State<LoadUiWithAd> {
+  bool loadingAddMobe = false;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds:   2), () {
-       setState(() {
-        loadingAddMobe = false;
-      });
-     });
+    // Hamza
+    // Future.delayed(Duration(seconds:   2), () {
+    //    setState(() {
+    //     loadingAddMobe = false;
+    //   });
+    //  });
   }
 
   @override
