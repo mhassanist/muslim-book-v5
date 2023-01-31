@@ -21,7 +21,7 @@ class _AdmobRectangleUpdatedState extends State<AdmobRectangleUpdated> {
   bool isAdLoaded = false;
 
   late BannerAdListener adListener;
-  late BannerAd myBanner;
+  late BannerAd bannerAd;
 
   @override
   void initState() {
@@ -32,20 +32,19 @@ class _AdmobRectangleUpdatedState extends State<AdmobRectangleUpdated> {
   @override
   void dispose() {
     super.dispose();
-    myBanner.dispose();
+    bannerAd.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     if (isAdLoaded) {
-      final AdWidget adWidget = AdWidget(ad: myBanner);
-      final Container adContainer = Container(
+      final AdWidget adWidget = AdWidget(ad: bannerAd);
+      return Container(
         alignment: Alignment.center,
         child: adWidget,
-        width: myBanner.size.width.toDouble(),
-        height: myBanner.size.height.toDouble(),
+        width: bannerAd.size.width.toDouble(),
+        height: bannerAd.size.height.toDouble(),
       );
-      return adContainer;
     } else {
       loadBanner();
       return Container(
@@ -85,13 +84,13 @@ class _AdmobRectangleUpdatedState extends State<AdmobRectangleUpdated> {
   }
 
   void loadBanner() {
-    myBanner = BannerAd(
+    bannerAd = BannerAd(
       adUnitId: AdManager.getAdUnitId(this.widget.bannerName),
       size: AdSize.getCurrentOrientationInlineAdaptiveBannerAdSize(
           MediaQuery.of(context).size.width.floor()),
       request: AdRequest(),
       listener: adListener,
     );
-    myBanner.load();
+    bannerAd.load();
   }
 }

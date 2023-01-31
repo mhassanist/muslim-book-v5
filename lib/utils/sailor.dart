@@ -17,7 +17,7 @@ import 'package:muslim_book/views/settings_view/settings_view.dart';
 import 'package:muslim_book/views/signup_view/signup_view.dart';
 import 'package:muslim_book/views/start_view/start_view.dart';
 import 'package:muslim_book/views/scoreboard_views/quiz_scoreboard_view.dart';
-import 'package:muslim_book/views/scoreboard_views/select_top_view.dart';
+import 'package:muslim_book/views/scoreboard_views/users_scoreboard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:seafarer/seafarer.dart';
 
@@ -180,7 +180,7 @@ class Routes {
       SeafarerRoute(
         name: "/SelectTopView",
         builder: (context, args, params) {
-          return SelectTopView();
+          return UsersScoreboardView();
         },
         defaultTransitionDuration: Duration(milliseconds: 300),
         defaultTransitionCurve: Curves.ease,

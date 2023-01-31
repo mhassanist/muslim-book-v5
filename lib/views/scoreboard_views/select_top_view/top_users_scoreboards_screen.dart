@@ -1,4 +1,4 @@
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_rectangle_updated.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
@@ -16,12 +16,13 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-class TopSelectionPage extends StatefulWidget {
+class TopUserScorebardsScreen extends StatefulWidget {
   @override
-  _TopSelectionPageState createState() => _TopSelectionPageState();
+  _TopUserScorebardsScreenState createState() =>
+      _TopUserScorebardsScreenState();
 }
 
-class _TopSelectionPageState extends State<TopSelectionPage> {
+class _TopUserScorebardsScreenState extends State<TopUserScorebardsScreen> {
   var tops = ["comp_first", "tasbeh_first"];
   var _images = [
     "assets/images/start_view/leaderboard_icon.svg",
@@ -84,7 +85,9 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
                     new StaggeredTile.count(2, 2),
               )),
               SliverToBoxAdapter(
-                  child: Container(child: AdMobRectangle(BannerName.Top)
+                  child: SizedBox(
+                      height: 300,
+                      child: AdmobRectangleUpdated(bannerName: BannerName.Top)
                       //  ..  AdMobRectangle(BannerName.Top)
                       )),
               SliverToBoxAdapter(
@@ -99,9 +102,8 @@ class _TopSelectionPageState extends State<TopSelectionPage> {
   }
 
   _buildItem(int index) {
-    return ElevatedButton(
-      // padding: EdgeInsets.zero,
-      onPressed: () {
+    return InkWell(
+      onTap: () {
         switch (index) {
           case 0:
             Navigator.push(
