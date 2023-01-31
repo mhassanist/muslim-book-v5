@@ -174,7 +174,7 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                   ),
                   item(sizeConfig, null,
                       "assets/images/azkar_view/azkar_icon.svg", "azkar",
-                      onTap: () => Get.to(AzkarCategoriesGridScreen()))
+                      onTap: () => Get.to(() => AzkarCategoriesGridScreen()))
 //                Visibility(
 //                  visible: visible,
 //                  child: ,

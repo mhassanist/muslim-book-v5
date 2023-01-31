@@ -4,7 +4,7 @@ import 'package:muslim_book/providers/tasbeeh_top_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/views/login_pop_up_view/login_pop_up_view.dart';
-import 'package:muslim_book/views/top_view/tabspeeh_top_view_mobile_portrait/tasbeeh_top_mobile_portrait_ui.dart';
+import 'package:muslim_book/views/scoreboard_views/tabspeeh_scoreboard/tasbeeh_scoreboard_screen.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:muslim_book/widgets/retry_view_widget.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
@@ -12,26 +12,26 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-class TasbeehTopPage extends StatefulWidget {
+class TasbeehScoreboardScreenContainer extends StatefulWidget {
   @override
-  _TasbeehTopPageState createState() => _TasbeehTopPageState();
+  _TasbeehScoreboardScreenContainerState createState() =>
+      _TasbeehScoreboardScreenContainerState();
 }
 
-class _TasbeehTopPageState extends State<TasbeehTopPage> {
-  late TasbeehTopUI ui;
+class _TasbeehScoreboardScreenContainerState
+    extends State<TasbeehScoreboardScreenContainer> {
+  late TasbeehScoreboardScreen ui;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    ui = TasbeehTopUI(
+    ui = TasbeehScoreboardScreen(
       context,
     );
   }
 
-
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -66,21 +66,18 @@ class _TasbeehTopPageState extends State<TasbeehTopPage> {
                 provider: model,
                 text: 'first',
               ),
-              child: Container(
-                child: Provider.of<UserProvider>(context).isLoggedIn
-                    ? Container(
-                        height: MediaQuery.of(context).size.height,
-                        padding: EdgeInsets.only(top: 20),
-                        child: Stack(
-                          children: <Widget>[
-                            ui.topWinners(),
-                          ],
-                        ),
-                      )
-                    : LoginPopUpView(),
-              ),
+              child: Provider.of<UserProvider>(context).isLoggedIn
+                  ? Container(
+                      height: MediaQuery.of(context).size.height,
+                      padding: EdgeInsets.only(top: 20),
+                      child: Stack(
+                        children: <Widget>[
+                          ui.topWinners(),
+                        ],
+                      ),
+                    )
+                  : LoginPopUpView(),
             );
-
           },
         ),
       );

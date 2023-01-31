@@ -60,11 +60,13 @@ class _AzkarCarouselScreenState extends State<AzkarCarouselScreen> {
                 borderRadius: BorderRadius.all(Radius.circular(12))),
             content: Container(
                 height: 400,
-                child: AdWidgetEdit(
-                  title: AppLocalizations.of(context)!.translate("azkar"),
-                  bannerName: BannerName.AZKAR,
-                  buttomTitle:
-                      AppLocalizations.of(context)!.translate("follow"),
+                child: LoadUiWithAd(
+                  mainView: AdWidgetEdit(
+                    title: AppLocalizations.of(context)!.translate("azkar"),
+                    bannerName: BannerName.AZKAR,
+                    buttomTitle:
+                        AppLocalizations.of(context)!.translate("follow"),
+                  ),
                 )),
           ),
         )) ??

@@ -1,4 +1,3 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/ads/ad_widget_edit.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
@@ -9,14 +8,13 @@ import 'package:muslim_book/sebha_feature/online_sebha/models/tasabeeh_model.dar
 import 'package:muslim_book/sebha_feature/views/new_tasbeeh_view.dart';
 import 'package:muslim_book/views/login_pop_up_view/login_pop_up_view.dart';
 import 'package:muslim_book/views/myProfile_view/myProfile_view.dart';
-import 'package:muslim_book/views/top_view/tasbeeh_top_view.dart';
+import 'package:muslim_book/views/scoreboard_views/tasbeeh_scoreboard_view.dart';
 import 'package:muslim_book/widgets/app_scaffold_title.dart';
 import 'package:muslim_book/widgets/share_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -75,7 +73,7 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
                   onWillPop: _onWillPop,
                   child: AppScaffold(
                     resizeToAvoidBottomInset: false,
-                    onProfileTap: () => Get.to(MyProfileView()),
+                    onProfileTap: () => Get.to(() => MyProfileView()),
                     actions: [
                       Container(
                         margin: EdgeInsets.only(
@@ -444,6 +442,7 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
             fit: BoxFit.contain),
       ),
       child: InkWell(
+        enableFeedback: false,
         onTap: () async {
           await Provider.of<OnlineSebhaProvider>(context, listen: false)
               .increaseOrSetTasbeehValue();
@@ -509,7 +508,7 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
       update: (_, user, __) => TasbeehTopProvider(user),
       child: ScreenTypeLayout(
         mobile: OrientationLayoutBuilder(
-          portrait: (context) => TasbeehTopView(),
+          portrait: (context) => TasbeehScoreboardView(),
         ),
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:muslim_book/views/top_view/select_top_view/top_select_view_mobile_portrait.dart';
+import 'package:muslim_book/views/scoreboard_views/select_top_view/top_select_view_mobile_portrait.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 

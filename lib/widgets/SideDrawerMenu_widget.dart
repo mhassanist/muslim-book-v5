@@ -194,7 +194,7 @@ class SideDrawerMenu {
                               AppLocalizations.of(context)!
                                   .translate("Prayer_Timings"), () {
                             Navigator.of(context).pop();
-                            Get.to(AzanView());
+                            Get.to(() => AzanView());
                           }, true, "assets/images/slider_view/prayer.svg"),
                           _buildDivider(),
                           _buildRow(null,
@@ -226,7 +226,7 @@ class SideDrawerMenu {
                               () {
                             Navigator.of(context).pop();
                             // await
-                            Get.to(SebhaView());
+                            Get.to(() => SebhaView());
                           }, true, "assets/images/sebha_view/sebha_icon.svg"),
                           _buildDivider(),
                           _buildRow(null,
@@ -258,7 +258,7 @@ class SideDrawerMenu {
                               AppLocalizations.of(context)!.translate("more"),
                               () {
                             Navigator.of(context).pop();
-                            Get.to(IslamicsView());
+                            Get.to(() => IslamicsView());
                           }, false, ""),
                           _buildDivider(),
                           _buildRow(Icons.wine_bar,

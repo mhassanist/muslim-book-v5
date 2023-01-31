@@ -10,7 +10,14 @@ import 'package:muslim_book/utils/locator.dart';
 class OnlineSebhaProvider extends ChangeNotifier {
   bool _showCongratulations = false;
   int _currentIndex = 0;
-  late TasbeehModel _currentTasbeeh;
+  late TasbeehModel _currentTasbeeh = TasbeehModel(
+      content: '',
+      count: 0,
+      counted: 0,
+      editable: false,
+      id: 0,
+      totalCounted: 0,
+      note: '');
   final CarouselController controller = CarouselController();
   bool _allowClickSound = locator<Prefs>().allowTasbeehClickSound;
   List<TasbeehModel> _tsabeehList = [];

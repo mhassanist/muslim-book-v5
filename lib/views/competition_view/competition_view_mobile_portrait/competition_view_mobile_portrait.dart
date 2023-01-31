@@ -10,7 +10,7 @@ import 'package:muslim_book/providers/top_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/views/login_pop_up_view/login_pop_up_view.dart';
-import 'package:muslim_book/views/top_view/compeition_top_view.dart';
+import 'package:muslim_book/views/scoreboard_views/quiz_scoreboard_view.dart';
 import 'package:muslim_book/widgets/app_scaffold_title.dart';
 import 'package:muslim_book/widgets/retry_view_widget.dart';
 import 'package:muslim_book/widgets/share_dialog.dart';
@@ -211,7 +211,7 @@ class _CompetitionViewMobilePortraitState
       update: (_, user, __) => TopProvider(user),
       child: ScreenTypeLayout(
         mobile: OrientationLayoutBuilder(
-          portrait: (context) => CompetitionTopView(),
+          portrait: (context) => QuizScoreboard(),
         ),
       ),
     );

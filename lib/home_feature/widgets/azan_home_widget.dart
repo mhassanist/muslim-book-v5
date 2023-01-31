@@ -129,7 +129,7 @@ class AzanHomeWidget extends StatelessWidget {
                   child: RawMaterialButton(
                     onPressed: () {
                       if (locator<Prefs>().getAzanModel().isNotEmpty) {
-                        Get.to(AzanView());
+                        Get.to(() => AzanView());
                       } else {}
                     },
                     elevation: 5,

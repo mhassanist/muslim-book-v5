@@ -8,12 +8,12 @@ import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../../utils/sizing_info_extension.dart';
 
-class TopUI {
+class QuizScoreboardScreen {
   late TopProvider provider;
   late final BuildContext context;
   late SizingInformation sizeConfig;
 
-  TopUI(this.context) {
+  QuizScoreboardScreen(this.context) {
     provider = Provider.of<TopProvider>(context);
   }
   final Color prymaryColor = const Color(0XFF347D53);
@@ -39,14 +39,20 @@ class TopUI {
                     Expanded(
                         child: Column(
                       children: [
-                        buildDailyRankWidget(sizeConfig,
-                            titel: AppLocalizations.of(context)!.translate("rank_weekly"),
-                            number: "${provider.userScore.rank}",
-                            image: "rank_medal.png"),
-                        buildDailyRankWidget(sizeConfig,
-                            titel: AppLocalizations.of(context)!.translate("Weekly_Achievement"),
-                            number: "${provider.userScore.points}",
-                            image: "flag_medal.png"),
+                        buildDailyRankWidget(
+                          sizeConfig,
+                          titel: AppLocalizations.of(context)!
+                              .translate("rank_weekly"),
+                          number: "${provider.userScore.rank}",
+                          image: "rank_medal.png",
+                        ),
+                        buildDailyRankWidget(
+                          sizeConfig,
+                          titel: AppLocalizations.of(context)!
+                              .translate("Weekly_Achievement"),
+                          number: "${provider.userScore.points}",
+                          image: "flag_medal.png",
+                        ),
                       ],
                     ))
                   ],
@@ -89,17 +95,17 @@ class TopUI {
                   Constants.CANVAS_COLOR,
                   Theme.of(context).colorScheme.secondary,
                   // provider.topList[index].id.toString(),
-                  provider.topList[index].name,
-                  provider.topList[index].country,
+                  provider.topList[index].name ?? '',
+                  provider.topList[index].country ?? '',
                   provider.topList[index].correctAnswer.toString(),
-                  (provider.topList[index].correctAnswer +
-                          provider.topList[index].wrongAnswer)
+                  (provider.topList[index].correctAnswer ??
+                          0 + (provider.topList[index].wrongAnswer ?? 0))
                       .toString(),
                   provider.topList[index].points.toString(),
-                  provider.topList[index].image.isEmpty
-                      ? provider.topList[index].flag
+                  provider.topList[index].image == null
+                      ? (provider.topList[index].flag ?? '')
                           .replaceAll("http://", "https://")
-                      : provider.topList[index].image
+                      : (provider.topList[index].image ?? '')
                           .replaceAll("http://", "https://"));
             },
           ),
@@ -109,7 +115,7 @@ class TopUI {
   }
 
   buildDailyRankWidget(SizingInformation sizeConfig,
-      {String titel = '', String number = '', String image = '',}) {
+      {required String titel, required String number, required String image}) {
     return Container(
       margin: EdgeInsets.symmetric(
           vertical: sizeConfig.blockSizeVertical,
@@ -175,15 +181,16 @@ class TopUI {
   }
 
   Widget topItem(
-      index,
-      Color backgroundColor,
-      Color textColor,
-      String name,
-      String countryName,
-      String correctAnswers,
-      String allAnswers,
-      String points,
-      [String imageString = '',]) {
+    index,
+    Color backgroundColor,
+    Color textColor,
+    String name,
+    String? countryName,
+    String? correctAnswers,
+    String? allAnswers,
+    String points, [
+    String imageString = '',
+  ]) {
     var smallFont = sizeConfig.blockSizeHorizontal * 3;
     var mediumFont = sizeConfig.blockSizeHorizontal * 4;
 
@@ -217,16 +224,17 @@ class TopUI {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.secondary,
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                                image: NetworkImage(
-                                        imageString.replaceAll(
-                                            "http://", "https://"),
-                                      ),
-                                onError: (_, __) => AssetImage(
-                                    'assets/images/general/person.jpg'),
-                                fit: BoxFit.cover,),),
+                          color: Theme.of(context).colorScheme.secondary,
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              imageString.replaceAll("http://", "https://"),
+                            ),
+                            onError: (error, stackTrace) =>
+                                AssetImage('assets/images/general/person.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                         height: sizeConfig.blockSizeHorizontal * 13,
                         width: sizeConfig.blockSizeHorizontal * 13,
                       )
@@ -244,9 +252,7 @@ class TopUI {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       AutoSizeText(
-                        countryName.isNotEmpty
-                            ? name + ' - ' + countryName
-                            : name,
+                        countryName != null ? name + ' - ' + countryName : name,
                         maxLines: 1,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -263,7 +269,8 @@ class TopUI {
                               Padding(
                                 padding: const EdgeInsets.all(5.0),
                                 child: Text(
-                                  AppLocalizations.of(context)!.translate("no_of_points"),
+                                  AppLocalizations.of(context)!
+                                      .translate("no_of_points"),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
@@ -295,7 +302,8 @@ class TopUI {
                                   Padding(
                                     padding: const EdgeInsets.all(5.0),
                                     child: Text(
-                                      AppLocalizations.of(context)!.translate("correct_answers"),
+                                      AppLocalizations.of(context)!
+                                          .translate("correct_answers"),
                                       style: TextStyle(
                                           fontSize: smallFont,
                                           color: textColor),
@@ -304,7 +312,8 @@ class TopUI {
                                   Padding(
                                     padding: const EdgeInsets.all(5.0),
                                     child: Text(
-                                      AppLocalizations.of(context)!.translate("answered_questions"),
+                                      AppLocalizations.of(context)!
+                                          .translate("answered_questions"),
                                       style: TextStyle(
                                           fontSize: smallFont,
                                           color: textColor),
@@ -323,7 +332,7 @@ class TopUI {
                                   Padding(
                                     padding: const EdgeInsets.all(5.0),
                                     child: Text(
-                                      correctAnswers,
+                                      correctAnswers!,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: smallFont,
@@ -334,7 +343,7 @@ class TopUI {
                                   Padding(
                                     padding: const EdgeInsets.all(5.0),
                                     child: Text(
-                                      allAnswers,
+                                      allAnswers!,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: smallFont,
@@ -365,34 +374,53 @@ class TopUI {
             0,
             Constants.CANVAS_COLOR,
             Theme.of(context).colorScheme.secondary,
-            provider.topList.first.name,
-            provider.topList.first.country,
+            provider.topList.first.name ?? '',
+            provider.topList.first.country ?? '',
             provider.topList.first.correctAnswer.toString(),
-            (provider.topList.first.correctAnswer +
-                    provider.topList.first.wrongAnswer)
+            ((provider.topList.first.correctAnswer ?? 0) +
+                    (provider.topList.first.wrongAnswer ?? 0))
                 .toString(),
             provider.topList.first.points.toString(),
-            provider.topList.first.flag,
+            provider.topList.first.flag ?? '',
           )
         : Container();
   }
 
   Widget myItem() {
-    return provider.userScore.id != null
-        ? topItem(
-            provider.userScore.rank - 1,
-            Theme.of(context).colorScheme.secondary,
-            Theme.of(context).primaryColorDark,
-            provider.userScore.name,
-            provider.userScore.country,
-            provider.userScore.correctAnswer.toString(),
-            (provider.userScore.correctAnswer + provider.userScore.wrongAnswer)
-                .toString(),
-            provider.userScore.points.toString(),
-            provider.userScore.image == null
-                ? provider.userScore.flag.replaceAll("http://", "https://")
-                : provider.userScore.image.replaceAll("http://", "https://"),
-          )
-        : Container();
+    return topItem(
+      (provider.userScore.rank ?? 1) - 1,
+      Theme.of(context).colorScheme.secondary,
+      Theme.of(context).primaryColorDark,
+      provider.userScore.name,
+      provider.userScore.country ?? '',
+      provider.userScore.correctAnswer.toString(),
+      provider.userScore.correctAnswer != null &&
+              provider.userScore.wrongAnswer != null
+          ? (provider.userScore.correctAnswer! +
+                  provider.userScore.wrongAnswer!)
+              .toString()
+          : '',
+      provider.userScore.points.toString(),
+    );
+    // return provider.userScore != null
+    //     ? topItem(
+    //         (provider.userScore.rank ?? 1) - 1,
+    //         Theme.of(context).colorScheme.secondary,
+    //         Theme.of(context).primaryColorDark,
+    //         provider.userScore.name ?? '',
+    //         provider.userScore.country ?? '',
+    //         provider.userScore.correctAnswer.toString(),
+    //         provider.userScore.correctAnswer != null &&
+    //                 provider.userScore.wrongAnswer != null
+    //             ? (provider.userScore.correctAnswer! +
+    //                     provider.userScore.wrongAnswer!)
+    //                 .toString()
+    //             : '',
+    //         provider.userScore.points.toString(),
+    //         // provider.userScore.image == null
+    //         //     ? provider.userScore.flag.replaceAll("http://", "https://")
+    //         //     : provider.userScore.image.replaceAll("http://", "https://"),
+    //       )
+    //     : Container();
   }
 }

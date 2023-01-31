@@ -4,7 +4,7 @@ import 'package:muslim_book/providers/top_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/views/login_pop_up_view/login_pop_up_view.dart';
-import 'package:muslim_book/views/top_view/competition_top_view_mobile_portrait/competition_top_mobile_portrait_ui.dart';
+import 'package:muslim_book/views/scoreboard_views/quiz_scoreboard/quiz_scoreboard_screen.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:muslim_book/widgets/retry_view_widget.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
@@ -12,26 +12,26 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-class CompetitionTopPage extends StatefulWidget {
+class QuizScoreboardScreenContainer extends StatefulWidget {
   @override
-  _CompetitionTopPageState createState() => _CompetitionTopPageState();
+  _QuizScoreboardScreenContainerState createState() =>
+      _QuizScoreboardScreenContainerState();
 }
 
-class _CompetitionTopPageState extends State<CompetitionTopPage> {
-  late TopUI ui;
+class _QuizScoreboardScreenContainerState
+    extends State<QuizScoreboardScreenContainer> {
+  late QuizScoreboardScreen ui;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    ui = TopUI(
+    ui = QuizScoreboardScreen(
       context,
     );
   }
 
-
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -74,7 +74,6 @@ class _CompetitionTopPageState extends State<CompetitionTopPage> {
                         child: Stack(
                           children: <Widget>[
                             ui.topWinners(),
-
                           ],
                         ),
                       )

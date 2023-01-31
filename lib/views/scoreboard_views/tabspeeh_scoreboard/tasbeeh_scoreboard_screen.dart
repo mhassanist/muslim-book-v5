@@ -8,12 +8,12 @@ import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../../utils/sizing_info_extension.dart';
 
-class TasbeehTopUI {
+class TasbeehScoreboardScreen {
   late TasbeehTopProvider provider;
   late final BuildContext context;
   late SizingInformation sizeConfig;
 
-  TasbeehTopUI(this.context) {
+  TasbeehScoreboardScreen(this.context) {
     provider = Provider.of<TasbeehTopProvider>(context);
   }
 
@@ -85,20 +85,20 @@ class TasbeehTopUI {
             scrollDirection: Axis.vertical,
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: provider.topList == null ? 0 : provider.topList.length,
+            itemCount: provider.topList.length,
             itemBuilder: (context, index) {
               return topItem(
                   index,
                   Constants.CANVAS_COLOR,
                   Theme.of(context).colorScheme.secondary,
                   // provider.topList[index].id.toString(),
-                  provider.topList[index].name,
-                  provider.topList[index].country,
+                  provider.topList[index].name ?? '',
+                  provider.topList[index].country ?? '',
                   provider.topList[index].points.toString(),
-                  provider.topList[index].image.isEmpty
-                      ? provider.topList[index].flag
+                  provider.topList[index].image == null
+                      ? provider.topList[index].flag!
                           .replaceAll("http://", "https://")
-                      : provider.topList[index].image
+                      : provider.topList[index].image!
                           .replaceAll("http://", "https://"));
             },
           ),
@@ -169,7 +169,8 @@ class TasbeehTopUI {
           backgroundColor: prymaryColor,
           center: Text(
             "${(provider.userScore.points / 10000 * 100).toStringAsFixed(0)} %",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
           ),
           progressColor: Colors.white,
         ),
@@ -247,7 +248,9 @@ class TasbeehTopUI {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       AutoSizeText(
-                        countryName != null ? name + ' - ' + countryName : name,
+                        countryName.isNotEmpty
+                            ? name + ' - ' + countryName
+                            : name,
                         maxLines: 1,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -298,35 +301,5 @@ class TasbeehTopUI {
         ),
       ),
     );
-  }
-
-  Widget firstTopItem() {
-    return provider.topList.length > 0
-        ? topItem(
-            0,
-            Constants.CANVAS_COLOR,
-            Theme.of(context).colorScheme.secondary,
-            provider.topList.first.name,
-            provider.topList.first.country,
-            provider.topList.first.points.toString(),
-            provider.topList.first.flag,
-          )
-        : Container();
-  }
-
-  Widget myItem() {
-    return provider.userScore != null
-        ? topItem(
-            provider.userScore.rank - 1,
-            Theme.of(context).colorScheme.secondary,
-            Theme.of(context).primaryColorDark,
-            provider.userScore.name,
-            provider.userScore.country,
-            provider.userScore.points.toString(),
-            provider.userScore.image == null
-                ? provider.userScore.flag.replaceAll("http://", "https://")
-                : provider.userScore.image.replaceAll("http://", "https://"),
-          )
-        : Container();
   }
 }

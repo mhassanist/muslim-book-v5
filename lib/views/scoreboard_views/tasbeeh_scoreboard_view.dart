@@ -1,24 +1,24 @@
 import 'package:muslim_book/providers/tasbeeh_top_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
-import 'package:muslim_book/views/top_view/tabspeeh_top_view_mobile_portrait/tasbeeh_top_view_mobile_portrait.dart';
+import 'package:muslim_book/views/scoreboard_views/tabspeeh_scoreboard/tasbeeh_scoreboard_screen_container.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-class TasbeehTopView extends StatefulWidget {
+class TasbeehScoreboardView extends StatefulWidget {
   @override
-  _TasbeehTopViewState createState() => _TasbeehTopViewState();
+  _TasbeehScoreboardViewState createState() => _TasbeehScoreboardViewState();
 }
 
-class _TasbeehTopViewState extends State<TasbeehTopView> {
+class _TasbeehScoreboardViewState extends State<TasbeehScoreboardView> {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProxyProvider<UserProvider, TasbeehTopProvider>(
       create: (_) => TasbeehTopProvider(null),
       update: (_, user, __) => TasbeehTopProvider(user),
-      child:ScreenTypeLayout(
+      child: ScreenTypeLayout(
         mobile: OrientationLayoutBuilder(
-          portrait: (context) => TasbeehTopPage(),
+          portrait: (context) => TasbeehScoreboardScreenContainer(),
         ),
       ),
     );
