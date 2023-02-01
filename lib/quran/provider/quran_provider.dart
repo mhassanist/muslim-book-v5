@@ -53,7 +53,7 @@ class QuranProvider extends ViewStateProvider {
 
   List<model.Surah> get allSuras => _allSuras;
 
-  List<QuranTypeData> _allReciters=[];
+  List<QuranTypeData> _allReciters = [];
 
   List<QuranTypeData> get allReciters => _allReciters;
 
@@ -93,7 +93,7 @@ class QuranProvider extends ViewStateProvider {
       if (res != null && res is model.QuranModel) {
         await _quranDao.saveQuran(res);
         saveData();
-      } else{
+      } else {
         setViewState(ViewState.Idle);
         errorMessage = res.toString();
       }
@@ -101,7 +101,6 @@ class QuranProvider extends ViewStateProvider {
       saveData();
     }
     setViewState(ViewState.Idle);
-
   }
 
   void saveData() async {
@@ -124,8 +123,7 @@ class QuranProvider extends ViewStateProvider {
     _allowTransliteration =
         _quranDao.quranUserModel?.allowTransliteration ?? false;
 
-    _downloadedTranslation =
-        _quranDao.downloadedTransliterationAndTranslation;
+    _downloadedTranslation = _quranDao.downloadedTransliterationAndTranslation;
     setViewState(ViewState.Idle);
   }
 
@@ -189,10 +187,10 @@ class QuranProvider extends ViewStateProvider {
       String s, BuildContext context, bool isTranslate) async {
     try {
       Get.dialog(DownloadingTranslationWidget(), barrierDismissible: false);
-      var response = await QuranApiService()
+      await QuranApiService()
           .downloadTranslationOrTransliteration(s, isTranslate);
       _downloadedTranslation =
-          _quranDao.downloadedTransliterationAndTranslation ?? {};
+          _quranDao.downloadedTransliterationAndTranslation;
       Navigator.pop(context);
       notifyListeners();
     } catch (e) {

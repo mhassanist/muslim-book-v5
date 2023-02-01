@@ -1,4 +1,5 @@
 import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_rectangle_updated.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
@@ -46,7 +47,8 @@ class _QuranSectionScreenState extends State<QuranSectionScreen> {
                       new StaggeredTile.count(2, 2),
                 )),
                 SliverToBoxAdapter(
-                    child: Container(child: AdMobRectangle(BannerName.Top)
+                    child: Container(
+                        child: AdmobRectangleUpdated(bannerName: BannerName.Top)
                         //  ..  AdMobRectangle(BannerName.Top)
                         )),
                 SliverToBoxAdapter(
