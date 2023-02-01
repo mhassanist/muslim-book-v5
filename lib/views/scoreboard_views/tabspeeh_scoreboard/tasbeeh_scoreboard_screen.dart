@@ -92,7 +92,7 @@ class TasbeehScoreboardScreen {
                   Constants.CANVAS_COLOR,
                   Theme.of(context).colorScheme.secondary,
                   // provider.topList[index].id.toString(),
-                  provider.topList[index].name ?? '',
+                  provider.topList[index].name,
                   provider.topList[index].country ?? '',
                   provider.topList[index].points.toString(),
                   provider.topList[index].image == null

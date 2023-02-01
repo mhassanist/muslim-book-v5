@@ -39,20 +39,16 @@ class QuizScoreboardScreen {
                     Expanded(
                         child: Column(
                       children: [
-                        buildDailyRankWidget(
-                          sizeConfig,
-                          titel: AppLocalizations.of(context)!
-                              .translate("rank_weekly"),
-                          number: "${provider.userScore.rank}",
-                          image: "rank_medal.png",
-                        ),
-                        buildDailyRankWidget(
-                          sizeConfig,
-                          titel: AppLocalizations.of(context)!
-                              .translate("Weekly_Achievement"),
-                          number: "${provider.userScore.points}",
-                          image: "flag_medal.png",
-                        ),
+                        buildDailyRankWidget(sizeConfig,
+                            titel: AppLocalizations.of(context)!
+                                .translate("rank_weekly"),
+                            number: "${provider.userScore.rank}",
+                            image: "rank_medal.png"),
+                        buildDailyRankWidget(sizeConfig,
+                            titel: AppLocalizations.of(context)!
+                                .translate("Weekly_Achievement"),
+                            number: "${provider.userScore.points}",
+                            image: "flag_medal.png"),
                       ],
                     ))
                   ],
@@ -88,24 +84,28 @@ class QuizScoreboardScreen {
             scrollDirection: Axis.vertical,
             physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
-            itemCount: provider.topList.length,
+            itemCount:
+                provider.topList.length,
             itemBuilder: (context, index) {
               return topItem(
                   index,
                   Constants.CANVAS_COLOR,
                   Theme.of(context).colorScheme.secondary,
                   // provider.topList[index].id.toString(),
-                  provider.topList[index].name ?? '',
+                  provider.topList[index].name,
                   provider.topList[index].country ?? '',
                   provider.topList[index].correctAnswer.toString(),
-                  (provider.topList[index].correctAnswer ??
-                          0 + (provider.topList[index].wrongAnswer ?? 0))
-                      .toString(),
+                  provider.topList[index].correctAnswer != null &&
+                          provider.topList[index].wrongAnswer != null
+                      ? (provider.topList[index].correctAnswer! +
+                              provider.topList[index].wrongAnswer!)
+                          .toString()
+                      : '0',
                   provider.topList[index].points.toString(),
                   provider.topList[index].image == null
-                      ? (provider.topList[index].flag ?? '')
+                      ? provider.topList[index].flag!
                           .replaceAll("http://", "https://")
-                      : (provider.topList[index].image ?? '')
+                      : provider.topList[index].image!
                           .replaceAll("http://", "https://"));
             },
           ),
@@ -114,8 +114,12 @@ class QuizScoreboardScreen {
     );
   }
 
-  buildDailyRankWidget(SizingInformation sizeConfig,
-      {required String titel, required String number, required String image}) {
+  buildDailyRankWidget(
+    SizingInformation sizeConfig, {
+    String titel = '',
+    String number = '',
+    String image = '',
+  }) {
     return Container(
       margin: EdgeInsets.symmetric(
           vertical: sizeConfig.blockSizeVertical,
@@ -172,7 +176,7 @@ class QuizScoreboardScreen {
           backgroundColor: prymaryColor,
           center: Text(
             "${(provider.userScore.points / 10000 * 100).toStringAsFixed(0)} %",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
           ),
           progressColor: Colors.white,
         ),
@@ -185,9 +189,9 @@ class QuizScoreboardScreen {
     Color backgroundColor,
     Color textColor,
     String name,
-    String? countryName,
-    String? correctAnswers,
-    String? allAnswers,
+    String countryName,
+    String correctAnswers,
+    String allAnswers,
     String points, [
     String imageString = '',
   ]) {
@@ -230,7 +234,7 @@ class QuizScoreboardScreen {
                             image: NetworkImage(
                               imageString.replaceAll("http://", "https://"),
                             ),
-                            onError: (error, stackTrace) =>
+                            onError: (_, __) =>
                                 AssetImage('assets/images/general/person.jpg'),
                             fit: BoxFit.cover,
                           ),
@@ -252,7 +256,9 @@ class QuizScoreboardScreen {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       AutoSizeText(
-                        countryName != null ? name + ' - ' + countryName : name,
+                        countryName.isNotEmpty
+                            ? name + ' - ' + countryName
+                            : name,
                         maxLines: 1,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -332,7 +338,7 @@ class QuizScoreboardScreen {
                                   Padding(
                                     padding: const EdgeInsets.all(5.0),
                                     child: Text(
-                                      correctAnswers!,
+                                      correctAnswers,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: smallFont,
@@ -343,7 +349,7 @@ class QuizScoreboardScreen {
                                   Padding(
                                     padding: const EdgeInsets.all(5.0),
                                     child: Text(
-                                      allAnswers!,
+                                      allAnswers,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: smallFont,
@@ -374,53 +380,43 @@ class QuizScoreboardScreen {
             0,
             Constants.CANVAS_COLOR,
             Theme.of(context).colorScheme.secondary,
-            provider.topList.first.name ?? '',
+            provider.topList.first.name,
             provider.topList.first.country ?? '',
             provider.topList.first.correctAnswer.toString(),
-            ((provider.topList.first.correctAnswer ?? 0) +
-                    (provider.topList.first.wrongAnswer ?? 0))
-                .toString(),
+            provider.topList.first.correctAnswer != null &&
+                    provider.topList.first.wrongAnswer != null
+                ? (provider.topList.first.correctAnswer! +
+                        provider.topList.first.wrongAnswer!)
+                    .toString()
+                : '0',
             provider.topList.first.points.toString(),
-            provider.topList.first.flag ?? '',
+            provider.topList.first.flag!,
           )
         : Container();
   }
 
   Widget myItem() {
-    return topItem(
-      (provider.userScore.rank ?? 1) - 1,
-      Theme.of(context).colorScheme.secondary,
-      Theme.of(context).primaryColorDark,
-      provider.userScore.name,
-      provider.userScore.country ?? '',
-      provider.userScore.correctAnswer.toString(),
-      provider.userScore.correctAnswer != null &&
-              provider.userScore.wrongAnswer != null
-          ? (provider.userScore.correctAnswer! +
-                  provider.userScore.wrongAnswer!)
-              .toString()
-          : '',
-      provider.userScore.points.toString(),
-    );
-    // return provider.userScore != null
-    //     ? topItem(
-    //         (provider.userScore.rank ?? 1) - 1,
-    //         Theme.of(context).colorScheme.secondary,
-    //         Theme.of(context).primaryColorDark,
-    //         provider.userScore.name ?? '',
-    //         provider.userScore.country ?? '',
-    //         provider.userScore.correctAnswer.toString(),
-    //         provider.userScore.correctAnswer != null &&
-    //                 provider.userScore.wrongAnswer != null
-    //             ? (provider.userScore.correctAnswer! +
-    //                     provider.userScore.wrongAnswer!)
-    //                 .toString()
-    //             : '',
-    //         provider.userScore.points.toString(),
-    //         // provider.userScore.image == null
-    //         //     ? provider.userScore.flag.replaceAll("http://", "https://")
-    //         //     : provider.userScore.image.replaceAll("http://", "https://"),
-    //       )
-    //     : Container();
+    return provider.userScore.id != null
+        ? topItem(
+            provider.userScore.rank - 1,
+            Theme.of(context).colorScheme.secondary,
+            Theme.of(context).primaryColorDark,
+            provider.userScore.name,
+            provider.userScore.country ?? '',
+            provider.userScore.correctAnswer != null
+                ? provider.userScore.correctAnswer.toString()
+                : '0',
+            provider.userScore.correctAnswer != null &&
+                    provider.userScore.wrongAnswer != null
+                ? (provider.userScore.correctAnswer! +
+                        provider.userScore.wrongAnswer!)
+                    .toString()
+                : '0',
+            provider.userScore.points.toString(),
+            provider.userScore.image == null
+                ? provider.userScore.flag!.replaceAll("http://", "https://")
+                : provider.userScore.image.replaceAll("http://", "https://"),
+          )
+        : Container();
   }
 }
