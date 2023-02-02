@@ -23,8 +23,7 @@ class _QuranLoadingViewState extends State<QuranLoadingView>
               color: Colors.white,
               size: 50.0,
               controller: AnimationController(
-                vsync: this,
-                  duration: const Duration(milliseconds: 1200)),
+                  vsync: this, duration: const Duration(milliseconds: 1200)),
             ),
           ),
           Padding(

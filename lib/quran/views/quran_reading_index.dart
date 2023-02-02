@@ -8,14 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QuranReadingIndex extends StatefulWidget {
-  const QuranReadingIndex({super.key}) ;
+  const QuranReadingIndex({super.key});
 
   @override
   _QuranReadingIndexState createState() => _QuranReadingIndexState();
 }
 
 class _QuranReadingIndexState extends State<QuranReadingIndex> {
-//end then
 
   Route _createRoute(pgNumber) {
     return PageRouteBuilder(
@@ -40,74 +39,54 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-
       Future.delayed(Duration(seconds: 1), () {
         SharedPreferences.getInstance().then((value) {
           if (value.getInt("LAST_READ_PAGE") != null) {
             QuranPagesPicBloc().setState(APIStatus.initial);
 
-            Navigator.push(context, _createRoute(value.getInt("LAST_READ_PAGE")));
+            Navigator.push(
+                context, _createRoute(value.getInt("LAST_READ_PAGE")));
           }
         });
       });
-
     });
 
     return AppScaffold(
         title: Text("قراءة القرءان بالصور"),
         centerTitle: true,
-        //backGroundColor: Colors.blueAccent,
+        backgroundImage: DecorationImage(
+            fit: BoxFit.cover,
+            image: AssetImage("assets/images/islamic_background.jpg")),
         padding: EdgeInsets.all(0),
         child: _buildQuranLayout());
   }
 
   Widget _buildQuranLayout() {
-    return Container(
-      //color: Colors.green,
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.fill,
-              image: NetworkImage(
-                  "https://png.pngtree.com/thumb_back/fw800/background/20190718/pngtree-islamic-ramadhan-background-image_284340.jpg"))),
-      child: Padding(
-        padding: EdgeInsets.only(left: 15.0, right: 15.0),
-        child: Column(
-          children: [
-            _buildLayoutTitle(),
-            Expanded(
-              child: Container(
-                //color: Colors.white,
-                child: Row(
-                  children: [
-                    _buildQuranPartsList(),
-                    _buildVerticalDivider(),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Container(
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                _buildQuranSoraList(),
-                                //_buildVerticalDivider(),
-                                _buildSoraPagesList(),
-                              ],
-                            ),
-                          ),
-                        ),
+    return Padding(
+      padding: EdgeInsets.only(left: 15.0, right: 15.0),
+      child: Column(
+        children: [
+          _buildLayoutTitle(),
+          Expanded(
+            child: Row(
+              children: [
+                _buildQuranPartsList(),
+                _buildVerticalDivider(),
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Container(
+                      child: Padding(
+                        padding: EdgeInsets.only(bottom: 10.0),
+                        child: _buildQuranSoraList(),
                       ),
                     ),
-                    //_buildVerticalDivider(),
-                  ],
+                  ),
                 ),
-              ),
-            )
-          ],
-        ),
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
@@ -117,9 +96,8 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
       height: 50,
       decoration: BoxDecoration(
           border: Border(
-        bottom: BorderSide(width: 3.0, color: Colors.amber),
+        bottom: BorderSide(width: 3.0, color: Colors.white),
       )),
-      //color: Color(0XFF347D53),
       child: Row(
         children: [
           Container(
@@ -129,13 +107,12 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
                 alignment: Alignment.center,
                 children: [
                   Icon(
-                    Icons.star,
-                    color: Colors.amber,
-                    size: 50,
+                    Icons.square_rounded,
+                    color: Colors.white,
+                    size: 40,
                   ),
                   Positioned(
                       bottom: 15,
-                      right: 19,
                       child: Text(
                         'ج',
                         style: TextStyle(fontSize: 17),
@@ -151,43 +128,34 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    //width: MediaQuery.of(context).size.width / 2,
-                    child: Center(
-                      child: Text(
-                        'اسم السورة',
-                        style: TextStyle(fontSize: 17, color: Colors.white),
-                      ),
+                  Center(
+                    child: Text(
+                      'اسم السورة',
+                      style: TextStyle(fontSize: 17, color: Colors.white),
                     ),
                   ),
-                  Container(
-                    //width: MediaQuery.of(context).size.width / 9,
-                    child: Center(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                            size: 50,
-                          ),
-                          Positioned(
-                              bottom: 15,
-                              child: Text(
-                                'ص',
-                                style: TextStyle(fontSize: 16),
-                              ))
-                        ],
-                      ),
+                  Center(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Icon(
+                          Icons.square_rounded,
+                          color: Colors.white,
+                          size: 40,
+                        ),
+                        Positioned(
+                            bottom: 15,
+                            child: Text(
+                              'ص',
+                              style: TextStyle(fontSize: 16),
+                            ))
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          //_buildVerticalDivider(),
-
-          //_buildVerticalDivider(),
         ],
       ),
     );
@@ -236,17 +204,15 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
   }
 
   _buildQuranSoraList() {
-    return Container(
-      //width: MediaQuery.of(context).size.width / 2,
-      child: FutureBuilder(
-          future: DefaultAssetBundle.of(context)
-              .loadString("assets/databases/quran_database/sora_list.json"),
-          builder: (context, snapshot) {
-            var data = jsonDecode(snapshot.data.toString());
-            if (snapshot.connectionState == ConnectionState.done) {
-              return Column(children: [
-                for (int i = 0; i < data.length; i++)
-                  InkWell(
+    return FutureBuilder(
+        future: DefaultAssetBundle.of(context)
+            .loadString("assets/databases/quran_database/sora_list.json"),
+        builder: (context, snapshot) {
+          var data = jsonDecode(snapshot.data.toString());
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Column(children: [
+              for (int i = 0; i < data.length; i++)
+                InkWell(
                     onTap: () {
                       QuranPagesPicBloc().setState(APIStatus.initial);
                       Navigator.push(
@@ -255,58 +221,35 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
                               builder: (context) =>
                                   QuranPagePicView(data[i]['page'])));
                     },
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Text(data[i]['name'],
-                            style: TextStyle(
-                                fontSize: 18, color: Colors.white, height: 3)),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(data[i]['name'],
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                    height: 3)),
+                            Text(data[i]['page'].toString(),
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                    height: 3)),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-              ]);
-            }
-            return Container();
-          }),
-    );
-  }
-
-  _buildSoraPagesList() {
-    return Container(
-      //width: MediaQuery.of(context).size.width / 9,
-      child: FutureBuilder(
-          future: DefaultAssetBundle.of(context)
-              .loadString("assets/databases/quran_database/sora_list.json"),
-          builder: (context, snapshot) {
-            var data = jsonDecode(snapshot.data.toString());
-            if (snapshot.connectionState == ConnectionState.done) {
-              return Column(children: [
-                for (int i = 0; i < data.length; i++)
-                  Center(
-                    child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      QuranPagePicView(data[i]['page'])));
-                        },
-                        child: Text(data[i]['page'].toString(),
-                            style: TextStyle(
-                                fontSize: 18, color: Colors.white, height: 3))),
-                  )
-              ]);
-            }
-            return Container();
-          }),
-    );
+                    ))
+            ]);
+          }
+          return Container();
+        });
   }
 
   _buildVerticalDivider() {
     return VerticalDivider(
-      color: Colors.amber,
-      //Color(0XFF347D53),
+      color: Colors.white,
       thickness: 3,
     );
   }

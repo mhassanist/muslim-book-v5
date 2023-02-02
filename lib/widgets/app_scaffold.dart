@@ -19,6 +19,7 @@ class AppScaffold extends StatelessWidget {
     this.scaffoldKey,
     this.leading,
     this.resizeToAvoidBottomInset,
+    this.backgroundImage,
   });
 
   final Widget title;
@@ -35,6 +36,7 @@ class AppScaffold extends StatelessWidget {
   final Color prymaryColor = const Color(0XFF347D53);
   final GlobalKey<ScaffoldState>? scaffoldKey;
   final bool? resizeToAvoidBottomInset;
+  final DecorationImage? backgroundImage;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +67,7 @@ class AppScaffold extends StatelessWidget {
               color: transparentBackground
                   ? Colors.transparent
                   : backGroundColor ?? Colors.white,
+              image: backgroundImage,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
