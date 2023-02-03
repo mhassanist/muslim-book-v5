@@ -245,7 +245,7 @@
         </receiver>
 
         <!--   Media Service  -->
-        <service android:name="com.ryanheise.audioservice.AudioService"
+        <service android:name="com.ryanheise.audioservice.AudioServiceActivity"
             android:foregroundServiceType="mediaPlayback"
             android:exported="false" tools:ignore="Instantiatable">
             <intent-filter>

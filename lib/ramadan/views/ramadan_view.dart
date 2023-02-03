@@ -99,82 +99,81 @@ class _RamadanViewState extends State<RamadanView>
         ui.provider.context = context;
         ui.provider.fillTheSettingsData();
       }, builder: (_, model, __) {
-        return AudioServiceWidget(
-            child: Scaffold(
+        return Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
-              elevation: 0,
-              title: Text(
-                "رمضان",
-                style: GoogleFonts.almarai(
-                  fontSize: ScreenUtil().setSp(25),
-                  color: Constants.PRIMARY_DARK_COLOR,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              iconTheme: IconThemeData(
-                color: Theme.of(context).primaryColor,
-              ),
-              actions: <Widget>[
-                InkWell(
-                    onTap: () {
-                      Get.dialog(ShareDialog());
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: Icon(Icons.share),
-                    )),
-                Container(
-                  width: 10,
-                )
-              ],
-              backgroundColor: Colors.white),
+          elevation: 0,
+          title: Text(
+            "رمضان",
+            style: GoogleFonts.almarai(
+              fontSize: ScreenUtil().setSp(25),
+              color: Constants.PRIMARY_DARK_COLOR,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColor,
+          ),
+          actions: <Widget>[
+            InkWell(
+                onTap: () {
+                  Get.dialog(ShareDialog());
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: Icon(Icons.share),
+                )),
+            Container(
+              width: 10,
+            )
+          ],
+          backgroundColor: Colors.white),
           body: ResponsiveBuilder(builder: (context, sizeConfig) {
-            return FutureBuilder(
-              future: LocalStorageManager.storage.ready,
-              builder: (BuildContext context, snapshot) {
-                if (snapshot.data == true) {
-                  //local storage ready
-                  return ((model).viewState == ViewState.Loading)
-                      ? Container(
-                          width: double.infinity,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              CircularProgressIndicator(
-                                valueColor: new AlwaysStoppedAnimation<Color>(
-                                    prymaryColor),
-                              ),
-                            ],
+        return FutureBuilder(
+          future: LocalStorageManager.storage.ready,
+          builder: (BuildContext context, snapshot) {
+            if (snapshot.data == true) {
+              //local storage ready
+              return ((model).viewState == ViewState.Loading)
+                  ? Container(
+                      width: double.infinity,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(
+                            valueColor: new AlwaysStoppedAnimation<Color>(
+                                prymaryColor),
                           ),
-                        )
-                      : Stack(children: <Widget>[
-                          Positioned.fill(child: getHomeBody(model, context)),
-                          Positioned.fill(
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Container(
-                                // margin: EdgeInsets.only(top: 100),
-                                child: Visibility(
-                                  visible: _isSaveing,
-                                  child: Loading(
-                                    indicator: BallBeatIndicator(),
-                                    size: 70.0,
-                                    color: Constants.PRIMARY_DARK_COLOR,
-                                  ),
-                                ),
+                        ],
+                      ),
+                    )
+                  : Stack(children: <Widget>[
+                      Positioned.fill(child: getHomeBody(model, context)),
+                      Positioned.fill(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            // margin: EdgeInsets.only(top: 100),
+                            child: Visibility(
+                              visible: _isSaveing,
+                              child: Loading(
+                                indicator: BallBeatIndicator(),
+                                size: 70.0,
+                                color: Constants.PRIMARY_DARK_COLOR,
                               ),
                             ),
-                          )
-                        ]);
-                } else {
-                  return Container();
-                }
-              },
-            );
+                          ),
+                        ),
+                      )
+                    ]);
+            } else {
+              return Container();
+            }
+          },
+        );
           }),
           backgroundColor: Colors.white,
-        ));
+        );
       }),
     );
   }

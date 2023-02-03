@@ -57,7 +57,8 @@ class _SurasViewState extends State<SurasView> {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (c) => AyatView(
-                                  transliterationSurah: transliterationList.isEmpty
+                                  transliterationSurah: transliterationList
+                                          .isEmpty
                                       ? null
                                       : transliterationList[
                                           snapshot.data!.lastReadSurahId! - 1],
@@ -110,7 +111,8 @@ class _SurasViewState extends State<SurasView> {
                                         margin: EdgeInsets.symmetric(
                                             horizontal:
                                                 ScreenUtil().setWidth(15)),
-                                        child: Text("${AppLocalizations.of(context)!.translate("last_read")}",
+                                        child: Text(
+                                          "${AppLocalizations.of(context)!.translate("last_read")}",
                                           style:
                                               TextStyle(color: Colors.white60),
                                           textAlign: TextAlign.start,
@@ -199,7 +201,8 @@ class _SurasViewState extends State<SurasView> {
                 delegate: SliverChildBuilderDelegate(
                   (c, index) {
                     return SurahWidget(
-                      playerStatus: audioSnapshot as AsyncSnapshot<PlaybackState>,
+                      playerStatus:
+                          audioSnapshot,
                       index: index,
                       sura: Provider.of<QuranProvider>(context).allSuras[index],
                       translationSurah: translationList.isNotEmpty

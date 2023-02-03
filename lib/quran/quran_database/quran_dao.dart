@@ -89,7 +89,8 @@ class QuranDao {
   }
 
   Future openQuranBox() async {
-    if (_quranBox == null) {
+    bool isQuranBoxOpen = Hive.isBoxOpen(Constants.QURAN_BOX);
+    if (!isQuranBoxOpen) {
       _quranBox = await Hive.openBox(Constants.QURAN_BOX);
     }
   }
@@ -193,8 +194,8 @@ class QuranDao {
 
   Future allowTransliteration(bool value) async {
     quranModel.QuranUserModel model =
-        await _quranBox.get(Constants.QURAN_USER_DATABASE);
-    model = quranModel.QuranUserModel();
+        (await _quranBox.get(Constants.QURAN_USER_DATABASE)) ??
+            quranModel.QuranUserModel();
     model.allowTransliteration = value;
     _userModel = model;
     await saveUserChanges(model);

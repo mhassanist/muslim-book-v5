@@ -146,7 +146,7 @@ class QuranProvider extends ViewStateProvider {
   }
 
   void startListeningToAyah({model.Ayah? ayah, model.Surah? surah}) async {
-    if (AudioService.running) {
+    if (AudioService.running) { // Error Here
       await AudioService.stop();
       await Future.delayed(Duration(milliseconds: 400));
     }

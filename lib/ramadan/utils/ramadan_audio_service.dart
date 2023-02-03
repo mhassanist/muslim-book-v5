@@ -7,7 +7,7 @@ import 'package:muslim_book/quran/utils/quran_top_level_functions.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class QuranAudioService extends BackgroundAudioTask {
+class QuranAudioService extends BaseAudioHandler {
   late SharedPreferences prefs;
 
   final _audioPlayer = AudioPlayer();
@@ -24,95 +24,95 @@ class QuranAudioService extends BackgroundAudioTask {
   Surah? surah;
   String sheikhId = '';
 
+  // @override
+  // Future<void> onStart(Map<String, dynamic>? params) async {
+  // // void onStart(Map<String, dynamic> params) async {
+  //   prefs = await SharedPreferences.getInstance();
+  //   playCount = prefs.getInt(Constants.REPEAT_AYAh_COUNT) ?? 3;
+  //   playerCount = 1;
+
+  //   await _audioPlayer.setReleaseMode(ReleaseMode.stop);
+  //   implementParams(params ?? {});
+  //   onCompleteListener();
+  //   AudioServiceBackground.setState(
+  //       systemActions: [MediaAction.seekForward],
+  //       controls: getPlayControllers(),
+  //       playing: true,
+  //       processingState: AudioProcessingState.loading,);
+
+  //   ayahUrl = "$baseUrl$sheikhId/${surah?.ayahs[ayahIndex].number}";
+  //   await _audioPlayer.play(UrlSource("$ayahUrl"));
+  //   setMediaItem();
+
+  //   AudioServiceBackground.setState(
+  //     controls: getPlayControllers(),
+  //     playing: true,
+  //     processingState: AudioProcessingState.ready,
+  //     systemActions: [MediaAction.seek],
+  //   );
+  // }
+
+  // void setMediaItem() {
+  //   AudioServiceBackground.setMediaItem(
+  //     MediaItem(
+  //       extras: {"surahIndex": surahNumber, "renewSurah": renewSurah},
+  //       id: "$ayahIndex",
+  //       album: "${surah?.englishName}",
+  //       title: "${surah?.name}",
+  //     ),
+  //   );
+  // }
+
   @override
-  Future<void> onStart(Map<String, dynamic>? params) async {
-  // void onStart(Map<String, dynamic> params) async {
-    prefs = await SharedPreferences.getInstance();
-    playCount = prefs.getInt(Constants.REPEAT_AYAh_COUNT) ?? 3;
-    playerCount = 1;
-
-    await _audioPlayer.setReleaseMode(ReleaseMode.stop);
-    implementParams(params ?? {});
-    onCompleteListener();
-    AudioServiceBackground.setState(
-        systemActions: [MediaAction.seekForward],
-        controls: getPlayControllers(),
-        playing: true,
-        processingState: AudioProcessingState.loading,);
-
-    ayahUrl = "$baseUrl$sheikhId/${surah?.ayahs[ayahIndex].number}";
-    await _audioPlayer.play(UrlSource("$ayahUrl"));
-    setMediaItem();
-
-    AudioServiceBackground.setState(
-      controls: getPlayControllers(),
-      playing: true,
-      processingState: AudioProcessingState.ready,
-      systemActions: [MediaAction.seek],
-    );
-  }
-
-  void setMediaItem() {
-    AudioServiceBackground.setMediaItem(
-      MediaItem(
-        extras: {"surahIndex": surahNumber, "renewSurah": renewSurah},
-        id: "$ayahIndex",
-        album: "${surah?.englishName}",
-        title: "${surah?.name}",
-      ),
-    );
-  }
-
-  @override
-  Future<void> onPause() async {
+  Future<void> pause() async {
     // Broadcast that we're paused, and what controls are available.
-    AudioServiceBackground.setState(
+    playbackState.add(PlaybackState(
         controls: getPauseControllers(),
-        systemActions: [MediaAction.seek],
+        systemActions: {MediaAction.seek},
         playing: false,
-        processingState: AudioProcessingState.ready);
+        processingState: AudioProcessingState.ready));
     // Pause the audio.
     _audioPlayer.pause();
   }
 
   @override
-  Future<void> onStop() async {
+  Future<void> stop() async {
     _audioPlayer.stop();
     if (ayahIndex == surah?.ayahs.length) {
-      await AudioServiceBackground.setState(
-          controls: [replayControl],
-          playing: false,
-          processingState: AudioProcessingState.completed,
-      );
+      playbackState.add(PlaybackState(
+        controls: [replayControl],
+        playing: false,
+        processingState: AudioProcessingState.completed,
+      ));
     } else {
-      await AudioServiceBackground.setState(
+      playbackState.add(PlaybackState(
           controls: [],
           playing: false,
-          processingState: AudioProcessingState.completed);
-      return super.onStop();
+          processingState: AudioProcessingState.completed));
+      return super.stop();
     }
   }
 
   @override
-  Future<void> onPlay() async {
-    setMediaItem();
-    AudioServiceBackground.setState(
+  Future<void> play() async {
+    mediaItem.add(null);
+    playbackState.add(PlaybackState(
       controls: getPlayControllers(),
       playing: true,
       processingState: AudioProcessingState.ready,
-      systemActions: [MediaAction.seek],
-    );
+      systemActions: {MediaAction.seek},
+    ));
     await _audioPlayer.play(UrlSource(ayahUrl));
     renewSurah = 0;
   }
 
   @override
-  Future<void> onSkipToNext() async {
+  Future<void> skipToNext() async {
     playNext();
   }
 
   @override
-  Future<void> onSkipToPrevious() async {
+  Future<void> skipToPrevious() async {
     playPrevious();
   }
 
@@ -131,7 +131,7 @@ class QuranAudioService extends BackgroundAudioTask {
           // print(
           //     "first play count is $playCount and playerCount is $playerCount");
           playerCount = playerCount + 1;
-          this.onPlay();
+          this.play();
         } else {
           // print(
           //     "second play count is $playCount and playerCount is $playerCount");
@@ -149,7 +149,7 @@ class QuranAudioService extends BackgroundAudioTask {
     ayahIndex++;
     if (ayahIndex < surah!.ayahs.length) {
       ayahUrl = "$baseUrl$sheikhId/${surah!.ayahs[ayahIndex].number}";
-      this.onPlay();
+      this.play();
     } else
       changeNextSurahIndex();
   }
@@ -163,7 +163,7 @@ class QuranAudioService extends BackgroundAudioTask {
     ayahIndex = 0;
     surah = model?.surahs[surahNumber];
     ayahUrl = "$baseUrl$sheikhId/${surah?.ayahs[ayahIndex].number}";
-    this.onPlay();
+    this.play();
   }
 
   void changePreviousSurahIndex() {
@@ -175,14 +175,14 @@ class QuranAudioService extends BackgroundAudioTask {
     renewSurah = 1;
     surah = model?.surahs[surahNumber];
     ayahUrl = "$baseUrl$sheikhId/${surah?.ayahs[ayahIndex].number}";
-    this.onPlay();
+    this.play();
   }
 
   void playPrevious() async {
     if (ayahIndex > 0) {
       ayahIndex--;
       ayahUrl = "$baseUrl$sheikhId/${surah?.ayahs[ayahIndex].number}";
-      this.onPlay();
+      this.play();
     } else {
       changePreviousSurahIndex();
     }

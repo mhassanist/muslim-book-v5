@@ -38,7 +38,7 @@ class _DownloadingTranslationWidgetState
                   color: Theme.of(context).primaryColor,
                   size: 35.0,
                   controller: AnimationController(
-                    vsync: this,
+                      vsync: this,
                       duration: const Duration(milliseconds: 1200)),
                 ),
                 SizedBox(
