@@ -1,8 +1,7 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:muslim_book/quran/utils/quran_audio_handler.dart';
+import 'package:muslim_book/quran/utils/quran_audio_service.dart';
 
-// void quranStartListeningPoint() =>
-//     AudioServiceBackground.run(() => QuranAudioHandler());
+void quranStartListeningPoint() => AudioServiceBackground.run(() => QuranAudioService());
 
 MediaControl playControl = MediaControl(
   androidIcon: 'drawable/ic_action_play_arrow',
