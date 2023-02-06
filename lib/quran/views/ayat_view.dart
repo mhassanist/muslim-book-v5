@@ -4,6 +4,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/quran/models/quran_model.dart';
 import 'package:muslim_book/quran/provider/quran_provider.dart';
+import 'package:muslim_book/quran/utils/quran_audio_handler.dart';
 import 'package:muslim_book/quran/widgets/ayah_widget.dart';
 import 'package:muslim_book/quran/widgets/ayat_view_bottom_sheet.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +72,7 @@ class _AyatViewState extends State<AyatView> {
     );
 
     return StreamBuilder(
-      stream: AudioService.playbackStateStream,
+      stream: QuranAudioHandler.quranAudioHandler.playbackState,
       builder: (c, AsyncSnapshot<PlaybackState> snapshot) {
         final playing = snapshot.data?.playing ?? false;
         AudioProcessingState processingState =
@@ -135,7 +136,7 @@ class _AyatViewState extends State<AyatView> {
                 IconButton(
                     icon: Icon(Icons.stop),
                     onPressed: () {
-                      AudioService.stop();
+                      QuranAudioHandler.quranAudioHandler.stop();
                     }),
               IconButton(
                   icon: Icon(processingState == AudioProcessingState.idle ||
@@ -152,9 +153,9 @@ class _AyatViewState extends State<AyatView> {
                               surah: widget.surah, ayah: widget.surah.ayahs[0]);
                     } else {
                       if (playing) {
-                        AudioService.pause();
+                        QuranAudioHandler.quranAudioHandler.pause();
                       } else
-                        AudioService.play();
+                        QuranAudioHandler.quranAudioHandler.play();
                     }
                   }),
 

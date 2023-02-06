@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 // import 'package:admob_flutter/admob_flutter.dart';
+import 'package:audio_service/audio_service.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:fancy_dialog/FancyGif.dart';
@@ -29,6 +30,7 @@ import 'package:muslim_book/providers/azan_sounds_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/quran/provider/quran_pages_pic_bloc.dart';
 import 'package:muslim_book/quran/provider/quran_provider.dart';
+import 'package:muslim_book/quran/utils/quran_audio_handler.dart';
 import 'package:muslim_book/ramadan/provider/ramadan_provider.dart';
 import 'package:muslim_book/sebha_feature/online_sebha/controllers/online_sebha_controller.dart';
 import 'package:muslim_book/sebha_feature/providers/sebha_provider.dart';
@@ -94,6 +96,8 @@ Future<FirebaseRemoteConfig> _setupRemoteConfig() async {
   return remoteConfig;
 }
 
+late AudioHandler _audioHandler; // singleton.
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -104,6 +108,8 @@ Future<void> main() async {
 
   /// Catch errors via Crashlytics
   _passErrorsToCrashlytics();
+
+  QuranAudioHandler.initialize();
 
   /// Ads
   _initAdMob();

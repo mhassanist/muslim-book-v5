@@ -7,6 +7,8 @@ import 'package:muslim_book/quran/models/quran_model.dart' as model;
 import 'package:muslim_book/quran/models/quran_model.dart';
 import 'package:muslim_book/quran/models/reciters_model.dart';
 import 'package:muslim_book/quran/quran_database/quran_dao.dart';
+import 'package:muslim_book/quran/utils/quran_audio_service.dart';
+import 'package:muslim_book/quran/utils/quran_audio_handler.dart';
 import 'package:muslim_book/quran/utils/quran_top_level_functions.dart';
 import 'package:muslim_book/quran/widgets/downloading_translation_widget.dart';
 import 'package:muslim_book/utils/locator.dart';
@@ -146,14 +148,16 @@ class QuranProvider extends ViewStateProvider {
   }
 
   void startListeningToAyah({model.Ayah? ayah, model.Surah? surah}) async {
-    if (AudioService.running) { // Error Here
-      await AudioService.stop();
+    // if (AudioService.running) {
+    //   await AudioService.stop();
+    //   await Future.delayed(Duration(milliseconds: 400));
+    // }
+    if (QuranAudioHandler.quranAudioHandler.playbackState.value ==
+        PlaybackState().processingState) {
+      await QuranAudioHandler.quranAudioHandler.stop();
       await Future.delayed(Duration(milliseconds: 400));
     }
-    await AudioService.start(
-      androidNotificationIcon: 'mipmap/launcher_icon',
-      androidNotificationColor: 0XFF037e40,
-      backgroundTaskEntrypoint: quranStartListeningPoint,
+    QuranAudioHandler().startListening(
       params: {
         'sheikhId': "$selectedReciter",
         "ayahIndex": ayah?.numberInSurah ?? 0,
@@ -161,6 +165,17 @@ class QuranProvider extends ViewStateProvider {
         "quranModel": _quranDao.quranModelAsJson
       },
     );
+    // await AudioService.start(
+    //   androidNotificationIcon: 'mipmap/launcher_icon',
+    //   androidNotificationColor: 0XFF037e40,
+    //   backgroundTaskEntrypoint: quranStartListeningPoint,
+    //   params: {
+    //     'sheikhId': "$selectedReciter",
+    //     "ayahIndex": ayah?.numberInSurah ?? 0,
+    //     "surah": surah?.number ?? 0,
+    //     "quranModel": _quranDao.quranModelAsJson
+    //   },
+    // );
   }
 
   Future updateReciter(String val) async {
