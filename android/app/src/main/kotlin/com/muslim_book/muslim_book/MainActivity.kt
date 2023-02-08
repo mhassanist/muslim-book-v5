@@ -11,6 +11,8 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+
+// For AudioServicePlugin setup
 import com.ryanheise.audioservice.AudioServicePlugin;
 
 class MainActivity : FlutterActivity() {
@@ -20,10 +22,19 @@ class MainActivity : FlutterActivity() {
         return AudioServicePlugin.getFlutterEngine(context)
     }
 
+    override fun getCachedEngineId(): String {
+        AudioServicePlugin.getFlutterEngine(this);
+        return AudioServicePlugin.getFlutterEngineId();
+    }
+
+    override fun shouldDestroyEngineWithHost(): Boolean {
+        return false;
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         printHashKey(applicationContext);
     }
+    
 
 //    override fun onNewIntent(intent: Intent) {
 //        super.onNewIntent(intent)

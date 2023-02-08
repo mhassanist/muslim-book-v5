@@ -65,7 +65,7 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import at.markushi.ui.CircleButton;
-
+import android.os.Build;
 
 public class AzanIntentService extends Service {
     NotificationManager notificationManager;
@@ -614,11 +614,20 @@ public class AzanIntentService extends Service {
         builder.setCustomBigContentView(expandedView);
         Intent intent = new Intent(this, AzanReceiver.class);
         intent.putExtra(Constants.CLOSE_AZAN, true);
-//        intent.putExtra(Constants.BEFORE_AZAN , beforeAzan);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                AZAN_NOTIFICATION_ID, intent, 0);
+        //        intent.putExtra(Constants.BEFORE_AZAN , beforeAzan);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+            AZAN_NOTIFICATION_ID, intent,  PendingIntent.FLAG_UPDATE_CURRENT  | PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(pendingIntent);
         builder.setDeleteIntent(pendingIntent);
+        }
+        else{
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+            AZAN_NOTIFICATION_ID, intent, 0);
+        builder.setContentIntent(pendingIntent);
+        builder.setDeleteIntent(pendingIntent);
+        }
+       
     }
 
     private void setNotificationChannel() {

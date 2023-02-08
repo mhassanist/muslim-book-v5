@@ -98,7 +98,7 @@ public class OverLayService extends Service {
         boolean overlayCheck = checkDrawOverLays();
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0, notificationIntent, 0);
+                0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT  | PendingIntent.FLAG_IMMUTABLE);
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("جاري إعداد تطبيق مسلم بوك")
                 .setSmallIcon(R.drawable.ic_wallpaper_black_24dp)
@@ -112,7 +112,7 @@ public class OverLayService extends Service {
             Intent notificatonIntent = new Intent(this, MainActivity.class);
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT );
             notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            PendingIntent pendiIntent = PendingIntent.getActivity(this, 0, notificatonIntent, 0);
+            PendingIntent pendiIntent = PendingIntent.getActivity(this, 0, notificatonIntent, PendingIntent.FLAG_UPDATE_CURRENT  | PendingIntent.FLAG_IMMUTABLE);
             try {
                 pendiIntent.send();
             } catch (PendingIntent.CanceledException e) {

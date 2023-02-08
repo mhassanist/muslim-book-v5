@@ -153,7 +153,7 @@ public class AzanServiceUtils {
 
 
         Intent intent = new Intent(mContext, AzanReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, AZAN_NOTIFICATION_ID, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, AZAN_NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT  | PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(pendingIntent);
     }
 

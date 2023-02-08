@@ -369,7 +369,7 @@ public class RamadanMshartIntentService extends Service {
         Intent intent = new Intent(this, RamadanMshartReceiver.class);
         intent.putExtra(Constants.CLOSE_RAMADAN_MSHART, true);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-                RAMADAN_MSHART_NOTIFICATION_ID, intent, 0);
+                RAMADAN_MSHART_NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT  | PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(pendingIntent);
         builder.setDeleteIntent(pendingIntent);
     }

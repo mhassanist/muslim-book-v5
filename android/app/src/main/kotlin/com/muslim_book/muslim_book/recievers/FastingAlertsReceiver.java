@@ -69,7 +69,7 @@ public class FastingAlertsReceiver extends BroadcastReceiver {
         intent.putExtra(Constants.NOTIFY_KEY, true);
         PendingIntent alarmIntent = PendingIntent
                 .getBroadcast(context, Constants.FASTING_MONDAY_PENDING_INTENT_REQUEST_CODE, intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_UPDATE_CURRENT  | PendingIntent.FLAG_IMMUTABLE);
         alarmMgr.cancel(alarmIntent);
     }
 
@@ -80,7 +80,7 @@ public class FastingAlertsReceiver extends BroadcastReceiver {
         intent.putExtra(Constants.NOTIFY_KEY, true);
         PendingIntent alarmIntent = PendingIntent
                 .getBroadcast(context, Constants.FASTING_THURSDAY_PENDING_INTENT_REQUEST_CODE, intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
+                        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         alarmMgr.cancel(alarmIntent);
     }
 
@@ -91,7 +91,7 @@ public class FastingAlertsReceiver extends BroadcastReceiver {
         intent.putExtra(Constants.NOTIFY_KEY, true);
         PendingIntent alarmIntent = PendingIntent
                 .getBroadcast(context, Constants.FASTING_MONDAY_PENDING_INTENT_REQUEST_CODE, intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_UPDATE_CURRENT  | PendingIntent.FLAG_IMMUTABLE);
         Calendar calendar = Calendar.getInstance();
         while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
             calendar.add(Calendar.DATE, 1);
@@ -108,7 +108,7 @@ public class FastingAlertsReceiver extends BroadcastReceiver {
         intent.putExtra(Constants.NOTIFY_KEY, true);
         PendingIntent alarmIntent = PendingIntent
                 .getBroadcast(context, Constants.FASTING_THURSDAY_PENDING_INTENT_REQUEST_CODE, intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_UPDATE_CURRENT  | PendingIntent.FLAG_IMMUTABLE);
         Calendar calendar = Calendar.getInstance();
         while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.WEDNESDAY) {
             calendar.add(Calendar.DATE, 1);
