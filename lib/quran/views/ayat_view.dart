@@ -1,5 +1,4 @@
 import 'package:audio_service/audio_service.dart';
-// import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/quran/models/quran_model.dart';
@@ -44,17 +43,19 @@ class _AyatViewState extends State<AyatView> {
   DateTime? endTime;
   // late AudioCache _audioCache;
   final player = AudioPlayer();
+  QuranAudioHandler quranAudioHandler = QuranAudioHandler();
 
   @override
   void initState() {
     super.initState();
-    player.setSource(AssetSource('assest/audio/allah_make_you_from_heaven.wav'));
+    player.setSource(AssetSource('audio/allah_make_you_from_heaven.wav'));
     // _audioCache = AudioCache(
     //     prefix: "audio/",
     //     fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP));
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await listenToPosition();
-    });
+
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    //   await listenToPosition();
+    // });
   }
 
   @override
@@ -71,9 +72,9 @@ class _AyatViewState extends State<AyatView> {
       ),
     );
 
-    return StreamBuilder(
-      stream: QuranAudioHandler.quranAudioHandler.playbackState,
-      builder: (c, AsyncSnapshot<PlaybackState> snapshot) {
+    return StreamBuilder<PlaybackState>(
+      stream: quranAudioHandler.audioHandler.playbackState,
+      builder: (c, snapshot) {
         final playing = snapshot.data?.playing ?? false;
         AudioProcessingState processingState =
             snapshot.data?.processingState ?? AudioProcessingState.idle;
@@ -136,7 +137,7 @@ class _AyatViewState extends State<AyatView> {
                 IconButton(
                     icon: Icon(Icons.stop),
                     onPressed: () {
-                      QuranAudioHandler.quranAudioHandler.stop();
+                      quranAudioHandler.audioHandler.stop();
                     }),
               IconButton(
                   icon: Icon(processingState == AudioProcessingState.idle ||
@@ -153,9 +154,9 @@ class _AyatViewState extends State<AyatView> {
                               surah: widget.surah, ayah: widget.surah.ayahs[0]);
                     } else {
                       if (playing) {
-                        QuranAudioHandler.quranAudioHandler.pause();
+                        quranAudioHandler.audioHandler.pause();
                       } else
-                        QuranAudioHandler.quranAudioHandler.play();
+                        quranAudioHandler.audioHandler.play();
                     }
                   }),
 
@@ -174,7 +175,7 @@ class _AyatViewState extends State<AyatView> {
               // ),
             ],
           ),
-          body: body(context, snapshot),
+          body: buildBody(context, snapshot),
         );
       },
     );
@@ -188,7 +189,8 @@ class _AyatViewState extends State<AyatView> {
     }
   }
 
-  Widget body(BuildContext context, AsyncSnapshot<PlaybackState> snapshot) {
+  Widget buildBody(
+      BuildContext context, AsyncSnapshot<PlaybackState> snapshot) {
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollNotification) {
         if (scrollNotification is ScrollEndNotification) {
@@ -198,8 +200,7 @@ class _AyatViewState extends State<AyatView> {
       },
       child: ScrollablePositionedList.builder(
           itemScrollController: itemScrollController,
-          initialScrollIndex:
-              widget.lastAyahPosition == null ? 0 : widget.lastAyahPosition + 1,
+          initialScrollIndex: widget.lastAyahPosition + 1,
           itemPositionsListener: itemPositionListener,
           physics: BouncingScrollPhysics(),
           itemBuilder: (c, index) {
@@ -227,7 +228,7 @@ class _AyatViewState extends State<AyatView> {
                   saveProgress: saveUserProgressManually,
                 ));
               },
-              child: BuildAyahWidget(
+              child: AyahWidget(
                   transliteratedAyah: widget.transliterationSurah == null
                       ? ''
                       : widget.transliterationSurah!.ayahs[index].text,
@@ -318,10 +319,7 @@ class _AyatViewState extends State<AyatView> {
   void deactivate() {
     super.deactivate();
     endTime = DateTime.now();
-    //print(endTime.difference(startTime).inMinutes);
-    //print(endTime.difference(startTime).inMinutes.abs());
     if (endTime!.difference(startTime).inMinutes.abs() >= 1) {
-      // _audioCache.play('allah_make_you_from_heaven.wav');
       player.resume();
     }
   }

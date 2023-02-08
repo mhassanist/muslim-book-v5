@@ -18,6 +18,7 @@ class SurasView extends StatefulWidget {
 class _SurasViewState extends State<SurasView> {
   List<Surah> translationList = [];
   List<Surah> transliterationList = [];
+  QuranAudioHandler quranAudioHandler = QuranAudioHandler();
 
   @override
   void didChangeDependencies() {
@@ -38,9 +39,10 @@ class _SurasViewState extends State<SurasView> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<PlaybackState>(
-        stream: QuranAudioHandler.quranAudioHandler.playbackState,
+        stream: quranAudioHandler.audioHandler.playbackState,
         builder: (context, audioSnapshot) {
-          return CustomScrollView(
+          return 
+          CustomScrollView(
             physics: BouncingScrollPhysics(),
             slivers: <Widget>[
               SliverToBoxAdapter(
@@ -210,6 +212,9 @@ class _SurasViewState extends State<SurasView> {
                       transliterationSurah: transliterationList.isNotEmpty
                           ? transliterationList[index]
                           : null,
+                      isAudioPlaying: audioSnapshot.data != null
+                          ? audioSnapshot.data!.playing
+                          : false,
                     );
                   },
                   childCount:

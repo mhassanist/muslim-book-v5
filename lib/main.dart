@@ -109,7 +109,7 @@ Future<void> main() async {
   /// Catch errors via Crashlytics
   _passErrorsToCrashlytics();
 
-  QuranAudioHandler.initialize();
+  QuranAudioHandler().initialize();
 
   /// Ads
   _initAdMob();

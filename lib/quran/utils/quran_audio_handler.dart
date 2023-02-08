@@ -9,73 +9,66 @@ import 'package:muslim_book/utils/Constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QuranAudioHandler extends BaseAudioHandler {
-  static late SharedPreferences prefs;
+  late SharedPreferences prefs;
 
-  static late final AudioHandler quranAudioHandler;
-  static final player = AudioPlayer();
-  static final String baseUrl = "https://cdn.alquran.cloud/media/audio/ayah/";
-  static String ayahUrl = '';
-  static int surahNumber = 0;
-  static int ayahIndex = 0;
-  static int renewSurah = 0;
-  static int playCount = 0;
-  static int playerCount = 0;
+  late final AudioHandler audioHandler;
+  final player = AudioPlayer();
+  final String baseUrl = "https://cdn.alquran.cloud/media/audio/ayah/";
+  String ayahUrl = '';
+  int surahNumber = 0;
+  int ayahIndex = 0;
+  int renewSurah = 0;
+  int playCount = 0;
+  int playerCount = 0;
 
-  static QuranModel? model;
-  static Surah? surah;
-  static String sheikhId = '';
+  QuranModel? model;
+  Surah? surah;
+  String sheikhId = '';
 
-  QuranAudioHandler() {
-    player.setSourceUrl(ayahUrl);
-    mediaItem.add(null);
+  static final QuranAudioHandler _quranAudioHandler =
+      QuranAudioHandler._internal();
+
+  factory QuranAudioHandler() {
+    return _quranAudioHandler;
   }
 
-  static initialize() async {
-    quranAudioHandler = await AudioService.init(
+  QuranAudioHandler._internal();
+
+  initialize() async {
+    audioHandler = await AudioService.init(
         config: AudioServiceConfig(
-          androidNotificationIcon: 'mipmap/launcher_icon',
           androidNotificationChannelId: 'com.muslim_book.muslim_book',
           androidNotificationChannelName: 'مسلم بوك',
-          notificationColor: Color(
-            0XFF037e40,
-          ),
+          notificationColor: Color(0XFF037e40),
         ),
         builder: () => QuranAudioHandler());
+    onCompleteListener();
   }
 
-  void startListening({params}) async {
-    prefs = await SharedPreferences.getInstance();
-    playCount = prefs.getInt(Constants.REPEAT_AYAh_COUNT) ?? 3;
-    playerCount = 1;
-    setParameters(params);
-    onCompleteListener();
+  void startListening({required Map<String, dynamic> params}) async {
     playbackState.add(playbackState.value.copyWith(
         systemActions: {MediaAction.seekForward},
         controls: getPlayControllers(),
         playing: true,
         processingState: AudioProcessingState.loading));
-
+    prefs = await SharedPreferences.getInstance();
+    playCount = prefs.getInt(Constants.REPEAT_AYAh_COUNT) ?? 3;
+    playerCount = 1;
+    setParameters(params);
     ayahUrl = "$baseUrl$sheikhId/${surah?.ayahs[ayahIndex].number}";
     await play();
-
-    playbackState.add(playbackState.value.copyWith(
-      controls: getPlayControllers(),
-      playing: true,
-      processingState: AudioProcessingState.ready,
-      systemActions: {MediaAction.seekForward},
-    ));
   }
 
   @override
   Future<void> play() async {
     setMediaItem();
+    await player.play(UrlSource(ayahUrl));
     playbackState.add(playbackState.value.copyWith(
+      systemActions: {MediaAction.seekForward},
       controls: getPlayControllers(),
       playing: true,
       processingState: AudioProcessingState.ready,
-      systemActions: {MediaAction.seekForward},
     ));
-    await player.play(UrlSource(ayahUrl));
     renewSurah = 0;
   }
 
@@ -128,7 +121,7 @@ class QuranAudioHandler extends BaseAudioHandler {
     playPrevious();
   }
 
-  static void setParameters(Map<String, dynamic> params) {
+  void setParameters(Map<String, dynamic> params) {
     surahNumber = params["surah"] - 1;
     ayahIndex = params["ayahIndex"] - 1;
     sheikhId = params["sheikhId"];

@@ -84,6 +84,8 @@ class QuranProvider extends ViewStateProvider {
 
   QuranUserModel? get quranUserModel => _quranDao.quranUserModel;
 
+  QuranAudioHandler quranAudioHandler = QuranAudioHandler();
+
   Future changeUserProgress(int surah, int ayah) async {
     await _quranDao.updateUserProgress(surah, ayah);
   }
@@ -152,12 +154,12 @@ class QuranProvider extends ViewStateProvider {
     //   await AudioService.stop();
     //   await Future.delayed(Duration(milliseconds: 400));
     // }
-    if (QuranAudioHandler.quranAudioHandler.playbackState.value ==
-        PlaybackState().processingState) {
-      await QuranAudioHandler.quranAudioHandler.stop();
+    if (quranAudioHandler.playbackState.value ==
+        PlaybackState().playing) {
+      await quranAudioHandler.stop();
       await Future.delayed(Duration(milliseconds: 400));
     }
-    QuranAudioHandler().startListening(
+    quranAudioHandler.startListening(
       params: {
         'sheikhId': "$selectedReciter",
         "ayahIndex": ayah?.numberInSurah ?? 0,

@@ -13,6 +13,7 @@ class SurahWidget extends StatelessWidget {
   final int index;
   final Surah? translationSurah;
   final Surah? transliterationSurah;
+  final bool isAudioPlaying;
 
   const SurahWidget({
     super.key,
@@ -20,20 +21,25 @@ class SurahWidget extends StatelessWidget {
     required this.index,
     this.translationSurah,
     this.transliterationSurah,
+    required this.isAudioPlaying,
   });
 
   @override
   Widget build(BuildContext context) {
+    QuranAudioHandler quranAudioHandler = QuranAudioHandler();
+
     if (index == 36)
       sura.englishNameTranslation = "The Rangers";
     else if (index == 59) sura.englishNameTranslation = "The Examined One";
 
     return StreamBuilder<MediaItem?>(
-        stream: QuranAudioHandler.quranAudioHandler.mediaItem,
+        stream: quranAudioHandler.audioHandler.mediaItem,
         builder: (context, snapshot) {
-          bool isPlaying = false;
+          bool isSurahPlaying = false;
           if (snapshot.data != null) {
-            isPlaying = snapshot.data!.title == sura.name ? true : false;
+            isSurahPlaying = snapshot.data!.title == sura.name && isAudioPlaying
+                ? true
+                : false;
           }
           return InkWell(
             onTap: () async {
@@ -130,13 +136,15 @@ class SurahWidget extends StatelessWidget {
                             child: IconButton(
                                 iconSize: ScreenUtil().setWidth(44),
                                 icon: Icon(
-                                  isPlaying ? Icons.stop : Icons.play_arrow,
+                                  isSurahPlaying
+                                      ? Icons.stop
+                                      : Icons.play_arrow,
                                   color: Colors.white,
                                   size: ScreenUtil().setWidth(30),
                                 ),
                                 onPressed: () async {
-                                  if (isPlaying)
-                                    QuranAudioHandler.quranAudioHandler.stop();
+                                  if (isSurahPlaying)
+                                    quranAudioHandler.audioHandler.stop();
                                   else
                                     Provider.of<QuranProvider>(context,
                                             listen: false)
