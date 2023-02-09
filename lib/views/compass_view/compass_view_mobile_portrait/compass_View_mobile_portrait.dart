@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:muslim_book/ads/admob_rectangle_updated.dart';
-import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
@@ -171,7 +170,10 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
                 child: Image.asset('assets/images/general/compass.png'),
               ),
             ),
-            AdmobRectangleUpdated(bannerName: BannerName.BOSLA),
+            SizedBox(height: 20,),
+            SizedBox(
+                height: 300,
+                child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA)),
             // AnimatedCrossFade(
             //   firstChild: AdmobRectangleUpdated(bannerName: BannerName.BOSLA),
             //   secondChild: Container(
