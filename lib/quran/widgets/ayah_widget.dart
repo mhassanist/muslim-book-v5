@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:scrollable_positioned_list/src/scrollable_positioned_list.dart';
 import 'package:share_extend/share_extend.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AyahWidget extends StatefulWidget {
   final Surah surah;
@@ -303,12 +304,17 @@ class _AyahWidgetState extends State<AyahWidget> {
     setState(() {
       showAyahSuraPosition = true;
     });
-    final screenShot = await screenshotController.capture();
-    if (screenShot != null) {
-      final file = File.fromRawPath(screenShot);
-      final screenShotPath = file.path;
+
+    final directory = (await getApplicationDocumentsDirectory()).path;
+    String fileName = DateTime.now().microsecondsSinceEpoch.toString() + '.png';
+    final path = '$directory';
+
+    String? fullPath =
+        await screenshotController.captureAndSave(path, fileName: fileName);
+
+    if (fullPath != null) {
       await ShareExtend.share(
-        screenShotPath,
+        fullPath,
         "image",
       );
     }
