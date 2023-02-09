@@ -89,7 +89,7 @@ class _SurasViewState extends State<SurasView> {
                                     spreadRadius: 0,
                                     blurRadius: 5,
                                     offset: Offset(
-                                        0, 6), // changes position of shadow
+                                        0, 6),
                                   ),
                                 ],
                                 borderRadius: BorderRadius.circular(20),

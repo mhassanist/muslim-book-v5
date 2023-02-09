@@ -69,10 +69,7 @@ class SurahWidget extends StatelessWidget {
                           horizontal: ScreenUtil().setWidth(30),
                         ),
                         child: Text(
-                          sura.name
-                          // .replaceAll("سُورَةُ", "")
-                          // .replaceAll("سورة", ""),
-                          ,
+                          sura.name,
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: ScreenUtil().setSp(20),
@@ -112,7 +109,6 @@ class SurahWidget extends StatelessWidget {
                                   ? 0
                                   : (sura.progress!) + 1,
                               size: ScreenUtil().setHeight(15),
-                              // displayText: " / ${widget.sura.ayahs.length}",
                             ),
                           ),
                         ),

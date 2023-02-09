@@ -41,7 +41,6 @@ class _AyatViewState extends State<AyatView> {
   Ayah? selectedAyah;
   DateTime startTime = DateTime.now();
   DateTime? endTime;
-  // late AudioCache _audioCache;
   final player = AudioPlayer();
   QuranAudioHandler quranAudioHandler = QuranAudioHandler();
 
@@ -49,21 +48,10 @@ class _AyatViewState extends State<AyatView> {
   void initState() {
     super.initState();
     player.setSource(AssetSource('audio/allah_make_you_from_heaven.wav'));
-    // _audioCache = AudioCache(
-    //     prefix: "audio/",
-    //     fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP));
-
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-    //   await listenToPosition();
-    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    // ScreenUtil.init(context,
-    //     allowFontScaling: true,
-    //     width: MediaQuery.of(context).size.width,
-    //     height: MediaQuery.of(context).size.height);
     ScreenUtil.init(
       context,
       designSize: Size(
@@ -159,20 +147,6 @@ class _AyatViewState extends State<AyatView> {
                         quranAudioHandler.audioHandler.play();
                     }
                   }),
-
-              // PopupMenuButton<String>(
-              //   onSelected: onMenuSelect,
-              //   itemBuilder: (BuildContext context) {
-              //     return {
-              //       'Save Progress',
-              //     }.map((String choice) {
-              //       return PopupMenuItem<String>(
-              //         value: choice,
-              //         child: Text(choice),
-              //       );
-              //     }).toList();
-              //   },
-              // ),
             ],
           ),
           body: buildBody(context, snapshot),

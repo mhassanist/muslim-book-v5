@@ -1,15 +1,12 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
-import 'package:muslim_book/network_utils/api_service.dart';
 import 'package:muslim_book/providers/view_state_provider.dart';
 import 'package:muslim_book/quran/api_service/quran_api_service.dart';
 import 'package:muslim_book/quran/models/quran_model.dart' as model;
 import 'package:muslim_book/quran/models/quran_model.dart';
 import 'package:muslim_book/quran/models/reciters_model.dart';
 import 'package:muslim_book/quran/quran_database/quran_dao.dart';
-import 'package:muslim_book/quran/utils/quran_audio_service.dart';
 import 'package:muslim_book/quran/utils/quran_audio_handler.dart';
-import 'package:muslim_book/quran/utils/quran_top_level_functions.dart';
 import 'package:muslim_book/quran/widgets/downloading_translation_widget.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
@@ -20,14 +17,7 @@ class QuranProvider extends ViewStateProvider {
   QuranProvider() {
     checkIsQuranDownloaded();
   }
-
-  // String _errormessage = "";
-  // String get errorMessage =>_errormessage;
-  // set errorMessage(String s){
-  //   _errormessage = s;
-  //   notifyListeners();
-
-  // }
+  
   QuranDao _quranDao = locator<QuranDao>();
   bool _allowTranslation = false;
   bool _allowTransliteration = false;
@@ -150,10 +140,6 @@ class QuranProvider extends ViewStateProvider {
   }
 
   void startListeningToAyah({model.Ayah? ayah, model.Surah? surah}) async {
-    // if (AudioService.running) {
-    //   await AudioService.stop();
-    //   await Future.delayed(Duration(milliseconds: 400));
-    // }
     if (quranAudioHandler.playbackState.value ==
         PlaybackState().playing) {
       await quranAudioHandler.stop();
@@ -167,17 +153,6 @@ class QuranProvider extends ViewStateProvider {
         "quranModel": _quranDao.quranModelAsJson
       },
     );
-    // await AudioService.start(
-    //   androidNotificationIcon: 'mipmap/launcher_icon',
-    //   androidNotificationColor: 0XFF037e40,
-    //   backgroundTaskEntrypoint: quranStartListeningPoint,
-    //   params: {
-    //     'sheikhId': "$selectedReciter",
-    //     "ayahIndex": ayah?.numberInSurah ?? 0,
-    //     "surah": surah?.number ?? 0,
-    //     "quranModel": _quranDao.quranModelAsJson
-    //   },
-    // );
   }
 
   Future updateReciter(String val) async {
