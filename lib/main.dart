@@ -20,6 +20,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_rectangle_updated.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/azkar_feature/providers/azkar_provider.dart';
 import 'package:muslim_book/firebase_options.dart';
@@ -201,7 +202,9 @@ class MyApp extends StatefulWidget {
                   ),
                 ),
                 Expanded(
-                    child: Container(child: AdMobRectangle(BannerName.Top))),
+                    child: Container(
+                        child:
+                            AdmobRectangleUpdated(bannerName: BannerName.Top))),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -382,7 +385,7 @@ class MyApp extends StatefulWidget {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        fillColor: Theme.of(context).accentColor,
+                        fillColor: Theme.of(context).colorScheme.secondary,
                         child: Text(
                           AppLocalizations.of(context)!.translate("cancel"),
                           style: TextStyle(
