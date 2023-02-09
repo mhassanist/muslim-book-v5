@@ -63,10 +63,12 @@ class _AdmobRectangleUpdatedState extends State<AdmobRectangleUpdated> {
     adListener = BannerAdListener(
       // Called when an ad is successfully received.
       onAdLoaded: (Ad ad) {
-        setState(() {
-          isAdLoaded = true;
-        });
-        print('Ad loaded.');
+        if (mounted) {
+          setState(() {
+            isAdLoaded = true;
+          });
+          print('Ad loaded.');
+        }
       },
       // Called when an ad request failed.
       onAdFailedToLoad: (Ad ad, LoadAdError error) {

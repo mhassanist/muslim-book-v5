@@ -37,6 +37,7 @@ import 'package:muslim_book/sebha_feature/online_sebha/controllers/online_sebha_
 import 'package:muslim_book/sebha_feature/providers/sebha_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/locator.dart';
+import 'package:muslim_book/utils/palette.dart';
 import 'package:muslim_book/utils/prefs.dart';
 import 'package:muslim_book/utils/sailor.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
@@ -589,15 +590,15 @@ class _MyAppState extends State<MyApp> {
             textTheme: GoogleFonts.almaraiTextTheme(
               Theme.of(context).textTheme,
             ),
-            primarySwatch: Colors.blue,
+            primarySwatch: Palette.kToDark,
             // accentColor: Constants.ACCENT_COLOR,  (Depricated)
             primaryColor: Constants.PRIMARY_COLOR,
             primaryColorDark: Constants.PRIMARY_DARK_COLOR,
             canvasColor: Constants.CANVAS_COLOR,
           ).copyWith(
-            colorScheme: ThemeData()
-                .colorScheme
-                .copyWith(secondary: Constants.ACCENT_COLOR),
+            colorScheme: ThemeData().colorScheme.copyWith(
+                secondary: Constants.ACCENT_COLOR,
+                primary: Constants.PRIMARY_COLOR),
           ),
 
           home: checkOverLay != null
