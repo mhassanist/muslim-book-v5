@@ -49,7 +49,7 @@ class _AdMobRectangleState extends State<AdMobRectangle> {
 
       case AdLoadState.loadCompleted:
         setState(() {
-            MyApp.loadingAddMobe = false;
+          MyApp.loadingAddMobe = false;
         });
         break;
 
@@ -90,5 +90,4 @@ class _AdMobRectangleState extends State<AdMobRectangle> {
       ),
     );
   } //end of build
-
 }

@@ -35,12 +35,14 @@ class IslamicItemDetails extends ConsumerWidget {
       RefreshController(initialRefresh: false);
 
   void _onIslamicPostsRefresh() async {
-    await postschanges.getIslamicCategoryPosts(++islamicPageIndex, category.id ?? -1);
+    await postschanges.getIslamicCategoryPosts(
+        ++islamicPageIndex, category.id ?? -1);
     _islamicCatListRefreshController.loadComplete();
   }
 
   Future<void> _onIslamicPostsLoading() async {
-    await postschanges.getIslamicCategoryPosts(++islamicPageIndex, category.id ?? -1);
+    await postschanges.getIslamicCategoryPosts(
+        ++islamicPageIndex, category.id ?? -1);
 
     if (postschanges.islamicCatPosts.isEmpty) {
       _islamicCatListRefreshController.loadNoData();
@@ -53,7 +55,7 @@ class IslamicItemDetails extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     postschanges = ref.watch(getPosts);
     if (postschanges.isIslamicCatItemsLoading == true) {
-      postschanges.getIslamicCategoryPosts(islamicPageIndex, category.id??-1);
+      postschanges.getIslamicCategoryPosts(islamicPageIndex, category.id ?? -1);
     }
     if (postschanges.islamicCatPosts.isNotEmpty) {
       for (int i = 1; i <= postschanges.islamicCatPosts.length; i++) {
@@ -136,8 +138,8 @@ class IslamicItemDetails extends ConsumerWidget {
           builder: (BuildContext context, LoadStatus? mode) {
             Widget body;
             if (mode == LoadStatus.noMore) {
-              body =
-                  Text(AppLocalizations.of(context)!.translate("no_more_posts"));
+              body = Text(
+                  AppLocalizations.of(context)!.translate("no_more_posts"));
             } else if (mode == LoadStatus.idle) {
               body =
                   Text(AppLocalizations.of(context)!.translate("pull_up-load"));
