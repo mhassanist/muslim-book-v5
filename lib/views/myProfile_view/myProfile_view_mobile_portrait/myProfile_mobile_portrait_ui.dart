@@ -6,6 +6,7 @@ import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/providers/myProfile_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:screenshot/screenshot.dart';
 
@@ -196,12 +197,11 @@ class MyProfileUI {
           width: sizeConfig.blockSizeHorizontal * 15,
           height: sizeConfig.blockSizeHorizontal * 15,
           child: ElevatedButton(
-            child: Icon(FontAwesomeIcons.facebookF),
-            onPressed: () async => faceBookShare(),
-            // color: const Color(0XFF4266b2),
-            // textColor: Constants.CANVAS_COLOR,
-            // shape: CircleBorder(side: BorderSide.none),
-          ),
+              child: Icon(FontAwesomeIcons.facebookF),
+              onPressed: () async => faceBookShare(),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0XFF4266b2),
+                  shape: CircleBorder(side: BorderSide.none))),
         ),
         SizedBox(
           width: 10,
@@ -210,12 +210,11 @@ class MyProfileUI {
           width: sizeConfig.blockSizeHorizontal * 15,
           height: sizeConfig.blockSizeHorizontal * 15,
           child: ElevatedButton(
-            child: Icon(FontAwesomeIcons.twitter),
-            onPressed: () async => shareApp(),
-            // color: Colors.blueAccent,
-            // textColor: Constants.CANVAS_COLOR,
-            // shape: CircleBorder(side: BorderSide.none),
-          ),
+              child: Icon(FontAwesomeIcons.twitter),
+              onPressed: () async => shareApp(),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  shape: CircleBorder(side: BorderSide.none))),
         ),
         SizedBox(
           width: 10,
@@ -224,30 +223,33 @@ class MyProfileUI {
           width: sizeConfig.blockSizeHorizontal * 15,
           height: sizeConfig.blockSizeHorizontal * 15,
           child: ElevatedButton(
-            child: Icon(
-              FontAwesomeIcons.whatsapp,
-              size: sizeConfig.blockSizeHorizontal * 7,
-            ),
-            onPressed: () async => shareApp(),
-            // color: const Color(0XFF4FCE5D),
-            // textColor: Constants.CANVAS_COLOR,
-            // shape: CircleBorder(side: BorderSide.none),
-          ),
+              child: Icon(
+                FontAwesomeIcons.whatsapp,
+                size: sizeConfig.blockSizeHorizontal * 7,
+              ),
+              onPressed: () async => shareApp(),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0XFF4FCE5D),
+                  shape: CircleBorder(side: BorderSide.none))),
         )
       ],
     );
   }
 
   Future shareApp() async {
-    Uint8List? screenShot = await screenshotController.capture();
-    File x = File.fromRawPath(screenShot!);
-    ShareExtend.share(
-      x.path,
-      "image",
-      extraText: AppLocalizations.of(context)!.translate(
-        "invite_to_download_app",
-      ),
-    );
+    final directory = (await getApplicationDocumentsDirectory()).path;
+    String fileName = DateTime.now().microsecondsSinceEpoch.toString() + '.png';
+    final path = '$directory';
+
+    String? fullPath =
+        await screenshotController.captureAndSave(path, fileName: fileName);
+
+    if (fullPath != null) {
+      await ShareExtend.share(fullPath, "image",
+          extraText: AppLocalizations.of(context)!.translate(
+            "invite_to_download_app",
+          ));
+    }
   }
 
   Widget imageWidget() {
@@ -264,9 +266,13 @@ class MyProfileUI {
                   color: Theme.of(context).colorScheme.secondary,
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: NetworkImage(provider.scoreModelData!.image!.replaceAll("http://", "https://"),),
+                    image: NetworkImage(
+                      provider.scoreModelData!.image!
+                          .replaceAll("http://", "https://"),
+                    ),
                     fit: BoxFit.cover,
-                    onError:(error, stackTrace) => AssetImage('assets/images/profile_image.png'),
+                    onError: (error, stackTrace) =>
+                        AssetImage('assets/images/profile_image.png'),
                   ),
 
                   // image: DecorationImage(
