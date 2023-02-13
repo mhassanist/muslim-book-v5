@@ -158,6 +158,10 @@ class Constants {
   static const int NO_CONNECTION_EXCEPTION = 41234;
 
   static const String BASE_URL = "https://muslim-book.net/api/";
+
+  static const String BASE_API_URL = "www.muslim-book.net";
+  static const String BASE_API_PATH = '/api/';
+  
   static const int VERSION_NUMBER = 13;
 
   static const String ALFAJR_IBTEHAL_ALERT_FLAG = "allow_fajr_ibtehal";

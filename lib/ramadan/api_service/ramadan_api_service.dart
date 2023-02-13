@@ -51,10 +51,10 @@ class RamadanApiService {
     parameters["month"] = "${HijriCalendar.now().hMonth}";
     parameters["year"] = "${HijriCalendar.now().hYear}";
 
-    if (locator<Prefs>().getLatitue() != null &&
-        locator<Prefs>().getLongtude() != null) {
-      parameters["latitude"] = "${locator<Prefs>().getLatitue()}";
-      parameters["longitude"] = "${locator<Prefs>().getLongtude()}";
+    if (locator<Prefs>().getLatitude() != null &&
+        locator<Prefs>().getLongitude() != null) {
+      parameters["latitude"] = "${locator<Prefs>().getLatitude()}";
+      parameters["longitude"] = "${locator<Prefs>().getLongitude()}";
       // path = "$path/calendar";
     } else {
       parameters = null;
