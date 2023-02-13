@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:muslim_book/azan_feature/views/azan_view_updated.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
 import 'package:muslim_book/islamic_feature/views/islamics_view.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
@@ -8,7 +9,6 @@ import 'package:muslim_book/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:muslim_book/views/azan_view/azan_view.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -194,7 +194,7 @@ class SideDrawerMenu {
                               AppLocalizations.of(context)!
                                   .translate("Prayer_Timings"), () {
                             Navigator.of(context).pop();
-                            Get.to(() => AzanView());
+                            Get.to(() => AzanViewUpdated());
                           }, true, "assets/images/slider_view/prayer.svg"),
                           _buildDivider(),
                           _buildRow(null,

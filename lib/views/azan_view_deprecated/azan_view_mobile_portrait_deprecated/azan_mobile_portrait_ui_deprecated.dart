@@ -10,14 +10,14 @@ import 'package:intl/intl.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../../utils/sizing_info_extension.dart';
 
-class AzanMobilePortraitUi {
+class AzanMobilePortraitUiDeprecated {
   final AzanProvider provider;
   final SizingInformation sizeConfig;
   final BuildContext context;
   final DateFormat minuteFormat = DateFormat("mm");
   final DateFormat secondsFormat = DateFormat("ss");
 
-  AzanMobilePortraitUi({
+  AzanMobilePortraitUiDeprecated({
     required this.provider,
     required this.sizeConfig,
     required this.context,

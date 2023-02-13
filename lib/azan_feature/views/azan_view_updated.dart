@@ -19,12 +19,12 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-class AzanView extends StatefulWidget {
+class AzanViewUpdated extends StatefulWidget {
   @override
-  _AzanViewState createState() => _AzanViewState();
+  _AzanViewUpdatedState createState() => _AzanViewUpdatedState();
 }
 
-class _AzanViewState extends State<AzanView> {
+class _AzanViewUpdatedState extends State<AzanViewUpdated> {
   late AzanController controller;
 
   PickAzanMethodsProvider? _provider;
@@ -92,7 +92,10 @@ class _AzanViewState extends State<AzanView> {
                       //     bottom: sizeConfig.blockSizeVertical * 2),
                       child: Column(
                         children: [
-                          isSmall ? Expanded(child: Container()) : Container(),
+                          // isSmall ? Expanded(child: Container()) : Container(),
+                          SizedBox(
+                            height: 200,
+                          ),
                           Container(
                             margin: EdgeInsets.only(
                                 bottom: sizeConfig.blockSizeVertical * 3),
@@ -136,7 +139,7 @@ class _AzanViewState extends State<AzanView> {
                               i++)
                             buildSingleAzan(controller.getAzanList(context)![i],
                                 sizeConfig, i),
-                          Container(height: 100, child: AdManager.boslaBanner)
+                          // Container(height: 100, child: AdManager.boslaBanner)
                         ],
                       ),
                     ),
@@ -165,7 +168,7 @@ class _AzanViewState extends State<AzanView> {
             vertical: sizeConfig.blockSizeVertical / 2),
         decoration: BoxDecoration(
             color: Colors.white
-                .withOpacity(index == controller.nextAzanKey - 1 ? 1 : .5),
+                .withOpacity(index == controller.nextAzanKey! - 1 ? 1 : .5),
             borderRadius:
                 BorderRadius.circular(sizeConfig.blockSizeHorizontal * 4)),
         child: Row(
@@ -196,7 +199,7 @@ class _AzanViewState extends State<AzanView> {
                             // color: Colors.amberAccent,
 
                             decoration: BoxDecoration(
-                                color: index == controller.nextAzanKey - 1
+                                color: index == controller.nextAzanKey! - 1
                                     ? Colors.grey.withOpacity(.2)
                                     : Colors.white.withOpacity(.5),
                                 borderRadius: BorderRadius.circular(
@@ -240,7 +243,7 @@ class _AzanViewState extends State<AzanView> {
                     // SizedBox(
                     //   width: sizeConfig.blockSizeHorizontal * 2,
                     // ),
-                    (index == controller.nextAzanKey - 1)
+                    (index == controller.nextAzanKey! - 1)
                         ? GetBuilder<AzanController>(
                             builder: (con) {
                               return Expanded(

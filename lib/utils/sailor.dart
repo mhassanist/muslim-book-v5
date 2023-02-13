@@ -1,4 +1,4 @@
-import 'package:muslim_book/azan_feature/views/azan_view.dart';
+import 'package:muslim_book/azan_feature/views/azan_view_updated.dart';
 import 'package:muslim_book/quran/views/quran_section_screen.dart';
 import 'package:muslim_book/views/azan_settings_views/adjust_battery_view.dart';
 import 'package:muslim_book/views/azan_settings_views/azan_draw_over_view.dart';
@@ -191,7 +191,7 @@ class Routes {
       SeafarerRoute(
         name: "/AzanView",
         builder: (context, args, params) {
-          return AzanView();
+          return AzanViewUpdated();
         },
         defaultTransitionDuration: Duration(milliseconds: 300),
         defaultTransitionCurve: Curves.ease,

@@ -1,5 +1,6 @@
 import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
-import 'package:muslim_book/azan_feature/views/azan_view.dart';
+import 'package:muslim_book/azan_feature/models/azan_model.dart';
+import 'package:muslim_book/azan_feature/views/azan_view_updated.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/locator.dart';
@@ -46,10 +47,14 @@ class AzanHomeWidget extends StatelessWidget {
                     } else {
                       // return Container();
                       //print(locator<Prefs>().getAssalahTime("1"));
-                      var nextSalah = controller.getAzanList(context) != null
-                          ? controller
-                              .getAzanList(context)![controller.nextAzanKey - 1]
-                          : null;
+                      Azan? nextSalah;
+                      List<Azan> azanList =
+                          controller.getAzanList(context) ?? [];
+                      int nextAzanKey = (controller.nextAzanKey ?? 0) - 1;
+                      if (azanList.asMap().containsKey(nextAzanKey)) {
+                        nextSalah =
+                            controller.getAzanList(context)![nextAzanKey];
+                      }
                       return Padding(
                         padding: EdgeInsets.symmetric(
                             vertical: sizeConfig.blockSizeVertical * 3),
@@ -85,7 +90,6 @@ class AzanHomeWidget extends StatelessWidget {
                           ],
                         ),
                       ); // print(locator<Prefs>().getAssalahTime("1"));
-
                     }
                   }),
             ),
@@ -128,9 +132,7 @@ class AzanHomeWidget extends StatelessWidget {
                       vertical: sizeConfig.blockSizeVertical),
                   child: RawMaterialButton(
                     onPressed: () {
-                      if (locator<Prefs>().getAzanModel().isNotEmpty) {
-                        Get.to(() => AzanView());
-                      } else {}
+                      Get.to(() => AzanViewUpdated());
                     },
                     elevation: 5,
                     padding: EdgeInsets.symmetric(

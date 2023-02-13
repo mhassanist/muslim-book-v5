@@ -57,8 +57,8 @@ class AzanController extends GetxController {
           getCurrentDay();
           setNextSalah();
         }
-        _remainingText =
-            DateFormat.Hms().format(DateTime(_remaining!.inMilliseconds));
+        final DateTime remainingDateTime = DateTime.fromMillisecondsSinceEpoch(remaining!.inMilliseconds);
+        _remainingText = DateFormat.Hms().format(remainingDateTime);
         update();
       }
     } catch (ex) {
@@ -149,14 +149,15 @@ class AzanController extends GetxController {
         final azan = Azan.fromMap(data);
         final product = azanValue.firstWhere((product) => product.id == azan.id,
             orElse: () => Azan());
-        if (product.id.isNotEmpty) {
-          if (mutedAzanList.isNotEmpty &&
-              mutedAzanList.contains(azan.id)) {
+        if (product.id.isEmpty) {
+          if (mutedAzanList.isNotEmpty && mutedAzanList.contains(azan.id)) {
             azan.volumeEnable = false;
           } else {
             azan.volumeEnable = true;
           }
-          azan.count = locator<Prefs>().getAssalahTime("update${azan.id}").isNotEmpty
+          azan.count = locator<Prefs>()
+                  .getAssalahTime("update${azan.id}")
+                  .isNotEmpty
               ? int.parse(locator<Prefs>().getAssalahTime("update${azan.id}"))
               : 0;
 
@@ -242,7 +243,7 @@ class AzanController extends GetxController {
 
   get nextSalahTime => _nextSalah;
 
-  get nextAzanKey => _nextAzanKey;
+  int? get nextAzanKey => _nextAzanKey;
 
   Duration? get remaining => _remaining;
 

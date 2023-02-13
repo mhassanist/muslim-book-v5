@@ -78,7 +78,7 @@ class AzanProvider extends ViewStateProvider {
         },
         {
           "hours": locator<Prefs>().getAssalahTime("4").split(":")[0],
-          "icon": "assets/images/azan_view/.svg",
+          "icon": "assets/images/azan_view/asr_icon.svg",
           "title": AppLocalizations.of(_context)!.translate("asr"),
           "time": getFormattedTime(locator<Prefs>().getAssalahTime("4")),
         },

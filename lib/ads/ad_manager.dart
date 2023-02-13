@@ -7,7 +7,7 @@ import 'package:muslim_book/models/banner_names_enum.dart';
 class AdManager {
   static late FirebaseRemoteConfig remoteConfig;
   static late Widget exsitBanner;
-  static late Widget boslaBanner;
+  // static late Widget boslaBanner;
 
   static getAdUnitId(BannerName bannerName) {
     bool isProductionEnvironment = false;  // HAMZA: TODO: Get adUnitId from firebase

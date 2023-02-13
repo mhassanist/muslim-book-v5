@@ -60,6 +60,7 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
         child: Scaffold(
             appBar: widget.showAppBar ? _buildAppBar(context) : null,
             body: ResponsiveBuilder(builder: (context, sizeConfig) {
+              
               return azanValue.isEmpty
                   ? Container()
                   : BaseView<PickAzanMethodsProvider>(onModelReady: (model) {

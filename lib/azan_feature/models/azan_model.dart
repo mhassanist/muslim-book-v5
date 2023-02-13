@@ -35,7 +35,7 @@ class Azan {
         title: json["title"],
         volumeEnable: json["volume_enable"],
         time: json["time"],
-        isha: json["isha"],
+        // isha: json["isha"],
         minute: json["minute"],
         count: json["count"],
       );
