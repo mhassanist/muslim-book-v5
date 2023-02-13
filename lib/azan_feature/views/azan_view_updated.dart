@@ -1,4 +1,3 @@
-import 'package:muslim_book/ads/ad_manager.dart';
 import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
 import 'package:muslim_book/azan_feature/models/azan_model.dart';
 import 'package:muslim_book/local_storage/local_storage_manager.dart';
@@ -32,8 +31,8 @@ class _AzanViewUpdatedState extends State<AzanViewUpdated> {
   @override
   Widget build(BuildContext context) {
     controller = Get.find<AzanController>();
-    final size = MediaQuery.of(context).size;
-    final isSmall = size.width <= 450;
+    // final size = MediaQuery.of(context).size;
+    // final isSmall = size.width <= 450;
     return ResponsiveBuilder(builder: (context, sizeConfig) {
       return controller.getAzanList(context) == null
           ? Container()

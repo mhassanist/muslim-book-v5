@@ -1,4 +1,5 @@
 import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_rectangle_updated.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
 import 'package:muslim_book/azan_feature/models/azan_model.dart';
@@ -60,7 +61,6 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
         child: Scaffold(
             appBar: widget.showAppBar ? _buildAppBar(context) : null,
             body: ResponsiveBuilder(builder: (context, sizeConfig) {
-              
               return azanValue.isEmpty
                   ? Container()
                   : BaseView<PickAzanMethodsProvider>(onModelReady: (model) {
@@ -118,8 +118,10 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                             SliverToBoxAdapter(
                                 child: Visibility(
                               visible: widget.showAppBar,
-                              child: Container(
-                                  child: AdMobRectangle(BannerName.Top)),
+                              child: SizedBox(
+                                  height: 400,
+                                  child: AdmobRectangleUpdated(
+                                      bannerName: BannerName.Top)),
                             )),
                             SliverToBoxAdapter(
                                 child: SizedBox(
@@ -242,7 +244,7 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
         actions: <Widget>[
-          ElevatedButton(
+          MaterialButton(
             child: Text(
               AppLocalizations.of(context)!.translate("save"),
               style: TextStyle(color: Constants.CANVAS_COLOR),
