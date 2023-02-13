@@ -31,8 +31,6 @@ class _AzanViewUpdatedState extends State<AzanViewUpdated> {
   @override
   Widget build(BuildContext context) {
     controller = Get.find<AzanController>();
-    // final size = MediaQuery.of(context).size;
-    // final isSmall = size.width <= 450;
     return ResponsiveBuilder(builder: (context, sizeConfig) {
       return controller.getAzanList(context) == null
           ? Container()
@@ -86,14 +84,11 @@ class _AzanViewUpdatedState extends State<AzanViewUpdated> {
                         )
                       ],
                     ),
-                    body: Container(
-                      // padding: EdgeInsets.only(
-                      //     bottom: sizeConfig.blockSizeVertical * 2),
+                    body: SingleChildScrollView(
                       child: Column(
                         children: [
-                          // isSmall ? Expanded(child: Container()) : Container(),
                           SizedBox(
-                            height: 200,
+                            height: MediaQuery.of(context).size.height * 0.25,
                           ),
                           Container(
                             margin: EdgeInsets.only(
