@@ -17,7 +17,7 @@ class AzanController extends GetxController {
   bool _volume = false;
   String _currentDayName = '';
   DateTime? _nextSalah;
-  int? _nextAzanKey;
+  late int _nextAzanKey;
   Duration? _remaining;
   String _remainingText = '';
   StreamSubscription? _stream;
@@ -57,7 +57,8 @@ class AzanController extends GetxController {
           getCurrentDay();
           setNextSalah();
         }
-        final DateTime remainingDateTime = DateTime.fromMillisecondsSinceEpoch(remaining!.inMilliseconds);
+        final DateTime remainingDateTime =
+            DateTime.fromMillisecondsSinceEpoch(remaining!.inMilliseconds);
         _remainingText = DateFormat.Hms().format(remainingDateTime);
         update();
       }
@@ -202,10 +203,12 @@ class AzanController extends GetxController {
       int year = DateTime.now().year;
       for (int i = 1; i <= 6; i++) {
         String time = locator<Prefs>().getAssalahTime("$i");
-        var min = int.parse(time.split(":")[1]) +
-            (locator<Prefs>().getAssalahTime("update${i}") != null
-                ? int.parse(locator<Prefs>().getAssalahTime("update${i}"))
-                : 0);
+        var min = int.parse(time.split(":")[1]);
+        String corrctedTimeByMinuets =
+            locator<Prefs>().getAssalahTime("update$i");
+        if (corrctedTimeByMinuets.isNotEmpty) {
+          min += int.parse(corrctedTimeByMinuets);
+        }
         var timeOfDay = TimeOfDay(
           hour: int.parse(time.split(":")[0]),
           minute: min,
@@ -274,7 +277,7 @@ class AzanController extends GetxController {
 
   saveAzanMute(bool isAdd, String azanId) {
     if (!isAdd) {
-      if (mutedAzanList != null) {
+      if (mutedAzanList.isNotEmpty) {
         if (!mutedAzanList.contains(azanId)) {
           mutedAzanList.add(azanId);
         }
@@ -282,8 +285,7 @@ class AzanController extends GetxController {
         mutedAzanList.add(azanId);
       }
     } else {
-      if (mutedAzanList != null && mutedAzanList.isNotEmpty)
-        mutedAzanList.remove(azanId);
+      if (mutedAzanList.isNotEmpty) mutedAzanList.remove(azanId);
     }
     String map = '';
     for (var st in mutedAzanList) {

@@ -10,7 +10,8 @@ class AdManager {
   // static late Widget boslaBanner;
 
   static getAdUnitId(BannerName bannerName) {
-    bool isProductionEnvironment = false;  // HAMZA: TODO: Get adUnitId from firebase
+    bool isProductionEnvironment =
+        false; // HAMZA: TODO: Get adUnitId from firebase
     if (isProductionEnvironment) {
       switch (bannerName) {
         case BannerName.AZKAR:

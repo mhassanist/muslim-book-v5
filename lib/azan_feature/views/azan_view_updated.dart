@@ -44,7 +44,7 @@ class _AzanViewUpdatedState extends State<AzanViewUpdated> {
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       image: AssetImage(
-                          "assets/images/azan_view_v2/background_${controller.nextAzanKey == 2 ? 1 : controller.nextAzanKey}.png"),
+                          "assets/images/azan_view_v2/background_${controller.nextAzanKey}.png"),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -190,7 +190,6 @@ class _AzanViewUpdatedState extends State<AzanViewUpdated> {
                             padding: EdgeInsets.symmetric(
                                 // horizontal: sizeConfig.blockSizeHorizontal * 2,
                                 horizontal: sizeConfig.blockSizeVertical * 1.5),
-                            // color: Colors.amberAccent,
 
                             decoration: BoxDecoration(
                                 color: index == controller.nextAzanKey! - 1
@@ -392,7 +391,7 @@ class _AzanViewUpdatedState extends State<AzanViewUpdated> {
       controller.azanValue.clear();
     });
     controller.onStart();
-    // controller.getAzanList();
+    // controller.getAzanList(context);
     // controller.startRemainingStream();
   }
 }
