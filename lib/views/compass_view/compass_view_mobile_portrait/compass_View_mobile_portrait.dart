@@ -43,23 +43,22 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
 
   getCurrentLocation() async {
     // _gettingLocation = true;
-    LocationUtilities()
-        .getLocationData(loc.LocationAccuracy.high)
-        .then((response) {
-      if (response != null) {
-        if (mounted) {
-          setState(() {
-            currentLocLat = (response as loc.LocationData).latitude;
-            currentLocLng = response.longitude;
-            // currentLocLatLong = "${(response as Address).addressLine}";
-            // currentLocLatLong = "{(response as Address).addressLine}";
-            // _gettingLocation = false;
-          });
-        }
-      }
-    }).catchError((e) {
-      print("arrived here to location 2 $e}");
-    });
+    LocationUtilities().getLocationData(loc.LocationAccuracy.high);
+    // .then((response) {
+    // if (response != null) {
+    // if (mounted) {
+    // setState(() {
+    //   currentLocLat = (response as loc.LocationData).latitude;
+    //   currentLocLng = response.longitude;
+    //   // currentLocLatLong = "${(response as Address).addressLine}";
+    //   // currentLocLatLong = "{(response as Address).addressLine}";
+    //   // _gettingLocation = false;
+    // });
+    // }
+    // }
+    // }).catchError((e) {
+    //   print("arrived here to location 2 $e}");
+    // });
   }
 
   @override
@@ -170,7 +169,9 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
                 child: Image.asset('assets/images/general/compass.png'),
               ),
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             SizedBox(
                 height: 300,
                 child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA)),
