@@ -1,8 +1,8 @@
 import 'dart:math' as math;
 
-import 'package:geocoding/geocoding.dart';
+// import 'package:geocoding/geocoding.dart';
 import 'package:muslim_book/ads/admob_rectangle_updated.dart';
-import 'package:muslim_book/ads/load_ui_with_add.dart';
+// import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
@@ -17,7 +17,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:location/location.dart' as loc;
 import 'package:permission_handler/permission_handler.dart';
-import 'package:sensors_plus/sensors_plus.dart';
+// import 'package:sensors_plus/sensors_plus.dart';
 
 class CompassViewMobilePortrait extends StatefulWidget {
   @override
@@ -32,6 +32,14 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
   double? currentLocLat, currentLocLng;
   double degToKaabaBaring = 0;
   late bool _gettingLocation;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _fetchPermissionStatus();
+    });
+    super.initState();
+  }
 
   getCurrentLocation() async {
     _gettingLocation = true;
@@ -122,14 +130,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
             Constants.KAABA_LAT,
             Constants.KAABA_LNG,
           );
-          if (mounted) {
-            try {
-              degToKaabaBaring = bearing;
-              setState(() {});
-            } catch (_) {
-              print('setState() called during build');
-            }
-          }
+          degToKaabaBaring = bearing;
         }
 
         // double direction = snapshot.data;
@@ -158,9 +159,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
                 margin: EdgeInsets.only(left: 20, right: 20),
                 height: unitSize * 40,
                 child: Transform.rotate(
-                  angle: currentLocLatLong != null
-                      ? ((degToKaabaBaring - direction) * (math.pi / 180))
-                      : 0,
+                  angle: (degToKaabaBaring - direction) * (math.pi / 180),
 //                angle: (((direction ?? 0) * (math.pi / 180) * -1) + (degToKaabaBaring ?? 0)) % 360,
 //                angle: ((direction ?? 0) * (math.pi / 180) * -1),
                   child: Image.asset('assets/images/general/compass.png'),
