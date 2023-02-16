@@ -23,7 +23,7 @@ Widget standardButton({
           color: color,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: ElevatedButton(
+        child: MaterialButton(
           onPressed: () => onPressed?.call(),
           child: Row(
             mainAxisAlignment: isGo

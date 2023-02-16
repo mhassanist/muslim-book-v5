@@ -1,5 +1,6 @@
 import 'package:muslim_book/ads/ad_widget_edit.dart';
 import 'package:muslim_book/ads/admob_rectangle_small.dart';
+import 'package:muslim_book/ads/admob_rectangle_updated.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
@@ -181,7 +182,9 @@ class _CompetitionViewMobilePortraitState
           ui.questions(),
           ui.answers(),
           ui.continueButton(),
-          AdMobRectangleSmall(BannerName.COMPETITION)
+          SizedBox(
+              height: 300,
+              child: AdmobRectangleUpdated(bannerName: BannerName.COMPETITION))
 //          ui.faceBookAdsWidget(
 //              locator<RemoteConfigService>().underCompetitionAdsId)
         ],

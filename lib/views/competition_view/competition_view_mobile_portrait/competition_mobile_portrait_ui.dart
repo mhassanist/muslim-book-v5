@@ -194,12 +194,12 @@ class CompetitionUI {
       //width: sizeConfig.blockSizeHorizontal * 60,
       child: IgnorePointer(
         ignoring: provider.disablePickingAnswers,
-        child: ElevatedButton(
-          // elevation: 4,
-          // color: getColor(index, answer.result),
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.circular(10),
-          // ),
+        child: MaterialButton(
+          elevation: 4,
+          color: getColor(index, answer.result),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           onPressed: () => onPressed?.call(),
           child: Text(
             "${answer.answers}",
@@ -510,10 +510,10 @@ class CompetitionUI {
                     width: sizeConfig.blockSizeHorizontal * 2,
                   ),
                   Expanded(
-                    child: ElevatedButton(
-                      // padding: EdgeInsets.symmetric(
-                      //   vertical: sizeConfig.blockSizeVertical * 2,
-                      // ),
+                    child: MaterialButton(
+                      padding: EdgeInsets.symmetric(
+                        vertical: sizeConfig.blockSizeVertical * 2,
+                      ),
                       onPressed: () {
                         provider.openFaceBookAd();
                         goToStart(context);
