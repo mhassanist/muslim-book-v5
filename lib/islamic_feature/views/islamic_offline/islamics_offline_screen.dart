@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_rectangle_updated.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 import 'package:extended_image/extended_image.dart';
@@ -113,7 +113,7 @@ class _IslamicsOfflineScreenState extends State<IslamicsOfflineScreen> {
         isInternetConnected == true
             ? Container(
                 height: MediaQuery.of(context).size.height / 3.0,
-                child: AdMobRectangle(BannerName.AZKAR))
+                child: AdmobRectangleUpdated(bannerName: BannerName.AZKAR))
             : Container(),
         ResponsiveBuilder(builder: (context, SizingInformation sizeConfig) {
           return Container(
@@ -141,7 +141,7 @@ class _IslamicsOfflineScreenState extends State<IslamicsOfflineScreen> {
         isInternetConnected == true
             ? Container(
                 height: MediaQuery.of(context).size.height / 3.0,
-                child: AdMobRectangle(BannerName.AZKAR))
+                child: AdmobRectangleUpdated(bannerName: BannerName.AZKAR))
             : Container(),
         ResponsiveBuilder(builder: (context, SizingInformation sizeConfig) {
           return Container(

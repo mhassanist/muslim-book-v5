@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_rectangle_updated.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
 import 'package:muslim_book/home_feature/controllers/providers_get_post.dart';
 import 'package:muslim_book/home_feature/domian/model/categories_model.dart';
@@ -66,10 +66,10 @@ class IslamicItemDetails extends ConsumerWidget {
 
           //add ad every 10 posts
           if (islamicPageIndex.isOdd && (i == 10 || i == 20)) {
-            islamicPostsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+            islamicPostsListWidget.add(SizedBox(height: 300, child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA)));
           } else if (islamicPageIndex.isEven &&
               (i == 5 || i == 15 || i == 25)) {
-            islamicPostsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+            islamicPostsListWidget.add(SizedBox(height: 300, child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA)));
           }
         }
       }

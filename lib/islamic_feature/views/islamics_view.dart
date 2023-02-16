@@ -1,5 +1,5 @@
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_rectangle_updated.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/network_utils/remote_config.dart';
@@ -52,13 +52,13 @@ class _IslamicsViewState extends State<IslamicsView> {
           child: Column(
             children: <Widget>[
               IslamicsOfflineScreen(),
-              Container(
+              SizedBox(
                   height: MediaQuery.of(context).size.height / 3.0,
-                  child: AdMobRectangle(BannerName.AZKAR)),
+                  child: AdmobRectangleUpdated(bannerName: BannerName.AZKAR)),
               isInternetConnected == true ? IslamicsScreen() : Container(),
               isInternetConnected == true
-                  ? Container(
-                      height: 400, child: AdMobRectangle(BannerName.AZKAR))
+                  ? SizedBox(
+                      height: 400, child: AdmobRectangleUpdated(bannerName: BannerName.AZKAR))
                   : Container(),
             ],
           ),

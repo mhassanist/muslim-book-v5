@@ -1,5 +1,5 @@
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_rectangle_updated.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:muslim_book/widgets/app_scaffold_title.dart';
@@ -94,6 +94,6 @@ class _IslamicPostOfflineDetailsState extends State<IslamicPostOfflineDetails> {
   _buildAdSection(BuildContext context) {
     return Container(
         height: MediaQuery.of(context).size.height / 3.0,
-        child: AdMobRectangle(BannerName.AZKAR));
+        child: AdmobRectangleUpdated(bannerName: BannerName.AZKAR));
   }
 }

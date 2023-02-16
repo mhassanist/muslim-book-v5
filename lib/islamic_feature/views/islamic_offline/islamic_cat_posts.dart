@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_rectangle_updated.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
 import 'package:muslim_book/islamic_feature/views/islamic_offline/islamic_post_offline_details.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
@@ -76,10 +76,10 @@ class _IslamicCatPostsState extends State<IslamicCatPosts> {
                         return Column(
                           children: [
                             _buildPostCardUi(data[index]),
-                            Container(
+                            SizedBox(
                                 height:
                                     MediaQuery.of(context).size.height / 3.0,
-                                child: AdMobRectangle(BannerName.AZKAR))
+                                child: AdmobRectangleUpdated(bannerName: BannerName.AZKAR))
                           ],
                         );
                       } else {

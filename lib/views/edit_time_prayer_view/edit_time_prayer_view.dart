@@ -1,4 +1,3 @@
-import 'package:muslim_book/ads/admob_rectangle.dart';
 import 'package:muslim_book/ads/admob_rectangle_updated.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
