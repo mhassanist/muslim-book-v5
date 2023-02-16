@@ -89,7 +89,9 @@ class ApiService {
     // );
     try {
       var resource = await http.post(
-        Uri.https('${Constants.BASE_URL}answers'),
+        // Uri.https('${Constants.BASE_URL}answers'),
+        Uri.https(
+            '${Constants.BASE_API_URL}', '${Constants.BASE_API_PATH}answers'),
         body: map,
         headers: {
           "Authorization": "Bearer ${_userProvider.user.apiToken}",
@@ -98,8 +100,9 @@ class ApiService {
       );
       var res = json.decode(resource.body);
       //print(res);
-      if (map["additional"] == "force" && !(res.data is Failure)) {
-        return answer.AnswerModel.fromMap(res.data).data;
+      // if (map["additional"] == "force" && !(res.data is Failure)) {
+      if (map["additional"] == "force" && res['success']) {
+        return answer.AnswerModel.fromMap(res).data;
       }
     } catch (e) {
       return null;
@@ -182,9 +185,11 @@ class ApiService {
   Future getCountries(String code) async {
     try {
       http.Response response = await http.get(
-          Uri.https('${Constants.BASE_URL}countries/list'),
+          // Uri.https('${Constants.BASE_URL}countries/list'),
+          Uri.https('${Constants.BASE_API_URL}',
+              '${Constants.BASE_API_PATH}countries/list'),
           headers: {"X-localization": code});
-      if (response != null && response.statusCode == 200) {
+      if (response.statusCode == 200) {
         CountriesModel model =
             CountriesModel.fromJson(utf8.decode(response.bodyBytes));
         return model;
