@@ -117,7 +117,7 @@ class _AzkarCarouselScreenState extends State<AzkarCarouselScreen> {
                               );
                             }).toList(),
                           ),
-                          buildControllesWidget(sizeConfig, currentZikr),
+                          buildControllerWidget(sizeConfig, currentZikr),
                           SizedBox(
                             height: 20,
                           ),
@@ -133,7 +133,7 @@ class _AzkarCarouselScreenState extends State<AzkarCarouselScreen> {
     );
   }
 
-  Container buildControllesWidget(SizingInformation sizeConfig, Zikr zikr) {
+  Container buildControllerWidget(SizingInformation sizeConfig, Zikr zikr) {
     return Container(
         margin: EdgeInsets.only(
           top: sizeConfig.blockSizeVertical * 6,

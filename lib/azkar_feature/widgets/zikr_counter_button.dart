@@ -23,6 +23,7 @@ class _ZikrCounterButtonState extends State<ZikrCounterButton> {
   AudioPlayer audioPlayer = AudioPlayer();
 
   var currentZikrIndex = 0;
+  bool finishedNavigationAnimation = true;
 
   @override
   void initState() {
@@ -38,26 +39,8 @@ class _ZikrCounterButtonState extends State<ZikrCounterButton> {
       child: FittedBox(
           child: FloatingActionButton(
         heroTag: "1 ${widget.azkar[currentZikrIndex].content}",
-        onPressed: () async {
-          if (widget.azkar[currentZikrIndex].counted <
-              widget.azkar[currentZikrIndex].counter - 1) {
-            setState(() {
-              widget.azkar[currentZikrIndex].counted =
-                  widget.azkar[currentZikrIndex].counted + 1;
-            });
-          } else {
-            widget.controller.nextPage();
-            if (widget.azkar.length != currentZikrIndex + 1) {
-              setState(() {
-                currentZikrIndex++;
-              });
-            } else {
-              await audioPlayer.setSource(
-                  AssetSource('audio/allah_make_you_from_heaven.wav'));
-              await audioPlayer.resume();
-              Navigator.pop(context);
-            }
-          }
+        onPressed: () {
+          incrementCounterOrNavigate();
         },
         backgroundColor: Colors.white,
         child: Container(
@@ -78,5 +61,33 @@ class _ZikrCounterButtonState extends State<ZikrCounterButton> {
 
   void initializeAudioPlayer() async {
     await audioPlayer.setPlayerMode(PlayerMode.lowLatency);
+  }
+
+  Future<void> incrementCounterOrNavigate() async {
+    if (finishedNavigationAnimation) {
+      if (widget.azkar[currentZikrIndex].counted >=
+          widget.azkar[currentZikrIndex].counter - 1) {
+        setState(() {
+          finishedNavigationAnimation = false;
+        });
+        await widget.controller.nextPage();
+        if (widget.azkar.length != currentZikrIndex + 1) {
+          setState(() {
+            currentZikrIndex++;
+            finishedNavigationAnimation = true;
+          });
+        } else {
+          await audioPlayer
+              .setSource(AssetSource('audio/allah_make_you_from_heaven.wav'));
+          await audioPlayer.resume();
+          Navigator.pop(context);
+        }
+      } else {
+        setState(() {
+          widget.azkar[currentZikrIndex].counted =
+              widget.azkar[currentZikrIndex].counted + 1;
+        });
+      }
+    }
   }
 }
