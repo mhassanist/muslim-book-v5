@@ -33,19 +33,6 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
   double degToKaabaBaring = 0;
   late bool _gettingLocation;
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _fetchPermissionStatus();
-      accelerometerEvents.listen((AccelerometerEvent event) {
-        if (mounted) {
-          setState(() {});
-        }
-      });
-    });
-  }
-
   getCurrentLocation() async {
     _gettingLocation = true;
     LocationUtilities()
