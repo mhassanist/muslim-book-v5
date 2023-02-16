@@ -469,7 +469,7 @@ class _MyAppState extends State<MyApp> {
   String? showCompetition;
   String? openAzkar;
   var checkOverLay;
-  late Locale localeLoaded;
+  Locale? localeLoaded;
 
   @override
   void initState() {
