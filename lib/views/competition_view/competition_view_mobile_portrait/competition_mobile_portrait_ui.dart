@@ -407,7 +407,7 @@ class CompetitionUI {
                 "أحسنت",
                 style: TextStyle(
                     fontSize: sizeConfig.blockSizeHorizontal * 8,
-                    color: Colors.white,
+                    color: Constants.PRIMARY_COLOR,
                     fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
@@ -421,7 +421,7 @@ class CompetitionUI {
                   "لقد إجتزت المسابقة بنجاح",
                   style: TextStyle(
                     fontSize: sizeConfig.blockSizeHorizontal * 5,
-                    color: Colors.white,
+                    color: Constants.PRIMARY_COLOR,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -521,7 +521,7 @@ class CompetitionUI {
                       child: Text(
                         "العودة للرئيسية",
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Constants.PRIMARY_COLOR,
                             fontWeight: FontWeight.bold,
                             fontSize: sizeConfig.blockSizeHorizontal * 5),
                       ),
