@@ -92,11 +92,13 @@ class HomePage extends ConsumerWidget {
 
             //add ad every 10 posts
             if (pageIndex.isOdd && (i == 10 || i == 20)) {
-              postsListWidget
-                  .add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
+              postsListWidget.add(SizedBox(
+                  height: 300,
+                  child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA)));
             } else if (pageIndex.isEven && (i == 5 || i == 15 || i == 25)) {
-              postsListWidget
-                  .add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
+              postsListWidget.add(SizedBox(
+                  height: 300,
+                  child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA)));
             }
           }
         }
