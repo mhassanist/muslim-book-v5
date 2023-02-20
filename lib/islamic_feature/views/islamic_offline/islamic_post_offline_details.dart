@@ -71,7 +71,7 @@ class _IslamicPostOfflineDetailsState extends State<IslamicPostOfflineDetails> {
   }
 
   _buildPostTitleUi(Map<String, dynamic> data) {
-    return Text(data['title'],
+    return Text(data['title'] ?? '',
         style: TextStyle(fontSize: 16, height: 2, fontWeight: FontWeight.w600));
   }
 

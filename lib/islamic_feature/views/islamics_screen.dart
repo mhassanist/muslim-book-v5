@@ -10,7 +10,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'islamic_item_details.dart';
 
 class IslamicsScreen extends ConsumerWidget {
-  late PostsNotifier? postschanges;
+  PostsNotifier? postschanges;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

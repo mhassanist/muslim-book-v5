@@ -115,7 +115,7 @@ class _IslamicCatPostsState extends State<IslamicCatPosts> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    data['title'],
+                    data['title'] ?? '',
                     maxLines: 1,
                     style: TextStyle(
                         color: Colors.black,

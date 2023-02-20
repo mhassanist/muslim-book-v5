@@ -23,7 +23,7 @@ class IslamicItemDetails extends ConsumerWidget {
 
   IslamicItemDetails(this.category);
 
-  late final PostsNotifier postschanges;
+  late PostsNotifier postschanges;
   static int islamicPageIndex = 1;
 
   static List<Widget> islamicPostsListWidget = [];
@@ -54,6 +54,7 @@ class IslamicItemDetails extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     postschanges = ref.watch(getPosts);
+
     if (postschanges.isIslamicCatItemsLoading == true) {
       postschanges.getIslamicCategoryPosts(islamicPageIndex, category.id ?? -1);
     }
@@ -66,10 +67,14 @@ class IslamicItemDetails extends ConsumerWidget {
 
           //add ad every 10 posts
           if (islamicPageIndex.isOdd && (i == 10 || i == 20)) {
-            islamicPostsListWidget.add(SizedBox(height: 300, child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA)));
+            islamicPostsListWidget.add(SizedBox(
+                height: 300,
+                child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA)));
           } else if (islamicPageIndex.isEven &&
               (i == 5 || i == 15 || i == 25)) {
-            islamicPostsListWidget.add(SizedBox(height: 300, child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA)));
+            islamicPostsListWidget.add(SizedBox(
+                height: 300,
+                child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA)));
           }
         }
       }
