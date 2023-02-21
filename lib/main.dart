@@ -124,7 +124,9 @@ Future<void> main() async {
   await locator<Prefs>().setSharedPreferences();
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  await FacebookAudienceNetwork.init();
+  await FacebookAudienceNetwork.init(
+    testingId: "a77955ee-3304-4635-be65-81029b0f5201",
+  );
   // final loaded = await getLocale();
 
   runApp(

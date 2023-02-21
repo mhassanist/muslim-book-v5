@@ -6,9 +6,11 @@ import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
+import 'package:muslim_book/network_utils/remote_config.dart';
 import 'package:muslim_book/providers/competition_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
+import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/widgets/standardButton_widget.dart';
 import 'package:facebook_audience_network/ad/ad_banner.dart';
 import 'package:flutter/material.dart';
@@ -385,8 +387,8 @@ class CompetitionUI {
                 ),
               ),
 
-//                  faceBookAdsWidget(locator<RemoteConfigService>()
-//                      .underStartCompetitionAdsId),
+                 faceBookAdsWidget(locator<RemoteConfigService>()
+                     .underStartCompetitionAdsId),
             ],
           ),
         )));
@@ -651,7 +653,9 @@ class CompetitionUI {
   Widget faceBookAdsWidget(id) {
     return Container(
       child: FacebookBannerAd(
-        placementId: Platform.isAndroid ? id : Constants.FACEBOOK_IOS_BANNER_ID,
+        placementId:
+            "IMG_16_9_APP_INSTALL#2312433698835503_2964944860251047", //testid
+        // placementId: Platform.isAndroid ? id : Constants.FACEBOOK_IOS_BANNER_ID,
         bannerSize: BannerSize.MEDIUM_RECTANGLE,
         listener: (result, value) {
           switch (result) {
