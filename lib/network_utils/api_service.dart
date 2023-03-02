@@ -164,12 +164,25 @@ class ApiService {
   }
 
   Future<FacebookModel> faceBookAccountDetails(token) async {
-    var response = await http.get(Uri.https(
-        'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=$token'));
+    // var response = await http.get(Uri.https(
+    //     'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=$token'));
+    var response = await http.get(
+      Uri.https('graph.facebook.com', '/v16.0/me', {
+        "fields": "name,first_name,last_name,email,picture",
+        "access_token": "$token"
+      }),
+    );
     FacebookModel model = FacebookModel.fromJson(response.body);
-    final graphResponse = await http.get(Uri.https(
-      'https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${token}',
-    ));
+    // final graphResponse = await http.get(Uri.https(
+    //   'https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${token}',
+    // ));
+    final graphResponse = await http.get(
+      Uri.https('graph.facebook.com', '/v16.0/me', {
+        "fields":
+            "name,picture.width(800).height(800),first_name,last_name,email",
+        "access_token": "$token"
+      }),
+    );
 
     Map ddddv = json.decode(graphResponse.body);
     //print(graphResponse.body);

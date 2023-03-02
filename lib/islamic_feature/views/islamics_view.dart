@@ -58,7 +58,9 @@ class _IslamicsViewState extends State<IslamicsView> {
               isInternetConnected == true ? IslamicsScreen() : Container(),
               isInternetConnected == true
                   ? SizedBox(
-                      height: 400, child: AdmobRectangleUpdated(bannerName: BannerName.AZKAR))
+                      height: 400,
+                      child:
+                          AdmobRectangleUpdated(bannerName: BannerName.AZKAR))
                   : Container(),
             ],
           ),
@@ -70,8 +72,8 @@ class _IslamicsViewState extends State<IslamicsView> {
   @override
   void deactivate() {
     FacebookInterstitialAd.loadInterstitialAd(
-      placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
-      // placementId: locator<RemoteConfigService>().azanPopUpAdId,
+      // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
+      placementId: locator<RemoteConfigService>().azanPopUpAdId,
       listener: (result, value) {
         if (result == InterstitialAdResult.LOADED)
           FacebookInterstitialAd.showInterstitialAd();

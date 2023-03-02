@@ -387,8 +387,8 @@ class CompetitionUI {
                 ),
               ),
 
-                 faceBookAdsWidget(locator<RemoteConfigService>()
-                     .underStartCompetitionAdsId),
+              faceBookAdsWidget(
+                  locator<RemoteConfigService>().underStartCompetitionAdsId),
             ],
           ),
         )));
@@ -653,9 +653,8 @@ class CompetitionUI {
   Widget faceBookAdsWidget(id) {
     return Container(
       child: FacebookBannerAd(
-        placementId:
-            "IMG_16_9_APP_INSTALL#2312433698835503_2964944860251047", //testid
-        // placementId: Platform.isAndroid ? id : Constants.FACEBOOK_IOS_BANNER_ID,
+        // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2964944860251047",
+        placementId: id,
         bannerSize: BannerSize.MEDIUM_RECTANGLE,
         listener: (result, value) {
           switch (result) {
