@@ -45,9 +45,8 @@ class BallBeatIndicator extends Indicator {
 
   @override
   void startAnim(AnimationController controller) {
-    if (!controller.isDismissed) {
-      controller.repeat(reverse: true);
-    }
+    
+    controller.repeat(reverse: true);
   }
 
   @override

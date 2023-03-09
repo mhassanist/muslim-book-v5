@@ -23,7 +23,6 @@ abstract class Indicator {
   void dispose() {
     if (animationControllers.isNotEmpty) {
       for (var i = 0; i < animationControllers.length; i++) {
-        animationControllers[i].stop();
         animationControllers[i].dispose();
       }
     }
