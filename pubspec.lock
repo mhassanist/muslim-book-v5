@@ -556,10 +556,11 @@ packages:
   facebook_audience_network:
     dependency: "direct main"
     description:
-      name: facebook_audience_network
-      sha256: "44eb10576b861c5872d1eec3fc9abe7494500314e4e02c49c06dbdd549c9ade0"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: master
+      resolved-ref: "28907766391c63b3ea372305f42f2293b3f1f3d1"
+      url: "https://github.com/azmasamy/facebook_audience_network.git"
+    source: git
     version: "1.0.1"
   facebook_auth_desktop:
     dependency: transitive

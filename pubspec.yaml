@@ -36,7 +36,12 @@ dependencies:
   expandable: ^5.0.1
   extended_image: ^6.3.4
 
-  facebook_audience_network: ^1.0.1
+  # facebook_audience_network: ^1.0.1
+  facebook_audience_network:
+    git:
+      url: https://github.com/azmasamy/facebook_audience_network.git
+      ref: master
+
   # No null safety
   fancy_dialog:
     git: https://github.com/DokkarRachidReda/Fancy-Flutter-Alert-Dialog
@@ -81,7 +86,6 @@ dependencies:
   google_maps_flutter: ^2.2.2
   google_mobile_ads: ^2.3.0
   google_sign_in: ^5.4.2
-
 
   hijri: ^3.0.0
   hive: ^2.2.3
