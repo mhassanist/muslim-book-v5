@@ -125,7 +125,7 @@ Future<void> main() async {
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   await FacebookAudienceNetwork.init(
-    testingId: "a77955ee-3304-4635-be65-81029b0f5201",
+    // testingId: "a77955ee-3304-4635-be65-81029b0f5201",
   );
   // final loaded = await getLocale();
 
@@ -226,6 +226,7 @@ class MyApp extends StatefulWidget {
                             _showRateAppDialog(context);
                           } else {
                             if (locator<Prefs>().getCountOfOpenDialog() == 3) {
+                              Navigator.of(context).pop();
                               SystemNavigator.pop();
                             } else {
                               if (locator<Prefs>().getDateOfClickLike() !=
@@ -240,21 +241,17 @@ class MyApp extends StatefulWidget {
                                 Duration timeDifference =
                                     now.difference(before);
                                 print(timeDifference.inDays);
-
-                                if (timeDifference != null) {
-                                  if ((timeDifference.inDays >= 30 &&
-                                          locator<Prefs>()
-                                                  .getCountOfClickLike() ==
-                                              1) ||
-                                      (timeDifference.inDays >= 90 &&
-                                          locator<Prefs>()
-                                                  .getCountOfClickLike() ==
-                                              2)) {
-                                    _showRateAppDialog(context);
-                                  } else {
-                                    SystemNavigator.pop();
-                                  }
+                                if ((timeDifference.inDays >= 30 &&
+                                        locator<Prefs>()
+                                                .getCountOfClickLike() ==
+                                            1) ||
+                                    (timeDifference.inDays >= 90 &&
+                                        locator<Prefs>()
+                                                .getCountOfClickLike() ==
+                                            2)) {
+                                  _showRateAppDialog(context);
                                 } else {
+                                  Navigator.of(context).pop();
                                   SystemNavigator.pop();
                                 }
                               } else if (locator<Prefs>()
@@ -272,21 +269,18 @@ class MyApp extends StatefulWidget {
                                     now.difference(before);
                                 print(timeDifference.inDays);
 
-                                if (timeDifference != null) {
-                                  if ((timeDifference.inDays >= 15 && locator<Prefs>().getCountOfClickNotLike() == 1) ||
-                                      (timeDifference.inDays >= 30 &&
-                                          locator<Prefs>()
-                                                  .getCountOfClickNotLike() ==
-                                              2) ||
-                                      (timeDifference.inDays >= 45 &&
-                                          locator<Prefs>()
-                                                  .getCountOfClickNotLike() ==
-                                              3)) {
-                                    _showRateAppDialog(context);
-                                  } else {
-                                    SystemNavigator.pop();
-                                  }
+                                if ((timeDifference.inDays >= 15 && locator<Prefs>().getCountOfClickNotLike() == 1) ||
+                                    (timeDifference.inDays >= 30 &&
+                                        locator<Prefs>()
+                                                .getCountOfClickNotLike() ==
+                                            2) ||
+                                    (timeDifference.inDays >= 45 &&
+                                        locator<Prefs>()
+                                                .getCountOfClickNotLike() ==
+                                            3)) {
+                                  _showRateAppDialog(context);
                                 } else {
+                                  Navigator.of(context).pop();
                                   SystemNavigator.pop();
                                 }
                               } else if (locator<Prefs>()
@@ -324,6 +318,7 @@ class MyApp extends StatefulWidget {
                                       15) {
                                     _showRateAppDialog(context);
                                   } else {
+                                    Navigator.of(context).pop();
                                     SystemNavigator.pop();
                                   }
                                 } else if (locator<Prefs>()
@@ -338,6 +333,7 @@ class MyApp extends StatefulWidget {
                                       30) {
                                     _showRateAppDialog(context);
                                   } else {
+                                    Navigator.of(context).pop();
                                     SystemNavigator.pop();
                                   }
                                 } else if (locator<Prefs>()
@@ -351,6 +347,7 @@ class MyApp extends StatefulWidget {
                                       30) {
                                     _showRateAppDialog(context);
                                   } else {
+                                    Navigator.of(context).pop();
                                     SystemNavigator.pop();
                                   }
                                 }

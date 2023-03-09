@@ -15,17 +15,19 @@ abstract class Indicator {
 
   void start() {
     animationControllers = animation();
-    if (animationControllers != null) {
+    if (animationControllers.isNotEmpty) {
       startAnims(animationControllers);
     }
   }
 
   void dispose() {
-    if (animationControllers != null) {
+    if (animationControllers.isNotEmpty) {
       for (var i = 0; i < animationControllers.length; i++) {
+        animationControllers[i].stop();
         animationControllers[i].dispose();
       }
     }
+    animationControllers = [];
   }
 
   void startAnims(List<AnimationController> controllers) {

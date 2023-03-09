@@ -227,7 +227,7 @@ class _RamadanViewState extends State<RamadanView>
       }
       displayingFromAssets = false;
 
-      _ramadanProvider.ramadanMashraatModel?.forEach((f) {
+      _ramadanProvider.ramadanMashraatModel.forEach((f) {
         animationListWeb.add(AnimationController(
             vsync: this, duration: Duration(milliseconds: 300)));
       });

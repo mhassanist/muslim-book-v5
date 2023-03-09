@@ -107,8 +107,6 @@ dependencies:
 
   moor_flutter: ^4.1.0
 
-  native_ads_flutter: ^1.0.7
-
   path_provider: ^2.0.11
   provider: ^6.0.5
   package_info_plus: ^3.0.2

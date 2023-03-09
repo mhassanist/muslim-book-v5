@@ -11,7 +11,7 @@ class AdManager {
 
   static getAdUnitId(BannerName bannerName) {
     bool isProductionEnvironment =
-        false; // HAMZA: TODO: Get adUnitId from firebase
+        true; // HAMZA: TODO: Get adUnitId from firebase
     if (isProductionEnvironment) {
       switch (bannerName) {
         case BannerName.AZKAR:

@@ -32,7 +32,7 @@ class BallBeatIndicator extends Indicator {
       AnimationController sizeController = new AnimationController(
           duration: const Duration(milliseconds: 375), vsync: context);
       var delayedAnimation =
-      Tween(begin: 0.3, end: 1.0).animate(sizeController);
+          Tween(begin: 0.3, end: 1.0).animate(sizeController);
       delayedAnimation.addListener(() {
         scaleDoubles[i] = delayedAnimation.value;
         postInvalidate();
@@ -45,7 +45,9 @@ class BallBeatIndicator extends Indicator {
 
   @override
   void startAnim(AnimationController controller) {
-    controller.repeat(reverse: true);
+    if (!controller.isDismissed) {
+      controller.repeat(reverse: true);
+    }
   }
 
   @override

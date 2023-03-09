@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:muslim_book/ads/ad_manager.dart';
 import 'package:muslim_book/azkar_feature/screens/azkar_categories_grid_screen.dart';
 import 'package:muslim_book/core/push_notification_service.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
@@ -9,7 +8,6 @@ import 'package:muslim_book/home_feature/views/home_view.dart';
 import 'package:muslim_book/islamic_feature/views/islamic_post_details_from_notification.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/main.dart';
-import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/models/push_notification_model.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/quran/views/quran_section_screen.dart';
@@ -28,7 +26,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
-import 'package:native_ads_flutter/native_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -45,8 +42,6 @@ class _StartViewMobilePortraitViewState
   List<Widget> _pages = [];
   bool isAdd = false;
   late FirebaseRemoteConfig remoteConfig;
-  static late NativeAdmob _ad;
-  final controller = NativeAdmobController();
 
   final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   NotificationData data = NotificationData();
@@ -76,21 +71,6 @@ class _StartViewMobilePortraitViewState
                     IslamicPostDetailsFromNotification(data)));
       }
     });
-    _ad = NativeAdmob(
-      loading: Container(
-        child: Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
-      options: NativeAdmobOptions(
-          // backgroundColor : Color(0xFFFFFFFF),
-          ),
-      adUnitID: AdManager.getAdUnitId(BannerName.Top),
-      numberAds: 1,
-      type: NativeAdmobType.full,
-      error: Container(),
-      controller: controller,
-    );
     super.initState();
 
     WidgetsBinding.instance.addObserver(this);
