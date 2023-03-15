@@ -120,7 +120,7 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                               child: SizedBox(
                                   height: 400,
                                   child: AdmobRectangleUpdated(
-                                      bannerName: BannerName.Top)),
+                                      bannerName: BannerName.TOP)),
                             )),
                             SliverToBoxAdapter(
                                 child: SizedBox(

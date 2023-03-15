@@ -39,12 +39,7 @@ class _AdmobRectangleUpdatedState extends State<AdmobRectangleUpdated> {
   Widget build(BuildContext context) {
     if (isAdLoaded) {
       final AdWidget adWidget = AdWidget(ad: bannerAd);
-      return Container(
-        alignment: Alignment.center,
-        child: adWidget,
-        width: bannerAd.size.width.toDouble(),
-        height: bannerAd.size.height.toDouble(),
-      );
+      return adWidget;
     } else {
       loadBanner();
       return Container(
@@ -88,8 +83,8 @@ class _AdmobRectangleUpdatedState extends State<AdmobRectangleUpdated> {
   void loadBanner() {
     bannerAd = BannerAd(
       adUnitId: AdManager.getAdUnitId(this.widget.bannerName),
-      size: AdSize.getCurrentOrientationInlineAdaptiveBannerAdSize(
-          MediaQuery.of(context).size.width.floor()),
+      size: AdSize.getInlineAdaptiveBannerAdSize(
+          (MediaQuery.of(context).size.width * .95).floor(), 250),
       request: AdRequest(),
       listener: adListener,
     );

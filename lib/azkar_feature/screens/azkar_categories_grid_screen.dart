@@ -110,7 +110,7 @@ class _AzkarCategoriesGridScreenState extends State<AzkarCategoriesGridScreen> {
                   ),
                   SliverToBoxAdapter(
                     child: SizedBox(
-                        height: 100,
+                        height: 250,
                         child: AdmobRectangleUpdated(
                             bannerName: BannerName.AZKAR)),
                   ),

@@ -122,7 +122,7 @@ class _AzkarCarouselScreenState extends State<AzkarCarouselScreen> {
                             height: 20,
                           ),
                           SizedBox(
-                              height: 300,
+                              height: 250,
                               child: AdmobRectangleUpdated(
                                   bannerName: BannerName.BOSLA)),
                         ],

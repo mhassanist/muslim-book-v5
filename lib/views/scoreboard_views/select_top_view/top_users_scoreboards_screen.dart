@@ -87,7 +87,7 @@ class _TopUserScorebardsScreenState extends State<TopUserScorebardsScreen> {
               SliverToBoxAdapter(
                   child: SizedBox(
                       height: 300,
-                      child: AdmobRectangleUpdated(bannerName: BannerName.Top)
+                      child: AdmobRectangleUpdated(bannerName: BannerName.TOP)
                       //  ..  AdMobRectangle(BannerName.Top)
                       )),
               SliverToBoxAdapter(

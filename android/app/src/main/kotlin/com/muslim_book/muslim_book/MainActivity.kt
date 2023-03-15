@@ -11,6 +11,7 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+import io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin
 
 // For AudioServicePlugin setup
 import com.ryanheise.audioservice.AudioServicePlugin;
@@ -42,12 +43,22 @@ class MainActivity : FlutterActivity() {
 //    }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
-//        flutterEngine.plugins.add(GoogleMobileAdsPlugin())
-//    flutterEngine.plugins.add(GoogleMobileAdsPlugin())
-//    flutterEngine.plugins.add(AndroidAlarmManagerPlugin())
-//    flutterEngine.plugins.add(FlutterFirebaseCorePlugin())
+        // flutterEngine.plugins.add(GoogleMobileAdsPlugin())
+        // flutterEngine.plugins.add(GoogleMobileAdsPlugin())
+        // flutterEngine.plugins.add(AndroidAlarmManagerPlugin())
+        // flutterEngine.plugins.add(FlutterFirebaseCorePlugin())
         super.configureFlutterEngine(flutterEngine)
         ChannelMethods(flutterEngine.dartExecutor, applicationContext, this, intent)
+
+        // Register the ListTileNativeAdFactory
+        GoogleMobileAdsPlugin.registerNativeAdFactory(
+                flutterEngine, "listTile", ListTileNativeAdFactory(context))
+    }
+
+    override fun cleanUpFlutterEngine(flutterEngine: FlutterEngine) {
+        super.cleanUpFlutterEngine(flutterEngine)
+        // Unregister the ListTileNativeAdFactory
+        GoogleMobileAdsPlugin.unregisterNativeAdFactory(flutterEngine, "listTile");
     }
 
     //  for hash key

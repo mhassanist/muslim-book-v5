@@ -48,7 +48,7 @@ class _QuranSectionScreenState extends State<QuranSectionScreen> {
                 SliverToBoxAdapter(
                     child: SizedBox(
                         height: 300,
-                        child: AdmobRectangleUpdated(bannerName: BannerName.Top)
+                        child: AdmobRectangleUpdated(bannerName: BannerName.TOP)
                         //  ..  AdMobRectangle(BannerName.Top)
                         )),
                 SliverToBoxAdapter(

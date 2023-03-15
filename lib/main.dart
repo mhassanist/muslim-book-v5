@@ -70,18 +70,18 @@ Future<void> _initAdMob() async {
 
 Future<FirebaseRemoteConfig> _setupRemoteConfig() async {
   final remoteConfig = FirebaseRemoteConfig.instance;
-  remoteConfig.setDefaults(<String, dynamic>{
-    'down_Competition_1': 'ca-app-pub-8586064191208277/2234874389',
-    'Sabha': 'ca-app-pub-8586064191208277/9405322350',
-    'Azkar': 'ca-app-pub-8586064191208277/2234874389',
-    'Bosla': 'ca-app-pub-8586064191208277/2234874389',
-    'Down_Edit_Azan': 'ca-app-pub-8586064191208277/6219411880',
-    'down_start_Competition': 'ca-app-pub-8586064191208277/4415375627',
-    'Top': 'ca-app-pub-8586064191208277/5354527555',
-    'The_middle_of_the_competition': 'ca-app-pub-8586064191208277/2784204532',
-  });
+  // remoteConfig.setDefaults(<String, dynamic>{
+  //   'down_Competition_1': 'ca-app-pub-8586064191208277/2234874389',
+  //   'Sabha': 'ca-app-pub-8586064191208277/9405322350',
+  //   'Azkar': 'ca-app-pub-8586064191208277/2234874389',
+  //   'Bosla': 'ca-app-pub-8586064191208277/2234874389',
+  //   'Down_Edit_Azan': 'ca-app-pub-8586064191208277/6219411880',
+  //   'down_start_Competition': 'ca-app-pub-8586064191208277/4415375627',
+  //   'Top': 'ca-app-pub-8586064191208277/5354527555',
+  //   'The_middle_of_the_competition': 'ca-app-pub-8586064191208277/2784204532',
+  // });
   try {
-    // Using default duration to force fetching from remote server.
+    // Using default duration to force fetching from remote server.Rq
     await remoteConfig.fetch(
         // expiration: const Duration(seconds: 0),
         );
@@ -201,10 +201,10 @@ class MyApp extends StatefulWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                Expanded(
-                    child: Container(
-                        child:
-                            AdmobRectangleUpdated(bannerName: BannerName.Top))),
+                SizedBox(
+                  height: 250,
+                    child:
+                        AdmobRectangleUpdated(bannerName: BannerName.TOP)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
