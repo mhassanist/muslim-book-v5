@@ -5,7 +5,6 @@ import 'package:muslim_book/quran/views/quran_section_screen.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';

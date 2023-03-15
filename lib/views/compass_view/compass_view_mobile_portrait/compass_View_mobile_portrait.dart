@@ -15,7 +15,6 @@ import 'package:flutter_svg/svg.dart';
 // import 'package:geolocation/geolocation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:location/location.dart' as loc;
 import 'package:permission_handler/permission_handler.dart';
 // import 'package:sensors_plus/sensors_plus.dart';
 
@@ -44,13 +43,13 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
   getCurrentLocation() async {
     _gettingLocation = true;
     LocationUtilities()
-        .getLocationData(loc.LocationAccuracy.high)
+        .getCurrentPosition(LocationAccuracy.high)
         .then((response) {
       if (response != null && _didGetLocation == false) {
         if (mounted) {
           setState(() {
             _didGetLocation = true;
-            currentLocLat = (response as loc.LocationData).latitude;
+            currentLocLat = response.latitude;
             currentLocLng = response.longitude;
             // currentLocLatLong = "${(response as Address).addressLine}";
             currentLocLatLong = "{(response as Address).addressLine}";
@@ -246,12 +245,11 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
             getCurrentLocation();
           }
         } else {
-          try {
-            final result = await loc.requestPermission();
-            if (result.authorized) {
-              _fetchPermissionStatus();
-            }
-          } catch (e) {}
+          LocationPermission permission = await Geolocator.checkPermission();
+          if (permission == LocationPermission.denied) {
+            permission = await Geolocator.requestPermission();
+          }
+          _fetchPermissionStatus();
         }
       }
     });

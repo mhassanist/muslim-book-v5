@@ -1,14 +1,15 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:location/location.dart' as loc;
+// import 'package:location/location.dart' as loc;
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class LocationUtilities {
-
   // getLastKnownLocation
-  Future checkLocationPermission({bool save = false,}) async {
+  Future checkLocationPermission({
+    bool save = false,
+  }) async {
     if (await Permission.locationWhenInUse.request().isGranted) {
       final status = await Permission.location.serviceStatus;
 
@@ -18,11 +19,15 @@ class LocationUtilities {
           // Test if location services are enabled.
           final serviceEnabled = await Geolocator.isLocationServiceEnabled();
           if (serviceEnabled) {
-            return await getLastKnownLocation(save: save,);
+            return await getLastKnownLocation(
+              save: save,
+            );
           }
         } catch (e) {}
       } else {
-        return await getLastKnownLocation(save: save,);
+        return await getLastKnownLocation(
+          save: save,
+        );
       }
     } else {
       return null;
@@ -30,7 +35,9 @@ class LocationUtilities {
   }
 
   // getLocation
-  Future getLastKnownLocation({bool save = false,}) async {
+  Future getLastKnownLocation({
+    bool save = false,
+  }) async {
     try {
       Position? result = await Geolocator.getLastKnownPosition().timeout(
         Duration(seconds: 1),
@@ -45,53 +52,33 @@ class LocationUtilities {
           locator<Prefs>().setLatitude(result.latitude);
           locator<Prefs>().setLongtude(result.longitude);
         }
-        return getAddress(result.latitude, result.longitude);
+        return _getPlacemark(result.latitude, result.longitude);
       } else {
-        return getLocation(loc.LocationAccuracy.low);
+        return getAddress(LocationAccuracy.low);
       }
     } catch (e) {
-      return getLocation(loc.LocationAccuracy.low);
+      return getAddress(LocationAccuracy.low);
     }
   }
 
-  // getAddress
-  Future getLocation(loc.LocationAccuracy accuracy) async {
+  Future getAddress(LocationAccuracy accuracy) async {
     try {
-      loc.LocationData locationData = await loc.getLocation(
-        settings: loc.LocationSettings(accuracy: accuracy,),
-      ).timeout(
-        Duration(seconds: 3),
-        onTimeout: () async {
-          return await loc.getLocation(
-            settings: loc.LocationSettings(accuracy: accuracy,),
-          ).timeout(Duration(seconds: 60));
-        },
-      );
-      return await getAddress(locationData.latitude, locationData.longitude);
+      var locationData = await Geolocator.getCurrentPosition(desiredAccuracy: accuracy);
+      return await _getPlacemark(locationData.latitude, locationData.longitude);
     } catch (_) {
       return null;
     }
   }
 
-  Future getLocationData(loc.LocationAccuracy accuracy) async {
+    Future getCurrentPosition(LocationAccuracy accuracy) async {
     try {
-      loc.LocationData locationData = await loc.getLocation(
-        settings: loc.LocationSettings(accuracy: accuracy,),
-      ).timeout(
-        Duration(seconds: 3),
-        onTimeout: () async {
-          return await loc.getLocation(
-            settings: loc.LocationSettings(accuracy: accuracy,),
-          ).timeout(Duration(seconds: 60));
-        },
-      );
-      return locationData;
+      return await Geolocator.getCurrentPosition(desiredAccuracy: accuracy);
     } catch (_) {
       return null;
     }
   }
 
-  Future<Placemark?> getAddress(lat, long) async {
+  Future<Placemark?> _getPlacemark(lat, long) async {
     try {
       final placeMarks = await placemarkFromCoordinates(lat, long)
           .timeout(Duration(seconds: 60));
