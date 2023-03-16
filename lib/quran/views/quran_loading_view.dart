@@ -1,7 +1,6 @@
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/quran/provider/quran_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class QuranLoadingView extends StatefulWidget {

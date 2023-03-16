@@ -104,7 +104,7 @@ class AzanFairSoundsProvider extends ViewStateProvider {
     var azanList = await LocalStorageManager().loadFajrAzanSoundsList();
     var fairAzanSheikh = await locator<Prefs>().getFajrAzanShiekhJSON();
 
-    if (azanList != null && fairAzanSheikh != null) {
+    if (azanList != null && fairAzanSheikh.isNotEmpty) {
       loadedState = DataLoadingState.localAvailable;
       azanSounds = azanList;
       Map<String, dynamic>? localSavedSheikh;

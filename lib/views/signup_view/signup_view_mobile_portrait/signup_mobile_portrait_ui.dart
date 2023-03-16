@@ -10,11 +10,9 @@ import 'package:muslim_book/utils/loading_utils.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/widgets/app_text_field.dart';
 import 'package:muslim_book/widgets/standardButton_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import '../../../locals_utils/app_localizations.dart';
 import '../../../utils/sizing_info_extension.dart';
 
 class SignupMobilePortraitUi {
@@ -42,7 +40,7 @@ class SignupMobilePortraitUi {
                 //     ?
                 child: Container(
               decoration: BoxDecoration(
-                  color: Theme.of(context).accentColor, shape: BoxShape.circle),
+                  color: Theme.of(context).colorScheme.secondary, shape: BoxShape.circle),
               child: Icon(
                 Icons.person,
                 size: sizeConfig.blockSizeHorizontal * 20,
@@ -259,7 +257,7 @@ class SignupMobilePortraitUi {
   }
 
   Future setRegister(GlobalKey<ScaffoldState> key) async {
-    if (userProvider.selectedCountry == null) {
+    if (userProvider.selectedCountry.name == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text(AppLocalizations.of(context)!

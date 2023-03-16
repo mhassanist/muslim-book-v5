@@ -60,7 +60,9 @@ class EditProfileMobilePortraitUi {
                 width: sizeConfig.blockSizeHorizontal * 12,
                 decoration: BoxDecoration(
                     border: Border.all(
-                        width: 2, color: Theme.of(context).colorScheme.secondary,),
+                      width: 2,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                     color: Constants.CANVAS_COLOR,
                     shape: BoxShape.circle),
                 child: IconButton(
@@ -87,7 +89,8 @@ class EditProfileMobilePortraitUi {
           image: DecorationImage(
               image: NetworkImage(
                 Provider.of<UserProvider>(context).user.image ??
-                    Provider.of<UserProvider>(context).user.flag ?? '',
+                    Provider.of<UserProvider>(context).user.flag ??
+                    '',
               ),
               fit: BoxFit.cover),
           shape: BoxShape.circle),
@@ -118,7 +121,9 @@ class EditProfileMobilePortraitUi {
   }
 
   _pickImage(ImageSource _imageSource) async {
-    final file = await ImagePicker().pickImage(source: _imageSource,);
+    final file = await ImagePicker().pickImage(
+      source: _imageSource,
+    );
     if (file != null) {
       provider.setUserProfileImage = File(file.path);
     }
@@ -306,27 +311,26 @@ class EditProfileMobilePortraitUi {
       sizeConfig: sizeConfig,
       color: Theme.of(context).primaryColor,
       title: AppLocalizations.of(context)!.translate("save_edit"),
-      onPressed: () async{
-       await saveEdit(key);
+      onPressed: () async {
+        await saveEdit(key);
       },
     );
   }
 
-  Future<void> saveEdit(GlobalKey<ScaffoldState> key) async{
-    if (provider.selectedCountry == null) {
+  Future<void> saveEdit(GlobalKey<ScaffoldState> key) async {
+    if (provider.selectedCountry.name == null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
               AppLocalizations.of(context)!.translate("country_is_required"))));
     } else if (controllers.formKey.currentState!.validate()) {
       LoadingUtils loadingUtils = LoadingUtils();
       loadingUtils.setIsLoading(key.currentContext!, true);
-     var res =await provider.checkEdit(controllers.nameController.text);
+      var res = await provider.checkEdit(controllers.nameController.text);
       loadingUtils.setIsLoading(key.currentContext!, false);
       if (res) {
         Navigator.pop(context);
       }
     }
-
   }
 
   AnimatedCrossFade errorText() {
@@ -350,5 +354,4 @@ class EditProfileMobilePortraitUi {
       ),
     );
   }
-
 }

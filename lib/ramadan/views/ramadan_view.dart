@@ -102,75 +102,75 @@ class _RamadanViewState extends State<RamadanView>
         return Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
-          elevation: 0,
-          title: Text(
-            "رمضان",
-            style: GoogleFonts.almarai(
-              fontSize: ScreenUtil().setSp(25),
-              color: Constants.PRIMARY_DARK_COLOR,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          iconTheme: IconThemeData(
-            color: Theme.of(context).primaryColor,
-          ),
-          actions: <Widget>[
-            InkWell(
-                onTap: () {
-                  Get.dialog(ShareDialog());
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  child: Icon(Icons.share),
-                )),
-            Container(
-              width: 10,
-            )
-          ],
-          backgroundColor: Colors.white),
+              elevation: 0,
+              title: Text(
+                "رمضان",
+                style: GoogleFonts.almarai(
+                  fontSize: ScreenUtil().setSp(25),
+                  color: Constants.PRIMARY_DARK_COLOR,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              iconTheme: IconThemeData(
+                color: Theme.of(context).primaryColor,
+              ),
+              actions: <Widget>[
+                InkWell(
+                    onTap: () {
+                      Get.dialog(ShareDialog());
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      child: Icon(Icons.share),
+                    )),
+                Container(
+                  width: 10,
+                )
+              ],
+              backgroundColor: Colors.white),
           body: ResponsiveBuilder(builder: (context, sizeConfig) {
-        return FutureBuilder(
-          future: LocalStorageManager.storage.ready,
-          builder: (BuildContext context, snapshot) {
-            if (snapshot.data == true) {
-              //local storage ready
-              return ((model).viewState == ViewState.Loading)
-                  ? Container(
-                      width: double.infinity,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(
-                            valueColor: new AlwaysStoppedAnimation<Color>(
-                                prymaryColor),
+            return FutureBuilder(
+              future: LocalStorageManager.storage.ready,
+              builder: (BuildContext context, snapshot) {
+                if (snapshot.data == true) {
+                  //local storage ready
+                  return ((model).viewState == ViewState.Loading)
+                      ? Container(
+                          width: double.infinity,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircularProgressIndicator(
+                                valueColor: new AlwaysStoppedAnimation<Color>(
+                                    prymaryColor),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    )
-                  : Stack(children: <Widget>[
-                      Positioned.fill(child: getHomeBody(model, context)),
-                      Positioned.fill(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Container(
-                            // margin: EdgeInsets.only(top: 100),
-                            child: Visibility(
-                              visible: _isSaveing,
-                              child: Loading(
-                                indicator: BallBeatIndicator(),
-                                size: 70.0,
-                                color: Constants.PRIMARY_DARK_COLOR,
+                        )
+                      : Stack(children: <Widget>[
+                          Positioned.fill(child: getHomeBody(model, context)),
+                          Positioned.fill(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                // margin: EdgeInsets.only(top: 100),
+                                child: Visibility(
+                                  visible: _isSaveing,
+                                  child: Loading(
+                                    indicator: BallBeatIndicator(),
+                                    size: 70.0,
+                                    color: Constants.PRIMARY_DARK_COLOR,
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      )
-                    ]);
-            } else {
-              return Container();
-            }
-          },
-        );
+                          )
+                        ]);
+                } else {
+                  return Container();
+                }
+              },
+            );
           }),
           backgroundColor: Colors.white,
         );
@@ -203,7 +203,7 @@ class _RamadanViewState extends State<RamadanView>
         );
       });
 
-      if (_ramadanProvider.ramadanCannonModel != null) {
+      if (_ramadanProvider.ramadanCannonModel.isNotEmpty) {
         return getConnan(ramadanProvider, context);
       } else {
         return Container();
@@ -221,8 +221,7 @@ class _RamadanViewState extends State<RamadanView>
             DataLoadingState.localAvailable ||
         _ramadanProvider.loadedMashraatState ==
             DataLoadingState.canBeLoadedFromLocal) {
-      if (_ramadanProvider.ramadanMashraatModel == null ||
-          _ramadanProvider.ramadanMashraatModel.length == 0) {
+      if (_ramadanProvider.ramadanMashraatModel.isEmpty) {
         _ramadanProvider.loadMashraatSounds();
       }
       displayingFromAssets = false;
@@ -232,7 +231,7 @@ class _RamadanViewState extends State<RamadanView>
             vsync: this, duration: Duration(milliseconds: 300)));
       });
       _ramadanProvider.loadMshartSelection();
-      if (_ramadanProvider.ramadanMashraatModel != null) {
+      if (_ramadanProvider.ramadanMashraatModel.isNotEmpty) {
         return getMashraat(ramadanProvider, context);
       } else {
         return Container();
@@ -479,8 +478,7 @@ class _RamadanViewState extends State<RamadanView>
             height: 1,
             color: Constants.PRIMARY_DARK_COLOR,
           ),
-          (_ramadanProvider.ramadanAllData != null &&
-                  _ramadanProvider.ramadanAllData.isNotEmpty)
+          _ramadanProvider.ramadanAllData.isNotEmpty
               ? Column(children: [
                   Container(
                     padding: EdgeInsets.symmetric(
@@ -961,7 +959,7 @@ class _RamadanViewState extends State<RamadanView>
           }).toList(),
           onChanged: (value) async {
             if (value != null) {
-              _ramadanProvider.ramadanCannonSelected = value as RamadanSoundsModel;
+              _ramadanProvider.ramadanCannonSelected = value;
               _ramadanProvider.saveSelectedConnanJson(
                   _ramadanProvider.ramadanCannonSelected.toJson(), "");
               await _ramadanProvider.downloadConnanFile(
@@ -990,7 +988,10 @@ class _RamadanViewState extends State<RamadanView>
   }
 
   Future playSound(file) async {
-    if (!screenNoLongerActive) await audioPlayer.play(file,);
+    if (!screenNoLongerActive)
+      await audioPlayer.play(
+        file,
+      );
   }
 
   Widget alertsDrum(BuildContext context) {
@@ -1087,7 +1088,7 @@ class _RamadanViewState extends State<RamadanView>
           }).toList(),
           onChanged: (value) {
             if (value != null) {
-              _ramadanProvider.repetitionsSelected = value as Repetitions;
+              _ramadanProvider.repetitionsSelected = value;
               _ramadanProvider.saveSelectedMashraatRepetitionsJson(
                   _ramadanProvider.repetitionsSelected.id.toString(), context);
             }
@@ -1130,7 +1131,8 @@ class _RamadanViewState extends State<RamadanView>
           }).toList(),
           onChanged: (value) async {
             if (value != null) {
-              _ramadanProvider.ramadanMashraatSelected = value as RamadanSoundsModel;
+              _ramadanProvider.ramadanMashraatSelected =
+                  value;
               playSound(_ramadanProvider.ramadanMashraatSelected.file);
               _ramadanProvider.saveSelectedMashraatJson(
                   _ramadanProvider.ramadanMashraatSelected.toJson(), "");

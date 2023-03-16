@@ -57,7 +57,7 @@ class RamadanMobilePortraitUi {
           }).toList(),
           onChanged: (value) {
             if (value != null) {
-              provider.ramadanMashraatSelected = value as RamadanSoundsModel;
+              provider.ramadanMashraatSelected = value;
             }
           },
         ),

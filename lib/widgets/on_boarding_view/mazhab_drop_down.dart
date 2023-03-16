@@ -46,7 +46,7 @@ class MazhabsDropDown extends StatelessWidget {
             }).toList(),
             onChanged: (value) {
               if (value != null) {
-                model.pickedMazhab = value as Map<String, dynamic>;
+                model.pickedMazhab = value;
               }
             },
           ),

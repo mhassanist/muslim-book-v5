@@ -211,9 +211,8 @@ class QuranDao {
   Future updateUserProgress(int surah, int ayah) async {
     quranModel.QuranUserModel model =
         await _quranBox.get(Constants.QURAN_USER_DATABASE);
-    if (model == null) {
-      model = quranModel.QuranUserModel();
-    }
+    model = quranModel.QuranUserModel();
+
     model.lastReadSurahId = surah;
     model.lastReadAyahId = ayah;
     await saveUserChanges(model);

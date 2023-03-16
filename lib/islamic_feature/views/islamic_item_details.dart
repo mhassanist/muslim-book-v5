@@ -96,8 +96,7 @@ class IslamicItemDetails extends ConsumerWidget {
           ),
           body: Container(
               color: Color(0XFF347D53),
-              child: postschanges.islamicCatPosts != null &&
-                      postschanges.islamicCatPosts.isNotEmpty
+              child: postschanges.islamicCatPosts.isNotEmpty
                   ? _buildIslamicPostList()
                   : islamicPostsListWidget.isNotEmpty
                       ? _buildIslamicPostList()
@@ -201,9 +200,8 @@ class IslamicItemDetails extends ConsumerWidget {
                                       IslamicPostDetails(islamicPost)));
                         },
                         child: Container(
-                            child: (islamicPost.featured == null ||
-                                    islamicPost.featured.endsWith('mp4') ||
-                                    islamicPost.featured == "")
+                            child: (islamicPost.featured.endsWith('mp4') ||
+                                    islamicPost.featured.isEmpty)
                                 ? Image.asset(
                                     "assets/images/splash_view/logo.png",
                                     color: Colors.grey[100],

@@ -419,7 +419,7 @@ class Timings {
         "Fajr": fajr,
         "Sunrise": sunrise,
         "Dhuhr": dhuhr,
-        "Asr": asr != null ? {Asr: Asr.the1531EET} : '',
+        "Asr": {Asr: Asr.the1531EET},
         "Sunset": sunset,
         "Maghrib": maghrib,
         "Isha": isha,

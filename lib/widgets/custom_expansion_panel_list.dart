@@ -6,9 +6,9 @@ const double _kPanelHeaderCollapsedHeight = 48.0;
 class CustomExpansionPanelList extends StatelessWidget {
   const CustomExpansionPanelList({
     super.key,
-    this.children: const <ExpansionPanel>[],
+    this.children = const <ExpansionPanel>[],
     this.expansionCallback,
-    this.animationDuration: kThemeAnimationDuration,
+    this.animationDuration = kThemeAnimationDuration,
   });
 
   final List<ExpansionPanel> children;

@@ -13,7 +13,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 
 class HomeView extends StatefulWidget {
   @override
-  _HomeViewState createState() => _HomeViewState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
 enum Language { english, france, Arabic }

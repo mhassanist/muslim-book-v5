@@ -46,7 +46,7 @@ class MethodsDropDown extends StatelessWidget {
             }).toList(),
             onChanged: (value) {
               if (value != null) {
-                model.pickedMethod = value as Map<String, dynamic>;
+                model.pickedMethod = value;
               }
             },
           ),

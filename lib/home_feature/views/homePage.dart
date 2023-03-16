@@ -92,9 +92,11 @@ class HomePage extends ConsumerWidget {
 
             //add ad every 10 posts
             if (pageIndex.isOdd && (i == 10 || i == 20)) {
-              postsListWidget.add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
+              postsListWidget
+                  .add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
             } else if (pageIndex.isEven && (i == 5 || i == 15 || i == 25)) {
-              postsListWidget.add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
+              postsListWidget
+                  .add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
             }
           }
         }
@@ -113,10 +115,12 @@ class HomePage extends ConsumerWidget {
 
           //add ad every 10 posts
           if (islamicPageIndex.isOdd && (i == 10 || i == 20)) {
-            islamicPostsListWidget.add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
+            islamicPostsListWidget
+                .add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
           } else if (islamicPageIndex.isEven &&
               (i == 5 || i == 15 || i == 25)) {
-            islamicPostsListWidget.add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
+            islamicPostsListWidget
+                .add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
           }
         }
       }
@@ -287,11 +291,7 @@ class HomePage extends ConsumerWidget {
                                             ),
                                           )
                                         : postschanges.isPosts
-                                            ? postschanges.posts != null &&
-                                                    postschanges.posts.data !=
-                                                        null &&
-                                                    postschanges
-                                                        .posts.data.isNotEmpty
+                                            ? postschanges.posts.data.isNotEmpty
                                                 ? _buildPostsList()
                                                 : postsListWidget.isNotEmpty
                                                     ? _buildPostsList()
@@ -324,7 +324,8 @@ class HomePage extends ConsumerWidget {
                                                               ),
                                                             ),
                                                           ))
-                                            : postschanges.categories != null &&
+                                            : postschanges.categories
+                                                        .isNotEmpty &&
                                                     postschanges
                                                         .categories.isNotEmpty
                                                 ? _buildIslamicPostList()
@@ -920,9 +921,8 @@ class HomePage extends ConsumerWidget {
                                           IslamicPostDetails(islamicPost)));
                             },
                             child: Container(
-                                child: (islamicPost.featured == null ||
-                                        islamicPost.featured.endsWith('mp4') ||
-                                        islamicPost.featured == "")
+                                child: (islamicPost.featured.endsWith('mp4') ||
+                                        islamicPost.featured.isEmpty)
                                     ? Image.asset(
                                         "assets/images/splash_view/logo.png",
                                         color: Colors.grey[100],
