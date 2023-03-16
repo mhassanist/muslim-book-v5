@@ -45,7 +45,6 @@ class _AzkarCategoriesGridScreenState extends State<AzkarCategoriesGridScreen> {
           leading: InkWell(
             child: Container(
               margin: EdgeInsetsDirectional.only(start: 10),
-              padding: EdgeInsets.all(5),
               height: 20,
               width: 20,
               child: SvgPicture.asset("assets/icons/iconappbar.svg",
@@ -91,8 +90,8 @@ class _AzkarCategoriesGridScreenState extends State<AzkarCategoriesGridScreen> {
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
                         padding: EdgeInsets.symmetric(
-                          vertical: sizeConfig.blockSizeHorizontal * 3,
-                        ),
+                            vertical: sizeConfig.blockSizeHorizontal * 3,
+                            horizontal: 5),
                         crossAxisCount: 6,
                         itemCount: Provider.of<AzkarProvider>(context)
                             .azkarList(context)
@@ -109,10 +108,9 @@ class _AzkarCategoriesGridScreenState extends State<AzkarCategoriesGridScreen> {
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: SizedBox(
-                        height: 250,
-                        child: AdmobRectangleUpdated(
-                            bannerName: BannerName.AZKAR)),
+                    child: AdmobRectangleUpdated(
+                      bannerName: BannerName.AZKAR,
+                    ),
                   ),
                 ],
               ),

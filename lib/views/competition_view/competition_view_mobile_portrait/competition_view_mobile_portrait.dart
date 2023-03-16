@@ -181,9 +181,7 @@ class _CompetitionViewMobilePortraitState
           ui.questions(),
           ui.answers(),
           ui.continueButton(),
-          SizedBox(
-              height: 300,
-              child: AdmobRectangleUpdated(bannerName: BannerName.COMPETITION))
+          AdmobRectangleUpdated(bannerName: BannerName.COMPETITION)
 //          ui.faceBookAdsWidget(
 //              locator<RemoteConfigService>().underCompetitionAdsId)
         ],

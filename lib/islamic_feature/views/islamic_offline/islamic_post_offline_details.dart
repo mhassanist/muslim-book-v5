@@ -51,18 +51,23 @@ class _IslamicPostOfflineDetailsState extends State<IslamicPostOfflineDetails> {
           transparentBackground: false,
           title: AppScaffoldTitleWidget(title: widget.catName),
           centerTitle: true,
-          child: ListView(
-            padding: EdgeInsets.all(10),
+          child: Column(
             children: [
               isInternetConnected == true
                   ? _buildAdSection(context)
                   : Container(),
-              widget.data['body'] != null
-                  ? _buildPostTitleUi(widget.data)
-                  : Container(),
-              widget.data['body'] != null ? _buildSizedBox() : Container(),
-              _buildPostContentUi(widget.data),
-              _buildSizedBox(),
+              ListView(
+                shrinkWrap: true,
+                padding: EdgeInsets.all(10),
+                children: [
+                  widget.data['body'] != null
+                      ? _buildPostTitleUi(widget.data)
+                      : Container(),
+                  widget.data['body'] != null ? _buildSizedBox() : Container(),
+                  _buildPostContentUi(widget.data),
+                  _buildSizedBox(),
+                ],
+              ),
             ],
           ),
         );
@@ -92,8 +97,6 @@ class _IslamicPostOfflineDetailsState extends State<IslamicPostOfflineDetails> {
   }
 
   _buildAdSection(BuildContext context) {
-    return Container(
-        height: MediaQuery.of(context).size.height / 3.0,
-        child: AdmobRectangleUpdated(bannerName: BannerName.AZKAR));
+    return AdmobRectangleUpdated(bannerName: BannerName.AZKAR);
   }
 }

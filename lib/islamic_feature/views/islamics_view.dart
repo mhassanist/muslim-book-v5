@@ -52,15 +52,10 @@ class _IslamicsViewState extends State<IslamicsView> {
           child: Column(
             children: <Widget>[
               IslamicsOfflineScreen(),
-              SizedBox(
-                  height: MediaQuery.of(context).size.height / 3.0,
-                  child: AdmobRectangleUpdated(bannerName: BannerName.AZKAR)),
+              AdmobRectangleUpdated(bannerName: BannerName.AZKAR),
               isInternetConnected == true ? IslamicsScreen() : Container(),
               isInternetConnected == true
-                  ? SizedBox(
-                      height: 400,
-                      child:
-                          AdmobRectangleUpdated(bannerName: BannerName.AZKAR))
+                  ? AdmobRectangleUpdated(bannerName: BannerName.AZKAR)
                   : Container(),
             ],
           ),

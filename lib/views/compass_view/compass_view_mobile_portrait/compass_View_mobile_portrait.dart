@@ -225,9 +225,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
               SizedBox(
                 height: 20,
               ),
-              SizedBox(
-                  height: 300,
-                  child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA))
+              AdmobRectangleUpdated(bannerName: BannerName.BOSLA)
             ],
           ),
         );

@@ -8,9 +8,13 @@ import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 
 class AdmobRectangleUpdated extends StatefulWidget {
   final BannerName bannerName;
+  final double? width;
+  final double? height;
   const AdmobRectangleUpdated({
     super.key,
     required this.bannerName,
+    this.width,
+    this.height,
   });
 
   @override
@@ -39,10 +43,11 @@ class _AdmobRectangleUpdatedState extends State<AdmobRectangleUpdated> {
   Widget build(BuildContext context) {
     if (isAdLoaded) {
       final AdWidget adWidget = AdWidget(ad: bannerAd);
-      return adWidget;
+      return SizedBox(height: widget.height ?? 250, child: adWidget);
     } else {
       loadBanner();
-      return Container(
+      return SizedBox(
+        height: widget.height ?? 250,
         child: Center(
           child: Loading(
             indicator: BallBeatIndicator(),
@@ -84,7 +89,10 @@ class _AdmobRectangleUpdatedState extends State<AdmobRectangleUpdated> {
     bannerAd = BannerAd(
       adUnitId: AdManager.getAdUnitId(this.widget.bannerName),
       size: AdSize.getInlineAdaptiveBannerAdSize(
-          (MediaQuery.of(context).size.width * .95).floor(), 250),
+          widget.width != null
+              ? widget.width!.floor()
+              : MediaQuery.of(context).size.width.floor(),
+          widget.height != null ? widget.height!.floor() : 250),
       request: AdRequest(),
       listener: adListener,
     );

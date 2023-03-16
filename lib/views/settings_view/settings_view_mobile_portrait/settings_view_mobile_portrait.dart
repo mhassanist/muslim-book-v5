@@ -302,12 +302,8 @@ class _SettingsViewMobilePortraitState
                       height: 10,
                     )),
                     SliverToBoxAdapter(
-                      child: SizedBox(
-                          height: 300,
-                          child: AdmobRectangleUpdated(
-                              bannerName: BannerName.BOSLA)
-                          //   AdMobRectangle(BannerName.BOSLA)
-                          ),
+                      child:
+                          AdmobRectangleUpdated(bannerName: BannerName.BOSLA),
                     ),
                     SliverToBoxAdapter(
                         child: SizedBox(

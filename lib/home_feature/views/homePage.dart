@@ -92,13 +92,9 @@ class HomePage extends ConsumerWidget {
 
             //add ad every 10 posts
             if (pageIndex.isOdd && (i == 10 || i == 20)) {
-              postsListWidget.add(SizedBox(
-                  height: 300,
-                  child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA)));
+              postsListWidget.add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
             } else if (pageIndex.isEven && (i == 5 || i == 15 || i == 25)) {
-              postsListWidget.add(SizedBox(
-                  height: 300,
-                  child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA)));
+              postsListWidget.add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
             }
           }
         }
@@ -117,14 +113,10 @@ class HomePage extends ConsumerWidget {
 
           //add ad every 10 posts
           if (islamicPageIndex.isOdd && (i == 10 || i == 20)) {
-            islamicPostsListWidget.add(SizedBox(
-                height: 300,
-                child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA)));
+            islamicPostsListWidget.add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
           } else if (islamicPageIndex.isEven &&
               (i == 5 || i == 15 || i == 25)) {
-            islamicPostsListWidget.add(SizedBox(
-                height: 300,
-                child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA)));
+            islamicPostsListWidget.add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
           }
         }
       }

@@ -76,10 +76,7 @@ class _IslamicCatPostsState extends State<IslamicCatPosts> {
                         return Column(
                           children: [
                             _buildPostCardUi(data[index]),
-                            SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height / 3.0,
-                                child: AdmobRectangleUpdated(bannerName: BannerName.AZKAR))
+                            AdmobRectangleUpdated(bannerName: BannerName.AZKAR,)
                           ],
                         );
                       } else {

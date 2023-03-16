@@ -111,9 +111,7 @@ class _IslamicsOfflineScreenState extends State<IslamicsOfflineScreen> {
           );
         }),
         isInternetConnected == true
-            ? Container(
-                height: MediaQuery.of(context).size.height / 3.0,
-                child: AdmobRectangleUpdated(bannerName: BannerName.AZKAR))
+            ? AdmobRectangleUpdated(bannerName: BannerName.AZKAR)
             : Container(),
         ResponsiveBuilder(builder: (context, SizingInformation sizeConfig) {
           return Container(
@@ -139,9 +137,7 @@ class _IslamicsOfflineScreenState extends State<IslamicsOfflineScreen> {
           );
         }),
         isInternetConnected == true
-            ? Container(
-                height: MediaQuery.of(context).size.height / 3.0,
-                child: AdmobRectangleUpdated(bannerName: BannerName.AZKAR))
+            ? AdmobRectangleUpdated(bannerName: BannerName.AZKAR)
             : Container(),
         ResponsiveBuilder(builder: (context, SizingInformation sizeConfig) {
           return Container(

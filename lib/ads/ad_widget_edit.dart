@@ -58,10 +58,11 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
           SizedBox(
             height: 10,
           ),
-          SizedBox(
-              height: 250,
-              child: AdmobRectangleUpdated(bannerName: widget.bannerName),
-            ),
+          AdmobRectangleUpdated(
+            bannerName: widget.bannerName,
+            width: MediaQuery.of(context).size.width * 0.72,
+            height: 250,
+          ),
           Container(
             padding: EdgeInsets.symmetric(
               horizontal: 5,

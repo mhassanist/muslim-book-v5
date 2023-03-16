@@ -128,8 +128,6 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
   }
 
   _buildAdSection() {
-    return SizedBox(
-        height: 300,
-        child: AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
+    return AdmobRectangleUpdated(bannerName: BannerName.BOSLA);
   }
 }

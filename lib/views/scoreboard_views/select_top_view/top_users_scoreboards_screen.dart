@@ -85,11 +85,7 @@ class _TopUserScorebardsScreenState extends State<TopUserScorebardsScreen> {
                     new StaggeredTile.count(2, 2),
               )),
               SliverToBoxAdapter(
-                  child: SizedBox(
-                      height: 300,
-                      child: AdmobRectangleUpdated(bannerName: BannerName.TOP)
-                      //  ..  AdMobRectangle(BannerName.Top)
-                      )),
+                  child: AdmobRectangleUpdated(bannerName: BannerName.TOP)),
               SliverToBoxAdapter(
                   child: SizedBox(
                 height: 10,

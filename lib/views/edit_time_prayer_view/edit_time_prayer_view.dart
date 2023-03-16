@@ -117,10 +117,8 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                             SliverToBoxAdapter(
                                 child: Visibility(
                               visible: widget.showAppBar,
-                              child: SizedBox(
-                                  height: 400,
-                                  child: AdmobRectangleUpdated(
-                                      bannerName: BannerName.TOP)),
+                              child: AdmobRectangleUpdated(
+                                  bannerName: BannerName.TOP),
                             )),
                             SliverToBoxAdapter(
                                 child: SizedBox(

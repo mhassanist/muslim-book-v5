@@ -81,11 +81,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 250,
-                        child:
-                            AdmobRectangleUpdated(bannerName: BannerName.AZKAR),
-                      ),
+                      AdmobRectangleUpdated(bannerName: BannerName.AZKAR),
                       SizedBox(
                         height: 20,
                       ),
@@ -140,11 +136,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                       SizedBox(
                         height: 20,
                       ),
-                      SizedBox(
-                        height: 250,
-                        child:
-                            AdmobRectangleUpdated(bannerName: BannerName.AZKAR),
-                      ),
+                      AdmobRectangleUpdated(bannerName: BannerName.AZKAR),
                     ],
                   ),
                 ),
