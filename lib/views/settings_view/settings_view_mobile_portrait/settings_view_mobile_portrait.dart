@@ -1,4 +1,4 @@
-import 'package:muslim_book/ads/admob_rectangle_updated.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
 import 'package:muslim_book/home_feature/views/home_view.dart';
@@ -302,8 +302,7 @@ class _SettingsViewMobilePortraitState
                       height: 10,
                     )),
                     SliverToBoxAdapter(
-                      child:
-                          AdmobRectangleUpdated(bannerName: BannerName.BOSLA),
+                      child: AdmobBanner(bannerName: BannerName.BOSLA),
                     ),
                     SliverToBoxAdapter(
                         child: SizedBox(

@@ -1,7 +1,7 @@
 import 'dart:math' as math;
 
 // import 'package:geocoding/geocoding.dart';
-import 'package:muslim_book/ads/admob_rectangle_updated.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 // import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
@@ -225,7 +225,7 @@ class _CompassViewMobilePortraitState extends State<CompassViewMobilePortrait> {
               SizedBox(
                 height: 20,
               ),
-              AdmobRectangleUpdated(bannerName: BannerName.BOSLA)
+              AdmobBanner(bannerName: BannerName.BOSLA)
             ],
           ),
         );

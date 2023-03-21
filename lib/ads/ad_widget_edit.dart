@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:muslim_book/ads/admob_rectangle_updated.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/utils/Constants.dart';
 
@@ -58,7 +58,7 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
           SizedBox(
             height: 10,
           ),
-          AdmobRectangleUpdated(
+          AdmobBanner(
             bannerName: widget.bannerName,
             width: MediaQuery.of(context).size.width * 0.72,
             height: 250,

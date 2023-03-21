@@ -1,6 +1,6 @@
 // import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
-import 'package:muslim_book/ads/admob_rectangle_updated.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/azkar_feature/models/azkar_model.dart';
 import 'package:muslim_book/ads/ad_widget_edit.dart';
@@ -121,8 +121,7 @@ class _AzkarCarouselScreenState extends State<AzkarCarouselScreen> {
                           SizedBox(
                             height: 20,
                           ),
-                          AdmobRectangleUpdated(
-                              bannerName: BannerName.BOSLA),
+                          AdmobBanner(bannerName: BannerName.BOSLA),
                         ],
                       ),
                     ),

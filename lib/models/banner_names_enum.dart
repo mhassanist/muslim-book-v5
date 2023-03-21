@@ -6,5 +6,5 @@ enum BannerName {
   DownEditAzan,
   DownStartCompetition,
   TOP,
-  TheMiddleOfTheCompetition,
+  TheMiddleOfTheCompetition, INTERSTITIAL,
 }

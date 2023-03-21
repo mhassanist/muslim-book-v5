@@ -1,4 +1,4 @@
-import 'package:muslim_book/ads/admob_rectangle_updated.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/azkar_feature/providers/azkar_provider.dart';
 import 'package:muslim_book/azkar_feature/widgets/azkar_categories_grid_item.dart';
@@ -108,7 +108,7 @@ class _AzkarCategoriesGridScreenState extends State<AzkarCategoriesGridScreen> {
                     ),
                   ),
                   SliverToBoxAdapter(
-                    child: AdmobRectangleUpdated(
+                    child: AdmobBanner(
                       bannerName: BannerName.AZKAR,
                     ),
                   ),

@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:muslim_book/ads/ad_manager.dart';
+import 'package:muslim_book/ads/admob_interstitial.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/models/answer_model.dart' as answer;
 import 'package:muslim_book/models/answer_result_model.dart';
@@ -266,6 +268,7 @@ class CompetitionProvider extends ViewStateProvider {
   }
 
   void openFaceBookAd() {
+    if(AdManager.showFacebookAds) {
     FacebookInterstitialAd.loadInterstitialAd(
       // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
       placementId: locator<RemoteConfigService>().azanPopUpAdId,
@@ -275,4 +278,9 @@ class CompetitionProvider extends ViewStateProvider {
       },
     );
   }
+  else {
+      AdmobInterstitial interstitialAd = AdmobInterstitial();
+      interstitialAd.createInterstitialAd();
+    }
+}
 }

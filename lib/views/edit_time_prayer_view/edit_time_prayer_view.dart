@@ -1,4 +1,4 @@
-import 'package:muslim_book/ads/admob_rectangle_updated.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
 import 'package:muslim_book/azan_feature/models/azan_model.dart';
@@ -117,8 +117,7 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                             SliverToBoxAdapter(
                                 child: Visibility(
                               visible: widget.showAppBar,
-                              child: AdmobRectangleUpdated(
-                                  bannerName: BannerName.TOP),
+                              child: AdmobBanner(bannerName: BannerName.TOP),
                             )),
                             SliverToBoxAdapter(
                                 child: SizedBox(

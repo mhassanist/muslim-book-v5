@@ -1,4 +1,4 @@
-import 'package:muslim_book/ads/admob_rectangle_updated.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
@@ -85,7 +85,7 @@ class _TopUserScorebardsScreenState extends State<TopUserScorebardsScreen> {
                     new StaggeredTile.count(2, 2),
               )),
               SliverToBoxAdapter(
-                  child: AdmobRectangleUpdated(bannerName: BannerName.TOP)),
+                  child: AdmobBanner(bannerName: BannerName.TOP)),
               SliverToBoxAdapter(
                   child: SizedBox(
                 height: 10,

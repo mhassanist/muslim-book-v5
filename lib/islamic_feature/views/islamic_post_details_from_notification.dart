@@ -1,4 +1,4 @@
-import 'package:muslim_book/ads/admob_rectangle_updated.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/home_feature/domian/model/islamic_posts_model.dart';
@@ -113,6 +113,6 @@ class _IslamicPostDetailsFromNotificationState
   }
 
   _buildAdSection() {
-    return AdmobRectangleUpdated(bannerName: BannerName.BOSLA);
+    return AdmobBanner(bannerName: BannerName.BOSLA);
   }
 }

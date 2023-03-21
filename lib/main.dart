@@ -17,7 +17,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:muslim_book/ads/admob_rectangle_updated.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/azkar_feature/providers/azkar_provider.dart';
 import 'package:muslim_book/firebase_options.dart';
@@ -124,9 +124,12 @@ Future<void> main() async {
   await locator<Prefs>().setSharedPreferences();
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  await FacebookAudienceNetwork.init(
-      // testingId: "a77955ee-3304-4635-be65-81029b0f5201",
-      );
+  if (AdManager.showFacebookAds) {
+    await FacebookAudienceNetwork.init(
+        // testingId: "a77955ee-3304-4635-be65-81029b0f5201",
+        );
+  }
+
   // final loaded = await getLocale();
 
   runApp(
@@ -201,7 +204,7 @@ class MyApp extends StatefulWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                AdmobRectangleUpdated(bannerName: BannerName.TOP),
+                AdmobBanner(bannerName: BannerName.TOP),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[

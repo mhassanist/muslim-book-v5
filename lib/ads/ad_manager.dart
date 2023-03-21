@@ -5,15 +5,24 @@ import 'package:muslim_book/models/banner_names_enum.dart';
 
 class AdManager {
   static late FirebaseRemoteConfig remoteConfig;
-  // static late Widget boslaBanner;
+  static bool showFacebookAds = false;
+  static bool isProductionEnvironment = true;
 
-  static String getAdUnitId(BannerName bannerName) {
-    bool isProductionEnvironment = false;
+  static String getBannerAdUnitId(BannerName bannerName) {
     if (isProductionEnvironment) {
       String unitId = remoteConfig.getString(bannerName.name);
       return unitId;
     } else {
       return 'ca-app-pub-3940256099942544/6300978111';
+    }
+  }
+
+  static String getInterstitialAdUnitId(BannerName bannerName) {
+    if (isProductionEnvironment) {
+      String unitId = remoteConfig.getString(bannerName.name);
+      return unitId;
+    } else {
+      return 'ca-app-pub-3940256099942544/1033173712';
     }
   }
 }

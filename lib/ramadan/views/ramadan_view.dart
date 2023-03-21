@@ -1,5 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:muslim_book/ads/ad_manager.dart';
+import 'package:muslim_book/ads/admob_interstitial.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/local_storage/local_storage_manager.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
@@ -976,14 +978,19 @@ class _RamadanViewState extends State<RamadanView>
 
   @override
   void deactivate() {
-    FacebookInterstitialAd.loadInterstitialAd(
-      // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
-      placementId: locator<RemoteConfigService>().azanPopUpAdId,
-      listener: (result, value) {
-        if (result == InterstitialAdResult.LOADED)
-          FacebookInterstitialAd.showInterstitialAd();
-      },
-    );
+    if (AdManager.showFacebookAds) {
+      FacebookInterstitialAd.loadInterstitialAd(
+        // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
+        placementId: locator<RemoteConfigService>().azanPopUpAdId,
+        listener: (result, value) {
+          if (result == InterstitialAdResult.LOADED)
+            FacebookInterstitialAd.showInterstitialAd();
+        },
+      );
+    } else {
+      AdmobInterstitial interstitialAd = AdmobInterstitial();
+      interstitialAd.createInterstitialAd();
+    }
     super.deactivate();
   }
 
@@ -1131,8 +1138,7 @@ class _RamadanViewState extends State<RamadanView>
           }).toList(),
           onChanged: (value) async {
             if (value != null) {
-              _ramadanProvider.ramadanMashraatSelected =
-                  value;
+              _ramadanProvider.ramadanMashraatSelected = value;
               playSound(_ramadanProvider.ramadanMashraatSelected.file);
               _ramadanProvider.saveSelectedMashraatJson(
                   _ramadanProvider.ramadanMashraatSelected.toJson(), "");

@@ -1,3 +1,5 @@
+import 'package:muslim_book/ads/ad_manager.dart';
+import 'package:muslim_book/ads/admob_interstitial.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
@@ -131,14 +133,19 @@ class _QuranListeningViewState extends State<QuranListeningView> {
 
   @override
   void deactivate() {
-    FacebookInterstitialAd.loadInterstitialAd(
-      // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
-      placementId: locator<RemoteConfigService>().azanPopUpAdId,
-      listener: (result, value) {
-        if (result == InterstitialAdResult.LOADED)
-          FacebookInterstitialAd.showInterstitialAd();
-      },
-    );
+    if (AdManager.showFacebookAds) {
+      FacebookInterstitialAd.loadInterstitialAd(
+        // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
+        placementId: locator<RemoteConfigService>().azanPopUpAdId,
+        listener: (result, value) {
+          if (result == InterstitialAdResult.LOADED)
+            FacebookInterstitialAd.showInterstitialAd();
+        },
+      );
+    } else {
+      AdmobInterstitial interstitialAd = AdmobInterstitial();
+      interstitialAd.createInterstitialAd();
+    }
     super.deactivate();
   }
 }

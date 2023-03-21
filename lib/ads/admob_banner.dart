@@ -6,11 +6,11 @@ import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 
-class AdmobRectangleUpdated extends StatefulWidget {
+class AdmobBanner extends StatefulWidget {
   final BannerName bannerName;
   final double? width;
   final double? height;
-  const AdmobRectangleUpdated({
+  const AdmobBanner({
     super.key,
     required this.bannerName,
     this.width,
@@ -18,10 +18,10 @@ class AdmobRectangleUpdated extends StatefulWidget {
   });
 
   @override
-  State<AdmobRectangleUpdated> createState() => _AdmobRectangleUpdatedState();
+  State<AdmobBanner> createState() => _AdmobBannerState();
 }
 
-class _AdmobRectangleUpdatedState extends State<AdmobRectangleUpdated> {
+class _AdmobBannerState extends State<AdmobBanner> {
   bool isAdLoaded = false;
 
   late BannerAdListener adListener;
@@ -87,7 +87,7 @@ class _AdmobRectangleUpdatedState extends State<AdmobRectangleUpdated> {
 
   void loadBanner() {
     bannerAd = BannerAd(
-      adUnitId: AdManager.getAdUnitId(this.widget.bannerName),
+      adUnitId: AdManager.getBannerAdUnitId(this.widget.bannerName),
       size: AdSize.getInlineAdaptiveBannerAdSize(
           widget.width != null
               ? widget.width!.floor()

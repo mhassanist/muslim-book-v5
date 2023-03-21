@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:muslim_book/ads/admob_rectangle_updated.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
 import 'package:muslim_book/home_feature/controllers/providers_get_post.dart';
 import 'package:muslim_book/home_feature/domian/model/categories_model.dart';
@@ -92,11 +92,9 @@ class HomePage extends ConsumerWidget {
 
             //add ad every 10 posts
             if (pageIndex.isOdd && (i == 10 || i == 20)) {
-              postsListWidget
-                  .add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
+              postsListWidget.add(AdmobBanner(bannerName: BannerName.BOSLA));
             } else if (pageIndex.isEven && (i == 5 || i == 15 || i == 25)) {
-              postsListWidget
-                  .add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
+              postsListWidget.add(AdmobBanner(bannerName: BannerName.BOSLA));
             }
           }
         }
@@ -116,11 +114,11 @@ class HomePage extends ConsumerWidget {
           //add ad every 10 posts
           if (islamicPageIndex.isOdd && (i == 10 || i == 20)) {
             islamicPostsListWidget
-                .add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
+                .add(AdmobBanner(bannerName: BannerName.BOSLA));
           } else if (islamicPageIndex.isEven &&
               (i == 5 || i == 15 || i == 25)) {
             islamicPostsListWidget
-                .add(AdmobRectangleUpdated(bannerName: BannerName.BOSLA));
+                .add(AdmobBanner(bannerName: BannerName.BOSLA));
           }
         }
       }
