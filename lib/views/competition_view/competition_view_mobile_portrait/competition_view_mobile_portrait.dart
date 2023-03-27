@@ -15,9 +15,7 @@ import 'package:muslim_book/widgets/app_scaffold_title.dart';
 import 'package:muslim_book/widgets/retry_view_widget.dart';
 import 'package:muslim_book/widgets/share_dialog.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -167,9 +165,12 @@ class _CompetitionViewMobilePortraitState
   }
 
   Container buildCompetitionWidget(BuildContext context) {
-    if (Provider.of<CompetitionProvider>(context).questions == null ||
-        Provider.of<CompetitionProvider>(context).questions.isEmpty) {
-      return Container();
+    if (Provider.of<CompetitionProvider>(context).questions.isEmpty) {
+      return Container(
+        child: Center(
+          child: Text("لا توجد اسئلة متاحة لك الان"),
+        ),
+      );
     }
     return Container(
       height: MediaQuery.of(context).size.height,
