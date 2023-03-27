@@ -129,8 +129,7 @@ class HomePage extends ConsumerWidget {
     return MyApp.loading
         ? Container(
             child: Center(
-              child: Loading(
-              ),
+              child: Loading(),
             ),
           )
         : SafeArea(
@@ -155,8 +154,7 @@ class HomePage extends ConsumerWidget {
                 Expanded(
                     child: postschanges.isloading
                         ? Center(
-                            child: Loading(
-                            ),
+                            child: Loading(),
                           )
                         : Container(
                             height: 150,
@@ -294,8 +292,7 @@ class HomePage extends ConsumerWidget {
                                                             false
                                                         ? Container(
                                                             child: Center(
-                                                              child: Loading(
-                                                              ),
+                                                              child: Loading(),
                                                             ),
                                                           )
                                                         : Center(
@@ -393,9 +390,12 @@ class HomePage extends ConsumerWidget {
                     children: [
                       CircleAvatar(
                         radius: 16.0,
-                        backgroundImage: NetworkImage(
-                          _post.userImage != null ? _post.userImage! : '',
-                        ),
+                        backgroundImage: _post.userImage != null
+                            ? NetworkImage(_post.userImage!)
+                            : null,
+                        child: _post.userImage == null
+                            ? Image.asset("assets/images/profile_image.png")
+                            : null,
                         backgroundColor: Colors.transparent,
                       ),
                       Padding(
