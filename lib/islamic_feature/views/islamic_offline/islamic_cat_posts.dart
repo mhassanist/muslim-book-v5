@@ -9,7 +9,6 @@ import 'package:muslim_book/widgets/app_scaffold_title.dart';
 // import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 
 class IslamicCatPosts extends StatefulWidget {
@@ -94,9 +93,6 @@ class _IslamicCatPostsState extends State<IslamicCatPosts> {
           }
           return Center(
             child: Loading(
-              indicator: BallBeatIndicator(),
-              size: 70.0,
-              color: Colors.white,
             ),
           );
         });

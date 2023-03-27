@@ -3,7 +3,6 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim_book/ads/ad_manager.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/utils/Constants.dart';
-import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 
 class AdmobBanner extends StatefulWidget {
@@ -50,9 +49,6 @@ class _AdmobBannerState extends State<AdmobBanner> {
         height: widget.height ?? 250,
         child: Center(
           child: Loading(
-            indicator: BallBeatIndicator(),
-            size: 70.0,
-            color: Constants.PRIMARY_DARK_COLOR,
           ),
         ),
       );

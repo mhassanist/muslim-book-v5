@@ -19,7 +19,6 @@ import 'package:muslim_book/views/login_pop_up_view/login_pop_up_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 import "package:provider/provider.dart" as ProviderUser;
 import 'package:share_plus/share_plus.dart';
@@ -39,6 +38,9 @@ class HomePage extends ConsumerWidget {
   RefreshController _islamicPostsRefreshController =
       RefreshController(initialRefresh: false);
   Key _postsKey = Key('posts');
+  final bool mounted;
+
+  HomePage({required this.mounted});
 
   void _onPostsRefresh() async {
     // monitor network fetch
@@ -128,9 +130,6 @@ class HomePage extends ConsumerWidget {
         ? Container(
             child: Center(
               child: Loading(
-                indicator: BallBeatIndicator(),
-                size: 70.0,
-                color: Constants.PRIMARY_DARK_COLOR,
               ),
             ),
           )
@@ -157,9 +156,6 @@ class HomePage extends ConsumerWidget {
                     child: postschanges.isloading
                         ? Center(
                             child: Loading(
-                              indicator: BallBeatIndicator(),
-                              size: 50.0,
-                              color: Constants.PRIMARY_DARK_COLOR,
                             ),
                           )
                         : Container(
@@ -299,11 +295,6 @@ class HomePage extends ConsumerWidget {
                                                         ? Container(
                                                             child: Center(
                                                               child: Loading(
-                                                                indicator:
-                                                                    BallBeatIndicator(),
-                                                                size: 70.0,
-                                                                color: Constants
-                                                                    .PRIMARY_DARK_COLOR,
                                                               ),
                                                             ),
                                                           )

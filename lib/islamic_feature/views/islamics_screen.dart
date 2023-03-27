@@ -11,6 +11,9 @@ import 'islamic_item_details.dart';
 
 class IslamicsScreen extends ConsumerWidget {
   PostsNotifier? postschanges;
+  final bool mounted;
+
+  IslamicsScreen({required this.mounted});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,8 +57,9 @@ class IslamicsScreen extends ConsumerWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) =>
-                    IslamicItemDetails(postschanges!.categories[index])));
+                builder: (context) => IslamicItemDetails(
+                    category: postschanges!.categories[index],
+                    mounted: mounted)));
       },
       child: Column(
         children: [

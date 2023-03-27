@@ -1,8 +1,6 @@
 // import 'package:muslim_book/main.dart';
 // import 'package:muslim_book/utils/Constants.dart';
 import 'package:flutter/material.dart';
-import 'package:muslim_book/utils/Constants.dart';
-import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 
 class LoadUiWithAd extends StatefulWidget {
@@ -45,9 +43,6 @@ class _LoadUiWithAdState extends State<LoadUiWithAd> {
               color: Colors.white,
               child: Center(
                 child: Loading(
-                  indicator: BallBeatIndicator(),
-                  size: 70.0,
-                  color: Constants.PRIMARY_DARK_COLOR,
                 ),
               ),
             ),

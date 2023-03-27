@@ -179,7 +179,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
         ),
-        child: HomePage(),
+        child: HomePage(mounted: mounted),
       );
     });
   }

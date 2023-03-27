@@ -10,7 +10,6 @@ import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 import 'package:muslim_book/widgets/base_widget.dart';
-import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -102,10 +101,6 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                                             child: Visibility(
                                               visible: _isSaveing,
                                               child: Loading(
-                                                indicator: BallBeatIndicator(),
-                                                size: 70.0,
-                                                color: Constants
-                                                    .PRIMARY_DARK_COLOR,
                                               ),
                                             ),
                                           ),
@@ -466,3 +461,4 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
     // return "asd";
   }
 }
+

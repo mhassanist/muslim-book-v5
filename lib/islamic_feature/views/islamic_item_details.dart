@@ -8,7 +8,6 @@ import 'package:muslim_book/home_feature/widgets/islamic_post_details.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/widgets/app_scaffold_title.dart';
-import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +19,9 @@ import 'package:share_plus/share_plus.dart';
 
 class IslamicItemDetails extends ConsumerWidget {
   final Categore category;
+  final bool mounted;
 
-  IslamicItemDetails(this.category);
+  IslamicItemDetails({required this.category, required this.mounted});
 
   late PostsNotifier postschanges;
   static int islamicPageIndex = 1;
@@ -106,9 +106,6 @@ class IslamicItemDetails extends ConsumerWidget {
                           ? Container(
                               child: Center(
                                 child: Loading(
-                                  indicator: BallBeatIndicator(),
-                                  size: 70.0,
-                                  color: Colors.white,
                                 ),
                               ),
                             )

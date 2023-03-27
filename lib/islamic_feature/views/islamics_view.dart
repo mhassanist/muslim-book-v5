@@ -55,7 +55,7 @@ class _IslamicsViewState extends State<IslamicsView> {
             children: <Widget>[
               IslamicsOfflineScreen(),
               AdmobBanner(bannerName: BannerName.AZKAR),
-              isInternetConnected == true ? IslamicsScreen() : Container(),
+              isInternetConnected == true ? IslamicsScreen(mounted: mounted) : Container(),
               isInternetConnected == true
                   ? AdmobBanner(bannerName: BannerName.AZKAR)
                   : Container(),

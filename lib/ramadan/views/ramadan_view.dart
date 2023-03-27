@@ -17,7 +17,6 @@ import 'package:muslim_book/utils/expand_widget/custom_expansion_tile2.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/widgets/base_widget.dart';
 import 'package:muslim_book/widgets/share_dialog.dart';
-import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 import 'package:facebook_audience_network/ad/ad_interstitial.dart';
 import 'package:flutter/material.dart';
@@ -159,9 +158,6 @@ class _RamadanViewState extends State<RamadanView>
                                 child: Visibility(
                                   visible: _isSaveing,
                                   child: Loading(
-                                    indicator: BallBeatIndicator(),
-                                    size: 70.0,
-                                    color: Constants.PRIMARY_DARK_COLOR,
                                   ),
                                 ),
                               ),
