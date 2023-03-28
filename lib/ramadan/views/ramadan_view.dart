@@ -157,8 +157,7 @@ class _RamadanViewState extends State<RamadanView>
                                 // margin: EdgeInsets.only(top: 100),
                                 child: Visibility(
                                   visible: _isSaveing,
-                                  child: Loading(
-                                  ),
+                                  child: Loading(),
                                 ),
                               ),
                             ),
@@ -957,14 +956,15 @@ class _RamadanViewState extends State<RamadanView>
           }).toList(),
           onChanged: (value) async {
             if (value != null) {
-              _ramadanProvider.ramadanCannonSelected = value;
+              _ramadanProvider.ramadanCannonSelected =
+                  value;
               _ramadanProvider.saveSelectedConnanJson(
-                  _ramadanProvider.ramadanCannonSelected.toJson(), "");
+                  _ramadanProvider.ramadanCannonSelected!.toJson(), "");
               await _ramadanProvider.downloadConnanFile(
                   _ramadanProvider.ramadanCannonModel.indexOf(value));
               //AZAN  /data/user/0/com.muslim_book.muslim_book/app_flutter/azan_1.mp3
               //ramadan  /data/user/0/com.muslim_book.muslim_book/app_flutter/ramadan_cannonModel_sounds2.mp3
-              playSound(_ramadanProvider.ramadanCannonSelected.file);
+              playSound(_ramadanProvider.ramadanCannonSelected!.file);
             }
           },
         ),
@@ -991,10 +991,7 @@ class _RamadanViewState extends State<RamadanView>
   }
 
   Future playSound(file) async {
-    if (!screenNoLongerActive)
-      await audioPlayer.play(
-        file,
-      );
+    if (!screenNoLongerActive) await audioPlayer.play(DeviceFileSource(file));
   }
 
   Widget alertsDrum(BuildContext context) {
@@ -1135,9 +1132,9 @@ class _RamadanViewState extends State<RamadanView>
           onChanged: (value) async {
             if (value != null) {
               _ramadanProvider.ramadanMashraatSelected = value;
-              playSound(_ramadanProvider.ramadanMashraatSelected.file);
+              playSound(_ramadanProvider.ramadanMashraatSelected!.file);
               _ramadanProvider.saveSelectedMashraatJson(
-                  _ramadanProvider.ramadanMashraatSelected.toJson(), "");
+                  _ramadanProvider.ramadanMashraatSelected!.toJson(), "");
               await _ramadanProvider.downloadMashraatFile(
                   _ramadanProvider.ramadanMashraatModel.indexOf(value));
             }

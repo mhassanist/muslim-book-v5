@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-RamadanSoundsModel ramadanCannonModelFromJson(String str) => RamadanSoundsModel.fromJson(json.decode(str));
+RamadanSoundsModel ramadanCannonModelFromJson(String str) =>
+    RamadanSoundsModel.fromJson(json.decode(str));
 //
-String ramadanCannonModelToJson(RamadanSoundsModel data) => json.encode(data.toJson());
+String ramadanCannonModelToJson(RamadanSoundsModel data) =>
+    json.encode(data.toJson());
 
 // class RamadanCannonModel {
 //   RamadanCannonModel({
@@ -90,35 +92,42 @@ String ramadanCannonModelToJson(RamadanSoundsModel data) => json.encode(data.toJ
 // }
 
 class RamadanSoundsModel {
-  RamadanSoundsModel({
-    this.id,
-    this.name,
-    this.file,
-    this.localPath
-  });
+  RamadanSoundsModel({this.id, this.name, this.file, this.localPath});
 
   int? id;
   String? name;
   String? file;
   String? localPath;
 
-  factory RamadanSoundsModel.fromJson(Map<String, dynamic> json) => RamadanSoundsModel(
-    id: json["id"],
-    name: json["name"],
-    file: json["file"],
-    localPath: json["local_path"],
-  );
+  factory RamadanSoundsModel.fromJson(Map<String, dynamic> json) =>
+      RamadanSoundsModel(
+        id: json["id"],
+        name: json["name"],
+        file: json["file"],
+        localPath: json["local_path"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "file": file,
-    "local_path":localPath,
-  };
+        "id": id,
+        "name": name,
+        "file": file,
+        "local_path": localPath,
+      };
   toJSON(List<RamadanSoundsModel> soundsList) {
     return soundsList.map((item) {
       return item.toJson();
     }).toList();
   }
+}
 
+class RamadanSoundsList {
+  List<RamadanSoundsModel> sounds = [];
+
+  RamadanSoundsList({required this.sounds});
+
+  toJson() {
+    return sounds.map((item) {
+      return item.toJson();
+    }).toList();
+  }
 }

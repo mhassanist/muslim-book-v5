@@ -7,14 +7,15 @@ class LocalStorageManager {
 
   saveRamadanCannonModelList(List<RamadanSoundsModel> sounds) async {
     await storage.ready;
-    storage.setItem('ramadan_cannonModel_sounds', RamadanSoundsModel().toJSON(sounds));
+    storage.setItem(
+        'ramadan_cannonModel_sounds', RamadanSoundsList(sounds: sounds));
   }
+
   saveRamadanMashraatModelList(List<RamadanSoundsModel> sounds) async {
     await storage.ready;
-     storage.setItem('ramadan_mashraat_sounds_list', RamadanSoundsModel().toJSON(sounds));
+    storage.setItem(
+        'ramadan_mashraat_sounds_list', RamadanSoundsList(sounds: sounds));
     // var data =storage.getItem('ramadan_mashraat_sounds_list');
-
-
   }
 
   saveAzanSoundsList(List<AzanSound> sounds) async {
@@ -24,56 +25,55 @@ class LocalStorageManager {
 
   Future<List<AzanSound>?> loadAzanSoundsList() async {
     await storage.ready;
-    if (storage.getItem('azan_sounds') == null)
-      return null;
+    if (storage.getItem('azan_sounds') == null) return null;
 
-    List<AzanSound> soundList = await AzanSoundsList().fromJson(storage.getItem('azan_sounds'));
+    List<AzanSound> soundList =
+        await AzanSoundsList().fromJson(storage.getItem('azan_sounds'));
 
-    return soundList.where((element) => element.fajr==0).toList();
+    return soundList.where((element) => element.fajr == 0).toList();
   }
-
 
   Future<List<RamadanSoundsModel>?> loadRamadanCannonModel() async {
     await storage.ready;
-    if (storage.getItem('ramadan_cannonModel_sounds') == null)
-      return null;
-    List<RamadanSoundsModel> soundList=List<RamadanSoundsModel>.from(storage.getItem('ramadan_cannonModel_sounds').map((x) => RamadanSoundsModel.fromJson(x)));
-    return soundList ;
+    if (storage.getItem('ramadan_cannonModel_sounds') == null) return null;
+    List<RamadanSoundsModel> soundList = List<RamadanSoundsModel>.from(storage
+        .getItem('ramadan_cannonModel_sounds')
+        .map((x) => RamadanSoundsModel.fromJson(x)));
+    return soundList;
 
     // return soundList.where((element) => element.fajr==0).toList();
   }
 
   Future<List<RamadanSoundsModel>?> loadRamadanMashraatModel() async {
     await storage.ready;
-    if (storage.getItem('ramadan_mashraat_sounds_list') == null)
-      return null;
-    List<RamadanSoundsModel> soundList=List<RamadanSoundsModel>.from(storage.getItem('ramadan_mashraat_sounds_list').map((x) => RamadanSoundsModel.fromJson(x)));
+    if (storage.getItem('ramadan_mashraat_sounds_list') == null) return null;
+    List<RamadanSoundsModel> soundList = List<RamadanSoundsModel>.from(storage
+        .getItem('ramadan_mashraat_sounds_list')
+        .map((x) => RamadanSoundsModel.fromJson(x)));
 
-
-
-    return soundList ;
+    return soundList;
 
     // return soundList.where((element) => element.fajr==0).toList();
   }
 
   Future<List<AzanSound>?> loadFajrAzanSoundsList() async {
     await storage.ready;
-    if (storage.getItem('azan_sounds') == null)
-      return null;
+    if (storage.getItem('azan_sounds') == null) return null;
 
-    List<AzanSound> soundList = await AzanSoundsList().fromJson(storage.getItem('azan_sounds'));
+    List<AzanSound> soundList =
+        await AzanSoundsList().fromJson(storage.getItem('azan_sounds'));
 
-    return soundList.where((element) => element.fajr==1).toList();
+    return soundList.where((element) => element.fajr == 1).toList();
   }
 
-  void updateAzanSoundsList(AzanSound azanSound) async{
+  void updateAzanSoundsList(AzanSound azanSound) async {
     await storage.ready;
-    if (storage.getItem('azan_sounds') == null)
-      return null;
+    if (storage.getItem('azan_sounds') == null) return null;
 
-    List<AzanSound> soundList = await AzanSoundsList().fromJson(storage.getItem('azan_sounds'));
-    for(int i=0; i< soundList.length; i++){
-      if(soundList[i].id == azanSound.id){
+    List<AzanSound> soundList =
+        await AzanSoundsList().fromJson(storage.getItem('azan_sounds'));
+    for (int i = 0; i < soundList.length; i++) {
+      if (soundList[i].id == azanSound.id) {
         soundList[i].fajr = azanSound.fajr;
         soundList[i].name = azanSound.name;
         soundList[i].localPath = azanSound.localPath;
@@ -83,14 +83,16 @@ class LocalStorageManager {
     }
     saveAzanSoundsList(soundList);
   }
-  void updateRamadanCannonList(RamadanSoundsModel ramadanCannonSound) async{
-    await storage.ready;
-    if (storage.getItem('ramadan_cannonModel_sounds') == null)
-      return null;
 
-    List<RamadanSoundsModel> soundList=List<RamadanSoundsModel>.from(storage.getItem('ramadan_cannonModel_sounds').map((x) => RamadanSoundsModel.fromJson(x)));
-    for(int i=0; i< soundList.length; i++){
-      if(soundList[i].id == ramadanCannonSound.id){
+  void updateRamadanCannonList(RamadanSoundsModel ramadanCannonSound) async {
+    await storage.ready;
+    if (storage.getItem('ramadan_cannonModel_sounds') == null) return null;
+
+    List<RamadanSoundsModel> soundList = List<RamadanSoundsModel>.from(storage
+        .getItem('ramadan_cannonModel_sounds')
+        .map((x) => RamadanSoundsModel.fromJson(x)));
+    for (int i = 0; i < soundList.length; i++) {
+      if (soundList[i].id == ramadanCannonSound.id) {
         soundList[i].name = ramadanCannonSound.name;
         soundList[i].localPath = ramadanCannonSound.localPath;
         soundList[i].file = ramadanCannonSound.file;
@@ -99,14 +101,16 @@ class LocalStorageManager {
     }
     saveRamadanCannonModelList(soundList);
   }
-  void updateRamadanMashraatList(RamadanSoundsModel ramadanCannonSound) async{
-    await storage.ready;
-    if (storage.getItem('ramadan_mashraat_sounds_list') == null)
-      return null;
 
-    List<RamadanSoundsModel> soundList=List<RamadanSoundsModel>.from(storage.getItem('ramadan_mashraat_sounds_list').map((x) => RamadanSoundsModel.fromJson(x)));
-    for(int i=0; i< soundList.length; i++){
-      if(soundList[i].id == ramadanCannonSound.id){
+  void updateRamadanMashraatList(RamadanSoundsModel ramadanCannonSound) async {
+    await storage.ready;
+    if (storage.getItem('ramadan_mashraat_sounds_list') == null) return null;
+
+    List<RamadanSoundsModel> soundList = List<RamadanSoundsModel>.from(storage
+        .getItem('ramadan_mashraat_sounds_list')
+        .map((x) => RamadanSoundsModel.fromJson(x)));
+    for (int i = 0; i < soundList.length; i++) {
+      if (soundList[i].id == ramadanCannonSound.id) {
         soundList[i].name = ramadanCannonSound.name;
         soundList[i].localPath = ramadanCannonSound.localPath;
         soundList[i].file = ramadanCannonSound.file;

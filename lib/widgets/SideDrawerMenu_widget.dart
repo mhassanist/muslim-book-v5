@@ -4,6 +4,7 @@ import 'package:muslim_book/home_feature/controllers/home_controller.dart';
 import 'package:muslim_book/islamic_feature/views/islamics_view.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/providers/user_provider.dart';
+import 'package:muslim_book/ramadan/utils/ramadan_feature_enabler.dart';
 import 'package:muslim_book/sebha_feature/views/sebha_view.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:flutter/material.dart';
@@ -184,10 +185,7 @@ class SideDrawerMenu {
                           //         ],
                           //       ),
 
-                          // _buildRow(null, "رمضانيات", () {
-                          //   Navigator.of(context).pop();
-                          //   Navigator.pushNamed(context, '/RamadanView');
-                          // }, true, "assets/images/slider_view/antern.svg"),
+                          _buildRamadanFeature(),
                           _buildDivider(),
                           _buildRow(
                               null,
@@ -476,6 +474,17 @@ class SideDrawerMenu {
       mode: LaunchMode.externalApplication,
     )) {
       print('Could not launch');
+    }
+  }
+
+  _buildRamadanFeature() {
+    if (RamadanFeatureEnabler.isRamadanFeatureEnabled) {
+      return _buildRow(null, "رمضانيات", () {
+        Navigator.of(context).pop();
+        Navigator.pushNamed(context, '/RamadanView');
+      }, true, "assets/images/slider_view/antern.svg");
+    } else {
+      return Container();
     }
   }
 }

@@ -33,6 +33,10 @@ class Repetitions {
 }
 
 class RamadanProvider extends ViewStateProvider {
+  RamadanProvider() {
+    getRamadanCalender();
+  }
+
   static var httpClient = new HttpClient();
   List<Repetitions> _repetitions = [
     Repetitions(0, "لا نهائي"),
@@ -67,12 +71,10 @@ class RamadanProvider extends ViewStateProvider {
     notifyListeners();
   }
 
-  late RamadanSoundsModel _ramadanCannonSelected;
+  RamadanSoundsModel? ramadanCannonSelected;
 
-  RamadanSoundsModel get ramadanCannonSelected => _ramadanCannonSelected;
-
-  set ramadanCannonSelected(RamadanSoundsModel value) {
-    _ramadanCannonSelected = value;
+  setRamadanCannonSelected(RamadanSoundsModel value) {
+    ramadanCannonSelected = value;
     notifyListeners();
   }
 
@@ -81,7 +83,7 @@ class RamadanProvider extends ViewStateProvider {
   DataLoadingState loadedMashraatState = DataLoadingState.notLoaded;
   List<RamadanSoundsModel> ramadanMashraatModel = [];
   List<FileDownloadState> filesMashraatStates = [];
-  late RamadanSoundsModel _ramadanMashraatSelected;
+  RamadanSoundsModel? ramadanMashraatSelected;
   bool _ramadanMashraat = false;
 
   bool get ramadanMashraat => _ramadanMashraat;
@@ -92,10 +94,8 @@ class RamadanProvider extends ViewStateProvider {
     notifyListeners();
   }
 
-  RamadanSoundsModel get ramadanMashraatSelected => _ramadanMashraatSelected;
-
-  set ramadanMashraatSelected(RamadanSoundsModel value) {
-    _ramadanMashraatSelected = value;
+  setRamadanMashraatSelected(RamadanSoundsModel value) {
+    ramadanMashraatSelected = value;
     notifyListeners();
   }
 
@@ -106,10 +106,6 @@ class RamadanProvider extends ViewStateProvider {
   set dateMshart(DateTime value) {
     _dateTime = value;
     notifyListeners();
-  }
-
-  RamadanProvider() {
-    getRamadanCalender();
   }
 
   getRamadanCalender() async {
@@ -196,9 +192,10 @@ class RamadanProvider extends ViewStateProvider {
   }
 
   saveUnSelectedVoiceCannon() async {
-    ramadanCannonSelected = ramadanCannonModel[0];
-    saveSelectedConnanJson(ramadanCannonSelected.toJson(), "");
-    await downloadConnanFile(ramadanCannonModel.indexOf(ramadanCannonSelected));
+    setRamadanCannonSelected(ramadanCannonModel[0]);
+    saveSelectedConnanJson(ramadanCannonSelected!.toJson(), "");
+    await downloadConnanFile(
+        ramadanCannonModel.indexOf(ramadanCannonSelected!));
   }
 
   ramadanMashraaatAlertFlagChanged(bool newVal) async {
@@ -213,9 +210,9 @@ class RamadanProvider extends ViewStateProvider {
 
   saveUnSelectedVoiceMashraat() async {
     ramadanMashraatSelected = ramadanMashraatModel[0];
-    saveSelectedMashraatJson(ramadanMashraatSelected.toJson(), "");
+    saveSelectedMashraatJson(ramadanMashraatSelected!.toJson(), "");
     await downloadMashraatFile(
-        ramadanMashraatModel.indexOf(ramadanMashraatSelected));
+        ramadanMashraatModel.indexOf(ramadanMashraatSelected!));
   }
 
   ramadanMshartTimeChanged(DateTime newVal) async {
@@ -414,7 +411,7 @@ class RamadanProvider extends ViewStateProvider {
           locator<Prefs>().getDownloadSelectedRamadanConnanID("");
       for (RamadanSoundsModel sound in ramadanCannonModel) {
         if (savedLoadedid == sound.id.toString()) {
-          _ramadanCannonSelected = sound;
+          ramadanCannonSelected = sound;
           return;
         }
       }
@@ -427,14 +424,11 @@ class RamadanProvider extends ViewStateProvider {
           locator<Prefs>().getDownloadSelectedRamadanMshartID("");
       for (RamadanSoundsModel sound in ramadanMashraatModel) {
         if (savedLoadedid == sound.id.toString()) {
-          _ramadanMashraatSelected = sound;
+          ramadanMashraatSelected = sound;
           return;
         }
       }
     }
-    print(_ramadanMashraatSelected);
-    print("hosssaaaaaaaaaaaaaaaam");
-    print(_ramadanMashraatSelected.id);
   }
 
   loadRepetitionsSelected() {

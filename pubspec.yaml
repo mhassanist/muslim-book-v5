@@ -99,7 +99,7 @@ dependencies:
 
   launch_review: ^3.0.1
   #  loading_animation_widget: ^1.2.0+4
-  localstorage: ^4.0.0+1
+  localstorage: ^4.0.1+2
   list_tile_more_customizable: ^3.0.0
   listview_utils: ^1.0.0-nullsafety
 

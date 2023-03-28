@@ -1,5 +1,7 @@
 import 'package:muslim_book/azan_feature/views/azan_view_updated.dart';
 import 'package:muslim_book/quran/views/quran_section_screen.dart';
+import 'package:muslim_book/ramadan/utils/ramadan_feature_enabler.dart';
+import 'package:muslim_book/ramadan/views/ramadan_view.dart';
 import 'package:muslim_book/views/azan_settings_views/adjust_battery_view.dart';
 import 'package:muslim_book/views/azan_settings_views/azan_draw_over_view.dart';
 import 'package:muslim_book/views/azan_settings_views/pick_azan_method_view.dart';
@@ -199,18 +201,19 @@ class Routes {
       ),
     );
 
-    /// START Ignore -----------------------------------------------------------
-    // sailor.addRoute(
-    // SeafarerRoute(
-    //       name: "/RamadanView",
-    //       builder: (context, args, params) {
-    //         return RamadanView();
-    //       },
-    //       defaultTransitionDuration: Duration(milliseconds: 300),
-    //       defaultTransitionCurve: Curves.ease,
-    //       defaultTransitions: [SeafarerTransition.slide_from_right],),
-    // );
-    /// End Ignore -------------------------------------------------------------
+    if (RamadanFeatureEnabler.isRamadanFeatureEnabled) {
+      sailor.addRoute(
+        SeafarerRoute(
+          name: "/RamadanView",
+          builder: (context, args, params) {
+            return RamadanView();
+          },
+          defaultTransitionDuration: Duration(milliseconds: 300),
+          defaultTransitionCurve: Curves.ease,
+          defaultTransitions: [SeafarerTransition.slide_from_right],
+        ),
+      );
+    }
 
     sailor.addRoute(
       SeafarerRoute(

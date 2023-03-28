@@ -60,7 +60,7 @@ class Prefs {
   }
 
   int getLatitudeAdjustmentMethod() =>
-      prefs!.getInt(Constants.Latitude_Adjustment_Method) ?? -1;
+      prefs!.getInt(Constants.Latitude_Adjustment_Method) ?? 1;
 
   void setLatitudeAdjustmentMethod(int value) async {
     await prefs!.setInt(Constants.Latitude_Adjustment_Method, value);

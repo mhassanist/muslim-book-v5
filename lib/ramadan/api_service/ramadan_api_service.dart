@@ -36,18 +36,15 @@ class RamadanApiService {
   Map<String, String>? getParameters() {
     Map<String, String>? parameters = {};
 
-    parameters["method"] = locator<Prefs>().getAzanMethod() != null
-        ? "${Constants.AR_AZAN_METHODS[locator<Prefs>().getAzanMethod()!]["id"]}"
-        : '';
-    if (locator<Prefs>().getLatitudeAdjustmentMethod() != null &&
-        locator<Prefs>().getLatitudeAdjustmentMethod() != 0) {
+    parameters["method"] =
+        "${Constants.AR_AZAN_METHODS[locator<Prefs>().getAzanMethod()]["id"]}";
+    if (locator<Prefs>().getLatitudeAdjustmentMethod() != 0) {
       parameters["latitudeAdjustmentMethod"] =
-          "${Constants.AR_Latitude_Adjustment_Method[locator<Prefs>().getLatitudeAdjustmentMethod()!]["id"]}";
+          "${Constants.AR_Latitude_Adjustment_Method[locator<Prefs>().getLatitudeAdjustmentMethod()]["id"]}";
     }
 
-    parameters["school"] = locator<Prefs>().getAzanMazhab() != null
-        ? "${Constants.AR_AZAN_Mazhabs[locator<Prefs>().getAzanMazhab()!]["id"]}"
-        : '';
+    parameters["school"] =
+        "${Constants.AR_AZAN_Mazhabs[locator<Prefs>().getAzanMazhab()]["id"]}";
     parameters["month"] = "${HijriCalendar.now().hMonth}";
     parameters["year"] = "${HijriCalendar.now().hYear}";
 

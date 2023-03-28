@@ -1395,10 +1395,10 @@ packages:
     dependency: "direct main"
     description:
       name: localstorage
-      sha256: "93f103074c0661bc1bb90aa88e172ee2e9096ec0c4f9baf519e23372c39ca681"
+      sha256: "1b5304491c85250b90807e0e2b3a6217d2739caea4871b820d42782572f880f4"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.0+1"
+    version: "4.0.1+2"
   logging:
     dependency: transitive
     description:
