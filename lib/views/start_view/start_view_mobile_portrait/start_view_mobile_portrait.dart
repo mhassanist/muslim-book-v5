@@ -260,7 +260,7 @@ class _StartViewMobilePortraitViewState
     if (Provider.of<UserProvider>(context, listen: false).selectedPage != 2) {
       Provider.of<UserProvider>(context, listen: false).selectedPage = 2;
     } else {
-      MyApp.exitBottomSheet(context);
+      await MyApp.exitBottomSheet(context);
       return false;
     }
     return false;
