@@ -492,6 +492,9 @@ public class AzanIntentService extends Service {
             if (mWindowManager != null && mView.getWindowToken() != null) {
                 mWindowManager.removeView(mView);
             }
+            if(mMediaPlayer!=null) {
+                mMediaPlayer.stop();
+            }
             mMediaPlayer.stop();
             if (Switch_Silent_Mode_After_Residence) {
                 setSilentMode(false);
