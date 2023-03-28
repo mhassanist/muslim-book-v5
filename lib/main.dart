@@ -166,7 +166,7 @@ class MyApp extends StatefulWidget {
     )) print('Could not launch');
   }
 
-  static Future<Widget> exitBottomSheet(context) async {
+  static exitBottomSheet(context) async {
     return await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
