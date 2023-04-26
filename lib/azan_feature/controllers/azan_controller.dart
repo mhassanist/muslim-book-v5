@@ -210,7 +210,7 @@ class AzanController extends GetxController {
           min += int.parse(corrctedTimeByMinuets);
         }
         var timeOfDay = TimeOfDay(
-          hour: int.parse(time.split(":")[0]),
+          hour: time == '' ? 0 : int.parse(time.split(":")[0]),
           minute: min,
           // minute: int.parse(time.split(":")[1]),
         );
@@ -234,8 +234,8 @@ class AzanController extends GetxController {
   void setTomorrowFajr() {
     String time = locator<Prefs>().getAssalahTime("1");
     var timeOfDay = TimeOfDay(
-      hour: int.parse(time.split(":")[0]),
-      minute: int.parse(time.split(":")[1]),
+      hour: time == '' ? 0 : int.parse(time.split(":")[0]),
+      minute: time == '' ? 0 : int.parse(time.split(":")[1]),
     );
     var tomorrow = DateTime.now().add(Duration(days: 1));
     _nextSalah = DateTime(tomorrow.year, tomorrow.month, tomorrow.day,
