@@ -43,7 +43,6 @@ import 'package:muslim_book/views/start_view/start_view.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'ads/ad_manager.dart';
 import 'azan_feature/controllers/azan_controller.dart';
 import 'home_feature/controllers/home_controller.dart';
