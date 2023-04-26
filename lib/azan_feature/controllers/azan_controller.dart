@@ -203,7 +203,7 @@ class AzanController extends GetxController {
       int year = DateTime.now().year;
       for (int i = 1; i <= 6; i++) {
         String time = locator<Prefs>().getAssalahTime("$i");
-        var min = int.parse(time.split(":")[1]);
+        var min = time == '' ? 0 : int.parse(time.split(":")[1]);
         String corrctedTimeByMinuets =
             locator<Prefs>().getAssalahTime("update$i");
         if (corrctedTimeByMinuets.isNotEmpty) {
