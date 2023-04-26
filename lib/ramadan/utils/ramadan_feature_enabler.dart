@@ -1,3 +1,3 @@
 class RamadanFeatureEnabler {
-  static bool isRamadanFeatureEnabled = true;
+  static bool isRamadanFeatureEnabled = false;
 }
