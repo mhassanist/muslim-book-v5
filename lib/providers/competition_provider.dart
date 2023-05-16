@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:muslim_book/ads/ad_manager.dart';
+import 'package:muslim_book/ads/admob_interstitial.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/models/answer_model.dart' as answer;
 import 'package:muslim_book/models/answer_result_model.dart';
@@ -212,8 +214,7 @@ class CompetitionProvider extends ViewStateProvider {
           _correctAnswerCounter++;
           playCorrectAnswerVoice();
         } else if (_chosenPosition != null &&
-            questions[questionIndex].answers[_chosenPosition!].result ==
-            0 &&
+            questions[questionIndex].answers[_chosenPosition!].result == 0 &&
             _isAnsweredClicked) {
           _correctAnswerCounter = 0;
 
@@ -236,28 +237,28 @@ class CompetitionProvider extends ViewStateProvider {
 
   Future playCorrectAnswerVoice() async {
     // await _audioPlayer.play("audio/questions/correct.mp3");
-    await player.play(AssetSource('assets/audio/questions/correct.mp3'));
+    await player.play(AssetSource('audio/questions/correct.mp3'));
     await Future.delayed(Duration(seconds: 1));
     if (_correctAnswerCounter == 3) {
       // await _audioPlayer.play("audio/u_made_achievment.wav");
-      await player.play(AssetSource('assets/audio/u_made_achievment.wav'));
+      await player.play(AssetSource('audio/u_made_achievment.wav'));
       _correctAnswerCounter = 0;
     }
   }
 
   Future playWrongAnswerVoice() async {
     // await _audioPlayer.play("audio/questions/wrong.mp3");
-    await player.play(AssetSource('assets/audio/questions/wrong.mp3'));
+    await player.play(AssetSource('audio/questions/wrong.mp3'));
   }
 
   Future playTryAgainVoice() async {
     // await _audioPlayer.play("audio/questions/try_again.mp3");
-    await player.play(AssetSource('assets/audio/questions/try_again.mp3'));
+    await player.play(AssetSource('audio/questions/try_again.mp3'));
   }
 
   Future playAllQuestionsEndVoice() async {
     // await _audioPlayer.play("audio/questions/share.mp3");
-    await player.play(AssetSource('assets/audio/questions/share.mp3'));
+    await player.play(AssetSource('audio/questions/share.mp3'));
   }
 
   void openDialog() {
@@ -267,7 +268,9 @@ class CompetitionProvider extends ViewStateProvider {
   }
 
   void openFaceBookAd() {
+    if(AdManager.showFacebookAds) {
     FacebookInterstitialAd.loadInterstitialAd(
+      // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
       placementId: locator<RemoteConfigService>().azanPopUpAdId,
       listener: (result, value) {
         if (result == InterstitialAdResult.LOADED)
@@ -275,4 +278,9 @@ class CompetitionProvider extends ViewStateProvider {
       },
     );
   }
+  else {
+      AdmobInterstitial interstitialAd = AdmobInterstitial();
+      interstitialAd.createInterstitialAd();
+    }
+}
 }

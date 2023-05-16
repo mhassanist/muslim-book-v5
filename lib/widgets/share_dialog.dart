@@ -26,7 +26,7 @@ class _ShareDialogState extends State<ShareDialog> {
     // );
 
     // _audioCache.play('share_app.wav');
-    player.play(AssetSource('assets/audio/share_app.wav'));
+    player.play(AssetSource('audio/share_app.wav'));
 
     super.initState();
   }

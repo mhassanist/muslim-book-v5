@@ -31,7 +31,7 @@ class LoginMobilePortraitUi {
           size: sizeConfig.blockSizeHorizontal * 30,
           color: Constants.CANVAS_COLOR,
         ),
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
       ),
     );
   }

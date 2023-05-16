@@ -1,11 +1,10 @@
 import 'dart:ui';
 
-// import 'package:admob_flutter/admob_flutter.dart';
+import 'package:audio_service/audio_service.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:fancy_dialog/FancyGif.dart';
 import 'package:fancy_dialog/fancy_dialog.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -18,7 +17,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/azkar_feature/providers/azkar_provider.dart';
 import 'package:muslim_book/firebase_options.dart';
@@ -29,11 +28,13 @@ import 'package:muslim_book/providers/azan_sounds_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/quran/provider/quran_pages_pic_bloc.dart';
 import 'package:muslim_book/quran/provider/quran_provider.dart';
+import 'package:muslim_book/quran/utils/quran_audio_handler.dart';
 import 'package:muslim_book/ramadan/provider/ramadan_provider.dart';
 import 'package:muslim_book/sebha_feature/online_sebha/controllers/online_sebha_controller.dart';
 import 'package:muslim_book/sebha_feature/providers/sebha_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/locator.dart';
+import 'package:muslim_book/utils/palette.dart';
 import 'package:muslim_book/utils/prefs.dart';
 import 'package:muslim_book/utils/sailor.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
@@ -42,7 +43,6 @@ import 'package:muslim_book/views/start_view/start_view.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'ads/ad_manager.dart';
 import 'azan_feature/controllers/azan_controller.dart';
 import 'home_feature/controllers/home_controller.dart';
@@ -69,30 +69,32 @@ Future<void> _initAdMob() async {
 
 Future<FirebaseRemoteConfig> _setupRemoteConfig() async {
   final remoteConfig = FirebaseRemoteConfig.instance;
-  remoteConfig.setDefaults(<String, dynamic>{
-    'down_Competition_1': 'ca-app-pub-8586064191208277/2234874389',
-    'Sabha': 'ca-app-pub-8586064191208277/9405322350',
-    'Azkar': 'ca-app-pub-8586064191208277/2234874389',
-    'Bosla': 'ca-app-pub-8586064191208277/2234874389',
-    'Down_Edit_Azan': 'ca-app-pub-8586064191208277/6219411880',
-    'down_start_Competition': 'ca-app-pub-8586064191208277/4415375627',
-    'Top': 'ca-app-pub-8586064191208277/5354527555',
-    'The_middle_of_the_competition': 'ca-app-pub-8586064191208277/2784204532',
-  });
+  // remoteConfig.setDefaults(<String, dynamic>{
+  //   'down_Competition_1': 'ca-app-pub-8586064191208277/2234874389',
+  //   'Sabha': 'ca-app-pub-8586064191208277/9405322350',
+  //   'Azkar': 'ca-app-pub-8586064191208277/2234874389',
+  //   'Bosla': 'ca-app-pub-8586064191208277/2234874389',
+  //   'Down_Edit_Azan': 'ca-app-pub-8586064191208277/6219411880',
+  //   'down_start_Competition': 'ca-app-pub-8586064191208277/4415375627',
+  //   'Top': 'ca-app-pub-8586064191208277/5354527555',
+  //   'The_middle_of_the_competition': 'ca-app-pub-8586064191208277/2784204532',
+  // });
   try {
-    // Using default duration to force fetching from remote server.
+    // Using default duration to force fetching from remote server.Rq
     await remoteConfig.fetch(
-      // expiration: const Duration(seconds: 0),
-    );
+        // expiration: const Duration(seconds: 0),
+        );
     await remoteConfig.fetchAndActivate();
   } catch (exception) {
     if (kDebugMode) {
       print('Unable to fetch remote config. Cached or default values will be '
-        'used');
+          'used');
     }
   }
   return remoteConfig;
 }
+
+late AudioHandler _audioHandler; // singleton.
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -104,6 +106,8 @@ Future<void> main() async {
 
   /// Catch errors via Crashlytics
   _passErrorsToCrashlytics();
+
+  QuranAudioHandler().initialize();
 
   /// Ads
   _initAdMob();
@@ -119,11 +123,18 @@ Future<void> main() async {
   await locator<Prefs>().setSharedPreferences();
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  await FacebookAudienceNetwork.init();
+  if (AdManager.showFacebookAds) {
+    await FacebookAudienceNetwork.init(
+        // testingId: "a77955ee-3304-4635-be65-81029b0f5201",
+        );
+  }
+
   // final loaded = await getLocale();
 
   runApp(
-    ProviderScope(child: MyApp(localeLoaded: await getLocale()),), // Wrap your app
+    ProviderScope(
+      child: MyApp(localeLoaded: await getLocale()),
+    ), // Wrap your app
   );
 }
 
@@ -134,7 +145,10 @@ class MyApp extends StatefulWidget {
   static bool loading = false;
   static bool loadingAddMobe = false;
 
-  const MyApp({super.key, required this.localeLoaded,});
+  const MyApp({
+    super.key,
+    required this.localeLoaded,
+  });
 
   static Future setLocale(BuildContext context, Locale newLocale) async {
     final state = context.findAncestorStateOfType<_MyAppState>();
@@ -144,18 +158,21 @@ class MyApp extends StatefulWidget {
   }
 
   static void _launchURL() async {
-    if (!await launchUrl(Uri.parse('https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book'), mode: LaunchMode.externalApplication,))
-      print('Could not launch');
+    if (!await launchUrl(
+      Uri.parse(
+          'https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book'),
+      mode: LaunchMode.externalApplication,
+    )) print('Could not launch');
   }
 
-  static Future<Widget> exitBottomSheet(context) async {
+  static exitBottomSheet(context) async {
     return await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => ResponsiveBuilder(builder: (context, sizeConfig) {
         return Container(
-          height: MediaQuery.of(context).size.height * 0.55,
+          height: MediaQuery.of(context).size.height * 0.65,
           decoration: new BoxDecoration(
             color: Colors.white,
             borderRadius: new BorderRadius.only(
@@ -164,7 +181,7 @@ class MyApp extends StatefulWidget {
             ),
           ),
           child: Center(
-            child: LoadUiWithAdd(
+            child: LoadUiWithAd(
               mainView: Column(children: <Widget>[
                 Container(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
@@ -186,8 +203,7 @@ class MyApp extends StatefulWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                Expanded(
-                    child: Container(child: AdMobRectangle(BannerName.Top))),
+                AdmobBanner(bannerName: BannerName.TOP),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -209,92 +225,89 @@ class MyApp extends StatefulWidget {
                             _showRateAppDialog(context);
                           } else {
                             if (locator<Prefs>().getCountOfOpenDialog() == 3) {
+                              Navigator.of(context).pop();
                               SystemNavigator.pop();
                             } else {
                               if (locator<Prefs>().getDateOfClickLike() !=
-                                  null &&
+                                      null &&
                                   locator<Prefs>().getDateOfClickNotLike() ==
                                       null) {
                                 DateTime before =
-                                DateTime.fromMillisecondsSinceEpoch(
+                                    DateTime.fromMillisecondsSinceEpoch(
                                   locator<Prefs>().getDateOfClickLike() ?? 0,
                                 );
                                 DateTime now = DateTime.now();
                                 Duration timeDifference =
-                                now.difference(before);
+                                    now.difference(before);
                                 print(timeDifference.inDays);
-
-                                if (timeDifference != null) {
-                                  if ((timeDifference.inDays >= 30 &&
-                                      locator<Prefs>()
-                                          .getCountOfClickLike() ==
-                                          1) ||
-                                      (timeDifference.inDays >= 90 &&
-                                          locator<Prefs>()
-                                              .getCountOfClickLike() ==
-                                              2)) {
-                                    _showRateAppDialog(context);
-                                  } else {
-                                    SystemNavigator.pop();
-                                  }
+                                if ((timeDifference.inDays >= 30 &&
+                                        locator<Prefs>()
+                                                .getCountOfClickLike() ==
+                                            1) ||
+                                    (timeDifference.inDays >= 90 &&
+                                        locator<Prefs>()
+                                                .getCountOfClickLike() ==
+                                            2)) {
+                                  _showRateAppDialog(context);
                                 } else {
+                                  Navigator.of(context).pop();
                                   SystemNavigator.pop();
                                 }
                               } else if (locator<Prefs>()
-                                  .getDateOfClickNotLike() !=
-                                  null &&
+                                          .getDateOfClickNotLike() !=
+                                      null &&
                                   locator<Prefs>().getDateOfClickLike() ==
                                       null) {
                                 DateTime before =
-                                DateTime.fromMillisecondsSinceEpoch(
-                                    locator<Prefs>()
-                                        .getDateOfClickNotLike() ?? 0);
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        locator<Prefs>()
+                                                .getDateOfClickNotLike() ??
+                                            0);
                                 DateTime now = DateTime.now();
                                 Duration timeDifference =
-                                now.difference(before);
+                                    now.difference(before);
                                 print(timeDifference.inDays);
 
-                                if (timeDifference != null) {
-                                  if ((timeDifference.inDays >= 15 && locator<Prefs>().getCountOfClickNotLike() == 1) ||
-                                      (timeDifference.inDays >= 30 &&
-                                          locator<Prefs>()
-                                              .getCountOfClickNotLike() ==
-                                              2) ||
-                                      (timeDifference.inDays >= 45 &&
-                                          locator<Prefs>()
-                                              .getCountOfClickNotLike() ==
-                                              3)) {
-                                    _showRateAppDialog(context);
-                                  } else {
-                                    SystemNavigator.pop();
-                                  }
+                                if ((timeDifference.inDays >= 15 && locator<Prefs>().getCountOfClickNotLike() == 1) ||
+                                    (timeDifference.inDays >= 30 &&
+                                        locator<Prefs>()
+                                                .getCountOfClickNotLike() ==
+                                            2) ||
+                                    (timeDifference.inDays >= 45 &&
+                                        locator<Prefs>()
+                                                .getCountOfClickNotLike() ==
+                                            3)) {
+                                  _showRateAppDialog(context);
                                 } else {
+                                  Navigator.of(context).pop();
                                   SystemNavigator.pop();
                                 }
                               } else if (locator<Prefs>()
-                                  .getDateOfClickLike() !=
-                                  null &&
+                                          .getDateOfClickLike() !=
+                                      null &&
                                   locator<Prefs>().getDateOfClickNotLike() !=
                                       null) {
                                 DateTime dateOfLike =
-                                DateTime.fromMillisecondsSinceEpoch(
-                                    locator<Prefs>().getDateOfClickLike() ?? 0);
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        locator<Prefs>().getDateOfClickLike() ??
+                                            0);
                                 DateTime now = DateTime.now();
                                 Duration likeTimeDifference =
-                                now.difference(dateOfLike);
+                                    now.difference(dateOfLike);
                                 print(likeTimeDifference.inDays);
 
                                 DateTime dateOfNotLike =
-                                DateTime.fromMillisecondsSinceEpoch(
-                                    locator<Prefs>()
-                                        .getDateOfClickNotLike() ?? 0);
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        locator<Prefs>()
+                                                .getDateOfClickNotLike() ??
+                                            0);
                                 DateTime dateOfNotLikeNow = DateTime.now();
                                 Duration notLikeTimeDifference =
-                                dateOfNotLikeNow.difference(dateOfNotLike);
+                                    dateOfNotLikeNow.difference(dateOfNotLike);
                                 print(notLikeTimeDifference.inDays);
 
                                 if (locator<Prefs>().getCountOfClickLike() ==
-                                    1 &&
+                                        1 &&
                                     locator<Prefs>().getCountOfClickNotLike() ==
                                         1) {
                                   if (likeTimeDifference.inDays >= 30 &&
@@ -304,11 +317,12 @@ class MyApp extends StatefulWidget {
                                       15) {
                                     _showRateAppDialog(context);
                                   } else {
+                                    Navigator.of(context).pop();
                                     SystemNavigator.pop();
                                   }
                                 } else if (locator<Prefs>()
-                                    .getCountOfClickLike() ==
-                                    2 &&
+                                            .getCountOfClickLike() ==
+                                        2 &&
                                     locator<Prefs>().getCountOfClickNotLike() ==
                                         1) {
                                   if (likeTimeDifference.inDays >= 90 &&
@@ -318,11 +332,12 @@ class MyApp extends StatefulWidget {
                                       30) {
                                     _showRateAppDialog(context);
                                   } else {
+                                    Navigator.of(context).pop();
                                     SystemNavigator.pop();
                                   }
                                 } else if (locator<Prefs>()
-                                    .getCountOfClickLike() ==
-                                    1 &&
+                                            .getCountOfClickLike() ==
+                                        1 &&
                                     locator<Prefs>().getCountOfClickNotLike() ==
                                         2) {
                                   if (likeTimeDifference.inDays >= 30) {
@@ -331,6 +346,7 @@ class MyApp extends StatefulWidget {
                                       30) {
                                     _showRateAppDialog(context);
                                   } else {
+                                    Navigator.of(context).pop();
                                     SystemNavigator.pop();
                                   }
                                 }
@@ -365,7 +381,7 @@ class MyApp extends StatefulWidget {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        fillColor: Theme.of(context).accentColor,
+                        fillColor: Theme.of(context).colorScheme.secondary,
                         child: Text(
                           AppLocalizations.of(context)!.translate("cancel"),
                           style: TextStyle(
@@ -394,7 +410,7 @@ class MyApp extends StatefulWidget {
       builder: (BuildContext context) => FancyDialog(
         title: AppLocalizations.of(context)!.translate("thanx_to_use_app"),
         description:
-        AppLocalizations.of(context)!.translate("rate_app_description"),
+            AppLocalizations.of(context)!.translate("rate_app_description"),
         okColor: Theme.of(context).primaryColor,
         okFun: () async {
           if (locator<Prefs>().getCountOfOpenDialog() == null) {
@@ -450,7 +466,7 @@ class _MyAppState extends State<MyApp> {
   String? showCompetition;
   String? openAzkar;
   var checkOverLay;
-  late Locale localeLoaded;
+  Locale? localeLoaded;
 
   @override
   void initState() {
@@ -463,7 +479,6 @@ class _MyAppState extends State<MyApp> {
 
   setLocale(Locale _locale) {
     getLocale().then((locale) {
-      //print("shaimmmmmmmmmmmmmmmaaaa 2  " + locale.languageCode);
       setState(() {
         localeLoaded = locale;
       });
@@ -473,7 +488,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void didChangeDependencies() {
     getLocale().then((locale) {
-      //print("shaimmmmmmmmmmmmmmmaaaa 3   " + locale.languageCode);
       setState(() {
         localeLoaded = locale;
       });
@@ -492,7 +506,7 @@ class _MyAppState extends State<MyApp> {
     String message = '';
     try {
       showCompetition =
-      await Constants.platform.invokeMethod(Constants.Open_Competition);
+          await Constants.platform.invokeMethod(Constants.Open_Competition);
       openAzkar = await Constants.platform.invokeMethod(Constants.open_Azkar);
       checkOverLay = await Constants.platform.invokeMethod("checkOverlay");
     } on PlatformException catch (e) {
@@ -545,7 +559,7 @@ class _MyAppState extends State<MyApp> {
           //   const Locale("fr")
           // ],
           // supportedLocales: AppLocalizations.supportedLocales,
-          supportedLocales: [Locale('en'),Locale('ar'), Locale('fr')],
+          supportedLocales: [Locale('en'), Locale('ar'), Locale('fr')],
           locale: localeLoaded,
           // navigatorObservers: <NavigatorObserver>[MyApp.observer],
           localizationsDelegates: [
@@ -569,16 +583,21 @@ class _MyAppState extends State<MyApp> {
             textTheme: GoogleFonts.almaraiTextTheme(
               Theme.of(context).textTheme,
             ),
-            primarySwatch: Colors.blue,
-            accentColor: Constants.ACCENT_COLOR,
+            primarySwatch: Palette.kToDark,
+            // accentColor: Constants.ACCENT_COLOR,  (Depricated)
             primaryColor: Constants.PRIMARY_COLOR,
             primaryColorDark: Constants.PRIMARY_DARK_COLOR,
             canvasColor: Constants.CANVAS_COLOR,
+          ).copyWith(
+            colorScheme: ThemeData().colorScheme.copyWith(
+                secondary: Constants.ACCENT_COLOR,
+                primary: Constants.PRIMARY_COLOR),
           ),
+
           home: checkOverLay != null
               ? showCompetition != null || openAzkar != null
-              ? StartView()
-              : SplashView()
+                  ? StartView()
+                  : SplashView()
               : SplashView(),
           navigatorKey: Routes.sailor.navigatorKey,
           onGenerateRoute: Routes.sailor.generator(),

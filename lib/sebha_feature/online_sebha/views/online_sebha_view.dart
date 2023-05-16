@@ -1,4 +1,4 @@
-import 'package:muslim_book/ads/add_widget_edit.dart';
+import 'package:muslim_book/ads/ad_widget_edit.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/providers/tasbeeh_top_provider.dart';
@@ -8,14 +8,13 @@ import 'package:muslim_book/sebha_feature/online_sebha/models/tasabeeh_model.dar
 import 'package:muslim_book/sebha_feature/views/new_tasbeeh_view.dart';
 import 'package:muslim_book/views/login_pop_up_view/login_pop_up_view.dart';
 import 'package:muslim_book/views/myProfile_view/myProfile_view.dart';
-import 'package:muslim_book/views/top_view/tasbeeh_top_view.dart';
+import 'package:muslim_book/views/scoreboard_views/tasbeeh_scoreboard_view.dart';
 import 'package:muslim_book/widgets/app_scaffold_title.dart';
 import 'package:muslim_book/widgets/share_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -46,230 +45,232 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
-      context: context,
-      builder: (context) => new AlertDialog(
-        contentPadding: EdgeInsets.all(0.0),
-        shape: RoundedRectangleBorder(borderRadius:
-        BorderRadius.all(Radius.circular(12))),
-        content: Container(
-            height: 400,
-            child: LoadUiWithAdd(mainView: AddWidgetEdit( title:   "المسبحة",bannerName :BannerName.SEBHA ,buttomTitle:  "متابعه",))),
-      ),
-    )) ?? false;
+          context: context,
+          builder: (context) => new AlertDialog(
+            contentPadding: EdgeInsets.all(0.0),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(12))),
+            content: Container(
+                height: 400,
+                child: LoadUiWithAd(
+                    mainView: AdWidgetEdit(
+                  title: "المسبحة",
+                  bannerName: BannerName.SEBHA,
+                  buttomTitle: "متابعه",
+                ))),
+          ),
+        )) ??
+        false;
   }
-
 
   @override
   Widget build(BuildContext context) {
     return !Provider.of<UserProvider>(context).isLoggedIn
         ? LoginPopUpView()
         : ResponsiveBuilder(
-      builder: (context, SizingInformation sizeConfig) {
-        return
-
-          WillPopScope(
-            onWillPop: _onWillPop,
-
-            child:
-          AppScaffold(
-          onProfileTap: () => Get.to(MyProfileView()),
-          actions: [
-            Container(
-              margin: EdgeInsets.only(
-                top: sizeConfig.blockSizeVertical,
-                left: sizeConfig.blockSizeHorizontal * 3,
-              ),
-              width: sizeConfig.blockSizeHorizontal * 9.5,
-              height: sizeConfig.blockSizeHorizontal * 9.5,
-              child: FloatingActionButton(
-                backgroundColor: Constants.ICON_COLOR,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) =>_getTabseehTopPage()),
-                  );
-                },
-                child: FittedBox(
-                    child: Icon(
-                      Icons.wine_bar,
-                      color: Colors.white,
-                    )),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(
-                top: sizeConfig.blockSizeVertical,
-                left: sizeConfig.blockSizeHorizontal * 3,
-              ),
-              width: sizeConfig.blockSizeHorizontal * 9.5,
-              height: sizeConfig.blockSizeHorizontal * 9.5,
-              child: FittedBox(
-                child: FloatingActionButton(
-                  heroTag: "1",
-                  backgroundColor: Constants.ICON_COLOR,
-                  onPressed: () {
-                    Provider.of<OnlineSebhaProvider>(context,
-                        listen: false)
-                        .uploadLastSebhaCount();
-                    Get.dialog(NewTasbeehView(
-                      sizeConfig: sizeConfig,
-                      isLocal: false,
-                    ));
-                  },
-                  child: FittedBox(
-                    child: Icon(
-                      Icons.add,
-                      size: sizeConfig.blockSizeHorizontal * 13,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-          floatingActionButton: new Container(
-            height: 100.0,
-            child: new Stack(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.center,
-                  child: new Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-
+            builder: (context, SizingInformation sizeConfig) {
+              return WillPopScope(
+                  onWillPop: _onWillPop,
+                  child: AppScaffold(
+                    resizeToAvoidBottomInset: false,
+                    onProfileTap: () => Get.to(() => MyProfileView()),
+                    actions: [
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 35),
-
-                        height: 60.0,
-                        child: new FloatingActionButton(
-                          key: UniqueKey(),
-                          backgroundColor:prymaryColor ,
-
-                          onPressed: (){
-                            Get.dialog(ShareDialog());
-
+                        margin: EdgeInsets.only(
+                          top: sizeConfig.blockSizeVertical,
+                          left: sizeConfig.blockSizeHorizontal * 3,
+                        ),
+                        width: sizeConfig.blockSizeHorizontal * 9.5,
+                        height: sizeConfig.blockSizeHorizontal * 9.5,
+                        child: FloatingActionButton(
+                          backgroundColor: Constants.ICON_COLOR,
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => _getTabseehTopPage()),
+                            );
                           },
-                          heroTag:  'ShareDialog',
-
-                          tooltip: 'ShareDialog',
-                          child: new Icon(Icons.share ,color: Colors.white,),
+                          child: FittedBox(
+                              child: Icon(
+                            Icons.wine_bar,
+                            color: Colors.white,
+                          )),
                         ),
                       ),
-                      new Container(
-                        width: 50.0,
-                      ), // a space
                       Container(
-                        height: 60.0,
-                        child: new FloatingActionButton(
-                          key: UniqueKey(),
-
-                          backgroundColor:prymaryColor ,
-
-                          onPressed: (){
-                            Navigator.pushNamed(context, '/settings');
-
-                          },
-                          heroTag: 'settings',
-
-                          tooltip: 'settings',
-                          child: new Icon(Icons.settings, color: Colors.white,),
+                        margin: EdgeInsets.only(
+                          top: sizeConfig.blockSizeVertical,
+                          left: sizeConfig.blockSizeHorizontal * 3,
+                        ),
+                        width: sizeConfig.blockSizeHorizontal * 9.5,
+                        height: sizeConfig.blockSizeHorizontal * 9.5,
+                        child: FittedBox(
+                          child: FloatingActionButton(
+                            heroTag: "1",
+                            backgroundColor: Constants.ICON_COLOR,
+                            onPressed: () {
+                              Provider.of<OnlineSebhaProvider>(context,
+                                      listen: false)
+                                  .uploadLastSebhaCount();
+                              Get.dialog(NewTasbeehView(
+                                sizeConfig: sizeConfig,
+                                isLocal: false,
+                              ));
+                            },
+                            child: FittedBox(
+                              child: Icon(
+                                Icons.add,
+                                size: sizeConfig.blockSizeHorizontal * 13,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
-                  ),
-                )
-              ],
-            ),),
-          padding: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 4),
-          title: AppScaffoldTitleWidget(title: "المسبحة"),
-          centerTitle: true,
-          child: (Provider.of<OnlineSebhaProvider>(context).list ==
-              null ||
-              Provider.of<OnlineSebhaProvider>(context)
-                  .currentTasbeeh ==
-                  null)
-              ? Container(
-            width: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(
-                  valueColor: new AlwaysStoppedAnimation<Color>(
-                      prymaryColor),
-                ),
-              ],
-            ),
-          )
-              : Stack(
-            children: [
-              Column(
-                children: [
-                  CarouselSlider(
-                    carouselController:
-                    Provider.of<OnlineSebhaProvider>(
-                      context,
-                    ).controller,
-                    options: CarouselOptions(
-                        initialPage:
-                        Provider.of<OnlineSebhaProvider>(
-                          context,
-                        ).currentIndex,
-                        enableInfiniteScroll: true,
-                        onPageChanged: (index, _) {
-                          Provider.of<OnlineSebhaProvider>(context,
-                              listen: false)
-                              .currentIndex = index;
-                        },
-                        viewportFraction: 0.9,
-                        aspectRatio: 2.0,
-                        height: sizeConfig.blockSizeVertical * 35),
-                    items:
-                    (Provider.of<OnlineSebhaProvider>(context)
-                        .list
-                        .map((zikr) {
-                      return Container(
-                        child: Column(
+                    floatingActionButton: new Container(
+                      height: 100.0,
+                      child: new Stack(
+                        children: <Widget>[
+                          Align(
+                            alignment: Alignment.center,
+                            child: new Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 35),
+                                  height: 60.0,
+                                  child: new FloatingActionButton(
+                                    key: UniqueKey(),
+                                    backgroundColor: prymaryColor,
+                                    onPressed: () {
+                                      Get.dialog(ShareDialog());
+                                    },
+                                    heroTag: 'ShareDialog',
+                                    tooltip: 'ShareDialog',
+                                    child: new Icon(
+                                      Icons.share,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                new Container(
+                                  width: 50.0,
+                                ), // a space
+                                Container(
+                                  height: 60.0,
+                                  child: new FloatingActionButton(
+                                    key: UniqueKey(),
+                                    backgroundColor: prymaryColor,
+                                    onPressed: () {
+                                      Navigator.pushNamed(context, '/settings');
+                                    },
+                                    heroTag: 'settings',
+                                    tooltip: 'settings',
+                                    child: new Icon(
+                                      Icons.settings,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    padding:
+                        EdgeInsets.only(top: sizeConfig.blockSizeVertical * 4),
+                    title: AppScaffoldTitleWidget(title: "المسبحة"),
+                    centerTitle: true,
+                    child:
+                        // (Provider.of<OnlineSebhaProvider>(context).list ==
+                        //             null ||
+                        //         Provider.of<OnlineSebhaProvider>(context)
+                        //                 .currentTasbeeh ==
+                        //             null)
+                        //     ? Container(
+                        //         width: double.infinity,
+                        //         child: Column(
+                        //           mainAxisAlignment: MainAxisAlignment.center,
+                        //           children: [
+                        //             CircularProgressIndicator(
+                        //               valueColor: new AlwaysStoppedAnimation<Color>(
+                        //                   prymaryColor),
+                        //             ),
+                        //           ],
+                        //         ),
+                        //       )
+                        //     :
+                        Stack(
+                      children: [
+                        Column(
                           children: [
-                            buildContentStack(
-                                sizeConfig, zikr, context),
+                            CarouselSlider(
+                              carouselController:
+                                  Provider.of<OnlineSebhaProvider>(
+                                context,
+                              ).controller,
+                              options: CarouselOptions(
+                                  initialPage: Provider.of<OnlineSebhaProvider>(
+                                    context,
+                                  ).currentIndex,
+                                  enableInfiniteScroll: true,
+                                  onPageChanged: (index, _) {
+                                    Provider.of<OnlineSebhaProvider>(context,
+                                            listen: false)
+                                        .currentIndex = index;
+                                  },
+                                  viewportFraction: 0.9,
+                                  aspectRatio: 2.0,
+                                  height: sizeConfig.blockSizeVertical * 35),
+                              items: (Provider.of<OnlineSebhaProvider>(context)
+                                  .list
+                                  .map((zikr) {
+                                return Container(
+                                  child: Column(
+                                    children: [
+                                      buildContentStack(
+                                          sizeConfig, zikr, context),
+                                    ],
+                                  ),
+                                );
+                              }).toList()),
+                            ),
+                            Spacer(),
+                            buildControllersContainerWidget(
+                                sizeConfig, context),
                           ],
                         ),
-                      );
-                    }).toList()),
-                  ),
-                  Spacer(),
-                  buildControllersContainerWidget(
-                      sizeConfig, context),
-                ],
-              ),
-              if (Provider.of<OnlineSebhaProvider>(context)
-                  .showCongratulations)
-                IgnorePointer(
-                  child: Container(
-                    width: double.infinity,
-                    child: Image.asset(
-                        "assets/images/sebha_view/congratulations.gif"),
-                  ),
-                ),
-              if (Provider.of<OnlineSebhaProvider>(context)
-                  .showCongratulations)
-                IgnorePointer(
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      "assets/images/sebha_view/swipe.gif",
-                      width: double.infinity,
-                      height: 100,
+                        if (Provider.of<OnlineSebhaProvider>(context)
+                            .showCongratulations)
+                          IgnorePointer(
+                            child: Container(
+                              width: double.infinity,
+                              child: Image.asset(
+                                  "assets/images/sebha_view/congratulations.gif"),
+                            ),
+                          ),
+                        if (Provider.of<OnlineSebhaProvider>(context)
+                            .showCongratulations)
+                          IgnorePointer(
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Image.asset(
+                                "assets/images/sebha_view/swipe.gif",
+                                width: double.infinity,
+                                height: 100,
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
-                  ),
-                ),
-            ],
-          ),
-        ));
-      },
-    );
+                  ));
+            },
+          );
   }
 
   Container buildControllesWidget(SizingInformation sizeConfig) {
@@ -292,7 +293,7 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
       SizingInformation sizeConfig, TasbeehModel zikr, context) {
     return Container(
       margin:
-      EdgeInsets.symmetric(horizontal: sizeConfig.blockSizeHorizontal * 2),
+          EdgeInsets.symmetric(horizontal: sizeConfig.blockSizeHorizontal * 2),
       height: sizeConfig.blockSizeVertical * 33,
       child: Stack(
         children: [
@@ -300,7 +301,7 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
               height: sizeConfig.blockSizeVertical * 30,
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.only(
-                // bottom: sizeConfig.blockSizeVertical * 6,
+                  // bottom: sizeConfig.blockSizeVertical * 6,
                   top: sizeConfig.blockSizeVertical * 2,
                   left: sizeConfig.blockSizeHorizontal * 4,
                   right: sizeConfig.blockSizeHorizontal * 4),
@@ -308,7 +309,7 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
                   color: _backBackGroundColor,
                   borderRadius: BorderRadius.circular(20),
                   border:
-                  Border.all(color: Constants.PRIMARY_COLOR, width: .4)),
+                      Border.all(color: Constants.PRIMARY_COLOR, width: .4)),
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 child: Column(
@@ -387,7 +388,7 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(sizeConfig.blockSizeHorizontal * 15),
                   topRight:
-                  Radius.circular(sizeConfig.blockSizeHorizontal * 15),
+                      Radius.circular(sizeConfig.blockSizeHorizontal * 15),
                 ),
               ),
             ),
@@ -414,9 +415,9 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
               FloatingActionButton(
                 heroTag: "3",
                 onPressed: () async => await Provider.of<OnlineSebhaProvider>(
-                    context,
-                    listen: false)
-                    .increaseTasbeeh(count: 0),
+                        context,
+                        listen: false)
+                    .increaseOrSetTasbeehValue(count: 0),
                 backgroundColor: prymaryColor,
                 child: Icon(
                   Icons.restore,
@@ -440,20 +441,20 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
             image: AssetImage("assets/images/sebha_view/button_pattern.png"),
             fit: BoxFit.contain),
       ),
-      child: ElevatedButton(
-        // shape: CircleBorder(),
-        onPressed: () async {
+      child: InkWell(
+        enableFeedback: false,
+        onTap: () async {
           await Provider.of<OnlineSebhaProvider>(context, listen: false)
-              .increaseTasbeeh();
+              .increaseOrSetTasbeehValue();
         },
         child: Card(
           elevation: 2,
           shape: CircleBorder(),
           color: Colors.white,
           child: Container(
-            width: sizeConfig.blockSizeHorizontal * 45,
+            width: sizeConfig.blockSizeHorizontal * 35,
             decoration:
-            BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                BoxDecoration(color: Colors.white, shape: BoxShape.circle),
             padding: EdgeInsets.all(sizeConfig.blockSizeHorizontal * 4),
             child: Container(
               decoration: BoxDecoration(
@@ -463,16 +464,18 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
                   radius: sizeConfig.blockSizeHorizontal * 16,
                   lineWidth: sizeConfig.blockSizeHorizontal * 1,
                   percent: double.parse(
-                      "${Provider.of<OnlineSebhaProvider>(context).currentTasbeeh.counted / Provider.of<OnlineSebhaProvider>(context).currentTasbeeh.count * 100 / 100}") >
-                      1.0
+                              "${Provider.of<OnlineSebhaProvider>(context).currentTasbeeh.counted / Provider.of<OnlineSebhaProvider>(context).currentTasbeeh.count * 100 / 100}") >
+                          1.0
                       ? 1
                       : double.parse(
-                      "${Provider.of<OnlineSebhaProvider>(context).currentTasbeeh.counted / Provider.of<OnlineSebhaProvider>(context).currentTasbeeh.count * 100 / 100}"),
+                          "${Provider.of<OnlineSebhaProvider>(context).currentTasbeeh.counted / Provider.of<OnlineSebhaProvider>(context).currentTasbeeh.count * 100 / 100}"),
                   backgroundColor: Colors.white,
                   center: Text(
                     "${Provider.of<OnlineSebhaProvider>(context).currentTasbeeh.totalCounted}",
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 32),
                   ),
                   progressColor: _greenColor,
                 ),
@@ -503,9 +506,9 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
     return ChangeNotifierProxyProvider<UserProvider, TasbeehTopProvider>(
       create: (_) => TasbeehTopProvider(null),
       update: (_, user, __) => TasbeehTopProvider(user),
-      child:ScreenTypeLayout(
+      child: ScreenTypeLayout(
         mobile: OrientationLayoutBuilder(
-          portrait: (context) => TasbeehTopView(),
+          portrait: (context) => TasbeehScoreboardView(),
         ),
       ),
     );

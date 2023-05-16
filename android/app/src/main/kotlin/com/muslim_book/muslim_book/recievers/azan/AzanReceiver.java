@@ -101,7 +101,7 @@ public class AzanReceiver extends BroadcastReceiver {
       intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
       PendingIntent alarmIntent = PendingIntent
           .getBroadcast(context, Constants.AZAN_PENDING_INTENT_REQUEST_CODE, intent,
-              PendingIntent.FLAG_UPDATE_CURRENT);
+              PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
       Calendar calendar = Calendar.getInstance();
       calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time.split(":")[0]));
       calendar.set(Calendar.MINUTE, Integer.parseInt(time.split(":")[1]));
@@ -124,7 +124,7 @@ public class AzanReceiver extends BroadcastReceiver {
     intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
     PendingIntent alarmIntent = PendingIntent
         .getBroadcast(context, Constants.BEFORE_AZAN_PENDING_INTENT_REQUEST_CODE, intent,
-            PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     calendar.add(Calendar.MINUTE, -10);
     setAlarm(calendar, alarmMgr, alarmIntent);
 

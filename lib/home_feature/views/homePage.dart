@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
 import 'package:muslim_book/home_feature/controllers/providers_get_post.dart';
 import 'package:muslim_book/home_feature/domian/model/categories_model.dart';
@@ -19,7 +19,6 @@ import 'package:muslim_book/views/login_pop_up_view/login_pop_up_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 import "package:provider/provider.dart" as ProviderUser;
 import 'package:share_plus/share_plus.dart';
@@ -39,6 +38,9 @@ class HomePage extends ConsumerWidget {
   RefreshController _islamicPostsRefreshController =
       RefreshController(initialRefresh: false);
   Key _postsKey = Key('posts');
+  final bool mounted;
+
+  HomePage({required this.mounted});
 
   void _onPostsRefresh() async {
     // monitor network fetch
@@ -92,9 +94,9 @@ class HomePage extends ConsumerWidget {
 
             //add ad every 10 posts
             if (pageIndex.isOdd && (i == 10 || i == 20)) {
-              postsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+              postsListWidget.add(AdmobBanner(bannerName: BannerName.BOSLA));
             } else if (pageIndex.isEven && (i == 5 || i == 15 || i == 25)) {
-              postsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+              postsListWidget.add(AdmobBanner(bannerName: BannerName.BOSLA));
             }
           }
         }
@@ -113,10 +115,12 @@ class HomePage extends ConsumerWidget {
 
           //add ad every 10 posts
           if (islamicPageIndex.isOdd && (i == 10 || i == 20)) {
-            islamicPostsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+            islamicPostsListWidget
+                .add(AdmobBanner(bannerName: BannerName.BOSLA));
           } else if (islamicPageIndex.isEven &&
               (i == 5 || i == 15 || i == 25)) {
-            islamicPostsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+            islamicPostsListWidget
+                .add(AdmobBanner(bannerName: BannerName.BOSLA));
           }
         }
       }
@@ -125,11 +129,7 @@ class HomePage extends ConsumerWidget {
     return MyApp.loading
         ? Container(
             child: Center(
-              child: Loading(
-                indicator: BallBeatIndicator(),
-                size: 70.0,
-                color: Constants.PRIMARY_DARK_COLOR,
-              ),
+              child: Loading(),
             ),
           )
         : SafeArea(
@@ -154,11 +154,7 @@ class HomePage extends ConsumerWidget {
                 Expanded(
                     child: postschanges.isloading
                         ? Center(
-                            child: Loading(
-                              indicator: BallBeatIndicator(),
-                              size: 50.0,
-                              color: Constants.PRIMARY_DARK_COLOR,
-                            ),
+                            child: Loading(),
                           )
                         : Container(
                             height: 150,
@@ -287,11 +283,7 @@ class HomePage extends ConsumerWidget {
                                             ),
                                           )
                                         : postschanges.isPosts
-                                            ? postschanges.posts != null &&
-                                                    postschanges.posts.data !=
-                                                        null &&
-                                                    postschanges
-                                                        .posts.data.isNotEmpty
+                                            ? postschanges.posts.data.isNotEmpty
                                                 ? _buildPostsList()
                                                 : postsListWidget.isNotEmpty
                                                     ? _buildPostsList()
@@ -300,13 +292,7 @@ class HomePage extends ConsumerWidget {
                                                             false
                                                         ? Container(
                                                             child: Center(
-                                                              child: Loading(
-                                                                indicator:
-                                                                    BallBeatIndicator(),
-                                                                size: 70.0,
-                                                                color: Constants
-                                                                    .PRIMARY_DARK_COLOR,
-                                                              ),
+                                                              child: Loading(),
                                                             ),
                                                           )
                                                         : Center(
@@ -324,7 +310,8 @@ class HomePage extends ConsumerWidget {
                                                               ),
                                                             ),
                                                           ))
-                                            : postschanges.categories != null &&
+                                            : postschanges.categories
+                                                        .isNotEmpty &&
                                                     postschanges
                                                         .categories.isNotEmpty
                                                 ? _buildIslamicPostList()
@@ -403,9 +390,12 @@ class HomePage extends ConsumerWidget {
                     children: [
                       CircleAvatar(
                         radius: 16.0,
-                        backgroundImage: NetworkImage(
-                          _post.userImage != null ? _post.userImage! : '',
-                        ),
+                        backgroundImage: _post.userImage != null
+                            ? NetworkImage(_post.userImage!)
+                            : null,
+                        child: _post.userImage == null
+                            ? Image.asset("assets/images/profile_image.png")
+                            : null,
                         backgroundColor: Colors.transparent,
                       ),
                       Padding(
@@ -920,9 +910,8 @@ class HomePage extends ConsumerWidget {
                                           IslamicPostDetails(islamicPost)));
                             },
                             child: Container(
-                                child: (islamicPost.featured == null ||
-                                        islamicPost.featured.endsWith('mp4') ||
-                                        islamicPost.featured == "")
+                                child: (islamicPost.featured.endsWith('mp4') ||
+                                        islamicPost.featured.isEmpty)
                                     ? Image.asset(
                                         "assets/images/splash_view/logo.png",
                                         color: Colors.grey[100],

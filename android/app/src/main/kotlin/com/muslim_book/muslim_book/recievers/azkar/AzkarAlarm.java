@@ -37,11 +37,11 @@ public class AzkarAlarm extends BroadcastReceiver {
     intent.putExtra(Constants.FIRE_AZKAR_POP_UP, true);
     PendingIntent morningIntent = PendingIntent
         .getBroadcast(context, Constants.MORNING_AZKAR_PENDING_INTENT_REQUEST_CODE , intent,
-            PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent.FLAG_UPDATE_CURRENT |  PendingIntent.FLAG_IMMUTABLE);
 
     PendingIntent eveningIntent = PendingIntent
         .getBroadcast(context, Constants.EVENING_AZKAR_PENDING_INTENT_REQUEST_CODE , intent,
-            PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
     setMoringAlarm(alarmMgr, morningIntent);
     setEveningAlarm(alarmMgr, eveningIntent);

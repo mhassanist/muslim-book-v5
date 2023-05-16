@@ -17,7 +17,7 @@ class AzanController extends GetxController {
   bool _volume = false;
   String _currentDayName = '';
   DateTime? _nextSalah;
-  int? _nextAzanKey;
+  late int _nextAzanKey;
   Duration? _remaining;
   String _remainingText = '';
   StreamSubscription? _stream;
@@ -57,8 +57,9 @@ class AzanController extends GetxController {
           getCurrentDay();
           setNextSalah();
         }
-        _remainingText =
-            DateFormat.Hms().format(DateTime(_remaining!.inMilliseconds));
+        final DateTime remainingDateTime =
+            DateTime.fromMillisecondsSinceEpoch(remaining!.inMilliseconds);
+        _remainingText = DateFormat.Hms().format(remainingDateTime);
         update();
       }
     } catch (ex) {
@@ -149,14 +150,15 @@ class AzanController extends GetxController {
         final azan = Azan.fromMap(data);
         final product = azanValue.firstWhere((product) => product.id == azan.id,
             orElse: () => Azan());
-        if (product.id.isNotEmpty) {
-          if (mutedAzanList.isNotEmpty &&
-              mutedAzanList.contains(azan.id)) {
+        if (product.id.isEmpty) {
+          if (mutedAzanList.isNotEmpty && mutedAzanList.contains(azan.id)) {
             azan.volumeEnable = false;
           } else {
             azan.volumeEnable = true;
           }
-          azan.count = locator<Prefs>().getAssalahTime("update${azan.id}").isNotEmpty
+          azan.count = locator<Prefs>()
+                  .getAssalahTime("update${azan.id}")
+                  .isNotEmpty
               ? int.parse(locator<Prefs>().getAssalahTime("update${azan.id}"))
               : 0;
 
@@ -201,12 +203,14 @@ class AzanController extends GetxController {
       int year = DateTime.now().year;
       for (int i = 1; i <= 6; i++) {
         String time = locator<Prefs>().getAssalahTime("$i");
-        var min = int.parse(time.split(":")[1]) +
-            (locator<Prefs>().getAssalahTime("update${i}") != null
-                ? int.parse(locator<Prefs>().getAssalahTime("update${i}"))
-                : 0);
+        var min = time == '' ? 0 : int.parse(time.split(":")[1]);
+        String corrctedTimeByMinuets =
+            locator<Prefs>().getAssalahTime("update$i");
+        if (corrctedTimeByMinuets.isNotEmpty) {
+          min += int.parse(corrctedTimeByMinuets);
+        }
         var timeOfDay = TimeOfDay(
-          hour: int.parse(time.split(":")[0]),
+          hour: time == '' ? 0 : int.parse(time.split(":")[0]),
           minute: min,
           // minute: int.parse(time.split(":")[1]),
         );
@@ -230,8 +234,8 @@ class AzanController extends GetxController {
   void setTomorrowFajr() {
     String time = locator<Prefs>().getAssalahTime("1");
     var timeOfDay = TimeOfDay(
-      hour: int.parse(time.split(":")[0]),
-      minute: int.parse(time.split(":")[1]),
+      hour: time == '' ? 0 : int.parse(time.split(":")[0]),
+      minute: time == '' ? 0 : int.parse(time.split(":")[1]),
     );
     var tomorrow = DateTime.now().add(Duration(days: 1));
     _nextSalah = DateTime(tomorrow.year, tomorrow.month, tomorrow.day,
@@ -242,7 +246,7 @@ class AzanController extends GetxController {
 
   get nextSalahTime => _nextSalah;
 
-  get nextAzanKey => _nextAzanKey;
+  int? get nextAzanKey => _nextAzanKey;
 
   Duration? get remaining => _remaining;
 
@@ -273,7 +277,7 @@ class AzanController extends GetxController {
 
   saveAzanMute(bool isAdd, String azanId) {
     if (!isAdd) {
-      if (mutedAzanList != null) {
+      if (mutedAzanList.isNotEmpty) {
         if (!mutedAzanList.contains(azanId)) {
           mutedAzanList.add(azanId);
         }
@@ -281,8 +285,7 @@ class AzanController extends GetxController {
         mutedAzanList.add(azanId);
       }
     } else {
-      if (mutedAzanList != null && mutedAzanList.isNotEmpty)
-        mutedAzanList.remove(azanId);
+      if (mutedAzanList.isNotEmpty) mutedAzanList.remove(azanId);
     }
     String map = '';
     for (var st in mutedAzanList) {

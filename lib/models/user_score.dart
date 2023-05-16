@@ -26,11 +26,11 @@ class UserScoreModel {
   int? countryId;
   int? cityId;
   int points;
-  String flag;
-  String country;
+  String? flag;
+  String? country;
   String? city;
-  int correctAnswer;
-  int wrongAnswer;
+  int? correctAnswer;
+  int? wrongAnswer;
   int rank;
   int? total;
 

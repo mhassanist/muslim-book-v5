@@ -36,12 +36,12 @@ class ListSection extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           itemBuilder: (ctx, index) {
             return buildItem(items[index]['icon'], items[index]['title'],
-                items[index]['selected'],context);
+                items[index]['selected'], context);
           }),
     );
   }
 
-  Widget buildItem(String icon, String title, bool selected,context) {
+  Widget buildItem(String icon, String title, bool selected, context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 4),
       width: 115,
@@ -119,16 +119,18 @@ class ListSection extends StatelessWidget {
             ],
           ),
           Positioned(
-              left: -17,
-              bottom: -10,
-              child: Container(
-                  height: 50,
-                  width: 50,
-                  child: SvgPicture.asset(
-                    icon,
-                    color: Colors.black12,
-                    fit: BoxFit.fill,
-                  ),),)
+            left: -17,
+            bottom: -10,
+            child: Container(
+              height: 50,
+              width: 50,
+              child: SvgPicture.asset(
+                icon,
+                color: Colors.black12,
+                fit: BoxFit.fill,
+              ),
+            ),
+          )
         ],
       ),
     );

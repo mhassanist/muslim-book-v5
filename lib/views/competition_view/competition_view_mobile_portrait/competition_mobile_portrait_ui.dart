@@ -1,14 +1,16 @@
-import 'dart:io';
 import 'dart:ui';
 
-import 'package:muslim_book/ads/add_widget_edit.dart';
+import 'package:muslim_book/ads/ad_manager.dart';
+import 'package:muslim_book/ads/ad_widget_edit.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
+import 'package:muslim_book/network_utils/remote_config.dart';
 import 'package:muslim_book/providers/competition_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
+import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/widgets/standardButton_widget.dart';
 import 'package:facebook_audience_network/ad/ad_banner.dart';
 import 'package:flutter/material.dart';
@@ -157,8 +159,9 @@ class CompetitionUI {
               provider.isAnsweredClicked = true;
               provider.chosenPosition = index;
               provider.stopTimer();
-              provider.setAnswerId =
-                  provider.questions[provider.questionIndex].answers[index].id ?? -1;
+              provider.setAnswerId = provider
+                      .questions[provider.questionIndex].answers[index].id ??
+                  -1;
               provider.postAnswer();
             }
           });
@@ -193,12 +196,12 @@ class CompetitionUI {
       //width: sizeConfig.blockSizeHorizontal * 60,
       child: IgnorePointer(
         ignoring: provider.disablePickingAnswers,
-        child: ElevatedButton(
-          // elevation: 4,
-          // color: getColor(index, answer.result),
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.circular(10),
-          // ),
+        child: MaterialButton(
+          elevation: 4,
+          color: getColor(index, answer.result),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           onPressed: () => onPressed?.call(),
           child: Text(
             "${answer.answers}",
@@ -258,8 +261,8 @@ class CompetitionUI {
                                       BorderRadius.all(Radius.circular(12))),
                               content: Container(
                                 height: 400,
-                                child: LoadUiWithAdd(
-                                  mainView: AddWidgetEdit(
+                                child: LoadUiWithAd(
+                                  mainView: AdWidgetEdit(
                                     title: AppLocalizations.of(context)!
                                         .translate("competition"),
                                     bannerName: BannerName.COMPETITION,
@@ -384,8 +387,8 @@ class CompetitionUI {
                 ),
               ),
 
-//                  faceBookAdsWidget(locator<RemoteConfigService>()
-//                      .underStartCompetitionAdsId),
+              faceBookAdsWidget(
+                  locator<RemoteConfigService>().underStartCompetitionAdsId),
             ],
           ),
         )));
@@ -406,7 +409,7 @@ class CompetitionUI {
                 "أحسنت",
                 style: TextStyle(
                     fontSize: sizeConfig.blockSizeHorizontal * 8,
-                    color: Colors.white,
+                    color: Constants.PRIMARY_COLOR,
                     fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
@@ -420,7 +423,7 @@ class CompetitionUI {
                   "لقد إجتزت المسابقة بنجاح",
                   style: TextStyle(
                     fontSize: sizeConfig.blockSizeHorizontal * 5,
-                    color: Colors.white,
+                    color: Constants.PRIMARY_COLOR,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -509,10 +512,10 @@ class CompetitionUI {
                     width: sizeConfig.blockSizeHorizontal * 2,
                   ),
                   Expanded(
-                    child: ElevatedButton(
-                      // padding: EdgeInsets.symmetric(
-                      //   vertical: sizeConfig.blockSizeVertical * 2,
-                      // ),
+                    child: MaterialButton(
+                      padding: EdgeInsets.symmetric(
+                        vertical: sizeConfig.blockSizeVertical * 2,
+                      ),
                       onPressed: () {
                         provider.openFaceBookAd();
                         goToStart(context);
@@ -520,7 +523,7 @@ class CompetitionUI {
                       child: Text(
                         "العودة للرئيسية",
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Constants.PRIMARY_COLOR,
                             fontWeight: FontWeight.bold,
                             fontSize: sizeConfig.blockSizeHorizontal * 5),
                       ),
@@ -648,25 +651,30 @@ class CompetitionUI {
   }
 
   Widget faceBookAdsWidget(id) {
-    return Container(
-      child: FacebookBannerAd(
-        placementId: Platform.isAndroid ? id : Constants.FACEBOOK_IOS_BANNER_ID,
-        bannerSize: BannerSize.MEDIUM_RECTANGLE,
-        listener: (result, value) {
-          switch (result) {
-            case BannerAdResult.ERROR:
-              print("FaceBookError: $value");
-              break;
-            case BannerAdResult.LOADED:
-              break;
-            case BannerAdResult.CLICKED:
-              break;
-            case BannerAdResult.LOGGING_IMPRESSION:
-              break;
-          }
-        },
-      ),
-    );
+    if (AdManager.showFacebookAds) {
+      return Container(
+        child: FacebookBannerAd(
+          // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2964944860251047",
+          placementId: id,
+          bannerSize: BannerSize.MEDIUM_RECTANGLE,
+          listener: (result, value) {
+            switch (result) {
+              case BannerAdResult.ERROR:
+                print("FaceBookError: $value");
+                break;
+              case BannerAdResult.LOADED:
+                break;
+              case BannerAdResult.CLICKED:
+                break;
+              case BannerAdResult.LOGGING_IMPRESSION:
+                break;
+            }
+          },
+        ),
+      );
+    } else {
+      return Container();
+    }
   }
 
   Widget buildNoMoreQuestions() {

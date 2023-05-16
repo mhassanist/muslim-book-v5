@@ -4,7 +4,6 @@ import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/quran/provider/quran_pages_pic_bloc.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
-import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,8 +18,8 @@ class QuranPagePicView extends StatefulWidget {
   State<QuranPagePicView> createState() => _QuranPagePicViewState();
 }
 
-class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProviderStateMixin{
-
+class _QuranPagePicViewState extends State<QuranPagePicView>
+    with TickerProviderStateMixin {
   DragStartDetails? startVerticalDragDetails;
   DragUpdateDetails? updateVerticalDragDetails;
   Uint8List? quranPagePic;
@@ -30,16 +29,15 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
   late AnimationController _linearProgressController;
   String? directory;
 
-
   @override
   void initState() {
     _currentPageNumber = widget.quranPage;
     //save current page to local storage
     saveCurrentPage();
     QuranPagesPicBloc().downloadQuranSinglePage(widget.quranPage).then((value) {
-        setState(() {
-          quranPagePic = value;
-        });
+      setState(() {
+        quranPagePic = value;
+      });
     });
     QuranPagesPicBloc().checkIfFullQuranDownloaded();
 
@@ -51,28 +49,31 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
       vsync: this,
       duration: const Duration(seconds: 2),
     )..addListener(() {
-      setState(() {});
-    });
+        setState(() {});
+      });
     _linearProgressController.repeat(reverse: false);
 
     super.initState();
   }
 
   void saveCurrentPage() {
-    SharedPreferences.getInstance().then((pref){
+    SharedPreferences.getInstance().then((pref) {
       pref.setInt("LAST_READ_PAGE", _currentPageNumber);
     });
   }
+
   @override
   void dispose() {
-     _linearProgressController.dispose();
+    _linearProgressController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     QuranPagesPicBloc _quranPagesBloc = Provider.of<QuranPagesPicBloc>(context);
 
-    if(_quranPagesBloc.currentPageState == APIStatus.initial || _quranPagesBloc.currentPageState == APIStatus.loading){
+    if (_quranPagesBloc.currentPageState == APIStatus.initial ||
+        _quranPagesBloc.currentPageState == APIStatus.loading) {
       return AppScaffold(
         title: Text(
           AppLocalizations.of(context)!.translate("Loading_moshaf"),
@@ -90,22 +91,18 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Loading(
-                  indicator: BallBeatIndicator(),
-                  size: 70.0,
-                  color: Colors.white,
-                ),
+                Loading(),
                 Text(
                   AppLocalizations.of(context)!.translate("Loading_quran"),
-                  style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 )
               ],
             ),
           ),
         ),
       );
-    }else{
+    } else {
       return SafeArea(
         child: Scaffold(
           body: GestureDetector(
@@ -121,23 +118,24 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
                     startVerticalDragDetails!.globalPosition.dx;
 
                 if (dx < 0 && _currentPageNumber > 1) {
-                  QuranPagesPicBloc().downloadQuranSinglePage(_currentPageNumber-1).then((value) {
+                  QuranPagesPicBloc()
+                      .downloadQuranSinglePage(_currentPageNumber - 1)
+                      .then((value) {
                     setState(() {
                       quranPagePic = value;
-                      _currentPageNumber = _currentPageNumber-1;
+                      _currentPageNumber = _currentPageNumber - 1;
                     });
                     saveCurrentPage();
-
                   });
-                }
-                else if (dx > 0 && _currentPageNumber < 604) {
-                  QuranPagesPicBloc().downloadQuranSinglePage(_currentPageNumber+1).then((value) {
+                } else if (dx > 0 && _currentPageNumber < 604) {
+                  QuranPagesPicBloc()
+                      .downloadQuranSinglePage(_currentPageNumber + 1)
+                      .then((value) {
                     setState(() {
                       quranPagePic = value;
-                      _currentPageNumber = _currentPageNumber+1;
+                      _currentPageNumber = _currentPageNumber + 1;
                     });
                     saveCurrentPage();
-
                   });
                 }
               },
@@ -156,7 +154,11 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
                     child: SlidingAppBar(
                       controller: _controller,
                       visible: _visible,
-                      child: AppBar(backgroundColor: Colors.black26,title: Text('$_currentPageNumber'),centerTitle: true,),
+                      child: AppBar(
+                        backgroundColor: Colors.black26,
+                        title: Text('$_currentPageNumber'),
+                        centerTitle: true,
+                      ),
                     ),
                   ),
                   //_buildLoadingBar(_quranPagesBloc),
@@ -168,10 +170,10 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
   }
 
   _buildLoadingBar(QuranPagesPicBloc quranPagesBloc) {
-    if(quranPagesBloc.fullPagesState == APIStatus.initial){
+    if (quranPagesBloc.fullPagesState == APIStatus.initial) {
       return Container();
     }
-    if(quranPagesBloc.fullPagesState == APIStatus.loading){
+    if (quranPagesBloc.fullPagesState == APIStatus.loading) {
       return Align(
         alignment: Alignment.bottomCenter,
         child: Container(
@@ -180,7 +182,7 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
             controller: _controller,
             visible: _visible,
             child: PreferredSize(
-              preferredSize: Size(MediaQuery.of(context).size.width,100),
+              preferredSize: Size(MediaQuery.of(context).size.width, 100),
               child: Container(
                 decoration: BoxDecoration(
                     color: Colors.black45,
@@ -190,11 +192,18 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Center(
-                      child: Text('جاري تحميل المصحف',style: TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),),
+                      child: Text(
+                        'جاري تحميل المصحف',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                     LinearProgressIndicator(
                       value: _linearProgressController.value,
-                      color: Color(0XFF347D53),minHeight: 10,
+                      color: Color(0XFF347D53),
+                      minHeight: 10,
                       backgroundColor: Colors.white,
                     ),
                   ],
@@ -205,15 +214,11 @@ class _QuranPagePicViewState extends State<QuranPagePicView> with TickerProvider
         ),
       );
     }
-    if(quranPagesBloc.fullPagesState == APIStatus.loaded){
-
+    if (quranPagesBloc.fullPagesState == APIStatus.loaded) {
+      return Container();
+    } else {
       return Container();
     }
-    else{
-      return Container();
-    }
-
-
   }
 }
 
@@ -268,4 +273,3 @@ class SlidingLoadingBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 }
-

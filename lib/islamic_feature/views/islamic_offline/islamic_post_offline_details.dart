@@ -1,5 +1,5 @@
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:muslim_book/widgets/app_scaffold_title.dart';
@@ -10,7 +10,11 @@ class IslamicPostOfflineDetails extends StatefulWidget {
   final Map<String, dynamic> data;
   final String catName;
 
-  const IslamicPostOfflineDetails(this.data, this.catName, {super.key,});
+  const IslamicPostOfflineDetails(
+    this.data,
+    this.catName, {
+    super.key,
+  });
 
   @override
   State<IslamicPostOfflineDetails> createState() =>
@@ -47,18 +51,23 @@ class _IslamicPostOfflineDetailsState extends State<IslamicPostOfflineDetails> {
           transparentBackground: false,
           title: AppScaffoldTitleWidget(title: widget.catName),
           centerTitle: true,
-          child: ListView(
-            padding: EdgeInsets.all(10),
+          child: Column(
             children: [
               isInternetConnected == true
                   ? _buildAdSection(context)
                   : Container(),
-              widget.data['body'] != null
-                  ? _buildPostTitleUi(widget.data)
-                  : Container(),
-              widget.data['body'] != null ? _buildSizedBox() : Container(),
-              _buildPostContentUi(widget.data),
-              _buildSizedBox(),
+              ListView(
+                shrinkWrap: true,
+                padding: EdgeInsets.all(10),
+                children: [
+                  widget.data['body'] != null
+                      ? _buildPostTitleUi(widget.data)
+                      : Container(),
+                  widget.data['body'] != null ? _buildSizedBox() : Container(),
+                  _buildPostContentUi(widget.data),
+                  _buildSizedBox(),
+                ],
+              ),
             ],
           ),
         );
@@ -67,7 +76,7 @@ class _IslamicPostOfflineDetailsState extends State<IslamicPostOfflineDetails> {
   }
 
   _buildPostTitleUi(Map<String, dynamic> data) {
-    return Text(data['title'],
+    return Text(data['title'] ?? '',
         style: TextStyle(fontSize: 16, height: 2, fontWeight: FontWeight.w600));
   }
 
@@ -88,8 +97,6 @@ class _IslamicPostOfflineDetailsState extends State<IslamicPostOfflineDetails> {
   }
 
   _buildAdSection(BuildContext context) {
-    return Container(
-        height: MediaQuery.of(context).size.height / 3.0,
-        child: AdMobRectangle(BannerName.AZKAR));
+    return AdmobBanner(bannerName: BannerName.AZKAR);
   }
 }

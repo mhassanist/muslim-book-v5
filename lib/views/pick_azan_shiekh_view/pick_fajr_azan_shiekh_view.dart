@@ -2,6 +2,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/local_storage/local_storage_manager.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
+import 'package:muslim_book/models/azan_sound.dart';
 import 'package:muslim_book/providers/azan_fajr_sounds_provider.dart';
 import 'package:muslim_book/providers/azan_sounds_provider.dart';
 import 'package:muslim_book/providers/pick_fajr_azan_shiekh_provider.dart';
@@ -25,7 +26,8 @@ class PickFajrAzanShiekhView extends StatefulWidget {
 class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
     with TickerProviderStateMixin {
   PickFajrAzanShiekhProvider? _fajrAzanSoundFromAssetsProvider; //from assets
-  AzanFairSoundsProvider? _moreFajrAzanSoundsProvider; //from web or local database
+  late AzanFairSoundsProvider
+      _moreFajrAzanSoundsProvider; //from web or local database
 
   final audioPlayer = AudioPlayer();
   List<AnimationController> animationList = [];
@@ -33,7 +35,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
   String currentPlayingItemId = '';
 
   bool displayingFromAssets = false;
-  bool screenNoLongerActive=false;
+  bool screenNoLongerActive = false;
 
   @override
   void dispose() {
@@ -100,7 +102,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
         actions: <Widget>[
-          ElevatedButton(
+          MaterialButton(
             child: Text(
               AppLocalizations.of(context)!.translate("save"),
               style: TextStyle(color: Constants.CANVAS_COLOR),
@@ -108,13 +110,17 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
             onPressed: () {
               //on clicking save button
               if (displayingFromAssets)
-                _fajrAzanSoundFromAssetsProvider?.saveAssetsFajrSheikhId(context);
-              else
-                _moreFajrAzanSoundsProvider?.saveDownloadedFajrShiekhJson(
-                    _moreFajrAzanSoundsProvider!
-                        .getAzanSound(_moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex)
-                        .toJSON(),
-                    context);
+                _fajrAzanSoundFromAssetsProvider
+                    ?.saveAssetsFajrSheikhId(context);
+              else {
+                AzanSound? azanSound = _moreFajrAzanSoundsProvider
+                    .getAzanSound(
+                        _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex);
+                if (azanSound != null) {
+                  _moreFajrAzanSoundsProvider.saveDownloadedFajrShiekhJson(
+                      azanSound.toJSON(), context);
+                }
+              }
             },
           )
         ],
@@ -126,8 +132,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
     String tempPath = (await getApplicationDocumentsDirectory()).path;
     //WE DONT USE IDS BUT LEFT IF THERE IS FUTURE ADDITIONS
     String path = join(tempPath, "azan_mshary_fajr.mp3");
-    if(!screenNoLongerActive)
-    await audioPlayer.play(DeviceFileSource(path));
+    if (!screenNoLongerActive) await audioPlayer.play(DeviceFileSource(path));
     animationList[index].forward();
     setState(() {
       currentPlayingItemId = id;
@@ -141,13 +146,16 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
   }
 
   Future playAzanFromLocalDatabase(index) async {
-    if (_moreFajrAzanSoundsProvider!.getAzanSound(index).localPath.isNotEmpty) {
-      await _moreFajrAzanSoundsProvider!.downloadFile(index);
+    AzanSound? azanSound = _moreFajrAzanSoundsProvider.getAzanSound(index);
+    if (azanSound != null && azanSound.localPath.isEmpty) {
+      await _moreFajrAzanSoundsProvider.downloadFile(index);
     }
-    if(!screenNoLongerActive)
-      // await audioPlayer.play(_moreFajrAzanSoundsProvider!.getAzanSound(index).localPath);
-    await audioPlayer.play(DeviceFileSource(_moreFajrAzanSoundsProvider!.getAzanSound(index).localPath));
-    _moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex = index;
+    if (!screenNoLongerActive)
+    // await audioPlayer.play(_moreFajrAzanSoundsProvider!.getAzanSound(index).localPath);
+    if (azanSound != null) {
+      await audioPlayer.play(DeviceFileSource(azanSound.localPath));
+    }
+    _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex = index;
     setState(() {
       animationListWeb[index].forward();
     });
@@ -161,14 +169,14 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
   }
 
   _buildGetMoreAzanSoundsButton(sizeConfig) {
-    var state = _moreFajrAzanSoundsProvider!.viewState == ViewState.Idle
+    var state = _moreFajrAzanSoundsProvider.viewState == ViewState.Idle
         ? CrossFadeState.showFirst
         : CrossFadeState.showSecond;
     return LoadMoreAzanSoundsButton(
         text: "press_here",
         onTap: () {
-          if (_moreFajrAzanSoundsProvider!.viewState == ViewState.Idle) {
-            _moreFajrAzanSoundsProvider!.loadAzanSounds();
+          if (_moreFajrAzanSoundsProvider.viewState == ViewState.Idle) {
+            _moreFajrAzanSoundsProvider.loadAzanSounds();
             setState(() {
               state = CrossFadeState.showSecond;
             });
@@ -196,7 +204,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
             child: ListView.builder(
                 itemCount: Constants.FAJR_SHIEKH_NAMES.length + 1,
                 itemBuilder: (context, index) {
-                  if(index == Constants.FAJR_SHIEKH_NAMES.length)
+                  if (index == Constants.FAJR_SHIEKH_NAMES.length)
                     return Column(children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
@@ -211,51 +219,52 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
                       _buildGetMoreAzanSoundsButton(sizeConfig)
                     ]);
                   else
-                  return ListTile(
-                    selected:
-                        _fajrAzanSoundFromAssetsProvider!.pickedAzanShiekhIndex ==
-                            index,
-                    onTap: () {
-                      _fajrAzanSoundFromAssetsProvider!.pickedAzanShiekhIndex =
-                          index;
-                      if (Constants.FAJR_SHIEKH_NAMES[index]["id"] ==
-                          currentPlayingItemId) {
-                        audioPlayer.stop();
-                        currentPlayingItemId = '';
-                        animationList[index].reverse();
-                      } else {
-                        playAzan(Constants.FAJR_SHIEKH_NAMES[index]["id"], index);
-                      }
-                    },
-                    title: Text(
-                      Constants.FAJR_SHIEKH_NAMES[index]["name"],
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    leading: Constants.FAJR_SHIEKH_NAMES[index]["id"] ==
-                            currentPlayingItemId
-                        ? Icon(Icons.check)
-                        : null,
-                    trailing: IconButton(
-                      onPressed: () {
+                    return ListTile(
+                      selected: _fajrAzanSoundFromAssetsProvider!
+                              .pickedAzanShiekhIndex ==
+                          index,
+                      onTap: () {
+                        _fajrAzanSoundFromAssetsProvider!
+                            .pickedAzanShiekhIndex = index;
                         if (Constants.FAJR_SHIEKH_NAMES[index]["id"] ==
                             currentPlayingItemId) {
                           audioPlayer.stop();
                           currentPlayingItemId = '';
                           animationList[index].reverse();
                         } else {
-                          playAzan(Constants.FAJR_SHIEKH_NAMES[index]["id"], index);
+                          playAzan(
+                              Constants.FAJR_SHIEKH_NAMES[index]["id"], index);
                         }
                       },
-                      icon: AnimatedIcon(
-                        icon: AnimatedIcons.play_pause,
-                        progress: animationList[index],
-                        color: Theme.of(context).primaryColor,
+                      title: Text(
+                        Constants.FAJR_SHIEKH_NAMES[index]["name"],
+                        overflow: TextOverflow.ellipsis,
                       ),
-                    ),
-                  );
+                      leading: Constants.FAJR_SHIEKH_NAMES[index]["id"] ==
+                              currentPlayingItemId
+                          ? Icon(Icons.check)
+                          : null,
+                      trailing: IconButton(
+                        onPressed: () {
+                          if (Constants.FAJR_SHIEKH_NAMES[index]["id"] ==
+                              currentPlayingItemId) {
+                            audioPlayer.stop();
+                            currentPlayingItemId = '';
+                            animationList[index].reverse();
+                          } else {
+                            playAzan(Constants.FAJR_SHIEKH_NAMES[index]["id"],
+                                index);
+                          }
+                        },
+                        icon: AnimatedIcon(
+                          icon: AnimatedIcons.play_pause,
+                          progress: animationList[index],
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ),
+                    );
                 }),
           ),
-
         ],
       ),
     );
@@ -263,60 +272,70 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
 
   _buildAzanSoundsList(sizeConfig) {
     //initially check if there is local azan sounds stored
-    if (_moreFajrAzanSoundsProvider!.loadedState == DataLoadingState.notLoaded) {
-      _moreFajrAzanSoundsProvider!.checkForLocal();
+    if (_moreFajrAzanSoundsProvider.loadedState ==
+        DataLoadingState.notLoaded) {
+      _moreFajrAzanSoundsProvider.checkForLocal();
       return Container();
       //if there is no local downloaded files, load from assets and show
       // load more button
-    } else if (_moreFajrAzanSoundsProvider!.loadedState ==
+    } else if (_moreFajrAzanSoundsProvider.loadedState ==
         DataLoadingState.canBeLoadedFromWeb) {
       return _buildAzanSoundsListFromAssets(sizeConfig);
       //if there are local files, load from local database
-    } else if (_moreFajrAzanSoundsProvider!.loadedState ==
+    } else if (_moreFajrAzanSoundsProvider.loadedState ==
         DataLoadingState.localAvailable) {
       displayingFromAssets = false;
 
-      _moreFajrAzanSoundsProvider!.azanSounds.forEach((f) {
+      _moreFajrAzanSoundsProvider.azanSounds.forEach((f) {
         animationListWeb.add(AnimationController(
             vsync: this, duration: Duration(milliseconds: 300)));
       });
       return ListView.builder(
-          itemCount: _moreFajrAzanSoundsProvider!.azanSounds.length,
+          itemCount: _moreFajrAzanSoundsProvider.azanSounds.length,
           itemBuilder: (context, index) {
+            if (_moreFajrAzanSoundsProvider.filesStates[index] ==
+                    FileDownloadState.initial &&
+                index == _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex) {
+                  playAzanFromLocalDatabase(index);
+                }
             return ListTile(
-              selected: _moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex == index,
+              selected:
+                  _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex == index,
               onTap: () async {
-                if (_moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex == index) {
+                if (_moreFajrAzanSoundsProvider.pickedAzanShiekhIndex ==
+                    index) {
                   audioPlayer.stop();
-                  _moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex = null;
+                  _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex;
                   animationListWeb[index].reverse();
                 } else {
                   playAzanFromLocalDatabase(index);
                 }
               },
               title: Text(
-                _moreFajrAzanSoundsProvider!.azanSounds[index].name,
+                _moreFajrAzanSoundsProvider.azanSounds[index].name,
                 overflow: TextOverflow.ellipsis,
               ),
-              leading: index == _moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex
-                  ? Icon(Icons.check)
-                  : null,
-              trailing: _moreFajrAzanSoundsProvider!.filesStates[index] ==
+              leading:
+                  index == _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex
+                      ? Icon(Icons.check)
+                      : null,
+              trailing: _moreFajrAzanSoundsProvider.filesStates[index] ==
                           FileDownloadState.downloaded ||
-                      _moreFajrAzanSoundsProvider!.filesStates[index] ==
+                      _moreFajrAzanSoundsProvider.filesStates[index] ==
                           FileDownloadState.initial
                   ? IconButton(
                       onPressed: () {
                         if (index ==
-                            _moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex) {
+                            _moreFajrAzanSoundsProvider
+                                .pickedAzanShiekhIndex) {
                           audioPlayer.stop();
-                          _moreFajrAzanSoundsProvider!.pickedAzanShiekhIndex = null;
+                          _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex;
                           animationListWeb[index].reverse();
                         } else {
                           playAzanFromLocalDatabase(index);
                         }
                       },
-                      icon: _moreFajrAzanSoundsProvider!.filesStates[index] ==
+                      icon: _moreFajrAzanSoundsProvider.filesStates[index] ==
                               FileDownloadState.initial
                           ? Icon(
                               Icons.arrow_circle_down,

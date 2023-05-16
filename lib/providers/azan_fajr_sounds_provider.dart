@@ -16,14 +16,14 @@ import 'package:path_provider/path_provider.dart';
 
 class AzanFairSoundsProvider extends ViewStateProvider {
   late List<AzanSound> azanSounds;
-  late int? _pickedAzanShiekhIndex;
+  late int _pickedAzanShiekhIndex = 0;
 
   DataLoadingState loadedState = DataLoadingState.notLoaded;
-  late List<FileDownloadState> filesStates;
+  List<FileDownloadState> filesStates = [];
 
-  int? get pickedAzanShiekhIndex => _pickedAzanShiekhIndex;
+  int get pickedAzanShiekhIndex => _pickedAzanShiekhIndex;
 
-  set pickedAzanShiekhIndex(int? value) {
+  set pickedAzanShiekhIndex(int value) {
     _pickedAzanShiekhIndex = value;
     notifyListeners();
   }
@@ -52,8 +52,12 @@ class AzanFairSoundsProvider extends ViewStateProvider {
     return file;
   }
 
-  AzanSound getAzanSound(index) {
-    return azanSounds[index];
+  AzanSound? getAzanSound(index) {
+    if (azanSounds.length > index - 1) {
+      return azanSounds[index];
+    } else {
+      return null;
+    }
   }
 
   /*Future<void> saveDownloadedAzanShiekhJson(Map<String, dynamic> json, BuildContext context) async {
@@ -62,8 +66,8 @@ class AzanFairSoundsProvider extends ViewStateProvider {
     Navigator.pop(context, _pickedAzanShiekhIndex);
   }*/
 
-  Future<void> saveDownloadedFajrShiekhJson(Map<String, dynamic> json,
-      BuildContext context) async {
+  Future<void> saveDownloadedFajrShiekhJson(
+      Map<String, dynamic> json, BuildContext context) async {
     await locator<Prefs>().setFajrAzanShiekhJSON(json);
     print("saved local db azan sound json");
     Navigator.pop(context, _pickedAzanShiekhIndex);
@@ -71,9 +75,10 @@ class AzanFairSoundsProvider extends ViewStateProvider {
 
   loadAzanSounds() async {
     setViewState(ViewState.Loading);
-    final result = await LocalStorageManager().loadFajrAzanSoundsList();
-    if (result != null) {
-      azanSounds = result;
+
+    azanSounds =
+        await LocalStorageManager().loadFajrAzanSoundsList() ?? [];
+    if (azanSounds.isNotEmpty) {
       for (AzanSound sound in azanSounds) {
         filesStates.add(FileDownloadState.initial);
       }
@@ -87,7 +92,7 @@ class AzanFairSoundsProvider extends ViewStateProvider {
       }
       //save azan sounds locally
       await LocalStorageManager().saveAzanSoundsList(azanSoundsResult);
-      azanSounds = (await LocalStorageManager().loadFajrAzanSoundsList())!;
+      azanSounds = await LocalStorageManager().loadFajrAzanSoundsList() ?? [];
       loadedState = DataLoadingState.localAvailable;
 
       setViewState(ViewState.Idle);
@@ -99,24 +104,24 @@ class AzanFairSoundsProvider extends ViewStateProvider {
     var azanList = await LocalStorageManager().loadFajrAzanSoundsList();
     var fairAzanSheikh = await locator<Prefs>().getFajrAzanShiekhJSON();
 
-    if (azanList != null && fairAzanSheikh !=null) {
+    if (azanList != null && fairAzanSheikh.isNotEmpty) {
       loadedState = DataLoadingState.localAvailable;
       azanSounds = azanList;
-      Map<String,dynamic>? localSavedSheikh;
+      Map<String, dynamic>? localSavedSheikh;
 
       final result = locator<Prefs>().getFajrAzanShiekhJSON();
-      if(result != null){
+      if (result != '') {
         localSavedSheikh = jsonDecode(result);
       }
       for (AzanSound sound in azanSounds) {
-        if(sound.localPath != null)
+        if (sound.localPath != '')
           filesStates.add(FileDownloadState.downloaded);
         else
           filesStates.add(FileDownloadState.initial);
-        if(localSavedSheikh != null && localSavedSheikh['id'].toString() == sound.id.toString()){
+        if (localSavedSheikh != null &&
+            localSavedSheikh['id'].toString() == sound.id.toString()) {
           _pickedAzanShiekhIndex = azanSounds.indexOf(sound);
         }
-
       }
       notifyListeners();
     } else {

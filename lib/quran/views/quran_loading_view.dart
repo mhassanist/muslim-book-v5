@@ -1,7 +1,6 @@
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/quran/provider/quran_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 
 class QuranLoadingView extends StatefulWidget {
@@ -19,14 +18,13 @@ class _QuranLoadingViewState extends State<QuranLoadingView>
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Center(
-            child: SpinKitRing(
-              color: Colors.white,
-              size: 50.0,
-              controller: AnimationController(
-                vsync: this,
-                  duration: const Duration(milliseconds: 1200)),
-            ),
-          ),
+              // child: SpinKitRing(
+              //   color: Colors.white,
+              //   size: 50.0,
+              //   controller: AnimationController(
+              //       vsync: this, duration: const Duration(milliseconds: 1200)),
+              // ),
+              ),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 30),
             child: Text(

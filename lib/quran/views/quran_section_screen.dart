@@ -1,9 +1,9 @@
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/quran/views/quran_reading_index.dart';
-import 'package:muslim_book/quran/views/quran_view.dart';
+import 'package:muslim_book/quran/views/quran_listening_view.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -30,7 +30,7 @@ class _QuranSectionScreenState extends State<QuranSectionScreen> {
       centerTitle: true,
       child: ResponsiveBuilder(
         builder: (context, sizeConfig) {
-          return LoadUiWithAdd(
+          return LoadUiWithAd(
             mainView: CustomScrollView(
               slivers: <Widget>[
                 SliverToBoxAdapter(
@@ -46,9 +46,7 @@ class _QuranSectionScreenState extends State<QuranSectionScreen> {
                       new StaggeredTile.count(2, 2),
                 )),
                 SliverToBoxAdapter(
-                    child: Container(child: AdMobRectangle(BannerName.Top)
-                        //  ..  AdMobRectangle(BannerName.Top)
-                        )),
+                    child: AdmobBanner(bannerName: BannerName.TOP)),
                 SliverToBoxAdapter(
                     child: SizedBox(
                   height: 10,
@@ -67,7 +65,6 @@ class _QuranSectionScreenState extends State<QuranSectionScreen> {
       onPressed: () {
         switch (index) {
           case 0:
-
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => QuranReadingIndex()),
@@ -76,7 +73,7 @@ class _QuranSectionScreenState extends State<QuranSectionScreen> {
           case 1:
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => QuranView()),
+              MaterialPageRoute(builder: (context) => QuranListeningView()),
             );
             break;
           default:

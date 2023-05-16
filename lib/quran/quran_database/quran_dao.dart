@@ -18,7 +18,8 @@ class QuranDao {
   QuranTypeModel? _recitersModel;
 
   String get selectedTranslation => _userModel?.selectedTranslation ?? '';
-  String get selectedTransliteration => _userModel?.selectedTransliteration ?? '';
+  String get selectedTransliteration =>
+      _userModel?.selectedTransliteration ?? '';
 
   QuranTypeModel? _translationAndTransliterationModel;
 
@@ -88,7 +89,8 @@ class QuranDao {
   }
 
   Future openQuranBox() async {
-    if (_quranBox == null) {
+    bool isQuranBoxOpen = Hive.isBoxOpen(Constants.QURAN_BOX);
+    if (!isQuranBoxOpen) {
       _quranBox = await Hive.openBox(Constants.QURAN_BOX);
     }
   }
@@ -129,14 +131,14 @@ class QuranDao {
   }
 
   Future saveReciters(QuranTypeModel model) async {
-    await _quranBox!.put(Constants.RECITERS_DATABASE, model);
+    await _quranBox.put(Constants.RECITERS_DATABASE, model);
     _recitersModel = model;
     await updateUserSelectedReciter(model.data[7]);
   }
 
   Future saveSelectedTranslation(String id) async {
     quranModel.QuranUserModel? model =
-        await _quranBox!.get(Constants.QURAN_USER_DATABASE);
+        await _quranBox.get(Constants.QURAN_USER_DATABASE);
     if (model == null) {
       model = quranModel.QuranUserModel();
     }
@@ -147,7 +149,7 @@ class QuranDao {
 
   Future saveSelectedTransliteration(String id) async {
     quranModel.QuranUserModel? model =
-        await _quranBox!.get(Constants.QURAN_USER_DATABASE);
+        await _quranBox.get(Constants.QURAN_USER_DATABASE);
     if (model == null) {
       model = quranModel.QuranUserModel();
     }
@@ -158,7 +160,7 @@ class QuranDao {
 
   Future updateUserSelectedReciter(QuranTypeData reciter) async {
     quranModel.QuranUserModel? model =
-        await _quranBox!.get(Constants.QURAN_USER_DATABASE);
+        await _quranBox.get(Constants.QURAN_USER_DATABASE);
     if (model == null) {
       model = quranModel.QuranUserModel();
     }
@@ -170,10 +172,10 @@ class QuranDao {
   Future addDownloadedTranslation(
       String key, quranModel.QuranModel value, bool isTranslation) async {
     Map<dynamic, dynamic> map =
-        (await _quranBox!.get(Constants.DOWNLOADED_TRANSLATION_DATABASE)) ?? {};
+        (await _quranBox.get(Constants.DOWNLOADED_TRANSLATION_DATABASE)) ?? {};
 
     map["$key"] = value;
-    await _quranBox!.put(Constants.DOWNLOADED_TRANSLATION_DATABASE, map);
+    await _quranBox.put(Constants.DOWNLOADED_TRANSLATION_DATABASE, map);
     _downloadedTransliterationAndTranslation = map;
     if (isTranslation) {
       await saveSelectedTranslation(key);
@@ -183,8 +185,8 @@ class QuranDao {
 
   Future allowTranslation(bool value) async {
     quranModel.QuranUserModel model =
-        (await _quranBox!.get(Constants.QURAN_USER_DATABASE))
-            ?? quranModel.QuranUserModel();
+        (await _quranBox.get(Constants.QURAN_USER_DATABASE)) ??
+            quranModel.QuranUserModel();
     model.allowTranslation = value;
     _userModel = model;
     await saveUserChanges(model);
@@ -192,10 +194,8 @@ class QuranDao {
 
   Future allowTransliteration(bool value) async {
     quranModel.QuranUserModel model =
-        await _quranBox?.get(Constants.QURAN_USER_DATABASE);
-    if (model == null) {
-      model = quranModel.QuranUserModel();
-    }
+        (await _quranBox.get(Constants.QURAN_USER_DATABASE)) ??
+            quranModel.QuranUserModel();
     model.allowTransliteration = value;
     _userModel = model;
     await saveUserChanges(model);
@@ -211,9 +211,8 @@ class QuranDao {
   Future updateUserProgress(int surah, int ayah) async {
     quranModel.QuranUserModel model =
         await _quranBox.get(Constants.QURAN_USER_DATABASE);
-    if (model == null) {
-      model = quranModel.QuranUserModel();
-    }
+    model = quranModel.QuranUserModel();
+
     model.lastReadSurahId = surah;
     model.lastReadAyahId = ayah;
     await saveUserChanges(model);

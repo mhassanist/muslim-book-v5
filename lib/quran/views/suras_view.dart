@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/quran/models/quran_model.dart';
 import 'package:muslim_book/quran/provider/quran_provider.dart';
+import 'package:muslim_book/quran/utils/quran_audio_handler.dart';
 import 'package:muslim_book/quran/widgets/surah_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +18,7 @@ class SurasView extends StatefulWidget {
 class _SurasViewState extends State<SurasView> {
   List<Surah> translationList = [];
   List<Surah> transliterationList = [];
+  QuranAudioHandler quranAudioHandler = QuranAudioHandler();
 
   @override
   void didChangeDependencies() {
@@ -36,10 +38,11 @@ class _SurasViewState extends State<SurasView> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: AudioService.playbackStateStream,
+    return StreamBuilder<PlaybackState>(
+        stream: quranAudioHandler.audioHandler.playbackState,
         builder: (context, audioSnapshot) {
-          return CustomScrollView(
+          return 
+          CustomScrollView(
             physics: BouncingScrollPhysics(),
             slivers: <Widget>[
               SliverToBoxAdapter(
@@ -57,7 +60,8 @@ class _SurasViewState extends State<SurasView> {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (c) => AyatView(
-                                  transliterationSurah: transliterationList.isEmpty
+                                  transliterationSurah: transliterationList
+                                          .isEmpty
                                       ? null
                                       : transliterationList[
                                           snapshot.data!.lastReadSurahId! - 1],
@@ -85,7 +89,7 @@ class _SurasViewState extends State<SurasView> {
                                     spreadRadius: 0,
                                     blurRadius: 5,
                                     offset: Offset(
-                                        0, 6), // changes position of shadow
+                                        0, 6),
                                   ),
                                 ],
                                 borderRadius: BorderRadius.circular(20),
@@ -110,7 +114,8 @@ class _SurasViewState extends State<SurasView> {
                                         margin: EdgeInsets.symmetric(
                                             horizontal:
                                                 ScreenUtil().setWidth(15)),
-                                        child: Text("${AppLocalizations.of(context)!.translate("last_read")}",
+                                        child: Text(
+                                          "${AppLocalizations.of(context)!.translate("last_read")}",
                                           style:
                                               TextStyle(color: Colors.white60),
                                           textAlign: TextAlign.start,
@@ -199,7 +204,6 @@ class _SurasViewState extends State<SurasView> {
                 delegate: SliverChildBuilderDelegate(
                   (c, index) {
                     return SurahWidget(
-                      playerStatus: audioSnapshot,
                       index: index,
                       sura: Provider.of<QuranProvider>(context).allSuras[index],
                       translationSurah: translationList.isNotEmpty
@@ -208,6 +212,9 @@ class _SurasViewState extends State<SurasView> {
                       transliterationSurah: transliterationList.isNotEmpty
                           ? transliterationList[index]
                           : null,
+                      isAudioPlaying: audioSnapshot.data != null
+                          ? audioSnapshot.data!.playing
+                          : false,
                     );
                   },
                   childCount:

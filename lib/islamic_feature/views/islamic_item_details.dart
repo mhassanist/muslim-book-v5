@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
 import 'package:muslim_book/home_feature/controllers/providers_get_post.dart';
 import 'package:muslim_book/home_feature/domian/model/categories_model.dart';
@@ -8,7 +8,6 @@ import 'package:muslim_book/home_feature/widgets/islamic_post_details.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/widgets/app_scaffold_title.dart';
-import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +19,11 @@ import 'package:share_plus/share_plus.dart';
 
 class IslamicItemDetails extends ConsumerWidget {
   final Categore category;
+  final bool mounted;
 
-  IslamicItemDetails(this.category);
+  IslamicItemDetails({required this.category, required this.mounted});
 
-  late final PostsNotifier postschanges;
+  late PostsNotifier postschanges;
   static int islamicPageIndex = 1;
 
   static List<Widget> islamicPostsListWidget = [];
@@ -35,12 +35,14 @@ class IslamicItemDetails extends ConsumerWidget {
       RefreshController(initialRefresh: false);
 
   void _onIslamicPostsRefresh() async {
-    await postschanges.getIslamicCategoryPosts(++islamicPageIndex, category.id ?? -1);
+    await postschanges.getIslamicCategoryPosts(
+        ++islamicPageIndex, category.id ?? -1);
     _islamicCatListRefreshController.loadComplete();
   }
 
   Future<void> _onIslamicPostsLoading() async {
-    await postschanges.getIslamicCategoryPosts(++islamicPageIndex, category.id ?? -1);
+    await postschanges.getIslamicCategoryPosts(
+        ++islamicPageIndex, category.id ?? -1);
 
     if (postschanges.islamicCatPosts.isEmpty) {
       _islamicCatListRefreshController.loadNoData();
@@ -52,8 +54,9 @@ class IslamicItemDetails extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     postschanges = ref.watch(getPosts);
+
     if (postschanges.isIslamicCatItemsLoading == true) {
-      postschanges.getIslamicCategoryPosts(islamicPageIndex, category.id??-1);
+      postschanges.getIslamicCategoryPosts(islamicPageIndex, category.id ?? -1);
     }
     if (postschanges.islamicCatPosts.isNotEmpty) {
       for (int i = 1; i <= postschanges.islamicCatPosts.length; i++) {
@@ -64,10 +67,12 @@ class IslamicItemDetails extends ConsumerWidget {
 
           //add ad every 10 posts
           if (islamicPageIndex.isOdd && (i == 10 || i == 20)) {
-            islamicPostsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+            islamicPostsListWidget
+                .add(AdmobBanner(bannerName: BannerName.BOSLA));
           } else if (islamicPageIndex.isEven &&
               (i == 5 || i == 15 || i == 25)) {
-            islamicPostsListWidget.add(AdMobRectangle(BannerName.BOSLA));
+            islamicPostsListWidget
+                .add(AdmobBanner(bannerName: BannerName.BOSLA));
           }
         }
       }
@@ -93,8 +98,7 @@ class IslamicItemDetails extends ConsumerWidget {
           ),
           body: Container(
               color: Color(0XFF347D53),
-              child: postschanges.islamicCatPosts != null &&
-                      postschanges.islamicCatPosts.isNotEmpty
+              child: postschanges.islamicCatPosts.isNotEmpty
                   ? _buildIslamicPostList()
                   : islamicPostsListWidget.isNotEmpty
                       ? _buildIslamicPostList()
@@ -102,9 +106,6 @@ class IslamicItemDetails extends ConsumerWidget {
                           ? Container(
                               child: Center(
                                 child: Loading(
-                                  indicator: BallBeatIndicator(),
-                                  size: 70.0,
-                                  color: Colors.white,
                                 ),
                               ),
                             )
@@ -136,8 +137,8 @@ class IslamicItemDetails extends ConsumerWidget {
           builder: (BuildContext context, LoadStatus? mode) {
             Widget body;
             if (mode == LoadStatus.noMore) {
-              body =
-                  Text(AppLocalizations.of(context)!.translate("no_more_posts"));
+              body = Text(
+                  AppLocalizations.of(context)!.translate("no_more_posts"));
             } else if (mode == LoadStatus.idle) {
               body =
                   Text(AppLocalizations.of(context)!.translate("pull_up-load"));
@@ -198,9 +199,8 @@ class IslamicItemDetails extends ConsumerWidget {
                                       IslamicPostDetails(islamicPost)));
                         },
                         child: Container(
-                            child: (islamicPost.featured == null ||
-                                    islamicPost.featured.endsWith('mp4') ||
-                                    islamicPost.featured == "")
+                            child: (islamicPost.featured.endsWith('mp4') ||
+                                    islamicPost.featured.isEmpty)
                                 ? Image.asset(
                                     "assets/images/splash_view/logo.png",
                                     color: Colors.grey[100],

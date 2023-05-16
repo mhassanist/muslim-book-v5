@@ -355,7 +355,7 @@ public class RamadanCannonIntentService extends Service {
         builder.setCustomBigContentView(expandedView);
         Intent intent = new Intent(this, RamadanCannonReceiver.class);
         intent.putExtra(Constants.CLOSE_RAMADAN_CANNON, true);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, RAMADAN_CANNON_NOTIFICATION_ID, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, RAMADAN_CANNON_NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT  | PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(pendingIntent);
         builder.setDeleteIntent(pendingIntent);
     }

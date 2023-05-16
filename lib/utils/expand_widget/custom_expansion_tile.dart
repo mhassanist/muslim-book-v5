@@ -1,35 +1,11 @@
-// Copyright 2014 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-// @dart = 2.8
-
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:flutter/material.dart';
 
 const Duration _kExpand = Duration(milliseconds: 200);
 
-/// A single-line [ListTile] with a trailing button that expands or collapses
-/// the tile to reveal or hide the [children].
-///
-/// This widget is typically used with [ListView] to create an
-/// "expand / collapse" list entry. When used with scrolling widgets like
-/// [ListView], a unique [PageStorageKey] must be specified to enable the
-/// [CustomExpansionTile] to save and restore its expanded state when it is scrolled
-/// in and out of view.
-///
-/// See also:
-///
-///  * [ListTile], useful for creating expansion tile [children] when the
-///    expansion tile represents a sublist.
-///  * The "Expand/collapse" section of
-///    <https://material.io/guidelines/components/lists-controls.html>.
 class CustomExpansionTile extends StatefulWidget {
-  /// Creates a single-line [ListTile] with a trailing button that expands or collapses
-  /// the tile to reveal or hide the [children]. The [initiallyExpanded] property must
   /// be non-null.
   const CustomExpansionTile({
-    Key key,
     this.leading,
     this.title,
     this.subtitle,
@@ -42,38 +18,33 @@ class CustomExpansionTile extends StatefulWidget {
     this.tilePadding,
     this.expandedCrossAxisAlignment,
     this.expandedAlignment,
-    this.childrenPadding, Text, this.unselectTitel ,
-  })  : assert(initiallyExpanded != null),
-        assert(maintainState != null),
-        assert(
-          expandedCrossAxisAlignment != CrossAxisAlignment.baseline,
-          'CrossAxisAlignment.baseline is not supported since the expanded children '
-          'are aligned in a column, not a row. Try to use another constant.',
-        ),
-        super(key: key);
+    this.childrenPadding,
+    Text,
+    this.unselectTitel,
+  });
 
   /// A widget to display before the title.
   ///
   /// Typically a [CircleAvatar] widget.
-  final Widget leading;
+  final Widget? leading;
 
   /// The primary content of the list item.
   ///
   /// Typically a [Text] widget.
-  final Widget title;
-  final Widget unselectTitel;
+  final Widget? title;
+  final Widget? unselectTitel;
 
   /// Additional content displayed below the title.
   ///
   /// Typically a [Text] widget.
-  final Widget subtitle;
+  final Widget? subtitle;
 
   /// Called when the tile expands or collapses.
   ///
   /// When the tile starts expanding, this function is called with the value
   /// true. When the tile starts collapsing, this function is called with
   /// the value false.
-  final ValueChanged<bool> onExpansionChanged;
+  final ValueChanged<bool>? onExpansionChanged;
 
   /// The widgets that are displayed when the tile expands.
   ///
@@ -81,10 +52,10 @@ class CustomExpansionTile extends StatefulWidget {
   final List<Widget> children;
 
   /// The color to display behind the sublist when expanded.
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   /// A widget to display instead of a rotating arrow icon.
-  final Widget trailing;
+  final Widget? trailing;
 
   /// Specifies if the list tile is initially expanded (true) or collapsed (false, the default).
   final bool initiallyExpanded;
@@ -103,7 +74,7 @@ class CustomExpansionTile extends StatefulWidget {
   /// the expanded [children] widgets.
   ///
   /// When the value is null, the tile's padding is `EdgeInsets.symmetric(horizontal: 16.0)`.
-  final EdgeInsetsGeometry tilePadding;
+  final EdgeInsetsGeometry? tilePadding;
 
   /// Specifies the alignment of [children], which are arranged in a column when
   /// the tile is expanded.
@@ -119,7 +90,7 @@ class CustomExpansionTile extends StatefulWidget {
   /// The width of the column is the width of the widest child widget in [children].
   ///
   /// When the value is null, the value of `expandedAlignment` is [Alignment.center].
-  final Alignment expandedAlignment;
+  final Alignment? expandedAlignment;
 
   /// Specifies the alignment of each child within [children] when the tile is expanded.
   ///
@@ -135,12 +106,12 @@ class CustomExpansionTile extends StatefulWidget {
   /// instead.
   ///
   /// When the value is null, the value of `expandedCrossAxisAlignment` is [CrossAxisAlignment.center].
-  final CrossAxisAlignment expandedCrossAxisAlignment;
+  final CrossAxisAlignment? expandedCrossAxisAlignment;
 
   /// Specifies padding for [children].
   ///
   /// When the value is null, the value of `childrenPadding` is [EdgeInsets.zero].
-  final EdgeInsetsGeometry childrenPadding;
+  final EdgeInsetsGeometry? childrenPadding;
 
   @override
   _CustomExpansionTileState createState() => _CustomExpansionTileState();
@@ -160,14 +131,14 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
   final ColorTween _iconColorTween = ColorTween();
   final ColorTween _backgroundColorTween = ColorTween();
 
-  AnimationController _controller;
-  Animation<double> _iconTurns;
-  Animation<double> _iconTurns2;
-  Animation<double> _heightFactor;
-  Animation<Color> _borderColor;
-  Animation<Color> _headerColor;
-  Animation<Color> _iconColor;
-  Animation<Color> _backgroundColor;
+  late AnimationController _controller;
+  late Animation<double> _iconTurns;
+  late Animation<double> _iconTurns2;
+  late Animation<double> _heightFactor;
+  late Animation<Color?> _borderColor;
+  late Animation<Color?> _headerColor;
+  late Animation<Color?> _iconColor;
+  late Animation<Color?> _backgroundColor;
 
   bool _isExpanded = false;
 
@@ -184,8 +155,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
     _backgroundColor =
         _controller.drive(_backgroundColorTween.chain(_easeOutTween));
 
-    _isExpanded = PageStorage.of(context)?.readState(context) as bool ??
-        widget.initiallyExpanded;
+    _isExpanded = PageStorage.of(context).readState(context) ?? widget.initiallyExpanded;
     if (_isExpanded) _controller.value = 1.0;
   }
 
@@ -208,13 +178,13 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
           });
         });
       }
-      PageStorage.of(context)?.writeState(context, _isExpanded);
+      PageStorage.of(context).writeState(context, _isExpanded);
     });
     if (widget.onExpansionChanged != null)
-      widget.onExpansionChanged(_isExpanded);
+      widget.onExpansionChanged!(_isExpanded);
   }
 
-  Widget _buildChildren(BuildContext context, Widget child) {
+  Widget _buildChildren(BuildContext context, Widget? child) {
     final Color borderSideColor = _borderColor.value ?? Colors.transparent;
 
     return Container(
@@ -238,49 +208,44 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
           ListTileTheme.merge(
               iconColor: _iconColor.value,
               textColor: _headerColor.value,
-              child:
-              InkWell(
-                onTap: _handleTap,
-                child:
-                    Center(
-                      child:  Container(
-                        // width: 130,
-                        height: 36,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.vertical(bottom: Radius.circular(8.0) ,),
-                          color: Constants.PRIMARY_DARK_COLOR,
-
+              child: InkWell(
+                  onTap: _handleTap,
+                  child: Center(
+                    child: Container(
+                      // width: 130,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.vertical(
+                          bottom: Radius.circular(8.0),
                         ),
-                        child:  Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            widget.leading != null
-                                ? RotationTransition(
-                              turns: _iconTurns,
-                              child: widget.leading,
-                            )
-                                : Container(),
-                            widget.title != null ? widget.title : Container(),
-                            widget.subtitle != null
-                                ? RotationTransition(
-                              turns: _iconTurns,
-                              child: widget.subtitle,
-                            )
-                                : Container(),
-
-                            widget.trailing != null ? _isExpanded? widget.unselectTitel: widget.trailing  : Container(),
-
-
-                          ],
-                        ),
+                        color: Constants.PRIMARY_DARK_COLOR,
                       ),
-
-                )
-
-
-
-              )),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          widget.leading != null
+                              ? RotationTransition(
+                                  turns: _iconTurns,
+                                  child: widget.leading,
+                                )
+                              : Container(),
+                          widget.title != null ? widget.title! : Container(),
+                          widget.subtitle != null
+                              ? RotationTransition(
+                                  turns: _iconTurns,
+                                  child: widget.subtitle,
+                                )
+                              : Container(),
+                          widget.trailing != null
+                              ? _isExpanded
+                                  ? widget.unselectTitel!
+                                  : widget.trailing!
+                              : Container(),
+                        ],
+                      ),
+                    ),
+                  ))),
         ],
       ),
     );
@@ -291,11 +256,11 @@ class _CustomExpansionTileState extends State<CustomExpansionTile>
     final ThemeData theme = Theme.of(context);
     _borderColorTween.end = theme.dividerColor;
     _headerColorTween
-      ..begin = theme.textTheme.subtitle1.color
-      ..end = theme.accentColor;
+      ..begin = theme.textTheme.titleMedium!.color
+      ..end = theme.colorScheme.secondary;
     _iconColorTween
       ..begin = theme.unselectedWidgetColor
-      ..end = theme.accentColor;
+      ..end = theme.colorScheme.secondary;
     _backgroundColorTween.end = widget.backgroundColor;
     super.didChangeDependencies();
   }

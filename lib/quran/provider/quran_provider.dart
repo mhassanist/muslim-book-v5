@@ -1,13 +1,12 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
-import 'package:muslim_book/network_utils/api_service.dart';
 import 'package:muslim_book/providers/view_state_provider.dart';
 import 'package:muslim_book/quran/api_service/quran_api_service.dart';
 import 'package:muslim_book/quran/models/quran_model.dart' as model;
 import 'package:muslim_book/quran/models/quran_model.dart';
 import 'package:muslim_book/quran/models/reciters_model.dart';
 import 'package:muslim_book/quran/quran_database/quran_dao.dart';
-import 'package:muslim_book/quran/utils/quran_top_level_functions.dart';
+import 'package:muslim_book/quran/utils/quran_audio_handler.dart';
 import 'package:muslim_book/quran/widgets/downloading_translation_widget.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
@@ -18,14 +17,7 @@ class QuranProvider extends ViewStateProvider {
   QuranProvider() {
     checkIsQuranDownloaded();
   }
-
-  // String _errormessage = "";
-  // String get errorMessage =>_errormessage;
-  // set errorMessage(String s){
-  //   _errormessage = s;
-  //   notifyListeners();
-
-  // }
+  
   QuranDao _quranDao = locator<QuranDao>();
   bool _allowTranslation = false;
   bool _allowTransliteration = false;
@@ -53,7 +45,7 @@ class QuranProvider extends ViewStateProvider {
 
   List<model.Surah> get allSuras => _allSuras;
 
-  List<QuranTypeData> _allReciters=[];
+  List<QuranTypeData> _allReciters = [];
 
   List<QuranTypeData> get allReciters => _allReciters;
 
@@ -82,6 +74,8 @@ class QuranProvider extends ViewStateProvider {
 
   QuranUserModel? get quranUserModel => _quranDao.quranUserModel;
 
+  QuranAudioHandler quranAudioHandler = QuranAudioHandler();
+
   Future changeUserProgress(int surah, int ayah) async {
     await _quranDao.updateUserProgress(surah, ayah);
   }
@@ -93,7 +87,7 @@ class QuranProvider extends ViewStateProvider {
       if (res != null && res is model.QuranModel) {
         await _quranDao.saveQuran(res);
         saveData();
-      } else{
+      } else {
         setViewState(ViewState.Idle);
         errorMessage = res.toString();
       }
@@ -101,7 +95,6 @@ class QuranProvider extends ViewStateProvider {
       saveData();
     }
     setViewState(ViewState.Idle);
-
   }
 
   void saveData() async {
@@ -124,8 +117,7 @@ class QuranProvider extends ViewStateProvider {
     _allowTransliteration =
         _quranDao.quranUserModel?.allowTransliteration ?? false;
 
-    _downloadedTranslation =
-        _quranDao.downloadedTransliterationAndTranslation;
+    _downloadedTranslation = _quranDao.downloadedTransliterationAndTranslation;
     setViewState(ViewState.Idle);
   }
 
@@ -148,14 +140,12 @@ class QuranProvider extends ViewStateProvider {
   }
 
   void startListeningToAyah({model.Ayah? ayah, model.Surah? surah}) async {
-    if (AudioService.running) {
-      await AudioService.stop();
+    if (quranAudioHandler.playbackState.value ==
+        PlaybackState().playing) {
+      await quranAudioHandler.stop();
       await Future.delayed(Duration(milliseconds: 400));
     }
-    await AudioService.start(
-      androidNotificationIcon: 'mipmap/launcher_icon',
-      androidNotificationColor: 0XFF037e40,
-      backgroundTaskEntrypoint: quranStartListeningPoint,
+    quranAudioHandler.startListening(
       params: {
         'sheikhId': "$selectedReciter",
         "ayahIndex": ayah?.numberInSurah ?? 0,
@@ -189,10 +179,10 @@ class QuranProvider extends ViewStateProvider {
       String s, BuildContext context, bool isTranslate) async {
     try {
       Get.dialog(DownloadingTranslationWidget(), barrierDismissible: false);
-      var response = await QuranApiService()
+      await QuranApiService()
           .downloadTranslationOrTransliteration(s, isTranslate);
       _downloadedTranslation =
-          _quranDao.downloadedTransliterationAndTranslation ?? {};
+          _quranDao.downloadedTransliterationAndTranslation;
       Navigator.pop(context);
       notifyListeners();
     } catch (e) {

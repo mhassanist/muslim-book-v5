@@ -47,16 +47,16 @@ class TopModelData {
 
   int? id;
   String? email;
-  String image;
+  String? image;
   String name;
   int? countryId;
   int? cityId;
   int? points;
-  String flag;
-  String country;
+  String? flag;
+  String? country;
   String? city;
-  int correctAnswer;
-  int wrongAnswer;
+  int? correctAnswer;
+  int? wrongAnswer;
 
   factory TopModelData.fromJson(String str) => TopModelData.fromMap(json.decode(str));
 

@@ -1,5 +1,7 @@
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/ad_manager.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
+import 'package:muslim_book/ads/admob_interstitial.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/network_utils/remote_config.dart';
@@ -52,13 +54,10 @@ class _IslamicsViewState extends State<IslamicsView> {
           child: Column(
             children: <Widget>[
               IslamicsOfflineScreen(),
-              Container(
-                  height: MediaQuery.of(context).size.height / 3.0,
-                  child: AdMobRectangle(BannerName.AZKAR)),
-              isInternetConnected == true ? IslamicsScreen() : Container(),
+              AdmobBanner(bannerName: BannerName.AZKAR),
+              isInternetConnected == true ? IslamicsScreen(mounted: mounted) : Container(),
               isInternetConnected == true
-                  ? Container(
-                      height: 400, child: AdMobRectangle(BannerName.AZKAR))
+                  ? AdmobBanner(bannerName: BannerName.AZKAR)
                   : Container(),
             ],
           ),
@@ -69,13 +68,20 @@ class _IslamicsViewState extends State<IslamicsView> {
 
   @override
   void deactivate() {
-    FacebookInterstitialAd.loadInterstitialAd(
-      placementId: locator<RemoteConfigService>().azanPopUpAdId,
-      listener: (result, value) {
-        if (result == InterstitialAdResult.LOADED)
-          FacebookInterstitialAd.showInterstitialAd();
-      },
-    );
+    if (AdManager.showFacebookAds) {
+      FacebookInterstitialAd.loadInterstitialAd(
+        // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
+        placementId: locator<RemoteConfigService>().azanPopUpAdId,
+        listener: (result, value) {
+          if (result == InterstitialAdResult.LOADED)
+            FacebookInterstitialAd.showInterstitialAd();
+        },
+      );
+    } else {
+      AdmobInterstitial interstitialAd = AdmobInterstitial();
+      interstitialAd.createInterstitialAd();
+    }
+
     super.deactivate();
   }
 }

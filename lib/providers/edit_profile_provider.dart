@@ -2,20 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/exceptions/failure.dart';
-import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/locals_utils/language_constants.dart';
 import 'package:muslim_book/models/countries_model.dart';
-import 'package:muslim_book/models/edit_profile_model.dart';
 import 'package:muslim_book/models/user_model.dart';
 import 'package:muslim_book/network_utils/api_service.dart';
-import 'package:muslim_book/network_utils/edit_profile_apis.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/providers/view_state_provider.dart';
-import 'package:muslim_book/utils/NetworkServices.dart';
 import 'package:muslim_book/utils/locator.dart';
-import 'package:muslim_book/utils/prefs.dart';
-import 'package:muslim_book/widgets/loading_widget.dart';
-import 'package:flutter/material.dart';
 
 class EditProfileProvider extends ViewStateProvider {
   List<CountryModel> _countries = [];
@@ -98,7 +91,7 @@ class EditProfileProvider extends ViewStateProvider {
           ? "data:image/$_fileExtension;base64,$base"
           : null,
     };
-         var res = await locator<ApiService>().editProfile(body);
+    var res = await locator<ApiService>().editProfile(body);
     if (res is UserModel) {
       _userProvider!.user = res;
       return true;
@@ -109,20 +102,18 @@ class EditProfileProvider extends ViewStateProvider {
   }
 
   void getCountries() async {
-    String code="ar";
+    String code = "ar";
     setViewState(ViewState.Loading);
-    var local=await getLocale();
-    code=local.languageCode;
+    var local = await getLocale();
+    code = local.languageCode;
     CountriesModel model = await locator<ApiService>().getCountries(code);
-    if (model != null) {
-      _countries = model.data;
-      if (_userProvider!.user.countryId != 0) {
-        _selectedCountry =
-            countries.singleWhere((f) => f.id == _userProvider!.user.countryId);
-        _countryName = countries
-            .singleWhere((f) => f.id == _userProvider!.user.countryId)
-            .name;
-      }
+    _countries = model.data;
+    if (_userProvider!.user.countryId != 0) {
+      _selectedCountry =
+          countries.singleWhere((f) => f.id == _userProvider!.user.countryId);
+      _countryName = countries
+          .singleWhere((f) => f.id == _userProvider!.user.countryId)
+          .name;
     }
     setViewState(ViewState.Idle);
   }

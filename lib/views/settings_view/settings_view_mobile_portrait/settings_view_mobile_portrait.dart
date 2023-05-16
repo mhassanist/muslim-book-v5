@@ -1,4 +1,4 @@
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
 import 'package:muslim_book/home_feature/views/home_view.dart';
@@ -189,7 +189,8 @@ class _SettingsViewMobilePortraitState
                 leading: Icon(Icons.arrow_back_ios)),
             ExpansionpanelItem(
                 isExpanded: false,
-                title: AppLocalizations.of(context)!.translate("edite_tieme_prayer"),
+                title: AppLocalizations.of(context)!
+                    .translate("edite_tieme_prayer"),
                 content: ui.azanTime(),
                 leading: Icon(Icons.arrow_back_ios)),
             ExpansionpanelItem(
@@ -219,7 +220,7 @@ class _SettingsViewMobilePortraitState
               ),
               body: Container(
                 color: Constants.CANVAS_COLOR,
-                child: LoadUiWithAdd(
+                child: LoadUiWithAd(
                   mainView: CustomScrollView(slivers: <Widget>[
                     SliverToBoxAdapter(
                       child: CustomExpansionPanelList(
@@ -256,7 +257,9 @@ class _SettingsViewMobilePortraitState
                                                 width: 10,
                                               ),
                                               Text(
-                                                contents[items.indexOf(item)].title??'',
+                                                contents[items.indexOf(item)]
+                                                        .title ??
+                                                    '',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 16,
@@ -299,9 +302,7 @@ class _SettingsViewMobilePortraitState
                       height: 10,
                     )),
                     SliverToBoxAdapter(
-                      child: Container(child: AdMobRectangle(BannerName.BOSLA)
-                          //   AdMobRectangle(BannerName.BOSLA)
-                          ),
+                      child: AdmobBanner(bannerName: BannerName.BOSLA),
                     ),
                     SliverToBoxAdapter(
                         child: SizedBox(

@@ -339,55 +339,43 @@ class Media {
 }
 
 class Links {
-  late String _first;
-  late String _last;
-  late String _next;
+  String? first;
+  String? last;
+  String? next;
 
   Links({
     String? first,
     String? last,
     String? next,
   }) {
-    this._first = first ?? '';
-    this._last = last ?? '';
-    this._next = next ?? '';
+    this.first = first ?? '';
+    this.last = last ?? '';
+    this.next = next ?? '';
   }
 
-  String get first => _first;
-
-  set first(String first) => _first = first;
-
-  String get last => _last;
-
-  set last(String last) => _last = last;
-
-  String get next => _next;
-
-  set next(String next) => _next = next;
-
   Links.fromJson(Map<String, dynamic> json) {
-    _first = json['first'];
-    _last = json['last'];
-    _next = json['next'];
+    first = json['first'];
+    last = json['last'];
+    next = json['next'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['first'] = this._first;
-    data['last'] = this._last;
-    data['next'] = this._next;
+    data['first'] = this.first;
+    data['last'] = this.last;
+    data['next'] = this.next;
     return data;
   }
 }
 
 class Meta {
-  late int _currentPage;
-  late int _from;
-  late int _lastPage;
-  late String _path;
-  late int _perPage;
-  late int _to;
-  late int _total;
+  int? currentPage;
+  int? from;
+  int? lastPage;
+  String? path;
+  int? perPage;
+  int? to;
+  int? total;
 
   Meta({
     int? currentPage,
@@ -398,62 +386,34 @@ class Meta {
     int? to,
     int? total,
   }) {
-    this._currentPage = currentPage ?? 0;
-    this._from = from ?? 0;
-    this._lastPage = lastPage ?? 0;
-    this._path = path ?? '';
-    this._perPage = perPage ?? 1;
-    this._to = to ?? 0;
-    this._total = total ?? 0;
+    this.currentPage = currentPage ?? 0;
+    this.from = from ?? 0;
+    this.lastPage = lastPage ?? 0;
+    this.path = path ?? '';
+    this.perPage = perPage ?? 1;
+    this.to = to ?? 0;
+    this.total = total ?? 0;
   }
 
-  int get currentPage => _currentPage;
-
-  set currentPage(int currentPage) => _currentPage = currentPage;
-
-  int get from => _from;
-
-  set from(int from) => _from = from;
-
-  int get lastPage => _lastPage;
-
-  set lastPage(int lastPage) => _lastPage = lastPage;
-
-  String get path => _path;
-
-  set path(String path) => _path = path;
-
-  int get perPage => _perPage;
-
-  set perPage(int perPage) => _perPage = perPage;
-
-  int get to => _to;
-
-  set to(int to) => _to = to;
-
-  int get total => _total;
-
-  set total(int total) => _total = total;
-
   Meta.fromJson(Map<String, dynamic> json) {
-    _currentPage = json['current_page'];
-    _from = json['from'];
-    _lastPage = json['last_page'];
-    _path = json['path'];
-    _perPage = json['per_page'];
-    _to = json['to'];
-    _total = json['total'];
+    currentPage = json['current_page'];
+    from = json['from'];
+    lastPage = json['last_page'];
+    path = json['path'];
+    perPage = json['per_page'];
+    to = json['to'];
+    total = json['total'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['current_page'] = this._currentPage;
-    data['from'] = this._from;
-    data['last_page'] = this._lastPage;
-    data['path'] = this._path;
-    data['per_page'] = this._perPage;
-    data['to'] = this._to;
-    data['total'] = this._total;
+    data['current_page'] = this.currentPage;
+    data['from'] = this.from;
+    data['last_page'] = this.lastPage;
+    data['path'] = this.path;
+    data['per_page'] = this.perPage;
+    data['to'] = this.to;
+    data['total'] = this.total;
     return data;
   }
 }

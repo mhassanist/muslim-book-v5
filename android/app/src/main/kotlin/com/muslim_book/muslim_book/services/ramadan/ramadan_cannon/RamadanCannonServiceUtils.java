@@ -146,7 +146,7 @@ public class RamadanCannonServiceUtils {
 
 
         Intent intent = new Intent(mContext, RamadanCannonReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, RAMADAN_CANNON_NOTIFICATION_ID, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, RAMADAN_CANNON_NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT  | PendingIntent.FLAG_IMMUTABLE);
         builder.setContentIntent(pendingIntent);
     }
 

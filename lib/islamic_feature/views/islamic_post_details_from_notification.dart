@@ -1,4 +1,4 @@
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/home_feature/domian/model/islamic_posts_model.dart';
@@ -11,21 +11,25 @@ import 'package:provider/provider.dart';
 
 class IslamicPostDetailsFromNotification extends StatefulWidget {
   final NotificationData data;
-  const IslamicPostDetailsFromNotification(this.data,{super.key});
+  const IslamicPostDetailsFromNotification(this.data, {super.key});
 
   @override
-  _IslamicPostDetailsFromNotificationState createState() => _IslamicPostDetailsFromNotificationState();
+  _IslamicPostDetailsFromNotificationState createState() =>
+      _IslamicPostDetailsFromNotificationState();
 }
 
-class _IslamicPostDetailsFromNotificationState extends State<IslamicPostDetailsFromNotification> {
+class _IslamicPostDetailsFromNotificationState
+    extends State<IslamicPostDetailsFromNotification> {
   @override
   void initState() {
     IslamicPostDetailsBloc().getIslamicPostDetails(widget.data.postId);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    IslamicPostDetailsBloc _islamicPostDetails = Provider.of<IslamicPostDetailsBloc>(context);
+    IslamicPostDetailsBloc _islamicPostDetails =
+        Provider.of<IslamicPostDetailsBloc>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.data.catName),
@@ -37,22 +41,28 @@ class _IslamicPostDetailsFromNotificationState extends State<IslamicPostDetailsF
   }
 
   _buildIslamicPostDetailsUIOrError(IslamicPostDetailsBloc islamicPostDetails) {
-    if(islamicPostDetails.state == APIStatus.initial ||
-        islamicPostDetails.state == APIStatus.loading){
+    if (islamicPostDetails.state == APIStatus.initial ||
+        islamicPostDetails.state == APIStatus.loading) {
       return Container(
-        child: Center(child: CircularProgressIndicator(),),
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
       );
     }
-    if(islamicPostDetails.state == APIStatus.error){
-      return Container(child: Center(child: Text('error'),),);
+    if (islamicPostDetails.state == APIStatus.error) {
+      return Container(
+        child: Center(
+          child: Text('error'),
+        ),
+      );
     }
-    if(islamicPostDetails.state == APIStatus.loaded){
+    if (islamicPostDetails.state == APIStatus.loaded) {
       return _buildIslamicPostDetailsUI(islamicPostDetails.postsOfIslamic);
     }
   }
 
   _buildIslamicPostDetailsUI(PostsOfIslamic postsOfIslamic) {
-    return LoadUiWithAdd(
+    return LoadUiWithAd(
       mainView: ListView(
         padding: EdgeInsets.all(10),
         children: [
@@ -88,11 +98,11 @@ class _IslamicPostDetailsFromNotificationState extends State<IslamicPostDetailsF
   _buildPostVideoUi(PostsOfIslamic postsOfIslamic) {
     return postsOfIslamic.media.isNotEmpty
         ? SizedBox(
-      height: 200,
-      child: PostVideoView(
-        url: postsOfIslamic.media[0].url,
-      ),
-    )
+            height: 200,
+            child: PostVideoView(
+              url: postsOfIslamic.media[0].url,
+            ),
+          )
         : Container();
   }
 
@@ -103,6 +113,6 @@ class _IslamicPostDetailsFromNotificationState extends State<IslamicPostDetailsF
   }
 
   _buildAdSection() {
-    return Container(height: 300, child: AdMobRectangle(BannerName.BOSLA));
+    return AdmobBanner(bannerName: BannerName.BOSLA);
   }
 }

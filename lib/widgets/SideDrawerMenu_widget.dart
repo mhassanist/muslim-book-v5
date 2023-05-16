@@ -1,14 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:muslim_book/azan_feature/views/azan_view_updated.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
 import 'package:muslim_book/islamic_feature/views/islamics_view.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/providers/user_provider.dart';
+import 'package:muslim_book/ramadan/utils/ramadan_feature_enabler.dart';
 import 'package:muslim_book/sebha_feature/views/sebha_view.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:muslim_book/views/azan_view/azan_view.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -184,17 +185,14 @@ class SideDrawerMenu {
                           //         ],
                           //       ),
 
-                          // _buildRow(null, "رمضانيات", () {
-                          //   Navigator.of(context).pop();
-                          //   Navigator.pushNamed(context, '/RamadanView');
-                          // }, true, "assets/images/slider_view/antern.svg"),
+                          _buildRamadanFeature(),
                           _buildDivider(),
                           _buildRow(
                               null,
                               AppLocalizations.of(context)!
                                   .translate("Prayer_Timings"), () {
                             Navigator.of(context).pop();
-                            Get.to(AzanView());
+                            Get.to(() => AzanViewUpdated());
                           }, true, "assets/images/slider_view/prayer.svg"),
                           _buildDivider(),
                           _buildRow(null,
@@ -226,7 +224,7 @@ class SideDrawerMenu {
                               () {
                             Navigator.of(context).pop();
                             // await
-                            Get.to(SebhaView());
+                            Get.to(() => SebhaView());
                           }, true, "assets/images/sebha_view/sebha_icon.svg"),
                           _buildDivider(),
                           _buildRow(null,
@@ -258,7 +256,7 @@ class SideDrawerMenu {
                               AppLocalizations.of(context)!.translate("more"),
                               () {
                             Navigator.of(context).pop();
-                            Get.to(IslamicsView());
+                            Get.to(() => IslamicsView());
                           }, false, ""),
                           _buildDivider(),
                           _buildRow(Icons.wine_bar,
@@ -476,6 +474,17 @@ class SideDrawerMenu {
       mode: LaunchMode.externalApplication,
     )) {
       print('Could not launch');
+    }
+  }
+
+  _buildRamadanFeature() {
+    if (RamadanFeatureEnabler.isRamadanFeatureEnabled) {
+      return _buildRow(null, "رمضانيات", () {
+        Navigator.of(context).pop();
+        Navigator.pushNamed(context, '/RamadanView');
+      }, true, "assets/images/slider_view/antern.svg");
+    } else {
+      return Container();
     }
   }
 }

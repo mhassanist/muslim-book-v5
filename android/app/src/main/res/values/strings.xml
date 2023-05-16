@@ -24,8 +24,9 @@
   <string name="are_you_ready">هل أنت جاهز للتحدي ؟</string>
   <string name="facebook_app_id">679514076185741</string>
   <string name="fb_login_protocol_scheme">fb679514076185741</string>
+  <string name="facebook_client_token">51f597b1354991df6745e76f557e2467</string>
 
 
-  <!--  <string name="facebook_app_id">679514076185741</string>-->
-<!--  <string name="fb_login_protocol_scheme">fb679514076185741</string>-->
+  <!-- <string name="facebook_app_id">679514076185741</string> -->
+  <!-- <string name="fb_login_protocol_scheme">fb679514076185741</string> -->
 </resources>

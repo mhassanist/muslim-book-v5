@@ -1,5 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:muslim_book/ads/ad_manager.dart';
+import 'package:muslim_book/ads/admob_interstitial.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/local_storage/local_storage_manager.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
@@ -15,7 +17,6 @@ import 'package:muslim_book/utils/expand_widget/custom_expansion_tile2.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/widgets/base_widget.dart';
 import 'package:muslim_book/widgets/share_dialog.dart';
-import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 import 'package:facebook_audience_network/ad/ad_interstitial.dart';
 import 'package:flutter/material.dart';
@@ -99,8 +100,7 @@ class _RamadanViewState extends State<RamadanView>
         ui.provider.context = context;
         ui.provider.fillTheSettingsData();
       }, builder: (_, model, __) {
-        return AudioServiceWidget(
-            child: Scaffold(
+        return Scaffold(
           key: _scaffoldKey,
           appBar: AppBar(
               elevation: 0,
@@ -157,11 +157,7 @@ class _RamadanViewState extends State<RamadanView>
                                 // margin: EdgeInsets.only(top: 100),
                                 child: Visibility(
                                   visible: _isSaveing,
-                                  child: Loading(
-                                    indicator: BallBeatIndicator(),
-                                    size: 70.0,
-                                    color: Constants.PRIMARY_DARK_COLOR,
-                                  ),
+                                  child: Loading(),
                                 ),
                               ),
                             ),
@@ -174,7 +170,7 @@ class _RamadanViewState extends State<RamadanView>
             );
           }),
           backgroundColor: Colors.white,
-        ));
+        );
       }),
     );
   }
@@ -204,7 +200,7 @@ class _RamadanViewState extends State<RamadanView>
         );
       });
 
-      if (_ramadanProvider.ramadanCannonModel != null) {
+      if (_ramadanProvider.ramadanCannonModel.isNotEmpty) {
         return getConnan(ramadanProvider, context);
       } else {
         return Container();
@@ -222,18 +218,17 @@ class _RamadanViewState extends State<RamadanView>
             DataLoadingState.localAvailable ||
         _ramadanProvider.loadedMashraatState ==
             DataLoadingState.canBeLoadedFromLocal) {
-      if (_ramadanProvider.ramadanMashraatModel == null ||
-          _ramadanProvider.ramadanMashraatModel.length == 0) {
+      if (_ramadanProvider.ramadanMashraatModel.isEmpty) {
         _ramadanProvider.loadMashraatSounds();
       }
       displayingFromAssets = false;
 
-      _ramadanProvider.ramadanMashraatModel?.forEach((f) {
+      _ramadanProvider.ramadanMashraatModel.forEach((f) {
         animationListWeb.add(AnimationController(
             vsync: this, duration: Duration(milliseconds: 300)));
       });
       _ramadanProvider.loadMshartSelection();
-      if (_ramadanProvider.ramadanMashraatModel != null) {
+      if (_ramadanProvider.ramadanMashraatModel.isNotEmpty) {
         return getMashraat(ramadanProvider, context);
       } else {
         return Container();
@@ -480,8 +475,7 @@ class _RamadanViewState extends State<RamadanView>
             height: 1,
             color: Constants.PRIMARY_DARK_COLOR,
           ),
-          (_ramadanProvider.ramadanAllData != null &&
-                  _ramadanProvider.ramadanAllData.isNotEmpty)
+          _ramadanProvider.ramadanAllData.isNotEmpty
               ? Column(children: [
                   Container(
                     padding: EdgeInsets.symmetric(
@@ -962,14 +956,15 @@ class _RamadanViewState extends State<RamadanView>
           }).toList(),
           onChanged: (value) async {
             if (value != null) {
-              _ramadanProvider.ramadanCannonSelected = value;
+              _ramadanProvider.ramadanCannonSelected =
+                  value;
               _ramadanProvider.saveSelectedConnanJson(
-                  _ramadanProvider.ramadanCannonSelected.toJson(), "");
+                  _ramadanProvider.ramadanCannonSelected!.toJson(), "");
               await _ramadanProvider.downloadConnanFile(
                   _ramadanProvider.ramadanCannonModel.indexOf(value));
               //AZAN  /data/user/0/com.muslim_book.muslim_book/app_flutter/azan_1.mp3
               //ramadan  /data/user/0/com.muslim_book.muslim_book/app_flutter/ramadan_cannonModel_sounds2.mp3
-              playSound(_ramadanProvider.ramadanCannonSelected.file);
+              playSound(_ramadanProvider.ramadanCannonSelected!.file);
             }
           },
         ),
@@ -979,18 +974,24 @@ class _RamadanViewState extends State<RamadanView>
 
   @override
   void deactivate() {
-    FacebookInterstitialAd.loadInterstitialAd(
-      placementId: locator<RemoteConfigService>().azanPopUpAdId,
-      listener: (result, value) {
-        if (result == InterstitialAdResult.LOADED)
-          FacebookInterstitialAd.showInterstitialAd();
-      },
-    );
+    if (AdManager.showFacebookAds) {
+      FacebookInterstitialAd.loadInterstitialAd(
+        // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
+        placementId: locator<RemoteConfigService>().azanPopUpAdId,
+        listener: (result, value) {
+          if (result == InterstitialAdResult.LOADED)
+            FacebookInterstitialAd.showInterstitialAd();
+        },
+      );
+    } else {
+      AdmobInterstitial interstitialAd = AdmobInterstitial();
+      interstitialAd.createInterstitialAd();
+    }
     super.deactivate();
   }
 
   Future playSound(file) async {
-    if (!screenNoLongerActive) await audioPlayer.play(file,);
+    if (!screenNoLongerActive) await audioPlayer.play(DeviceFileSource(file));
   }
 
   Widget alertsDrum(BuildContext context) {
@@ -1131,9 +1132,9 @@ class _RamadanViewState extends State<RamadanView>
           onChanged: (value) async {
             if (value != null) {
               _ramadanProvider.ramadanMashraatSelected = value;
-              playSound(_ramadanProvider.ramadanMashraatSelected.file);
+              playSound(_ramadanProvider.ramadanMashraatSelected!.file);
               _ramadanProvider.saveSelectedMashraatJson(
-                  _ramadanProvider.ramadanMashraatSelected.toJson(), "");
+                  _ramadanProvider.ramadanMashraatSelected!.toJson(), "");
               await _ramadanProvider.downloadMashraatFile(
                   _ramadanProvider.ramadanMashraatModel.indexOf(value));
             }

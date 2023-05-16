@@ -117,7 +117,7 @@ public class CompetitionPopUpService {
     builder.setCustomBigContentView(expandedView);
     Intent intent = new Intent(context, MainActivity.class);
     intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-    PendingIntent pendingIntent = PendingIntent.getActivity(context, AZAN_NOTIFICATION_ID +  100 +  100, intent, 0);
+    PendingIntent pendingIntent = PendingIntent.getActivity(context, AZAN_NOTIFICATION_ID +  100 +  100, intent, PendingIntent.FLAG_UPDATE_CURRENT  | PendingIntent.FLAG_IMMUTABLE);
     builder.setContentIntent(pendingIntent);
     builder.setDeleteIntent(pendingIntent);
   }

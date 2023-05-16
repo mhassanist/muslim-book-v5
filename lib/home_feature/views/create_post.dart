@@ -1,4 +1,4 @@
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
 import 'package:muslim_book/home_feature/controllers/providers_get_post.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
@@ -81,10 +81,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                           ),
                         ),
                       ),
-                      Container(
-                        height: 150,
-                        child: AdMobRectangle(BannerName.AZKAR),
-                      ),
+                      AdmobBanner(bannerName: BannerName.AZKAR),
                       SizedBox(
                         height: 20,
                       ),
@@ -139,10 +136,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                       SizedBox(
                         height: 20,
                       ),
-                      Container(
-                        height: 200,
-                        child: AdMobRectangle(BannerName.AZKAR),
-                      ),
+                      AdmobBanner(bannerName: BannerName.AZKAR),
                     ],
                   ),
                 ),

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:internet_connection_checker/internet_connection_checker.dart';
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
 import 'package:muslim_book/islamic_feature/views/islamic_offline/islamic_post_offline_details.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
@@ -9,7 +9,6 @@ import 'package:muslim_book/widgets/app_scaffold_title.dart';
 // import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 
 class IslamicCatPosts extends StatefulWidget {
@@ -24,10 +23,7 @@ class IslamicCatPosts extends StatefulWidget {
 class _IslamicCatPostsState extends State<IslamicCatPosts> {
   bool isInternetConnected = false;
   int numberOfCharacter = 100;
-  bool isInteger(num value) =>
-    value is int || value == value.roundToDouble();
-
-
+  bool isInteger(num value) => value is int || value == value.roundToDouble();
 
   @override
   void initState() {
@@ -74,20 +70,19 @@ class _IslamicCatPostsState extends State<IslamicCatPosts> {
                 itemCount: data.length,
                 itemBuilder: (context, index) {
                   if (isInternetConnected == true) {
-                    if (isInteger((index + 1)/4)) {
-                      if((index + 1).isEven){
+                    if (isInteger((index + 1) / 4)) {
+                      if ((index + 1).isEven) {
                         return Column(
                           children: [
                             _buildPostCardUi(data[index]),
-                            Container(
-                                height: MediaQuery.of(context).size.height / 3.0,
-                                child: AdMobRectangle(BannerName.AZKAR))
+                            AdmobBanner(
+                              bannerName: BannerName.AZKAR,
+                            )
                           ],
                         );
-                      }else{
+                      } else {
                         return _buildPostCardUi(data[index]);
                       }
-
                     } else {
                       return _buildPostCardUi(data[index]);
                     }
@@ -98,9 +93,6 @@ class _IslamicCatPostsState extends State<IslamicCatPosts> {
           }
           return Center(
             child: Loading(
-              indicator: BallBeatIndicator(),
-              size: 70.0,
-              color: Colors.white,
             ),
           );
         });
@@ -109,19 +101,16 @@ class _IslamicCatPostsState extends State<IslamicCatPosts> {
   _buildPostCardUi(data) {
     return Card(
         elevation: 5,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Container(
-
-            margin: EdgeInsets.symmetric(
-                horizontal: 5, vertical: 5),
+            margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
             padding: EdgeInsets.all(8.0),
             child: Column(
               children: [
                 Align(
                   alignment: Alignment.centerRight,
                   child: Text(
-                    data['title'],
+                    data['title'] ?? '',
                     maxLines: 1,
                     style: TextStyle(
                         color: Colors.black,
@@ -137,8 +126,19 @@ class _IslamicCatPostsState extends State<IslamicCatPosts> {
                   child: RichText(
                     text: TextSpan(
                         text: data['body'] != null
-                            ? data['body'].toString().length > numberOfCharacter ? data['body'].toString().substring(0,numberOfCharacter) + '.. ' : data['body'].toString()
-                            : data['title'].toString().length > numberOfCharacter ? data['title'].toString().substring(0,numberOfCharacter) + '.. ' : data['title'].toString(),
+                            ? data['body'].toString().length > numberOfCharacter
+                                ? data['body']
+                                        .toString()
+                                        .substring(0, numberOfCharacter) +
+                                    '.. '
+                                : data['body'].toString()
+                            : data['title'].toString().length >
+                                    numberOfCharacter
+                                ? data['title']
+                                        .toString()
+                                        .substring(0, numberOfCharacter) +
+                                    '.. '
+                                : data['title'].toString(),
                         style: TextStyle(
                           color: darkish_green,
                           fontSize: 16,
@@ -148,14 +148,15 @@ class _IslamicCatPostsState extends State<IslamicCatPosts> {
                         ),
                         children: <TextSpan>[
                           data['body'] != null
-                              ? data['body'].toString().length > numberOfCharacter
-                              ? _buildTextSpan(data)
-                              : TextSpan()
-                              : data['title'].toString().length > numberOfCharacter
-                              ? _buildTextSpan(data)
-                              : TextSpan()
-                        ]
-                    ),
+                              ? data['body'].toString().length >
+                                      numberOfCharacter
+                                  ? _buildTextSpan(data)
+                                  : TextSpan()
+                              : data['title'].toString().length >
+                                      numberOfCharacter
+                                  ? _buildTextSpan(data)
+                                  : TextSpan()
+                        ]),
                   ),
                 ),
               ],
@@ -167,7 +168,8 @@ class _IslamicCatPostsState extends State<IslamicCatPosts> {
         text: 'عرض المزيد ..',
         style: TextStyle(
           color: Colors.blueAccent,
-          fontSize: 18,fontWeight: FontWeight.bold,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
           fontFamily: 'arabic',
         ),
         recognizer: TapGestureRecognizer()
@@ -176,9 +178,7 @@ class _IslamicCatPostsState extends State<IslamicCatPosts> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        IslamicPostOfflineDetails(
-                            data,
-                            widget.data['name'])));
+                        IslamicPostOfflineDetails(data, widget.data['name'])));
           });
   }
 }

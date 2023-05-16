@@ -24,8 +24,8 @@ class SettingsMobilePortraitUi {
   final BuildContext context;
   final LocationProvider locationProvider;
 
-  //because we are not selecting specific prayer time from this screen, 
-  //we will get Asr as a sample to display 
+  //because we are not selecting specific prayer time from this screen,
+  //we will get Asr as a sample to display
   //we pass null to the sheikh picker, to apply the selection to all 5 prayer
   //times
   final randomAzanId_value3 = "3";
@@ -54,7 +54,8 @@ class SettingsMobilePortraitUi {
           //   ),
           // ),
           alertItem(
-              AppLocalizations.of(context)!.translate("azan_on_pray_time_alert"),
+              AppLocalizations.of(context)!
+                  .translate("azan_on_pray_time_alert"),
               provider.azanAlert,
               provider.azanAlertFlagChanged),
           alertItem(
@@ -62,11 +63,13 @@ class SettingsMobilePortraitUi {
               provider.fajrIbtehal,
               provider.fajrIbtehalFlagChanged),
           alertItem(
-              AppLocalizations.of(context)!.translate("mondays_and_thursdays_fasting_alert"),
+              AppLocalizations.of(context)!
+                  .translate("mondays_and_thursdays_fasting_alert"),
               provider.mondaysAndThursdaysFastingAlert,
               provider.mondaysAndThursdaysFastingAlertFlagChanged),
           alertItem(
-              AppLocalizations.of(context)!.translate("white_days_fasting_alert"),
+              AppLocalizations.of(context)!
+                  .translate("white_days_fasting_alert"),
               provider.whiteDaysFastingAlert,
               provider.whiteDaysFastingAlertFlagChanged),
         ],
@@ -93,7 +96,8 @@ class SettingsMobilePortraitUi {
           titleContainer(
               sizeConfig,
               context,
-              AppLocalizations.of(context)!.translate("calculating_pray_method")),
+              AppLocalizations.of(context)!
+                  .translate("calculating_pray_method")),
           azanMethodPart(),
           divider(sizeConfig, context),
           Container(
@@ -189,8 +193,7 @@ class SettingsMobilePortraitUi {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    provider.pickedAzanShiekhMain != null &&
-                            provider.pickedAzanShiekhMain[randomAzanId_value3] != null
+                    provider.pickedAzanShiekhMain[randomAzanId_value3] != null
                         ? "${provider.pickedAzanShiekhMain[randomAzanId_value3]}"
                         : "اختر شيخاً",
 
@@ -204,7 +207,7 @@ class SettingsMobilePortraitUi {
                 ),
               ),
             ),
-            crossFadeState: provider.pickedAzanShiekhMain == null
+            crossFadeState: provider.pickedAzanShiekhMain.isNotEmpty
                 ? CrossFadeState.showFirst
                 : CrossFadeState.showSecond,
             duration: Duration(milliseconds: 200),
@@ -239,8 +242,7 @@ class SettingsMobilePortraitUi {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
-                    provider.pickedFajrAzanShiekh != null &&
-                            provider.pickedFajrAzanShiekh.isNotEmpty
+                    provider.pickedFajrAzanShiekh.isNotEmpty
                         ? "${provider.pickedFajrAzanShiekh["name"]}"
                         : "شيخ اذان الفجر",
                     style: TextStyle(
@@ -251,7 +253,7 @@ class SettingsMobilePortraitUi {
                 ),
               ),
             ),
-            crossFadeState: provider.pickedFajrAzanShiekh == null
+            crossFadeState: provider.pickedFajrAzanShiekh.isNotEmpty
                 ? CrossFadeState.showFirst
                 : CrossFadeState.showSecond,
             duration: Duration(milliseconds: 200),
@@ -291,39 +293,45 @@ class SettingsMobilePortraitUi {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           alertItem(
-              AppLocalizations.of(context)!.translate("voice_reminder_before_praying"),
+              AppLocalizations.of(context)!
+                  .translate("voice_reminder_before_praying"),
               provider.isRemmberActive,
               provider.isRemmberActiveFlagChanged),
           alertItem(
-              AppLocalizations.of(context)!.translate("activating_al_shaarawi_voice"),
+              AppLocalizations.of(context)!
+                  .translate("activating_al_shaarawi_voice"),
               provider.isActivatingShaarawiVoice,
               provider.isActivatingShaarawiVoiceFlagChanged),
           alertItem(
-              AppLocalizations.of(context)!.translate("Switch_to_silent_mode_after_residence"),
+              AppLocalizations.of(context)!
+                  .translate("Switch_to_silent_mode_after_residence"),
               provider.isSwitchSilentModeAfterResidence,
               provider.isSwitchSilentModeAfterResidenceChanged),
           alertItem(
-              AppLocalizations.of(context)!.translate("Turn_off_the_call_to_prayer_on_the_phone"),
+              AppLocalizations.of(context)!
+                  .translate("Turn_off_the_call_to_prayer_on_the_phone"),
               provider.isTurnOffPrayerPhone,
               provider.isTurnOffPrayerPhoneChanged),
           Center(
-              child: standardButton(
-                  isGo: false,
+            child: standardButton(
+              isGo: false,
+              context: context,
+              sizeConfig: sizeConfig,
+              color: Theme.of(context).primaryColor,
+              title: AppLocalizations.of(context)!
+                  .translate("Change_the_language_application"),
+              onPressed: () async {
+                await showDialog(
                   context: context,
-                  sizeConfig: sizeConfig,
-                  color: Theme.of(context).primaryColor,
-                  title: AppLocalizations.of(context)!.translate("Change_the_language_application"),
-                  onPressed: () async {
-                    await showDialog(
-                      context: context,
-                      builder: (context) => new AlertDialog(
-                          contentPadding: EdgeInsets.all(0.0),
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(12))),
-                          content: show),
-                    );
-                  },),),
+                  builder: (context) => new AlertDialog(
+                      contentPadding: EdgeInsets.all(0.0),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(12))),
+                      content: show),
+                );
+              },
+            ),
+          ),
         ],
       ),
     );
@@ -350,14 +358,18 @@ class SettingsMobilePortraitUi {
   void chooseSheikh(String azanId) async {
     int newShiekhIndex = await Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => PickAzanShiekhView(
-              azanId, true,
+              azanId,
+              true,
             )));
 
-    List<AzanSound>? sounds = (await LocalStorageManager().loadAzanSoundsList());
+    List<AzanSound>? sounds =
+        (await LocalStorageManager().loadAzanSoundsList());
 
-    if (newShiekhIndex != null && sounds != null && sounds.length > 0) {
-      provider.pickedAzanShiekhMain = {randomAzanId_value3: sounds[newShiekhIndex].name};
-    } else if (newShiekhIndex != null) {
+    if (sounds != null && sounds.length > 0) {
+      provider.pickedAzanShiekhMain = {
+        randomAzanId_value3: sounds[newShiekhIndex].name
+      };
+    } else {
       provider.pickedAzanShiekhMain = {
         randomAzanId_value3: AppLocalizations.of(context)!.isEnglish()
             ? Constants.EN_SHIEKH_NAMES[newShiekhIndex]["name"]
@@ -371,9 +383,9 @@ class SettingsMobilePortraitUi {
         builder: (BuildContext context) => PickFajrAzanShiekhView()));
     List<AzanSound>? sounds =
         (await LocalStorageManager().loadFajrAzanSoundsList());
-    if (newShiekhIndex != null && sounds != null && sounds.length > 0) {
+    if (sounds != null && sounds.length > 0) {
       provider.pickedFajrAzanShiekh = sounds[newShiekhIndex].toJSON();
-    } else if (newShiekhIndex != null) {
+    } else {
       provider.pickedFajrAzanShiekh = Constants.FAJR_SHIEKH_NAMES[0];
     }
   }
@@ -438,7 +450,8 @@ class SettingsMobilePortraitUi {
       child: DropdownButtonHideUnderline(
         child: DropdownButton(
           value: provider.latitudeAdjustmentMethod.isNotEmpty
-              ? provider.latitudeAdjustmentMethod : null,
+              ? provider.latitudeAdjustmentMethod
+              : null,
           hint: Text(
             AppLocalizations.of(context)!.translate("un_used"),
             style: TextStyle(
@@ -512,7 +525,7 @@ class SettingsMobilePortraitUi {
           }).toList(),
           onChanged: (value) {
             if (value != null) {
-            provider.pickedMazhab = value;
+              provider.pickedMazhab = value;
             }
           },
         ),
@@ -662,7 +675,7 @@ class SettingsMobilePortraitUi {
             ),
           ),
         ),
-        crossFadeState: locationProvider.countryName == null
+        crossFadeState: locationProvider.countryName.isEmpty
             ? CrossFadeState.showFirst
             : CrossFadeState.showSecond,
         duration: Duration(milliseconds: 200));

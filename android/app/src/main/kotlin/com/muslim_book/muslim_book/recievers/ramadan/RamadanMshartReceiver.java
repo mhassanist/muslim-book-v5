@@ -82,7 +82,7 @@ public class RamadanMshartReceiver extends BroadcastReceiver {
             PendingIntent alarmIntent = PendingIntent
                     .getBroadcast(context,
                             Constants.RAMADAN_MSHART_PENDING_INTENT_REQUEST_CODE, intent,
-                            PendingIntent.FLAG_UPDATE_CURRENT);
+                            PendingIntent.FLAG_UPDATE_CURRENT|PendingIntent.FLAG_IMMUTABLE);
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time.split(":")[0]));
             calendar.set(Calendar.MINUTE, Integer.parseInt(time.split(":")[1]));

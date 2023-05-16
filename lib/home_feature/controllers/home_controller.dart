@@ -29,7 +29,7 @@ class HomeController extends GetxController {
         "name": AppLocalizations.of(context)!.translate("rosary"),
         // "name": "السبحة",
         "onTap": () async {
-          await Get.to(SebhaView());
+          await Get.to(() => SebhaView());
 
           //checkShareDialogHistory();
         }
@@ -60,7 +60,7 @@ class HomeController extends GetxController {
         "name": AppLocalizations.of(context)!.translate("more"),
         "onTap": () async {
           //Get.find<HomeController>().scaffoldKey.currentState.openDrawer();
-          Get.to(IslamicsView());
+          Get.to(() => IslamicsView());
         }
         //Get.find<HomeController>().scaffoldKey.currentState.openDrawer()
       },

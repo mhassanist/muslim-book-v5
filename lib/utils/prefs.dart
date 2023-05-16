@@ -46,12 +46,12 @@ class Prefs {
   void setLatitude(double value) async =>
       await prefs!.setDouble(Constants.LATITUDE, value);
 
-  double? getLatitue() => prefs!.getDouble(Constants.LATITUDE);
+  double? getLatitude() => prefs!.getDouble(Constants.LATITUDE);
 
   void setLongtude(double value) async =>
       await prefs!.setDouble(Constants.LONGTUDE, value);
 
-  double? getLongtude() => prefs!.getDouble(Constants.LONGTUDE);
+  double? getLongitude() => prefs!.getDouble(Constants.LONGTUDE);
 
   int getAzanMethod() => prefs!.getInt(Constants.AZAN_METHOD) ?? 0;
 
@@ -60,7 +60,7 @@ class Prefs {
   }
 
   int getLatitudeAdjustmentMethod() =>
-      prefs!.getInt(Constants.Latitude_Adjustment_Method) ?? -1;
+      prefs!.getInt(Constants.Latitude_Adjustment_Method) ?? 1;
 
   void setLatitudeAdjustmentMethod(int value) async {
     await prefs!.setInt(Constants.Latitude_Adjustment_Method, value);
@@ -82,10 +82,11 @@ class Prefs {
     return prefs!.getString('${Constants.AZAN_SHIEKH}$azanId') ?? '';
   }
 
-  String getFajrAzanShiekh() => prefs!.getString(Constants.FAJR_AZAN_SHIEKH) ?? '';
+  String getFajrAzanShiekh() =>
+      prefs!.getString(Constants.FAJR_AZAN_SHIEKH) ?? '';
 
   void setAzanShiekh(String key, String azanIndex) async {
-    await prefs!.setString(key, azanIndex);//DOWNLOADED_SHEIKH_ID
+    await prefs!.setString(key, azanIndex); //DOWNLOADED_SHEIKH_ID
     // await prefs!.setString(Constants.AZAN_SHIEKH, value);
   }
 
@@ -111,18 +112,19 @@ class Prefs {
     locator<RamadanSingleton>().getRamadanModel();
   }
 
-  Future setToken(value)async{
+  Future setToken(value) async {
     await prefs!.setString(Constants.USER_TOKEN, value);
   }
-  String? getToken()=>
-     prefs!.getString(Constants.USER_TOKEN);
-  Future saveAzanTimes(
-      {required String fajr,
-        required String zuhr,
-        required String asr,
-        required String maghreb,
-        required String isha,
-        required String sunRise,}) async {
+
+  String? getToken() => prefs!.getString(Constants.USER_TOKEN);
+  Future saveAzanTimes({
+    required String fajr,
+    required String zuhr,
+    required String asr,
+    required String maghreb,
+    required String isha,
+    required String sunRise,
+  }) async {
     await prefs!.setString("1", fajr);
     await prefs!.setString("2", sunRise);
     await prefs!.setString("3", zuhr);
@@ -191,28 +193,32 @@ class Prefs {
   void setActivatingAlShaarawiVoiceFlag(bool value) async {
     await prefs!.setBool(Constants.Activating_Al_Shaarawi_Voice_FLAG, value);
   }
+
   void setSwitchSilentModeAfterResidenceFlag(bool value) async {
     await prefs!.setBool(Constants.Switch_Silent_Mode_After_Residence, value);
   }
+
   void setTurnOffPrayerPhoneFlag(bool value) async {
-    await prefs!.setBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone, value);
+    await prefs!
+        .setBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone, value);
   }
 
   bool? getActivatingAlShaarawiVoiceFlag() =>
       prefs!.getBool(Constants.Activating_Al_Shaarawi_Voice_FLAG) == null ||
       prefs!.getBool(Constants.Activating_Al_Shaarawi_Voice_FLAG)!;
 
-
   bool? getSwitchSilentModeAfterResidenceFlag() =>
-      prefs!.getBool(Constants.Switch_Silent_Mode_After_Residence) == null ? false   :
-          prefs!.getBool(Constants.Switch_Silent_Mode_After_Residence);
+      prefs!.getBool(Constants.Switch_Silent_Mode_After_Residence) == null
+          ? false
+          : prefs!.getBool(Constants.Switch_Silent_Mode_After_Residence);
   bool? getTurnOffPrayerPhoneFlag() =>
-      prefs!.getBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone) == null ? false   :
-      prefs!.getBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone);
+      prefs!.getBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone) == null
+          ? false
+          : prefs!.getBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone);
 
   void setMondaysAndThursdaysFastingAlertFlag(bool value) async {
-    await prefs!.setBool(
-        Constants.MONDAYS_AND_THURSDAYS_FASTING_ALERT_FLAG, value);
+    await prefs!
+        .setBool(Constants.MONDAYS_AND_THURSDAYS_FASTING_ALERT_FLAG, value);
   }
 
   bool? getMondaysAndThursdaysFastingAlertFlag() =>
@@ -225,9 +231,16 @@ class Prefs {
   bool? getWhiteDaysFastingAlertFlag() =>
       prefs!.getBool(Constants.WHITE_DAYS_FASTING_ALERT_FLAG);
 
-  bool get getIsAzanUrlValid => (getAzanMazhab() != -1 &&
-      getAzanMethod() != -1 &&
-      ((getLatitue() != null && getLatitue() != null) || getCountry().isNotEmpty));
+  bool get getIsAzanUrlValid {
+    final azanMazhab = getAzanMazhab();
+    final azanMethod = getAzanMethod();
+    final latitude = getLatitude();
+    final longitude = getLongitude();
+    final country = getCountry();
+    return azanMazhab != -1 &&
+        azanMethod != -1 &&
+        ((latitude != null && longitude != null) || country.isNotEmpty);
+  }
 
   void setAllowFajrIbtehal(bool value) async {
     await prefs!.setBool(Constants.ALFAJR_IBTEHAL_ALERT_FLAG, value);
@@ -387,7 +400,8 @@ class Prefs {
 
   setRamadanMashraatJSON(Map<String, dynamic> soundJson, String azanId) async {
     await setRamadanMashraatSoundJSON(soundJson['id'].toString(), azanId);
-    await prefs!.setString('${Constants.SELECTED_RAMADAN_MASHRaAAT_JSON}$azanId',
+    await prefs!.setString(
+        '${Constants.SELECTED_RAMADAN_MASHRaAAT_JSON}$azanId',
         json.encode(soundJson));
   }
 
@@ -406,12 +420,13 @@ class Prefs {
   }
 
   setRamadanCannonSoundJSON(String id, String azanId) async {
-     await prefs!.setString('${Constants.SELECTED_RAMADAN_CANNON_ID}$azanId', id);
+    await prefs!
+        .setString('${Constants.SELECTED_RAMADAN_CANNON_ID}$azanId', id);
   }
 
   setRamadanMashraatSoundJSON(String id, String azanId) async {
-    await prefs!.setString(
-        '${Constants.SELECTED_RAMADAN_MASHRAAT_ID}$azanId', id);
+    await prefs!
+        .setString('${Constants.SELECTED_RAMADAN_MASHRAAT_ID}$azanId', id);
   }
 
   String getAzanShiekhJSON(String azanId) {
@@ -419,14 +434,17 @@ class Prefs {
   }
 
   String? getRamadanCannonJSON(String soundCannon) {
-    return prefs!.getString('${Constants.SELECTED_RAMADAN_CANNON_JSON}$soundCannon');
+    return prefs!
+        .getString('${Constants.SELECTED_RAMADAN_CANNON_JSON}$soundCannon');
   }
 
   String? getRamadanMashraatJSON(String soundCannon) {
-    return prefs!.getString('${Constants.SELECTED_RAMADAN_MASHRaAAT_JSON}$soundCannon');
+    return prefs!
+        .getString('${Constants.SELECTED_RAMADAN_MASHRaAAT_JSON}$soundCannon');
   }
 
-  String getDownloadedAzanShiekhId() => prefs!.getString(Constants.DOWNLOADED_SHEIKH_ID) ?? '';
+  String getDownloadedAzanShiekhId() =>
+      prefs!.getString(Constants.DOWNLOADED_SHEIKH_ID) ?? '';
 
   String? getDownloadSelectedRamadanConnanID(String azanId) {
     return prefs!.getString('${Constants.SELECTED_RAMADAN_CANNON_ID}$azanId');
@@ -442,7 +460,9 @@ class Prefs {
 
   setSelectedMashraatRepetitionsId(String id) async {
     await prefs!.setString(Constants.SELECTED_MASHRAAT_REPETITION_ID, id);
-  }  setCHECKREPETITIONRepetitionsId(String id) async {
+  }
+
+  setCHECKREPETITIONRepetitionsId(String id) async {
     await prefs!.setString(Constants.CHECK_REPETITION, id);
   }
 

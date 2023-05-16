@@ -1,5 +1,5 @@
-import 'package:muslim_book/ads/add_widget_edit.dart';
-import 'package:muslim_book/ads/admob_rectangle_small.dart';
+import 'package:muslim_book/ads/ad_widget_edit.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
@@ -10,14 +10,12 @@ import 'package:muslim_book/providers/top_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/views/login_pop_up_view/login_pop_up_view.dart';
-import 'package:muslim_book/views/top_view/compeition_top_view.dart';
+import 'package:muslim_book/views/scoreboard_views/quiz_scoreboard_view.dart';
 import 'package:muslim_book/widgets/app_scaffold_title.dart';
 import 'package:muslim_book/widgets/retry_view_widget.dart';
 import 'package:muslim_book/widgets/share_dialog.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +36,6 @@ class _CompetitionViewMobilePortraitState
 
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -57,7 +54,7 @@ class _CompetitionViewMobilePortraitState
             contentPadding: EdgeInsets.all(0.0),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12))),
-            content: AddWidgetEdit(
+            content: AdWidgetEdit(
               title: "المسابقات",
               bannerName: BannerName.TheMiddleOfTheCompetition,
               buttomTitle: "مواصله اللعب",
@@ -80,82 +77,83 @@ class _CompetitionViewMobilePortraitState
         ui.sizeConfig = sizeConfig;
         return WillPopScope(
             onWillPop: _onWillPop,
-
-        child:
-          SafeArea(
-          child: Scaffold(
-            key: _scaffoldKey,
-            appBar: AppBar(
-              centerTitle: true,
-              backgroundColor: Constants.PRIMARY_COLOR,
-              title: AppScaffoldTitleWidget(title: AppLocalizations.of(context)!.translate("competitions")),
-              leading:   InkWell(
-                child: Container(
-                  margin: EdgeInsetsDirectional.only(start: 10),
-                  padding: EdgeInsets.all(5),
-                  height: 20,
-                  width: 20,
-                  child: SvgPicture.asset(
-                      "assets/icons/iconappbar.svg",
-                      color: Colors.white
-                  ),
-                ),
-                onTap: () {
-                  Get.find<HomeController>().scaffoldKey.currentState!.openDrawer();
-                },
-              ),
-              actions: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => _getCompetitionPage()),
-                    );
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: Icon(Icons.wine_bar),
-                  ),
-                ),
-                InkWell(
+            child: SafeArea(
+              child: Scaffold(
+                key: _scaffoldKey,
+                appBar: AppBar(
+                  centerTitle: true,
+                  backgroundColor: Constants.PRIMARY_COLOR,
+                  title: AppScaffoldTitleWidget(
+                      title: AppLocalizations.of(context)!
+                          .translate("competitions")),
+                  leading: InkWell(
+                    child: Container(
+                      margin: EdgeInsetsDirectional.only(start: 10),
+                      padding: EdgeInsets.all(5),
+                      height: 20,
+                      width: 20,
+                      child: SvgPicture.asset("assets/icons/iconappbar.svg",
+                          color: Colors.white),
+                    ),
                     onTap: () {
-                      Get.dialog(ShareDialog());
+                      Get.find<HomeController>()
+                          .scaffoldKey
+                          .currentState!
+                          .openDrawer();
                     },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: Icon(Icons.share),
-                    )),
-                InkWell(
-                  onTap: () {
-                    Navigator.pushNamed(context, '/settings');
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: Icon(Icons.settings),
                   ),
+                  actions: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => _getCompetitionPage()),
+                        );
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        child: Icon(Icons.wine_bar),
+                      ),
+                    ),
+                    InkWell(
+                        onTap: () {
+                          Get.dialog(ShareDialog());
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 5),
+                          child: Icon(Icons.share),
+                        )),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/settings');
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        child: Icon(Icons.settings),
+                      ),
+                    ),
+                    Container(
+                      width: 10,
+                    )
+                  ],
                 ),
-                Container(
-                  width: 10,
-                )
-
-              ],
-            ),
-            body: ConnectivityWidgetWrapper(
-                disableInteraction: true,
-                offlineWidget: RetryViewWidget(
-                  text: 'competitions',
-                  provider: model,
-                  function: () => model.getQuestions(),
-                ),
-                child: getBody(context, model, sizeConfig)),
-          ),
-          ));
+                body: ConnectivityWidgetWrapper(
+                    disableInteraction: true,
+                    offlineWidget: RetryViewWidget(
+                      text: 'competitions',
+                      provider: model,
+                      function: () => model.getQuestions(),
+                    ),
+                    child: getBody(context, model, sizeConfig)),
+              ),
+            ));
       });
     });
   }
 
-  Widget buildGettingQuestionWidget(context, CompetitionProvider provider,
-      SizingInformation sizeConfig) {
+  Widget buildGettingQuestionWidget(
+      context, CompetitionProvider provider, SizingInformation sizeConfig) {
     return Container(
       width: double.infinity,
       child: Center(
@@ -167,62 +165,54 @@ class _CompetitionViewMobilePortraitState
   }
 
   Container buildCompetitionWidget(BuildContext context) {
-    if (Provider
-        .of<CompetitionProvider>(context)
-        .questions == null ||
-        Provider
-            .of<CompetitionProvider>(context)
-            .questions
-            .isEmpty) {
-      return Container();
+    if (Provider.of<CompetitionProvider>(context).questions.isEmpty) {
+      return Container(
+        child: Center(
+          child: Text("لا توجد اسئلة متاحة لك الان"),
+        ),
+      );
     }
     return Container(
-      height: MediaQuery
-          .of(context)
-          .size
-          .height,
+      height: MediaQuery.of(context).size.height,
       padding: EdgeInsets.only(top: 10),
       child: ListView(
-          padding: EdgeInsets.only(bottom: 10),
-          children: <Widget>[
+        padding: EdgeInsets.only(bottom: 10),
+        children: <Widget>[
           ui.questionText(),
-      ui.questions(),
-      ui.answers(),
-      ui.continueButton(),
-            AdMobRectangleSmall(BannerName.COMPETITION )
+          ui.questions(),
+          ui.answers(),
+          ui.continueButton(),
+          AdmobBanner(bannerName: BannerName.COMPETITION)
 //          ui.faceBookAdsWidget(
 //              locator<RemoteConfigService>().underCompetitionAdsId)
-      ],
-    ),);
+        ],
+      ),
+    );
   }
 
   Widget buildSignInWidget(BuildContext context, SizingInformation sizeConfig) {
     return LoginPopUpView();
   }
 
-  Widget getBody(context, CompetitionProvider model,
-      SizingInformation sizeConfig) {
+  Widget getBody(
+      context, CompetitionProvider model, SizingInformation sizeConfig) {
     if (model.viewState == ViewState.Loading /* add condition */) {
       return buildGettingQuestionWidget(context, model, sizeConfig);
-    } else if (model.viewState == ViewState.Idle &&  Provider
-        .of<CompetitionProvider>(context)
-        .questions  == null &&
-        Provider
-            .of<CompetitionProvider>(context)
-            .questions
-            .isEmpty)
+    } else if (model.viewState == ViewState.Idle &&
+        Provider.of<CompetitionProvider>(context).questions == null &&
+        Provider.of<CompetitionProvider>(context).questions.isEmpty)
       return ui.buildNoMoreQuestions();
     else
-      return LoadUiWithAdd(mainView: buildCompetitionWidget(context));
+      return LoadUiWithAd(mainView: buildCompetitionWidget(context));
   }
 
   _getCompetitionPage() {
     return ChangeNotifierProxyProvider<UserProvider, TopProvider>(
       create: (_) => TopProvider(null),
       update: (_, user, __) => TopProvider(user),
-      child:ScreenTypeLayout(
+      child: ScreenTypeLayout(
         mobile: OrientationLayoutBuilder(
-          portrait: (context) => CompetitionTopView(),
+          portrait: (context) => QuizScoreboard(),
         ),
       ),
     );

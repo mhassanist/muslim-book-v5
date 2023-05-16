@@ -1,6 +1,5 @@
 import 'package:muslim_book/providers/competition_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
-import 'package:muslim_book/views/login_pop_up_view/login_pop_up_view.dart';
 import 'package:muslim_book/widgets/base_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

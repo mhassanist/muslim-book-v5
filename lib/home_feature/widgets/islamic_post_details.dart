@@ -1,4 +1,4 @@
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/home_feature/domian/model/islamic_posts_model.dart';
 import 'package:muslim_book/home_feature/widgets/video_view.dart';
@@ -29,7 +29,7 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
           transparentBackground: false,
           title: Text(AppLocalizations.of(context)!.translate("Feeds")),
           centerTitle: true,
-          child: LoadUiWithAdd(
+          child: LoadUiWithAd(
             mainView: ListView(
               padding: EdgeInsets.all(10),
               children: [
@@ -55,8 +55,7 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              AppLocalizations.of(context)!
-                                  .translate("share"),
+                              AppLocalizations.of(context)!.translate("share"),
                               style: TextStyle(fontSize: 13),
                             ),
                             SizedBox(
@@ -105,7 +104,10 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
 
   _buildPostContentUi() {
     return Text(widget.islamicPost.content,
-        style: TextStyle(fontSize: 16, height: 2,));
+        style: TextStyle(
+          fontSize: 16,
+          height: 2,
+        ));
   }
 
   _buildPostVideoUi() {
@@ -126,6 +128,6 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
   }
 
   _buildAdSection() {
-    return Container(height: 300, child: AdMobRectangle(BannerName.BOSLA));
+    return AdmobBanner(bannerName: BannerName.BOSLA);
   }
 }

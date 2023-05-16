@@ -10,22 +10,14 @@ import 'package:intl/intl.dart';
 class SebhaProvider extends ChangeNotifier {
   bool _showCongratulations = false;
   int _currentIndex = 0;
-  late Tasbeeh _currentTasbeeh;
-  // late AudioCache _audioCache;
-  final player = AudioPlayer();
+  Tasbeeh _currentTasbeeh =
+      Tasbeeh(id: 0, name: '', note: '', totalCounter: 0, counted: 0);
   final CarouselController controller = CarouselController();
   bool _allowClickSound = locator<Prefs>().allowTasbeehClickSound;
   List<Tasbeeh> _tsabeehList = [];
 
   SebhaProvider() {
     checkTasbeehHistory();
-    setAudioCache();
-  }
-
-  void setAudioCache() {
-    // _audioCache = AudioCache(
-    //     prefix: "audio/",
-    //     fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.stop));
   }
 
   void getTsabeehList() async {
@@ -35,8 +27,7 @@ class SebhaProvider extends ChangeNotifier {
 
   Future increaseTasbeeh({int? count}) async {
     if (_allowClickSound) {
-      // _audioCache.play('click.mp3');
-      await player.play(AssetSource('assets/audio/click.mp3'));
+      AudioPlayer().play(AssetSource('audio/click.mp3'));
     }
     await locator<SebhaDataBase>().updateTasbeeh(_currentTasbeeh.copyWith(
         counted: count ?? _currentTasbeeh.counted + 1));
@@ -44,8 +35,7 @@ class SebhaProvider extends ChangeNotifier {
         await locator<SebhaDataBase>().getTasbeehById(_currentTasbeeh.id);
 
     if (_currentTasbeeh.counted == _currentTasbeeh.totalCounter) {
-      // _audioCache.play('allah_make_you_from_heaven.wav');
-      await player.play(AssetSource('assets/audio/allah_make_you_from_heaven.wav'));
+      AudioPlayer().play(AssetSource('audio/allah_make_you_from_heaven.wav'));
 
       // controller.nextPage();
       showCongratulations = true;

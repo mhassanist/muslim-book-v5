@@ -1,5 +1,7 @@
-import 'package:muslim_book/azan_feature/views/azan_view.dart';
+import 'package:muslim_book/azan_feature/views/azan_view_updated.dart';
 import 'package:muslim_book/quran/views/quran_section_screen.dart';
+import 'package:muslim_book/ramadan/utils/ramadan_feature_enabler.dart';
+import 'package:muslim_book/ramadan/views/ramadan_view.dart';
 import 'package:muslim_book/views/azan_settings_views/adjust_battery_view.dart';
 import 'package:muslim_book/views/azan_settings_views/azan_draw_over_view.dart';
 import 'package:muslim_book/views/azan_settings_views/pick_azan_method_view.dart';
@@ -16,8 +18,8 @@ import 'package:muslim_book/views/pick_location_via_map_view/pick_location_via_m
 import 'package:muslim_book/views/settings_view/settings_view.dart';
 import 'package:muslim_book/views/signup_view/signup_view.dart';
 import 'package:muslim_book/views/start_view/start_view.dart';
-import 'package:muslim_book/views/top_view/compeition_top_view.dart';
-import 'package:muslim_book/views/top_view/select_top_view.dart';
+import 'package:muslim_book/views/scoreboard_views/quiz_scoreboard_view.dart';
+import 'package:muslim_book/views/scoreboard_views/users_scoreboard_view.dart';
 import 'package:flutter/material.dart';
 import 'package:seafarer/seafarer.dart';
 
@@ -180,7 +182,7 @@ class Routes {
       SeafarerRoute(
         name: "/SelectTopView",
         builder: (context, args, params) {
-          return SelectTopView();
+          return UsersScoreboardView();
         },
         defaultTransitionDuration: Duration(milliseconds: 300),
         defaultTransitionCurve: Curves.ease,
@@ -191,7 +193,7 @@ class Routes {
       SeafarerRoute(
         name: "/AzanView",
         builder: (context, args, params) {
-          return AzanView();
+          return AzanViewUpdated();
         },
         defaultTransitionDuration: Duration(milliseconds: 300),
         defaultTransitionCurve: Curves.ease,
@@ -199,18 +201,19 @@ class Routes {
       ),
     );
 
-    /// START Ignore -----------------------------------------------------------
-    // sailor.addRoute(
-    // SeafarerRoute(
-    //       name: "/RamadanView",
-    //       builder: (context, args, params) {
-    //         return RamadanView();
-    //       },
-    //       defaultTransitionDuration: Duration(milliseconds: 300),
-    //       defaultTransitionCurve: Curves.ease,
-    //       defaultTransitions: [SeafarerTransition.slide_from_right],),
-    // );
-    /// End Ignore -------------------------------------------------------------
+    if (RamadanFeatureEnabler.isRamadanFeatureEnabled) {
+      sailor.addRoute(
+        SeafarerRoute(
+          name: "/RamadanView",
+          builder: (context, args, params) {
+            return RamadanView();
+          },
+          defaultTransitionDuration: Duration(milliseconds: 300),
+          defaultTransitionCurve: Curves.ease,
+          defaultTransitions: [SeafarerTransition.slide_from_right],
+        ),
+      );
+    }
 
     sailor.addRoute(
       SeafarerRoute(
@@ -238,7 +241,7 @@ class Routes {
       SeafarerRoute(
         name: "/top",
         builder: (context, args, params) {
-          return CompetitionTopView();
+          return QuizScoreboard();
         },
         defaultTransitionDuration: Duration(milliseconds: 300),
         defaultTransitionCurve: Curves.ease,

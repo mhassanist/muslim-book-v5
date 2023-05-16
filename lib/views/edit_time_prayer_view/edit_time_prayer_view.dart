@@ -1,4 +1,4 @@
-import 'package:muslim_book/ads/admob_rectangle.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
 import 'package:muslim_book/azan_feature/models/azan_model.dart';
@@ -10,7 +10,6 @@ import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 import 'package:muslim_book/widgets/base_widget.dart';
-import 'package:muslim_book/widgets/loading_pkg/indicator/ball_beat_indicator.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,7 +47,7 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
 
   @override
   Widget build(BuildContext context) {
-    azanValue = controller.getAzanList(context)  ?? [];
+    azanValue = controller.getAzanList(context) ?? [];
     final size = MediaQuery.of(context).size;
     final isSmall = size.width <= 450;
     return new WillPopScope(
@@ -69,7 +68,7 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                     }, builder: (_, model, __) {
                       return GetBuilder<AzanController>(builder: (controller) {
                         return Container(
-                            child: LoadUiWithAdd(
+                            child: LoadUiWithAd(
                           mainView: CustomScrollView(slivers: <Widget>[
                             SliverToBoxAdapter(
                               child: Container(
@@ -102,10 +101,6 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                                             child: Visibility(
                                               visible: _isSaveing,
                                               child: Loading(
-                                                indicator: BallBeatIndicator(),
-                                                size: 70.0,
-                                                color: Constants
-                                                    .PRIMARY_DARK_COLOR,
                                               ),
                                             ),
                                           ),
@@ -117,8 +112,7 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                             SliverToBoxAdapter(
                                 child: Visibility(
                               visible: widget.showAppBar,
-                              child: Container(
-                                  child: AdMobRectangle(BannerName.Top)),
+                              child: AdmobBanner(bannerName: BannerName.TOP),
                             )),
                             SliverToBoxAdapter(
                                 child: SizedBox(
@@ -241,7 +235,7 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
           style: TextStyle(fontWeight: FontWeight.w500),
         ),
         actions: <Widget>[
-          ElevatedButton(
+          MaterialButton(
             child: Text(
               AppLocalizations.of(context)!.translate("save"),
               style: TextStyle(color: Constants.CANVAS_COLOR),
@@ -467,3 +461,4 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
     // return "asd";
   }
 }
+

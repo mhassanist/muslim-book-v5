@@ -3,7 +3,6 @@ import 'package:muslim_book/network_utils/api_service.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/sebha_feature/models/sebha_top_model.dart';
 import 'package:muslim_book/sebha_feature/online_sebha/controllers/online_sebha_controller.dart';
-import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:muslim_book/widgets/app_scaffold_title.dart';
@@ -40,7 +39,8 @@ class _ArchieveViewState extends State<ArchieveView> {
       builder: (context, SizingInformation sizeConfig) {
         return AppScaffold(
           padding: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 4),
-          title: AppScaffoldTitleWidget(title: AppLocalizations.of(context)!.translate("archiv")),
+          title: AppScaffoldTitleWidget(
+              title: AppLocalizations.of(context)!.translate("archiv")),
           centerTitle: true,
           child: ListView(
             children: [
@@ -138,14 +138,20 @@ class _ArchieveViewState extends State<ArchieveView> {
                     Expanded(
                         child: Column(
                       children: [
-                        buildDailyRankWidget(sizeConfig,
-                            titel:AppLocalizations.of(context)!.translate("rank_weekly"),
-                            number: "${snapshot.data!.rank}",
-                            image: "rank_medal.png",),
-                        buildDailyRankWidget(sizeConfig,
-                            titel: AppLocalizations.of(context)!.translate("Weekly_Achievement"),
-                            number: "${snapshot.data!.total}",
-                            image: "flag_medal.png",),
+                        buildDailyRankWidget(
+                          sizeConfig,
+                          titel: AppLocalizations.of(context)!
+                              .translate("rank_weekly"),
+                          number: "${snapshot.data!.rank}",
+                          image: "rank_medal.png",
+                        ),
+                        buildDailyRankWidget(
+                          sizeConfig,
+                          titel: AppLocalizations.of(context)!
+                              .translate("Weekly_Achievement"),
+                          number: "${snapshot.data!.total}",
+                          image: "flag_medal.png",
+                        ),
                       ],
                     ))
                   ],
@@ -186,8 +192,12 @@ class _ArchieveViewState extends State<ArchieveView> {
     );
   }
 
-  buildDailyRankWidget(SizingInformation sizeConfig,
-      {String titel = '', String number = '', String image = '',}) {
+  buildDailyRankWidget(
+    SizingInformation sizeConfig, {
+    String titel = '',
+    String number = '',
+    String image = '',
+  }) {
     return Container(
       margin: EdgeInsets.symmetric(
           vertical: sizeConfig.blockSizeVertical,
@@ -258,7 +268,7 @@ class _ArchieveViewState extends State<ArchieveView> {
                   Container(
                     margin: EdgeInsets.symmetric(
                         horizontal: sizeConfig.blockSizeHorizontal * 2),
-                    child: model.image == null
+                    child: model.image.isEmpty
                         ? placeHolder(sizeConfig)
                         : ExtendedImage.network(
                             model.image.replaceAll("http://", "https://"),

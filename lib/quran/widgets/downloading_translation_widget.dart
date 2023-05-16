@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -39,7 +38,7 @@ class _DownloadingTranslationWidgetState
                   color: Theme.of(context).primaryColor,
                   size: 35.0,
                   controller: AnimationController(
-                    vsync: this,
+                      vsync: this,
                       duration: const Duration(milliseconds: 1200)),
                 ),
                 SizedBox(

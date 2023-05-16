@@ -180,20 +180,22 @@ class UserProvider extends ViewStateProvider {
     //     backgroundColor: Colors.black,
     //     timeInSeconds: 2);
     Fluttertoast.showToast(
-        msg: response.name + " login ...",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 2,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 16.0,
+      msg: response.name + " login ...",
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 2,
+      backgroundColor: Colors.black,
+      textColor: Colors.white,
+      fontSize: 16.0,
     );
 
     if (response is UserModel) {
-      saveUser(response, Constants.LOGIN_WITH_FACEBOOK,
-          name: response.name ?? '',
-          id: res == null ? locator<Prefs>().getId() : res.id ?? '',
-          imageUrl: response.image ?? '',
+      saveUser(
+        response,
+        Constants.LOGIN_WITH_FACEBOOK,
+        name: response.name ?? '',
+        id: res == null ? locator<Prefs>().getId() : res.id ?? '',
+        imageUrl: response.image ?? '',
       );
       return true;
     } else {
@@ -213,11 +215,11 @@ class UserProvider extends ViewStateProvider {
   }
 
   Future<void> openFaceBookDialogPicker() async {
-
     try {
       /*FacebookLoginResult result =
           await facebookSignIn.logIn(['email', 'public_profile']);*/
-      final LoginResult result = await FacebookAuth.instance.login(); // by default we request the email and the public profile
+      final LoginResult result = await FacebookAuth.instance
+          .login(); // by default we request the email and the public profile
 // or FacebookAuth.i.login()
       if (result.status == LoginStatus.success) {
         // you are logged
