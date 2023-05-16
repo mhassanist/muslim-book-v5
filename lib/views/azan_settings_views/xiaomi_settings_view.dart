@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../utils/sizing_info_extension.dart';
-import 'package:android_intent/android_intent.dart';
+// import 'package:android_intent/android_intent.dart';
+import 'package:android_intent_plus/android_intent.dart';
 
 class XiaomiSettingsView extends StatefulWidget {
   const XiaomiSettingsView({super.key});
@@ -30,7 +31,7 @@ class _XiaomiSettingsViewState extends State<XiaomiSettingsView>
           backgroundColor: Theme.of(context).primaryColorDark,
           body: Container(
             width: double.infinity,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(
                       "assets/images/onboarding/draw_over_apps_background.png"),
@@ -77,7 +78,7 @@ class _XiaomiSettingsViewState extends State<XiaomiSettingsView>
       padding: EdgeInsets.symmetric(
           horizontal: sizeConfig.blockSizeHorizontal * 20,
           vertical: sizeConfig.blockSizeVertical * 2),
-      shape: StadiumBorder(),
+      shape: const StadiumBorder(),
       fillColor: Colors.white,
       child: Text(
         AppLocalizations.of(context)!.translate("activate_permissions"),
@@ -92,13 +93,14 @@ class _XiaomiSettingsViewState extends State<XiaomiSettingsView>
   }
 
   _canOverLay(context) async {
-    final AndroidIntent intent = AndroidIntent(
-      action: 'action_application_details_settings',
-      data:
-          'package:com.muslim_book.muslim_book', // replace com.example.app with your applicationId
-    );
-    await intent.launch();
-    goToNextPage(context);
+    if (GetPlatform.isAndroid) {
+      final intent = AndroidIntent(
+        action: 'action_application_details_settings',
+        data: 'package:com.muslim_book.muslim_book',
+      );
+      await intent.launch();
+      goToNextPage(context);
+    }
   }
 
   Future goToNextPage(context) async {
