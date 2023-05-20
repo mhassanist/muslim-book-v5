@@ -19,20 +19,38 @@ import 'package:responsive_builder/responsive_builder.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 
 class SplashView extends StatefulWidget {
+  const SplashView({super.key});
+
   @override
-  _SplashViewState createState() => _SplashViewState();
+  State<SplashView> createState() => _SplashViewState();
 }
 
 class _SplashViewState extends State<SplashView>
     with SingleTickerProviderStateMixin {
+
   @override
   void initState() {
     super.initState();
     initializeData();
   }
 
+  Future invokeMethod() async {
+    try {
+      await Constants.platform.invokeMethod("fireAzan");
+      await Constants.platform.invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
+      await Constants.platform.invokeMethod("fireAzkarPopUp");
+      await Constants.platform.invokeMethod(Constants.Open_Competition);
+      await Constants.platform.invokeMethod(Constants.open_Azkar);
+      await Constants.platform.invokeMethod("checkOverlay");
+    } catch (e) {
+      e.printError();
+      // message = e.toString();
+    }
+  }
+
   Future initializeData() async {
     await Provider.of<UserProvider>(context, listen: false).checkLogin();
+    await invokeMethod();
     if (locator<Prefs>().getIsAzanUrlValid) {
       // if (locator<Prefs>().getAzanModel() != null) {
       //   MonthAzanModel model =
@@ -42,7 +60,7 @@ class _SplashViewState extends State<SplashView>
       //     await AzanApis().getAzan();
       //   }
       // } else
-        await AzanApis().getAzan();
+      await AzanApis().getAzan();
     }
     var checkOverLay = await Constants.platform.invokeMethod("checkOverlay");
     await Constants.platform.invokeMethod("checkBatteryEditing");
@@ -53,11 +71,11 @@ class _SplashViewState extends State<SplashView>
       if (locator<Prefs>().getIsFirstTime()) {
         await sendAzanFilesToTemperory();
         Get.offNamed("/azan_draw_over");
-        } else if (!checkOverLay) {
-         Get.offNamed("/azan_draw_over");
+      } else if (!checkOverLay) {
+        Get.offNamed("/azan_draw_over");
         // } else if (!checkBattery)
         //   Get.dialog(AdjustBatteryView(isStart: true,));
-      }else {
+      } else {
         // Get.offAll(StartView());
         Get.offAll(() => StartView());
       }
@@ -74,7 +92,7 @@ class _SplashViewState extends State<SplashView>
               image: DecorationImage(
                   fit: BoxFit.cover,
                   image:
-                      AssetImage("assets/images/splash_view/background.png"))),
+                  AssetImage("assets/images/splash_view/background.png"))),
           child: Stack(
             children: <Widget>[
               Center(
@@ -82,7 +100,7 @@ class _SplashViewState extends State<SplashView>
                   decoration: BoxDecoration(
                     image: DecorationImage(
                       colorFilter:
-                          new ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                      new ColorFilter.mode(Colors.white, BlendMode.srcIn),
                       image: AssetImage(
                         "assets/images/splash_view/decoration.png",
                       ),
@@ -101,12 +119,13 @@ class _SplashViewState extends State<SplashView>
                 child: Container(
                   margin: EdgeInsets.only(
                       bottom: sizeConfig.blockSizeVertical * 10),
-                  child: Text(AppLocalizations.of(context)!.translate("Largestmuslim"),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: sizeConfig.blockSizeHorizontal * 6),
-                  textAlign: TextAlign.center,
+                  child: Text(
+                    AppLocalizations.of(context)!.translate("Largestmuslim"),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: sizeConfig.blockSizeHorizontal * 6),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               )
@@ -123,14 +142,16 @@ class _SplashViewState extends State<SplashView>
     var dbPath2 = join(tempPath, "after_azan.mp3");
     ByteData data2 = await rootBundle.load("assets/audio/after_azan.mp3");
     List<int> bytes2 =
-        data2.buffer.asUint8List(data2.offsetInBytes, data2.lengthInBytes);
+    data2.buffer.asUint8List(data2.offsetInBytes, data2.lengthInBytes);
     await File(dbPath2).writeAsBytes(bytes2);
-     for (var item in AppLocalizations.of(context)!.isEnglish()?Constants.EN_SHIEKH_NAMES: Constants.AR_SHIEKH_NAMES) {
+    for (var item in AppLocalizations.of(context)!.isEnglish()
+        ? Constants.EN_SHIEKH_NAMES
+        : Constants.AR_SHIEKH_NAMES) {
       var dbPath = join(tempPath, "azan_${item["id"]}.mp3");
       ByteData data =
-          await rootBundle.load("assets/audio/azan_${item["id"]}.mp3");
+      await rootBundle.load("assets/audio/azan_${item["id"]}.mp3");
       List<int> bytes =
-          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(dbPath).writeAsBytes(bytes);
     }
     for (int i = 1; i <= 6; i++) {
@@ -138,7 +159,7 @@ class _SplashViewState extends State<SplashView>
         var dbPath = join(tempPath, "before_$i.mp3");
         ByteData data = await rootBundle.load("assets/audio/before_$i.mp3");
         List<int> bytes =
-            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
         await File(dbPath).writeAsBytes(bytes);
       }
     }
@@ -149,16 +170,16 @@ class _SplashViewState extends State<SplashView>
     ByteData data = await rootBundle.load("assets/audio/korsi_ayat.mp3");
 
     List<int> bytes =
-        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+    data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
     await File(dbPath).writeAsBytes(bytes);
 
     //move default fajr azan mashary to storage
     var dbPathFajr = join(tempPath, "azan_mshary_fajr.mp3");
-    ByteData dataFajr = await rootBundle.load("assets/audio/azan_mshary_fajr.mp3");
-    List<int> bytesFajr =
-    dataFajr.buffer.asUint8List(dataFajr.offsetInBytes, dataFajr.lengthInBytes);
+    ByteData dataFajr =
+    await rootBundle.load("assets/audio/azan_mshary_fajr.mp3");
+    List<int> bytesFajr = dataFajr.buffer
+        .asUint8List(dataFajr.offsetInBytes, dataFajr.lengthInBytes);
     await File(dbPathFajr).writeAsBytes(bytesFajr);
-
   }
 
   //  _checkLogin(BuildContext context) async {
@@ -208,9 +229,10 @@ class _SplashViewState extends State<SplashView>
       builder: (BuildContext context) {
         return WillPopScope(
             child: AlertDialog(
-              title: Text(AppLocalizations.of(context)!.translate("new_update")),
-              content:
-                  Text(AppLocalizations.of(context)!.translate("please_update")),
+              title:
+              Text(AppLocalizations.of(context)!.translate("new_update")),
+              content: Text(
+                  AppLocalizations.of(context)!.translate("please_update")),
               actions: <Widget>[
                 ElevatedButton(
                   child: Text(

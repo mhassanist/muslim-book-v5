@@ -10,9 +10,9 @@ import 'package:dio/dio.dart';
 
 class RamadanMashraatAAPI {
   final Dio _dio = Dio(BaseOptions(
-      connectTimeout: 1000 * 30,
+      connectTimeout: const Duration(seconds: 30),
       baseUrl: Constants.BASE_URL,
-      headers: {"X-localization": "${locator<Prefs>().getLang()}",
+      headers: {"X-localization": locator<Prefs>().getLang(),
         "Authorization":"Bearer YZsiAFPyX3O29xcyoflxArylNNRWfExs4fwnsVIgrYUg03TV4XoVYOq23FM3"}));
 
   RamadanMashraatAAPI() {

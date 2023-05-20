@@ -6,7 +6,7 @@ import 'package:muslim_book/utils/locator.dart';
 
 class QuranApiService {
   final Dio _dio = Dio(BaseOptions(
-    connectTimeout: 1000 * 30,
+    connectTimeout: const Duration(seconds: 30),
     baseUrl: "https://api.alquran.cloud/v1/",
   ));
 
@@ -21,7 +21,7 @@ class QuranApiService {
       QuranModel model = QuranModel.fromMap(res.data["data"]);
       return model;
     } catch (e) {
-       return e;
+      return e;
     }
   }
 

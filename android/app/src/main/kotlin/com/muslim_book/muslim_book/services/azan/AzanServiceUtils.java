@@ -34,7 +34,7 @@ import java.util.Locale;
 
 
 public class AzanServiceUtils {
-    private  Context mContext;
+    private final Context mContext;
     private  String time;
     private  String key;
     private NotificationCompat.Builder builder;
@@ -57,7 +57,7 @@ public class AzanServiceUtils {
 
                 SharedPreferences mPrefs = mContext
                         .getSharedPreferences(FLUTTER_SHARED_PREFERENCES, Context.MODE_PRIVATE);
-                time = mPrefs.getString(Constants.FLUTTER_TAG 
+                time = mPrefs.getString(Constants.FLUTTER_TAG
                         + Constants.NEXT_AZAN_TIME, null);
                 key = mPrefs.getString(Constants.FLUTTER_TAG + Constants.NEXT_AZAN_KEY, null);
             } else {
@@ -78,82 +78,82 @@ public class AzanServiceUtils {
     public Notification createForeGroundNotification(Intent intent) {
         notificationManager = (NotificationManager) mContext.getSystemService(
                 NOTIFICATION_SERVICE);
-            settingTimeAndKey(intent);
-            setNotificationChannel();
-            setNotificationBuilder();
+        settingTimeAndKey(intent);
+        setNotificationChannel();
+        setNotificationBuilder();
 
-            Notification notification = builder.build();
-            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(mContext);
-            startAlarmReceiver();
-            return notification;
+        Notification notification = builder.build();
+        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(mContext);
+        startAlarmReceiver();
+        return notification;
     }
 
 
     private void setNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            NotificationChannel notificationChannel = new NotificationChannel(
+//                    AZAN_NOTIFICATION_CHANNEL_ID, AZAN_CHANNEL_NAME,
+//                    NotificationManager.IMPORTANCE_DEFAULT);
             NotificationChannel notificationChannel = new NotificationChannel(
                     AZAN_NOTIFICATION_CHANNEL_ID, AZAN_CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificationChannel.enableLights(true);
-            notificationChannel.enableVibration(true);
-            notificationChannel.setLightColor(Color.GREEN);
-            notificationChannel.setVibrationPattern(new long[]{
-                    500,
-                    500,
-                    500,
-                    500,
-                    500
-            });
+                    NotificationManager.IMPORTANCE_LOW);
+//            notificationChannel.enableLights(true);
+//            notificationChannel.enableVibration(true);
+//            notificationChannel.setLightColor(Color.GREEN);
+//            notificationChannel.setVibrationPattern(new long[]{
+//                    500,
+//                    500,
+//                    500,
+//                    500,
+//                    500
+//            });
             notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
             notificationManager.createNotificationChannel(notificationChannel);
         }
     };
-    @SuppressLint("SuspiciousIndentation")
+    @SuppressLint({"SuspiciousIndentation", "DiscouragedApi", "SimpleDateFormat", "LaunchActivityFromNotification"})
     private void setNotificationBuilder() {
         String contentText;
         String contentTitle;
 
-        if(key != null && time != null)
-        {
-           contentText =  "في تمام الساعة "+ time;
+        if (key != null && time != null) {
+            contentText = "في تمام الساعة " + time;
             contentTitle = mContext.getString(
                     mContext.getResources().getIdentifier("before_azan_" + key, "string", mContext.getPackageName()));
             try {
                 final SimpleDateFormat sdf = new SimpleDateFormat("H:mm");
                 final Date dateObj = sdf.parse(time);
 
-                String  show  =new SimpleDateFormat("hh:mm a" , new Locale("ar")).format(dateObj);
-                contentText =  "في تمام الساعة "+  show;
+                assert dateObj != null;
+                String show = new SimpleDateFormat("hh:mm a", new Locale("ar")).format(dateObj);
+                contentText = "في تمام الساعة " + show;
                 contentTitle = mContext.getString(
                         mContext.getResources().getIdentifier("before_azan_" + key, "string", mContext.getPackageName()));
             } catch (final ParseException e) {
                 e.printStackTrace();
             }
-        }
-        else {
+        } else {
             contentText = "قريبا";
             contentTitle = "الصلاة";
         }
-         builder = new NotificationCompat.Builder(mContext, AZAN_NOTIFICATION_CHANNEL_ID);
-            builder.setOngoing(true);
+        builder = new NotificationCompat.Builder(mContext, AZAN_NOTIFICATION_CHANNEL_ID);
+        builder.setOngoing(true);
         builder.setContentTitle(contentTitle);
         builder.setContentText(contentText);
         builder.setSmallIcon(R.mipmap.ic_launcher);
         builder.setAutoCancel(true);
-        builder.setPriority(NotificationCompat.PRIORITY_MAX);
-        builder.setVibrate(new long[]{
-                500,
-                500,
-                500,
-                500
-        });
+//        builder.setPriority(NotificationCompat.PRIORITY_MAX);
+        builder.setPriority(NotificationCompat.PRIORITY_LOW);
+//        builder.setVibrate(new long[]{
+//                500,
+//                500,
+//                500,
+//                500
+//        });
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
-
-
-
         Intent intent = new Intent(mContext, AzanReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, AZAN_NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT  | PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, AZAN_NOTIFICATION_ID, intent, 0);
         builder.setContentIntent(pendingIntent);
     }
 
@@ -173,5 +173,5 @@ public class AzanServiceUtils {
             mContext.sendBroadcast(intent);
 //            ContextCompat.starre(mContext, intent);
         }
-}
+    }
 }

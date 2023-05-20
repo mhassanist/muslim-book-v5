@@ -1,10 +1,11 @@
 import 'dart:ui';
 
-import 'package:audio_service/audio_service.dart';
+// import 'package:admob_flutter/admob_flutter.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:fancy_dialog/FancyGif.dart';
 import 'package:fancy_dialog/fancy_dialog.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -28,13 +29,11 @@ import 'package:muslim_book/providers/azan_sounds_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/quran/provider/quran_pages_pic_bloc.dart';
 import 'package:muslim_book/quran/provider/quran_provider.dart';
-import 'package:muslim_book/quran/utils/quran_audio_handler.dart';
 import 'package:muslim_book/ramadan/provider/ramadan_provider.dart';
 import 'package:muslim_book/sebha_feature/online_sebha/controllers/online_sebha_controller.dart';
 import 'package:muslim_book/sebha_feature/providers/sebha_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/locator.dart';
-import 'package:muslim_book/utils/palette.dart';
 import 'package:muslim_book/utils/prefs.dart';
 import 'package:muslim_book/utils/sailor.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
@@ -43,6 +42,7 @@ import 'package:muslim_book/views/start_view/start_view.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import 'ads/ad_manager.dart';
 import 'azan_feature/controllers/azan_controller.dart';
 import 'home_feature/controllers/home_controller.dart';
@@ -69,21 +69,21 @@ Future<void> _initAdMob() async {
 
 Future<FirebaseRemoteConfig> _setupRemoteConfig() async {
   final remoteConfig = FirebaseRemoteConfig.instance;
-  // remoteConfig.setDefaults(<String, dynamic>{
-  //   'down_Competition_1': 'ca-app-pub-8586064191208277/2234874389',
-  //   'Sabha': 'ca-app-pub-8586064191208277/9405322350',
-  //   'Azkar': 'ca-app-pub-8586064191208277/2234874389',
-  //   'Bosla': 'ca-app-pub-8586064191208277/2234874389',
-  //   'Down_Edit_Azan': 'ca-app-pub-8586064191208277/6219411880',
-  //   'down_start_Competition': 'ca-app-pub-8586064191208277/4415375627',
-  //   'Top': 'ca-app-pub-8586064191208277/5354527555',
-  //   'The_middle_of_the_competition': 'ca-app-pub-8586064191208277/2784204532',
-  // });
+  remoteConfig.setDefaults(<String, dynamic>{
+    'down_Competition_1': 'ca-app-pub-8586064191208277/2234874389',
+    'Sabha': 'ca-app-pub-8586064191208277/9405322350',
+    'Azkar': 'ca-app-pub-8586064191208277/2234874389',
+    'Bosla': 'ca-app-pub-8586064191208277/2234874389',
+    'Down_Edit_Azan': 'ca-app-pub-8586064191208277/6219411880',
+    'down_start_Competition': 'ca-app-pub-8586064191208277/4415375627',
+    'Top': 'ca-app-pub-8586064191208277/5354527555',
+    'The_middle_of_the_competition': 'ca-app-pub-8586064191208277/2784204532',
+  });
   try {
-    // Using default duration to force fetching from remote server.Rq
+    // Using default duration to force fetching from remote server.
     await remoteConfig.fetch(
-        // expiration: const Duration(seconds: 0),
-        );
+      // expiration: const Duration(seconds: 0),
+    );
     await remoteConfig.fetchAndActivate();
   } catch (exception) {
     if (kDebugMode) {
@@ -94,20 +94,16 @@ Future<FirebaseRemoteConfig> _setupRemoteConfig() async {
   return remoteConfig;
 }
 
-late AudioHandler _audioHandler; // singleton.
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   AdManager.remoteConfig = await _setupRemoteConfig();
 
   /// Catch errors via Crashlytics
   _passErrorsToCrashlytics();
-
-  QuranAudioHandler().initialize();
 
   /// Ads
   _initAdMob();
@@ -123,12 +119,7 @@ Future<void> main() async {
   await locator<Prefs>().setSharedPreferences();
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
-  if (AdManager.showFacebookAds) {
-    await FacebookAudienceNetwork.init(
-        // testingId: "a77955ee-3304-4635-be65-81029b0f5201",
-        );
-  }
-
+  await FacebookAudienceNetwork.init();
   // final loaded = await getLocale();
 
   runApp(
@@ -139,16 +130,20 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({
+    super.key,
+    required this.localeLoaded,
+  });
+
   final Locale localeLoaded;
+
   // static FirebaseAnalytics analytics = FirebaseAnalytics.instance;
   // static FirebaseAnalyticsObserver observer = FirebaseAnalyticsObserver(analytics: analytics);
   static bool loading = false;
   static bool loadingAddMobe = false;
 
-  const MyApp({
-    super.key,
-    required this.localeLoaded,
-  });
+  @override
+  State<MyApp> createState() => _MyAppState();
 
   static Future setLocale(BuildContext context, Locale newLocale) async {
     final state = context.findAncestorStateOfType<_MyAppState>();
@@ -160,24 +155,29 @@ class MyApp extends StatefulWidget {
   static void _launchURL() async {
     if (!await launchUrl(
       Uri.parse(
-          'https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book'),
+        'https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book',
+      ),
       mode: LaunchMode.externalApplication,
-    )) print('Could not launch');
+    )) {
+      if (kDebugMode) {
+        print('Could not launch');
+      }
+    }
   }
 
-  static exitBottomSheet(context) async {
+  static Future<Widget> exitBottomSheet(context) async {
     return await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => ResponsiveBuilder(builder: (context, sizeConfig) {
         return Container(
-          height: MediaQuery.of(context).size.height * 0.65,
-          decoration: new BoxDecoration(
+          height: MediaQuery.of(context).size.height * 0.55,
+          decoration: const BoxDecoration(
             color: Colors.white,
-            borderRadius: new BorderRadius.only(
-              topLeft: const Radius.circular(25.0),
-              topRight: const Radius.circular(25.0),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(25.0),
+              topRight: Radius.circular(25.0),
             ),
           ),
           child: Center(
@@ -186,11 +186,11 @@ class MyApp extends StatefulWidget {
                 Container(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
                   width: MediaQuery.of(context).size.width,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
-                    borderRadius: new BorderRadius.only(
-                      topLeft: const Radius.circular(25.0),
-                      topRight: const Radius.circular(25.0),
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(25.0),
+                      topRight: Radius.circular(25.0),
                     ),
                   ),
                   child: Text(
@@ -203,14 +203,17 @@ class MyApp extends StatefulWidget {
                     textAlign: TextAlign.center,
                   ),
                 ),
-                AdmobBanner(bannerName: BannerName.TOP),
+                // Expanded(
+                //   child: AdMobRectangle(BannerName.Top),
+                // ),
+                const AdmobBanner(bannerName: BannerName.TOP),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
                       width: sizeConfig.blockSizeHorizontal * 30,
                       height: sizeConfig.blockSizeVertical * 6,
-                      margin: EdgeInsets.only(top: 20, bottom: 20),
+                      margin: const EdgeInsets.only(top: 20, bottom: 20),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10)),
                       child: RawMaterialButton(
@@ -225,89 +228,94 @@ class MyApp extends StatefulWidget {
                             _showRateAppDialog(context);
                           } else {
                             if (locator<Prefs>().getCountOfOpenDialog() == 3) {
-                              Navigator.of(context).pop();
                               SystemNavigator.pop();
                             } else {
                               if (locator<Prefs>().getDateOfClickLike() !=
-                                      null &&
+                                  null &&
                                   locator<Prefs>().getDateOfClickNotLike() ==
                                       null) {
-                                DateTime before =
-                                    DateTime.fromMillisecondsSinceEpoch(
+                                final before =
+                                DateTime.fromMillisecondsSinceEpoch(
                                   locator<Prefs>().getDateOfClickLike() ?? 0,
                                 );
-                                DateTime now = DateTime.now();
-                                Duration timeDifference =
-                                    now.difference(before);
-                                print(timeDifference.inDays);
+                                final now = DateTime.now();
+                                final timeDifference = now.difference(before);
+                                if (kDebugMode) {
+                                  print(timeDifference.inDays);
+                                }
+
                                 if ((timeDifference.inDays >= 30 &&
-                                        locator<Prefs>()
-                                                .getCountOfClickLike() ==
-                                            1) ||
+                                    locator<Prefs>()
+                                        .getCountOfClickLike() ==
+                                        1) ||
                                     (timeDifference.inDays >= 90 &&
                                         locator<Prefs>()
-                                                .getCountOfClickLike() ==
+                                            .getCountOfClickLike() ==
                                             2)) {
                                   _showRateAppDialog(context);
                                 } else {
-                                  Navigator.of(context).pop();
                                   SystemNavigator.pop();
                                 }
                               } else if (locator<Prefs>()
-                                          .getDateOfClickNotLike() !=
-                                      null &&
+                                  .getDateOfClickNotLike() !=
+                                  null &&
                                   locator<Prefs>().getDateOfClickLike() ==
                                       null) {
                                 DateTime before =
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                        locator<Prefs>()
-                                                .getDateOfClickNotLike() ??
-                                            0);
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    locator<Prefs>()
+                                        .getDateOfClickNotLike() ??
+                                        0);
                                 DateTime now = DateTime.now();
                                 Duration timeDifference =
-                                    now.difference(before);
-                                print(timeDifference.inDays);
+                                now.difference(before);
+                                if (kDebugMode) {
+                                  print(timeDifference.inDays);
+                                }
 
                                 if ((timeDifference.inDays >= 15 && locator<Prefs>().getCountOfClickNotLike() == 1) ||
                                     (timeDifference.inDays >= 30 &&
                                         locator<Prefs>()
-                                                .getCountOfClickNotLike() ==
+                                            .getCountOfClickNotLike() ==
                                             2) ||
                                     (timeDifference.inDays >= 45 &&
                                         locator<Prefs>()
-                                                .getCountOfClickNotLike() ==
+                                            .getCountOfClickNotLike() ==
                                             3)) {
                                   _showRateAppDialog(context);
                                 } else {
-                                  Navigator.of(context).pop();
                                   SystemNavigator.pop();
                                 }
                               } else if (locator<Prefs>()
-                                          .getDateOfClickLike() !=
-                                      null &&
+                                  .getDateOfClickLike() !=
+                                  null &&
                                   locator<Prefs>().getDateOfClickNotLike() !=
                                       null) {
                                 DateTime dateOfLike =
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                        locator<Prefs>().getDateOfClickLike() ??
-                                            0);
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    locator<Prefs>().getDateOfClickLike() ??
+                                        0);
                                 DateTime now = DateTime.now();
                                 Duration likeTimeDifference =
-                                    now.difference(dateOfLike);
-                                print(likeTimeDifference.inDays);
+                                now.difference(dateOfLike);
+                                if (kDebugMode) {
+                                  print(likeTimeDifference.inDays);
+                                }
 
                                 DateTime dateOfNotLike =
-                                    DateTime.fromMillisecondsSinceEpoch(
-                                        locator<Prefs>()
-                                                .getDateOfClickNotLike() ??
-                                            0);
+                                DateTime.fromMillisecondsSinceEpoch(
+                                    locator<Prefs>()
+                                        .getDateOfClickNotLike() ??
+                                        0);
                                 DateTime dateOfNotLikeNow = DateTime.now();
                                 Duration notLikeTimeDifference =
-                                    dateOfNotLikeNow.difference(dateOfNotLike);
-                                print(notLikeTimeDifference.inDays);
+                                dateOfNotLikeNow.difference(dateOfNotLike);
+                                if (kDebugMode) {
+                                  print(notLikeTimeDifference.inDays);
+                                }
 
                                 if (locator<Prefs>().getCountOfClickLike() ==
-                                        1 &&
+                                    1 &&
                                     locator<Prefs>().getCountOfClickNotLike() ==
                                         1) {
                                   if (likeTimeDifference.inDays >= 30 &&
@@ -317,12 +325,11 @@ class MyApp extends StatefulWidget {
                                       15) {
                                     _showRateAppDialog(context);
                                   } else {
-                                    Navigator.of(context).pop();
                                     SystemNavigator.pop();
                                   }
                                 } else if (locator<Prefs>()
-                                            .getCountOfClickLike() ==
-                                        2 &&
+                                    .getCountOfClickLike() ==
+                                    2 &&
                                     locator<Prefs>().getCountOfClickNotLike() ==
                                         1) {
                                   if (likeTimeDifference.inDays >= 90 &&
@@ -332,12 +339,11 @@ class MyApp extends StatefulWidget {
                                       30) {
                                     _showRateAppDialog(context);
                                   } else {
-                                    Navigator.of(context).pop();
                                     SystemNavigator.pop();
                                   }
                                 } else if (locator<Prefs>()
-                                            .getCountOfClickLike() ==
-                                        1 &&
+                                    .getCountOfClickLike() ==
+                                    1 &&
                                     locator<Prefs>().getCountOfClickNotLike() ==
                                         2) {
                                   if (likeTimeDifference.inDays >= 30) {
@@ -346,7 +352,6 @@ class MyApp extends StatefulWidget {
                                       30) {
                                     _showRateAppDialog(context);
                                   } else {
-                                    Navigator.of(context).pop();
                                     SystemNavigator.pop();
                                   }
                                 }
@@ -364,13 +369,13 @@ class MyApp extends StatefulWidget {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 10,
                     ),
                     Container(
                       width: sizeConfig.blockSizeHorizontal * 30,
                       height: sizeConfig.blockSizeVertical * 6,
-                      margin: EdgeInsets.only(top: 20, bottom: 20),
+                      margin: const EdgeInsets.only(top: 20, bottom: 20),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10)),
                       child: RawMaterialButton(
@@ -381,7 +386,7 @@ class MyApp extends StatefulWidget {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        fillColor: Theme.of(context).colorScheme.secondary,
+                        fillColor: Theme.of(context).accentColor,
                         child: Text(
                           AppLocalizations.of(context)!.translate("cancel"),
                           style: TextStyle(
@@ -401,16 +406,13 @@ class MyApp extends StatefulWidget {
     );
   }
 
-  @override
-  _MyAppState createState() => _MyAppState();
-
   static void _showRateAppDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) => FancyDialog(
         title: AppLocalizations.of(context)!.translate("thanx_to_use_app"),
         description:
-            AppLocalizations.of(context)!.translate("rate_app_description"),
+        AppLocalizations.of(context)!.translate("rate_app_description"),
         okColor: Theme.of(context).primaryColor,
         okFun: () async {
           if (locator<Prefs>().getCountOfOpenDialog() == null) {
@@ -461,28 +463,28 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  AzanController _azanController = Get.put(AzanController());
-  HomeController _homeController = Get.put(HomeController());
+  final _azanController = Get.put(AzanController());
+  final _homeController = Get.put(HomeController());
+
   String? showCompetition;
   String? openAzkar;
   var checkOverLay;
-  Locale? localeLoaded;
+  late Locale localeLoaded;
 
-  @override
-  void initState() {
-    super.initState();
-    // invokeMethod();
-    localeLoaded = widget.localeLoaded;
-    // WidgetsBinding.instance.addPostFrameCallback((_) => invokeMethod());
-    SchedulerBinding.instance.addPostFrameCallback((_) => invokeMethod());
-  }
-
-  setLocale(Locale _locale) {
+  setLocale(Locale locale) {
     getLocale().then((locale) {
       setState(() {
         localeLoaded = locale;
       });
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    localeLoaded = widget.localeLoaded;
+    // WidgetsBinding.instance.addPostFrameCallback((_) => invokeMethod());
+    // SchedulerBinding.instance.addPostFrameCallback((_) => invokeMethod());
   }
 
   @override
@@ -505,13 +507,15 @@ class _MyAppState extends State<MyApp> {
   Future<String> receiveMessage() async {
     String message = '';
     try {
-      showCompetition =
-          await Constants.platform.invokeMethod(Constants.Open_Competition);
+      showCompetition = await Constants.platform.invokeMethod(Constants.Open_Competition);
       openAzkar = await Constants.platform.invokeMethod(Constants.open_Azkar);
       checkOverLay = await Constants.platform.invokeMethod("checkOverlay");
     } on PlatformException catch (e) {
       message = e.message ?? '';
     }
+    setState(() {
+
+    });
     return message;
   }
 
@@ -559,20 +563,18 @@ class _MyAppState extends State<MyApp> {
           //   const Locale("fr")
           // ],
           // supportedLocales: AppLocalizations.supportedLocales,
-          supportedLocales: [Locale('en'), Locale('ar'), Locale('fr')],
+          supportedLocales: const [Locale('en'), Locale('ar'), Locale('fr')],
           locale: localeLoaded,
           // navigatorObservers: <NavigatorObserver>[MyApp.observer],
-          localizationsDelegates: [
+          localizationsDelegates: const [
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
             AppLocalizations.delegate, // Add this line
           ],
           builder: (BuildContext context, Widget? child) {
-            //print("shaimmmmmmmmmmmmmmmaaaa 2   " + localeLoaded.languageCode);
-
             return Directionality(
-              textDirection: setTextDirection(localeLoaded ?? Locale('ar')),
+              textDirection: setTextDirection(localeLoaded),
               child: child ?? Container(),
             );
           },
@@ -583,22 +585,17 @@ class _MyAppState extends State<MyApp> {
             textTheme: GoogleFonts.almaraiTextTheme(
               Theme.of(context).textTheme,
             ),
-            primarySwatch: Palette.kToDark,
-            // accentColor: Constants.ACCENT_COLOR,  (Depricated)
+            primarySwatch: Colors.blue,
+            accentColor: Constants.ACCENT_COLOR,
             primaryColor: Constants.PRIMARY_COLOR,
             primaryColorDark: Constants.PRIMARY_DARK_COLOR,
             canvasColor: Constants.CANVAS_COLOR,
-          ).copyWith(
-            colorScheme: ThemeData().colorScheme.copyWith(
-                secondary: Constants.ACCENT_COLOR,
-                primary: Constants.PRIMARY_COLOR),
           ),
-
           home: checkOverLay != null
               ? showCompetition != null || openAzkar != null
-                  ? StartView()
-                  : SplashView()
-              : SplashView(),
+              ? StartView()
+              : const SplashView()
+              : const SplashView(),
           navigatorKey: Routes.sailor.navigatorKey,
           onGenerateRoute: Routes.sailor.generator(),
         ),
@@ -606,6 +603,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+
 
 // lib/network_utils/ApiService (getTasbeehList, getTopSebha, getSebhaProfile)
 // lib/ramadan/widgets/ayah_widget

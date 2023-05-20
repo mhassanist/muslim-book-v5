@@ -21,9 +21,9 @@ import 'package:http/http.dart' as http;
 
 class ApiService {
   final Dio _dio = Dio(BaseOptions(
-      connectTimeout: 1000 * 30,
+      connectTimeout: const Duration(seconds: 30),
       baseUrl: Constants.BASE_URL,
-      headers: {"X-localization": "${locator<Prefs>().getLang()}"}));
+      headers: {"X-localization": locator<Prefs>().getLang()}));
   late UserProvider _userProvider;
 
   set userProvider(UserProvider val) {
@@ -179,7 +179,7 @@ class ApiService {
     final graphResponse = await http.get(
       Uri.https('graph.facebook.com', '/v16.0/me', {
         "fields":
-            "name,picture.width(800).height(800),first_name,last_name,email",
+        "name,picture.width(800).height(800),first_name,last_name,email",
         "access_token": "$token"
       }),
     );
@@ -198,13 +198,13 @@ class ApiService {
   Future getCountries(String code) async {
     try {
       http.Response response = await http.get(
-          // Uri.https('${Constants.BASE_URL}countries/list'),
+        // Uri.https('${Constants.BASE_URL}countries/list'),
           Uri.https('${Constants.BASE_API_URL}',
               '${Constants.BASE_API_PATH}countries/list'),
           headers: {"X-localization": code});
       if (response.statusCode == 200) {
         CountriesModel model =
-            CountriesModel.fromJson(utf8.decode(response.bodyBytes));
+        CountriesModel.fromJson(utf8.decode(response.bodyBytes));
         return model;
       }
     } catch (ex) {
