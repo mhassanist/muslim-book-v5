@@ -22,6 +22,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.muslim_book.muslim_book.MainActivity;
 import com.muslim_book.muslim_book.R;
 import com.muslim_book.muslim_book.classes.Constants;
 import com.muslim_book.muslim_book.classes.Prefs;
@@ -43,7 +44,6 @@ public class AzanServiceUtils {
     public AzanServiceUtils(Context mContext) {
         this.mContext = mContext;
     }
-
 
     public void settingTimeAndKey(Intent intent){
         Log.i("arrived Azan","1");
@@ -75,6 +75,7 @@ public class AzanServiceUtils {
         }
 
     }
+
     public Notification createForeGroundNotification(Intent intent) {
         notificationManager = (NotificationManager) mContext.getSystemService(
                 NOTIFICATION_SERVICE);
@@ -87,7 +88,6 @@ public class AzanServiceUtils {
         startAlarmReceiver();
         return notification;
     }
-
 
     private void setNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -153,7 +153,26 @@ public class AzanServiceUtils {
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
         Intent intent = new Intent(mContext, AzanReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, AZAN_NOTIFICATION_ID, intent, 0);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext,
+//                AZAN_NOTIFICATION_ID,
+//                intent,
+//                PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getBroadcast(
+                    mContext,
+                    AZAN_NOTIFICATION_ID,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+
+        } else {
+            pendingIntent = PendingIntent.getBroadcast(
+                    mContext,
+                    AZAN_NOTIFICATION_ID,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+
+        }
         builder.setContentIntent(pendingIntent);
     }
 

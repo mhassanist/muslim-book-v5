@@ -114,23 +114,27 @@ class LocationProvider extends ViewStateProvider {
   }
 
   void saveCountry(context) async {
-    // if (_longitude != null && _latitude != null) {
-    if (Provider.of<PickAzanMethodsProvider>(context, listen: false)
-            .pickedMethod.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          AppLocalizations.of(context)!.translate("mazhab_method_empty"),
-        ),
-      ));
+    if (_longitude != null && _latitude != null) {
+      if (Provider.of<PickAzanMethodsProvider>(context, listen: false)
+          .pickedMethod.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            AppLocalizations.of(context)!.translate("mazhab_method_empty"),
+          ),
+        ));
+      } else {
+        await saveSettings(context);
+      }
     } else {
-      await saveSettings(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content:
+        Text(AppLocalizations.of(context)!.translate("please_pick_country")),
+      ));
     }
+
     //  Navigator.pushNamed(context, "/pick_azan_method_view");
     // } else
-    //   Scaffold.of(context).showSnackBar(SnackBar(
-    //     content:
-    //     Text(AppLocalizations.of(context)!.translate("please_pick_country")),
-    //   ));
+
   }
 
   Future saveSettings(context) async {

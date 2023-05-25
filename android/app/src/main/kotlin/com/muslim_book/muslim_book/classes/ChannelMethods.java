@@ -215,21 +215,13 @@ public class ChannelMethods {
 
 
     private void RequestPermission() {
-        // Check if Android M or higher
-        if (VERSION.SDK_INT >= VERSION_CODES.M) {
-            // Show alert dialog to the user saying a separate permission is needed
-            // Launch the settings activity if the user prefers
-
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + mContext.getPackageName()));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-            intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-            intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-            myMainActivity.startActivityForResult(intent, 2323);
-
-
-        }
+        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + mContext.getPackageName()));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        intent.addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+        myMainActivity.startActivityForResult(intent, 2323);
     }
 
     private boolean checkDrawOverLays() {

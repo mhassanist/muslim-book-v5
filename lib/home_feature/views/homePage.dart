@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
@@ -20,6 +21,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
+import 'package:permission_handler/permission_handler.dart';
 import "package:provider/provider.dart" as ProviderUser;
 import 'package:share_plus/share_plus.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -33,14 +35,12 @@ class HomePage extends ConsumerWidget {
   List<int> postsListIDS = [];
   List<Widget> islamicPostsListWidget = [];
   List<PostsOfIslamic> islamicPostsList = [];
-  RefreshController _postsRefreshController =
-      RefreshController(initialRefresh: false);
-  RefreshController _islamicPostsRefreshController =
-      RefreshController(initialRefresh: false);
-  Key _postsKey = Key('posts');
+  final _postsRefreshController = RefreshController(initialRefresh: false);
+  final _islamicPostsRefreshController = RefreshController(initialRefresh: false);
+  final _postsKey = const Key('posts');
   final bool mounted;
 
-  HomePage({required this.mounted});
+  HomePage({super.key, required this.mounted});
 
   void _onPostsRefresh() async {
     // monitor network fetch
@@ -76,6 +76,7 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    checkNotificationPermissionAndInvokeMethod();
     double width = MediaQuery.of(context).size.width;
     postschanges = ref.watch(getPosts);
     if (postschanges.isloading == true) {
@@ -94,9 +95,9 @@ class HomePage extends ConsumerWidget {
 
             //add ad every 10 posts
             if (pageIndex.isOdd && (i == 10 || i == 20)) {
-              postsListWidget.add(AdmobBanner(bannerName: BannerName.BOSLA));
+              postsListWidget.add(const AdmobBanner(bannerName: BannerName.BOSLA));
             } else if (pageIndex.isEven && (i == 5 || i == 15 || i == 25)) {
-              postsListWidget.add(AdmobBanner(bannerName: BannerName.BOSLA));
+              postsListWidget.add(const AdmobBanner(bannerName: BannerName.BOSLA));
             }
           }
         }
@@ -116,39 +117,36 @@ class HomePage extends ConsumerWidget {
           //add ad every 10 posts
           if (islamicPageIndex.isOdd && (i == 10 || i == 20)) {
             islamicPostsListWidget
-                .add(AdmobBanner(bannerName: BannerName.BOSLA));
+                .add(const AdmobBanner(bannerName: BannerName.BOSLA));
           } else if (islamicPageIndex.isEven &&
               (i == 5 || i == 15 || i == 25)) {
             islamicPostsListWidget
-                .add(AdmobBanner(bannerName: BannerName.BOSLA));
+                .add(const AdmobBanner(bannerName: BannerName.BOSLA));
           }
         }
       }
     }
 
     return MyApp.loading
-        ? Container(
-            child: Center(
-              child: Loading(),
-            ),
-          )
+        ? Center(
+          child: Loading(),
+        )
         : SafeArea(
-            child: Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AzanHomeWidget(),
                 buildTitle(
                     AppLocalizations.of(context)!.translate("MainSections")),
-                Container(
+                SizedBox(
                     height: 110,
                     width: MediaQuery.of(context).size.width,
                     child: CategoriesHorizontalHomeWidget()),
-                SizedBox(
+                const SizedBox(
                   height: 2,
                 ),
                 buildTabbar(postschanges, context),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Expanded(
@@ -156,7 +154,7 @@ class HomePage extends ConsumerWidget {
                         ? Center(
                             child: Loading(),
                           )
-                        : Container(
+                        : SizedBox(
                             height: 150,
                             child: Column(
                               children: [
@@ -231,7 +229,7 @@ class HomePage extends ConsumerWidget {
                                                                 .translate(
                                                           "be_goodness",
                                                         ),
-                                                        hintStyle: TextStyle(
+                                                        hintStyle: const TextStyle(
                                                           fontSize: 13,
                                                           color:
                                                               dark_blue_green,
@@ -240,7 +238,7 @@ class HomePage extends ConsumerWidget {
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: 5,
                                                 ),
                                                 Container(
@@ -256,7 +254,7 @@ class HomePage extends ConsumerWidget {
                                                       AppLocalizations.of(
                                                               context)!
                                                           .translate("Post"),
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 13,
                                                           fontWeight:
@@ -269,7 +267,7 @@ class HomePage extends ConsumerWidget {
                                           ),
                                         ))
                                     : Container(),
-                                SizedBox(
+                                const SizedBox(
                                   height: 10,
                                 ),
                                 Expanded(
@@ -363,14 +361,32 @@ class HomePage extends ConsumerWidget {
                             ),
                           )),
               ],
-            ),
-          ));
+            ));
+  }
+
+
+  Future checkNotificationPermissionAndInvokeMethod() async {
+    await Permission.notification.isDenied.then((value) async {
+      if (value) {
+        await Permission.notification.request();
+        if (!await Permission.notification.isDenied) {
+          try {
+            await Constants.platform.invokeMethod("fireAzan");
+          } catch (e) {
+            if (kDebugMode) {
+              print('$e');
+            }
+          }
+        }
+      }
+    });
+
   }
 
   Widget buildPostItem(Post _post) {
     return StatefulBuilder(
       builder: (context, setstate) => Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
         child: Card(
           color: Colors.white,
           shape: RoundedRectangleBorder(
@@ -408,7 +424,7 @@ class HomePage extends ConsumerWidget {
                                   const EdgeInsets.symmetric(horizontal: 5),
                               child: Text(
                                 _post.userName ?? '',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: darkish_green,
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600),
@@ -425,11 +441,11 @@ class HomePage extends ConsumerWidget {
                 ),
                 Center(
                   child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
                       _post.content ?? '',
                       maxLines: 10,
-                      style: TextStyle(fontSize: 16),
+                      style: const TextStyle(fontSize: 16),
                     ),
                   ),
                 ),
@@ -459,9 +475,9 @@ class HomePage extends ConsumerWidget {
                                 Text(
                                   AppLocalizations.of(context)!
                                       .translate("share"),
-                                  style: TextStyle(fontSize: 13),
+                                  style: const TextStyle(fontSize: 13),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 8,
                                 ),
                                 SvgPicture.asset(
@@ -502,7 +518,7 @@ class HomePage extends ConsumerWidget {
                                         ? darkish_green
                                         : Colors.grey[300]),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 8,
                               ),
                               SvgPicture.asset(
@@ -534,7 +550,7 @@ class HomePage extends ConsumerWidget {
         children: [
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 13,
                 color: dark_blue_green,
                 fontWeight: FontWeight.w600),
@@ -550,14 +566,14 @@ class HomePage extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       builder: (context) => Material(
           elevation: 10,
-          shape: BeveledRectangleBorder(
+          shape: const BeveledRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10), topRight: Radius.circular(10)),
           ),
           child: Container(
             height: 200,
-            margin: EdgeInsets.only(top: 10),
-            decoration: BoxDecoration(
+            margin: const EdgeInsets.only(top: 10),
+            decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(40),
@@ -576,7 +592,7 @@ class HomePage extends ConsumerWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
@@ -599,7 +615,7 @@ class HomePage extends ConsumerWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LoginPopUpView(
+                                    builder: (context) => const LoginPopUpView(
                                           close: true,
                                         ))).then((value) {});
                           },
@@ -607,7 +623,7 @@ class HomePage extends ConsumerWidget {
                           child: Text(
                             AppLocalizations.of(context)!
                                 .translate("Login_key"),
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 15,
                               color: Constants.CANVAS_COLOR,
                             ),
@@ -648,7 +664,7 @@ class HomePage extends ConsumerWidget {
                     fontSize: 20,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               postschanges.isPosts
@@ -663,7 +679,7 @@ class HomePage extends ConsumerWidget {
             ],
           ),
         ),
-        SizedBox(
+        const SizedBox(
           width: 80,
         ),
         InkWell(
@@ -677,7 +693,7 @@ class HomePage extends ConsumerWidget {
                     fontSize: 20,
                     fontWeight: FontWeight.bold),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               postschanges.isPosts
@@ -699,7 +715,7 @@ class HomePage extends ConsumerWidget {
   Widget CaregoryItem(Categore category, BuildContext context) {
     return Card(
         elevation: 5,
-        child: Container(
+        child: SizedBox(
             height: 300,
             child: Column(
               children: [
@@ -720,31 +736,31 @@ class HomePage extends ConsumerWidget {
                         fit: BoxFit.fill,
                       ))),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                    margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                     child: Column(
                       children: [
                         Text(
                           category.name ?? '',
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: darkish_green,
                               fontSize: 12,
                               fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Text(
                           category.description ?? '',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 10,
                           ),
                           textAlign: TextAlign.center,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         Row(
@@ -816,23 +832,23 @@ class HomePage extends ConsumerWidget {
             body =
                 Text(AppLocalizations.of(context)!.translate("pull_up-load"));
           } else if (mode == LoadStatus.loading) {
-            body = CupertinoActivityIndicator();
+            body = const CupertinoActivityIndicator();
           } else if (mode == LoadStatus.failed) {
-            body = Text("Load Failed!Click retry!");
+            body = const Text("Load Failed!Click retry!");
           } else if (mode == LoadStatus.canLoading) {
             body = Text(AppLocalizations.of(context)!
                 .translate("release_to_load_more"));
           } else {
-            body = Text("No more Data");
+            body = const Text("No more Data");
           }
-          return Container(
+          return SizedBox(
             height: 55.0,
             child: Center(child: body),
           );
         },
       ),
       child: ListView(
-        padding: EdgeInsets.all(0),
+        padding: const EdgeInsets.all(0),
         children: postsListWidget,
       ),
     );
@@ -855,16 +871,16 @@ class HomePage extends ConsumerWidget {
             body =
                 Text(AppLocalizations.of(context)!.translate("pull_up-load"));
           } else if (mode == LoadStatus.loading) {
-            body = CupertinoActivityIndicator();
+            body = const CupertinoActivityIndicator();
           } else if (mode == LoadStatus.failed) {
-            body = Text("Load Failed!Click retry!");
+            body = const Text("Load Failed!Click retry!");
           } else if (mode == LoadStatus.canLoading) {
             body = Text(AppLocalizations.of(context)!
                 .translate("release_to_load_more"));
           } else {
-            body = Text("No more Data");
+            body = const Text("No more Data");
           }
-          return Container(
+          return SizedBox(
             height: 55.0,
             child: Center(child: body),
           );
@@ -880,10 +896,10 @@ class HomePage extends ConsumerWidget {
     return StatefulBuilder(
       builder: (context, setstate) => Card(
           elevation: 5,
-          child: Container(
+          child: SizedBox(
               height: 200,
               child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                  margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                   child: Column(
                     children: [
                       Align(
@@ -891,13 +907,13 @@ class HomePage extends ConsumerWidget {
                         child: Text(
                           islamicPost.name,
                           maxLines: 2,
-                          style: TextStyle(
+                          style: const TextStyle(
                               color: darkish_green,
                               fontSize: 12,
                               fontWeight: FontWeight.w600),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Expanded(
@@ -948,9 +964,9 @@ class HomePage extends ConsumerWidget {
                                       Text(
                                         AppLocalizations.of(context)!
                                             .translate("share"),
-                                        style: TextStyle(fontSize: 13),
+                                        style: const TextStyle(fontSize: 13),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 8,
                                       ),
                                       SvgPicture.asset(
@@ -994,7 +1010,7 @@ class HomePage extends ConsumerWidget {
                                               ? darkish_green
                                               : Colors.grey[300]),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 8,
                                     ),
                                     SvgPicture.asset(
@@ -1024,7 +1040,7 @@ class CustomPageRoute extends PageRouteBuilder {
     required this.child,
     this.direction = AxisDirection.up,
   }) : super(
-          transitionDuration: Duration(milliseconds: 400),
+          transitionDuration: const Duration(milliseconds: 400),
           pageBuilder: (context, animation, secondaryAnimation) => child,
         );
 
@@ -1032,7 +1048,7 @@ class CustomPageRoute extends PageRouteBuilder {
   Widget buildTransitions(BuildContext context, Animation<double> animation,
           Animation<double> secondaryAnimation, Widget child) =>
       SlideTransition(
-        position: Tween<Offset>(begin: Offset(0, 1), end: Offset.zero)
+        position: Tween<Offset>(begin: const Offset(0, 1), end: Offset.zero)
             .animate(animation),
         child: child,
       );

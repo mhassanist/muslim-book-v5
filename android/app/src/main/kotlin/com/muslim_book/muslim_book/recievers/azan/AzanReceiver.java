@@ -14,6 +14,7 @@ import android.os.Build.VERSION_CODES;
 
 import androidx.core.content.ContextCompat;
 
+import com.muslim_book.muslim_book.MainActivity;
 import com.muslim_book.muslim_book.classes.Constants;
 import com.muslim_book.muslim_book.classes.Prefs;
 import com.muslim_book.muslim_book.services.azan.AzanIntentService;
@@ -35,6 +36,9 @@ public class AzanReceiver extends BroadcastReceiver {
         beforeAzan(context, intent);
       } else {
         startAzanAlarm(context, intent);
+        Intent dialogIntent = new Intent(context, MainActivity.class);
+        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(dialogIntent);
       }
 
     }

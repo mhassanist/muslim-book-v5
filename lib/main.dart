@@ -1,17 +1,14 @@
 import 'dart:ui';
 
-// import 'package:admob_flutter/admob_flutter.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:fancy_dialog/FancyGif.dart';
 import 'package:fancy_dialog/fancy_dialog.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
@@ -20,8 +17,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
+import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
 import 'package:muslim_book/azkar_feature/providers/azkar_provider.dart';
 import 'package:muslim_book/firebase_options.dart';
+import 'package:muslim_book/home_feature/controllers/home_controller.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/providers/azan_fajr_sounds_provider.dart';
@@ -39,13 +38,12 @@ import 'package:muslim_book/utils/sailor.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 import 'package:muslim_book/views/splash_view/splash_view.dart';
 import 'package:muslim_book/views/start_view/start_view.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'ads/ad_manager.dart';
-import 'azan_feature/controllers/azan_controller.dart';
-import 'home_feature/controllers/home_controller.dart';
 import 'islamic_feature/bloc/islamic_post_details_bloc.dart';
 import 'locals_utils/language_constants.dart';
 
@@ -483,6 +481,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     localeLoaded = widget.localeLoaded;
+    // invokeMethod();
     // WidgetsBinding.instance.addPostFrameCallback((_) => invokeMethod());
     // SchedulerBinding.instance.addPostFrameCallback((_) => invokeMethod());
   }

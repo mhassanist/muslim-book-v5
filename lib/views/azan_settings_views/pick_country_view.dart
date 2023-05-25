@@ -28,61 +28,66 @@ class _PickCountryViewState extends State<PickCountryView> {
   @override
   Widget build(BuildContext context) {
     return ResponsiveBuilder(builder: (context, sizeConfig) {
-      return
-        BaseView<PickAzanMethodsProvider>(onModelReady: (model) {
-          pickAzanMethodsProvider = model;
-          pickAzanMethodsProvider.provideDefaultValueToMazhab(context);
-          pickAzanMethodsProvider.provideDefaultValueToMethod(context);
-        }, builder: (_, model, __) {
-          return
-        BaseView<LocationProvider>(
-          onModelReady: (model) => _provider = model,
-          builder: (_, model, __) {
-            return SafeArea(
-              child: Scaffold(
-                appBar: appBar(context, sizeConfig,
-                    AppLocalizations.of(context)!.translate("set_location")),
-                body: ResponsiveBuilder(builder: (context, sizeConfig) {
-                  return SingleChildScrollView(
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                          maxHeight: sizeConfig.blockSizeVertical * 87),
-                      child: Column(
-                        children: <Widget>[
-                          Expanded(
-                            child: Image.asset(
-                                "assets/images/onboarding/country_picker.png"),
-                          ),
+      return BaseView<PickAzanMethodsProvider>(onModelReady: (model) {
+        pickAzanMethodsProvider = model;
+        pickAzanMethodsProvider.provideDefaultValueToMazhab(context);
+        pickAzanMethodsProvider.provideDefaultValueToMethod(context);
+      }, builder: (_, model, __) {
+        return BaseView<LocationProvider>(
+            onModelReady: (model) => _provider = model,
+            builder: (_, model, __) {
+              return SafeArea(
+                child: Scaffold(
+                  appBar: appBar(context, sizeConfig,
+                      AppLocalizations.of(context)!.translate("set_location")),
+                  body: ResponsiveBuilder(builder: (context, sizeConfig) {
+                    return SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                            maxHeight: sizeConfig.blockSizeVertical * 87),
+                        child: Column(
+                          children: <Widget>[
+                            Expanded(
+                              child: Image.asset(
+                                  "assets/images/onboarding/country_picker.png"),
+                            ),
 
-                          titleContainer(sizeConfig, context),
-                          // divider(sizeConfig, context),
-                          _countryNameWidget(sizeConfig),
-                          autoDetectButton(sizeConfig, context),
+                            titleContainer(sizeConfig, context),
+                            // divider(sizeConfig, context),
+                            _countryNameWidget(sizeConfig),
+                            autoDetectButton(sizeConfig, context),
 
 //                            manuallyChooseTitleContainer(sizeConfig, context),
-                          // _buildCountryPickerActivator(sizeConfig),
-                          divider(sizeConfig, context),
-                          Container(
-                            padding: EdgeInsets.only(top:5, left: 30, right: 30),
-                            child: titleContainer2(
+                            // _buildCountryPickerActivator(sizeConfig),
+                            divider(sizeConfig, context),
+                            Container(
+                              padding: const EdgeInsets.only(
+                                  top: 5, left: 30, right: 30),
+                              child: titleContainer2(
                                 AppLocalizations.of(context)!
                                     .translate("calculating_pray_method"),
                                 sizeConfig,
-                                context),
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(left: 20, right: 20),
-                              child: MethodsDropDown()),
-                          saveCountryButton(sizeConfig, context)
-                        ],
+                                context,
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                left: 20,
+                                right: 20,
+                              ),
+                              child: const MethodsDropDown(),
+                            ),
+                            saveCountryButton(sizeConfig, context)
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                }),
-              ),
-            );
-          });
-    });    });
+                    );
+                  }),
+                ),
+              );
+            });
+      });
+    });
   }
 
   Container divider(SizingInformation sizeConfig, BuildContext context) {
@@ -90,14 +95,13 @@ class _PickCountryViewState extends State<PickCountryView> {
       width: sizeConfig.blockSizeHorizontal * 80,
       color: Theme.of(context).primaryColorDark.withOpacity(.4),
       height: 1,
-      margin: EdgeInsets.symmetric(vertical: 20),
+      margin: const EdgeInsets.symmetric(vertical: 20),
     );
   }
 
   Widget autoDetectButton(SizingInformation sizeConfig, BuildContext context) {
     return Container(
-        margin:
-            EdgeInsets.symmetric(vertical: sizeConfig.blockSizeVertical ),
+        margin: EdgeInsets.symmetric(vertical: sizeConfig.blockSizeVertical),
         width: sizeConfig.blockSizeHorizontal * 75,
         child: LoadingButton(
           firstWidget: RawMaterialButton(
@@ -147,6 +151,7 @@ class _PickCountryViewState extends State<PickCountryView> {
           color: Theme.of(context).primaryColor),
     );
   }
+
   Widget titleContainer2(
       String text, SizingInformation sizeConfig, BuildContext context) {
     return Text(
@@ -216,7 +221,7 @@ class _PickCountryViewState extends State<PickCountryView> {
 
   Widget _countryNameWidget(SizingInformation sizeConfig) {
     return AnimatedCrossFade(
-        firstChild: SizedBox(),
+        firstChild: const SizedBox(),
         secondChild: Container(
           width: double.infinity,
           padding: EdgeInsets.symmetric(vertical: sizeConfig.blockSizeVertical),
@@ -233,6 +238,6 @@ class _PickCountryViewState extends State<PickCountryView> {
         crossFadeState: _provider.countryName == null
             ? CrossFadeState.showFirst
             : CrossFadeState.showSecond,
-        duration: Duration(milliseconds: 200));
+        duration: const Duration(milliseconds: 200));
   }
 }
