@@ -6,6 +6,7 @@ import static com.muslim_book.muslim_book.classes.Constants.AZAN_CHANNEL_NAME;
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_CHANNEL_ID;
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_ID;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -59,6 +60,7 @@ import org.joda.time.LocalDate;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -135,7 +137,18 @@ public class AzanIntentService extends Service {
 
 
         if (beforeAzan) {
-            playBeforeAzanSound(key);
+            @SuppressLint("SimpleDateFormat")
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            String current = key + formatter.format(new Date());
+            String lastBefore = prefs.getString("lastBefore", "");
+
+            if (lastBefore.equals("") || !lastBefore.equals(current)) {
+                playBeforeAzanSound(key);
+                @SuppressLint("CommitPrefEdits")
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putString("lastBefore", current);
+                editor.apply();
+            }
         } else {
             if (key.equalsIgnoreCase("1")) { //fajr prayer , play fajr prayer logic
                 mMediaPlayer = MediaPlayer.create(this,
@@ -618,19 +631,20 @@ public class AzanIntentService extends Service {
         Intent intent = new Intent(this, AzanReceiver.class);
         intent.putExtra(Constants.CLOSE_AZAN, true);
         //        intent.putExtra(Constants.BEFORE_AZAN , beforeAzan);
+
+        PendingIntent pendingIntent;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-            AZAN_NOTIFICATION_ID, intent,  PendingIntent.FLAG_UPDATE_CURRENT  | PendingIntent.FLAG_IMMUTABLE);
+            pendingIntent = PendingIntent.getBroadcast(this, AZAN_NOTIFICATION_ID,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            );
+        } else {
+            pendingIntent = PendingIntent.getBroadcast(this, AZAN_NOTIFICATION_ID,
+                    intent, 0);
+        }
         builder.setContentIntent(pendingIntent);
         builder.setDeleteIntent(pendingIntent);
-        }
-        else{
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
-            AZAN_NOTIFICATION_ID, intent, 0);
-        builder.setContentIntent(pendingIntent);
-        builder.setDeleteIntent(pendingIntent);
-        }
-       
+
     }
 
     private void setNotificationChannel() {
