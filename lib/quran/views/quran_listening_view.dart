@@ -25,7 +25,7 @@ class QuranListeningView extends StatefulWidget {
 }
 
 class _QuranListeningViewState extends State<QuranListeningView> {
-  GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {

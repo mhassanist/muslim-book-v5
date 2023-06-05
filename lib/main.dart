@@ -28,6 +28,7 @@ import 'package:muslim_book/providers/azan_sounds_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/quran/provider/quran_pages_pic_bloc.dart';
 import 'package:muslim_book/quran/provider/quran_provider.dart';
+import 'package:muslim_book/quran/utils/quran_audio_handler.dart';
 import 'package:muslim_book/ramadan/provider/ramadan_provider.dart';
 import 'package:muslim_book/sebha_feature/online_sebha/controllers/online_sebha_controller.dart';
 import 'package:muslim_book/sebha_feature/providers/sebha_provider.dart';
@@ -119,6 +120,8 @@ Future<void> main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   await FacebookAudienceNetwork.init();
   // final loaded = await getLocale();
+
+  await QuranAudioHandler().initialize();
 
   runApp(
     ProviderScope(

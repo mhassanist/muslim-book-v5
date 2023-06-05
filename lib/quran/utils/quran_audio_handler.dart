@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class QuranAudioHandler extends BaseAudioHandler {
   late SharedPreferences prefs;
 
-  late final AudioHandler audioHandler;
+  late final AudioHandler? audioHandler;
   final player = AudioPlayer();
   final String baseUrl = "https://cdn.alquran.cloud/media/audio/ayah/";
   String ayahUrl = '';
@@ -36,7 +36,7 @@ class QuranAudioHandler extends BaseAudioHandler {
 
   initialize() async {
     audioHandler = await AudioService.init(
-        config: AudioServiceConfig(
+        config: const AudioServiceConfig(
           androidNotificationChannelId: 'com.muslim_book.muslim_book',
           androidNotificationChannelName: 'مسلم بوك',
           notificationColor: Color(0XFF037e40),
@@ -125,7 +125,7 @@ class QuranAudioHandler extends BaseAudioHandler {
     surahNumber = params["surah"] - 1;
     ayahIndex = params["ayahIndex"] - 1;
     sheikhId = params["sheikhId"];
-    if (model == null) model = QuranModel.fromJson(params["quranModel"]);
+    model ??= QuranModel.fromJson(params["quranModel"]);
     surah = model?.surahs[surahNumber];
   }
 
@@ -134,7 +134,7 @@ class QuranAudioHandler extends BaseAudioHandler {
       if (prefs.getBool(Constants.ALLOW_REPEAT_AYA) ?? false) {
         if (playerCount < playCount) {
           playerCount = playerCount + 1;
-          this.play();
+          play();
         } else {
           playerCount = 1;
           playNext();
@@ -149,7 +149,7 @@ class QuranAudioHandler extends BaseAudioHandler {
     ayahIndex++;
     if (surah != null && ayahIndex < surah!.ayahs.length) {
       ayahUrl = "$baseUrl$sheikhId/${surah!.ayahs[ayahIndex].number}";
-      this.play();
+      play();
     } else {
       changeNextSurahIndex();
     }
@@ -165,7 +165,7 @@ class QuranAudioHandler extends BaseAudioHandler {
     ayahIndex = 0;
     surah = model?.surahs[surahNumber];
     ayahUrl = "$baseUrl$sheikhId/${surah?.ayahs[ayahIndex].number}";
-    this.play();
+    play();
   }
 
   void changePreviousSurahIndex() {
@@ -178,14 +178,14 @@ class QuranAudioHandler extends BaseAudioHandler {
     renewSurah = 1;
     surah = model?.surahs[surahNumber];
     ayahUrl = "$baseUrl$sheikhId/${surah?.ayahs[ayahIndex].number}";
-    this.play();
+    play();
   }
 
   void playPrevious() async {
     if (ayahIndex > 0) {
       ayahIndex--;
       ayahUrl = "$baseUrl$sheikhId/${surah?.ayahs[ayahIndex].number}";
-      this.play();
+      play();
     } else {
       changePreviousSurahIndex();
     }

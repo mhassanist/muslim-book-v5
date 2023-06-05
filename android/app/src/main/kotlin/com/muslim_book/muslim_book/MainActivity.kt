@@ -13,8 +13,10 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+import com.ryanheise.audioservice.AudioServiceActivity
 
-class MainActivity: FlutterActivity() {
+
+class MainActivity: AudioServiceActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

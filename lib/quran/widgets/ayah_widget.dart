@@ -14,14 +14,6 @@ import 'package:share_extend/share_extend.dart';
 import 'package:path_provider/path_provider.dart';
 
 class AyahWidget extends StatefulWidget {
-  final Surah surah;
-  final String translatedAyah;
-  final String transliteratedAyah;
-  final Ayah ayah;
-  final surahIndex;
-  final ayahIndex;
-  final ItemScrollController listController;
-  final AsyncSnapshot<PlaybackState> playerStatus;
   const AyahWidget({
     super.key,
     required this.surah,
@@ -34,13 +26,22 @@ class AyahWidget extends StatefulWidget {
     required this.playerStatus,
   });
 
+  final Surah surah;
+  final String translatedAyah;
+  final String transliteratedAyah;
+  final Ayah ayah;
+  final surahIndex;
+  final ayahIndex;
+  final ItemScrollController listController;
+  final AsyncSnapshot<PlaybackState> playerStatus;
+
   @override
-  _AyahWidgetState createState() => _AyahWidgetState();
+  State<AyahWidget> createState() => _AyahWidgetState();
 }
 
 class _AyahWidgetState extends State<AyahWidget> {
   ScreenshotController screenshotController = ScreenshotController();
-  Color prymaryColor = const Color(0XFF347D53);
+  Color primaryColor = const Color(0XFF347D53);
   bool showAyahSuraPosition = false;
   bool isAyahPlaying = false;
   QuranAudioHandler quranAudioHandler = QuranAudioHandler();
@@ -51,7 +52,7 @@ class _AyahWidgetState extends State<AyahWidget> {
       widget.ayah.text = widget.ayah.text.split("لرَّحِيمِ").last;
     }
     return StreamBuilder<MediaItem?>(
-        stream: quranAudioHandler.audioHandler.mediaItem,
+        stream: quranAudioHandler.audioHandler?.mediaItem,
         builder: (context, snapshot) {
           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
             if (widget.playerStatus.data != null &&
@@ -107,11 +108,11 @@ class _AyahWidgetState extends State<AyahWidget> {
                           padding: EdgeInsets.symmetric(
                               vertical: ScreenUtil().setHeight(10)),
                           child: Text(
-                            "${widget.ayah.text}",
+                            widget.ayah.text,
                             style: TextStyle(
                               fontFamily: "quran",
                               color:
-                                  isAyahPlaying ? prymaryColor : Colors.black,
+                                  isAyahPlaying ? primaryColor : Colors.black,
                               height: 1.9,
                               fontWeight: FontWeight.normal,
                               fontSize: ScreenUtil().setSp(25),
@@ -129,7 +130,7 @@ class _AyahWidgetState extends State<AyahWidget> {
                                 horizontal: ScreenUtil().setWidth(18)),
                             width: double.infinity,
                             child: Text(
-                              "${widget.transliteratedAyah}",
+                              widget.transliteratedAyah,
                               style: TextStyle(
                                 color: Theme.of(context).primaryColor,
                                 fontSize: ScreenUtil().setSp(16),
@@ -147,7 +148,7 @@ class _AyahWidgetState extends State<AyahWidget> {
                                 horizontal: ScreenUtil().setWidth(18)),
                             width: double.infinity,
                             child: Text(
-                              "${widget.translatedAyah}",
+                              widget.translatedAyah,
                               style: TextStyle(
                                 fontSize: ScreenUtil().setSp(16),
                               ),
@@ -183,10 +184,10 @@ class _AyahWidgetState extends State<AyahWidget> {
   void jumpToNextAyah(AsyncSnapshot<MediaItem?> snapshot) {
     widget.listController.jumpTo(
       index: widget.surah.number == 1
-          ? int.parse("${snapshot.data!.id}")
+          ? int.parse(snapshot.data!.id)
           : int.parse(snapshot.data!.id) > 3
-              ? int.parse("${snapshot.data!.id}") + 1
-              : int.parse("${snapshot.data!.id}"),
+              ? int.parse(snapshot.data!.id) + 1
+              : int.parse(snapshot.data!.id),
     );
   }
 
@@ -240,8 +241,9 @@ class _AyahWidgetState extends State<AyahWidget> {
               .ayahs
               .last
               .juz;
-    } else
+    } else {
       return widget.ayah.juz != widget.surah.ayahs[widget.ayahIndex - 1].juz;
+    }
   }
 
   Widget buildAyahHeader(Ayah ayah, bool isAyahPlaying) {
@@ -262,7 +264,7 @@ class _AyahWidgetState extends State<AyahWidget> {
               icon: Icon(
                 FontAwesomeIcons.share,
                 size: ScreenUtil().setWidth(20),
-                color: prymaryColor,
+                color: primaryColor,
               ),
               onPressed: () async {
                 await shareAyah();
@@ -271,17 +273,18 @@ class _AyahWidgetState extends State<AyahWidget> {
               icon: Icon(
                 isAyahPlaying ? Icons.pause : Icons.play_circle_filled,
                 size: ScreenUtil().setWidth(30),
-                color: prymaryColor,
+                color: primaryColor,
               ),
               onPressed: () {
                 if (isAyahPlaying) {
-                  quranAudioHandler.audioHandler.pause();
-                } else
+                  quranAudioHandler.audioHandler?.pause();
+                } else {
                   Provider.of<QuranProvider>(context, listen: false)
                       .startListeningToAyah(
                           surah: widget.surah, ayah: widget.ayah);
+                }
               }),
-          Spacer(),
+          const Spacer(),
           Container(
             alignment: Alignment.center,
             margin: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(10)),
@@ -289,7 +292,7 @@ class _AyahWidgetState extends State<AyahWidget> {
               "${widget.ayah.numberInSurah}",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  color: prymaryColor,
+                  color: primaryColor,
                   fontSize: ScreenUtil().setSp(20),
                   fontWeight: FontWeight.bold),
             ),
@@ -305,8 +308,8 @@ class _AyahWidgetState extends State<AyahWidget> {
     });
 
     final directory = (await getApplicationDocumentsDirectory()).path;
-    String fileName = DateTime.now().microsecondsSinceEpoch.toString() + '.png';
-    final path = '$directory';
+    String fileName = '${DateTime.now().microsecondsSinceEpoch}.png';
+    final path = directory;
 
     String? fullPath =
         await screenshotController.captureAndSave(path, fileName: fileName);

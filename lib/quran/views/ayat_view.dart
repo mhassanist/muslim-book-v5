@@ -61,7 +61,7 @@ class _AyatViewState extends State<AyatView> {
     );
 
     return StreamBuilder<PlaybackState>(
-      stream: quranAudioHandler.audioHandler.playbackState,
+      stream: quranAudioHandler.audioHandler?.playbackState,
       builder: (c, snapshot) {
         final playing = snapshot.data?.playing ?? false;
         AudioProcessingState processingState =
@@ -76,11 +76,11 @@ class _AyatViewState extends State<AyatView> {
                     borderRadius:
                         BorderRadius.circular(ScreenUtil().setWidth(10)),
                   ),
-                  child: Icon(
+                  constraints: const BoxConstraints.expand(),
+                  child: const Icon(
                     Icons.arrow_back,
                     color: Colors.white,
                   ),
-                  constraints: BoxConstraints.expand(),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -88,18 +88,21 @@ class _AyatViewState extends State<AyatView> {
             title: Row(
               children: <Widget>[
                 Text(
-                  "${widget.surah.name.replaceAll("سُورَةُ", "").replaceAll("سورة", "")}",
+                  widget.surah.name
+                      .replaceAll("سُورَةُ", "")
+                      .replaceAll("سورة", ""),
                   style: TextStyle(
-                      color: Colors.white, fontSize: ScreenUtil().setSp(25)),
+                    color: Colors.white,
+                    fontSize: ScreenUtil().setSp(25),
+                  ),
                 ),
-                Spacer(),
-                Container(
-                  child: DropdownButtonHideUnderline(
-                      child: DropdownButton(
+                const Spacer(),
+                DropdownButtonHideUnderline(
+                  child: DropdownButton(
                     iconEnabledColor: Colors.white,
                     hint: Text(
                       AppLocalizations.of(context)!.translate("go_to_ayah"),
-                      style: TextStyle(color: Colors.white),
+                      style: const TextStyle(color: Colors.white),
                     ),
                     onChanged: (Ayah? val) async {
                       if (val != null) {
@@ -113,19 +116,19 @@ class _AyatViewState extends State<AyatView> {
                         .map((e) => DropdownMenuItem(
                             value: e, child: Text("${e.numberInSurah}")))
                         .toList(),
-                  )),
-                )
+                  ),
+                ),
               ],
             ),
-            iconTheme: IconThemeData(color: Colors.white),
+            iconTheme: const IconThemeData(color: Colors.white),
             backgroundColor: const Color(0XFF347D53),
             actions: <Widget>[
               if (processingState != AudioProcessingState.idle &&
                   processingState != AudioProcessingState.error)
                 IconButton(
-                    icon: Icon(Icons.stop),
+                    icon: const Icon(Icons.stop),
                     onPressed: () {
-                      quranAudioHandler.audioHandler.stop();
+                      quranAudioHandler.audioHandler?.stop();
                     }),
               IconButton(
                   icon: Icon(processingState == AudioProcessingState.idle ||
@@ -142,9 +145,10 @@ class _AyatViewState extends State<AyatView> {
                               surah: widget.surah, ayah: widget.surah.ayahs[0]);
                     } else {
                       if (playing) {
-                        quranAudioHandler.audioHandler.pause();
-                      } else
-                        quranAudioHandler.audioHandler.play();
+                        quranAudioHandler.audioHandler?.pause();
+                      } else {
+                        quranAudioHandler.audioHandler?.play();
+                      }
                     }
                   }),
             ],
@@ -176,7 +180,7 @@ class _AyatViewState extends State<AyatView> {
           itemScrollController: itemScrollController,
           initialScrollIndex: widget.lastAyahPosition + 1,
           itemPositionsListener: itemPositionListener,
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           itemBuilder: (c, index) {
             if (index == 0 && widget.surah.number != 1) {
               return Container(
@@ -235,20 +239,22 @@ class _AyatViewState extends State<AyatView> {
         colorText: Colors.white,
         borderRadius: 0,
         margin: EdgeInsets.zero,
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         snackPosition: SnackPosition.BOTTOM);
   }
 
   Widget buildAyahHeader(Ayah ayatOfSura) {
     return Directionality(
       textDirection: TextDirection.rtl,
-      child: Container(
+      child: SizedBox(
         width: double.infinity,
         child: Row(
           children: <Widget>[
-            IconButton(icon: Icon(Icons.reply), onPressed: () {}),
-            IconButton(icon: Icon(Icons.bookmark_border), onPressed: () {}),
-            IconButton(icon: Icon(Icons.play_circle_filled), onPressed: () {}),
+            IconButton(icon: const Icon(Icons.reply), onPressed: () {}),
+            IconButton(
+                icon: const Icon(Icons.bookmark_border), onPressed: () {}),
+            IconButton(
+                icon: const Icon(Icons.play_circle_filled), onPressed: () {}),
             Expanded(
               child: Container(
                 margin:

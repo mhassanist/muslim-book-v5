@@ -11,8 +11,10 @@ import 'package:provider/provider.dart';
 import 'ayat_view.dart';
 
 class SurasView extends StatefulWidget {
+  const SurasView({super.key});
+
   @override
-  _SurasViewState createState() => _SurasViewState();
+  State<SurasView> createState() => _SurasViewState();
 }
 
 class _SurasViewState extends State<SurasView> {
@@ -39,11 +41,10 @@ class _SurasViewState extends State<SurasView> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<PlaybackState>(
-        stream: quranAudioHandler.audioHandler.playbackState,
+        stream: quranAudioHandler.audioHandler?.playbackState,
         builder: (context, audioSnapshot) {
-          return 
-          CustomScrollView(
-            physics: BouncingScrollPhysics(),
+          return CustomScrollView(
+            physics: const BouncingScrollPhysics(),
             slivers: <Widget>[
               SliverToBoxAdapter(
                 child: StreamBuilder<QuranUserModel>(
@@ -88,17 +89,16 @@ class _SurasViewState extends State<SurasView> {
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 0,
                                     blurRadius: 5,
-                                    offset: Offset(
-                                        0, 6),
+                                    offset: const Offset(0, 6),
                                   ),
                                 ],
                                 borderRadius: BorderRadius.circular(20),
-                                gradient: LinearGradient(
+                                gradient: const LinearGradient(
                                     begin: Alignment.topRight,
                                     end: Alignment.bottomLeft,
                                     colors: [
-                                      const Color(0XFF347D53),
-                                      const Color(0XFF6BCF96),
+                                      Color(0XFF347D53),
+                                      Color(0XFF6BCF96),
                                     ])),
                             margin: EdgeInsets.symmetric(
                                 horizontal: ScreenUtil().setWidth(20)),
@@ -115,9 +115,10 @@ class _SurasViewState extends State<SurasView> {
                                             horizontal:
                                                 ScreenUtil().setWidth(15)),
                                         child: Text(
-                                          "${AppLocalizations.of(context)!.translate("last_read")}",
-                                          style:
-                                              TextStyle(color: Colors.white60),
+                                          AppLocalizations.of(context)!
+                                              .translate("last_read"),
+                                          style: const TextStyle(
+                                              color: Colors.white60),
                                           textAlign: TextAlign.start,
                                         ),
                                       ),
@@ -128,7 +129,13 @@ class _SurasViewState extends State<SurasView> {
                                             horizontal:
                                                 ScreenUtil().setWidth(25)),
                                         child: Text(
-                                          '${Provider.of<QuranProvider>(context).allSuras.singleWhere((element) => element.number == snapshot.data!.lastReadSurahId).name}',
+                                          Provider.of<QuranProvider>(context)
+                                              .allSuras
+                                              .singleWhere((element) =>
+                                                  element.number ==
+                                                  snapshot
+                                                      .data!.lastReadSurahId)
+                                              .name,
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
@@ -166,7 +173,8 @@ class _SurasViewState extends State<SurasView> {
                                           left: 0,
                                           bottom: 0,
                                           child: Container(
-                                            margin: EdgeInsets.only(left: 10),
+                                            margin:
+                                                const EdgeInsets.only(left: 10),
                                             child: Image.asset(
                                               "assets/images/quran_view/mushaf.png",
                                               fit: BoxFit.contain,
@@ -182,8 +190,9 @@ class _SurasViewState extends State<SurasView> {
                             ),
                           ),
                         );
-                      } else
+                      } else {
                         return Container();
+                      }
                     }),
               ),
               SliverToBoxAdapter(
@@ -228,7 +237,7 @@ class _SurasViewState extends State<SurasView> {
 
   Widget buildPlayerWidget(AsyncSnapshot audioSnapshot) {
     return AnimatedPositioned(
-        duration: Duration(milliseconds: 200),
+        duration: const Duration(milliseconds: 200),
         bottom: -200,
         child: Container(
           height: ScreenUtil().setHeight(50),

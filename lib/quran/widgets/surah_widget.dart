@@ -28,12 +28,14 @@ class SurahWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     QuranAudioHandler quranAudioHandler = QuranAudioHandler();
 
-    if (index == 36)
+    if (index == 36) {
       sura.englishNameTranslation = "The Rangers";
-    else if (index == 59) sura.englishNameTranslation = "The Examined One";
+    } else if (index == 59) {
+      sura.englishNameTranslation = "The Examined One";
+    }
 
     return StreamBuilder<MediaItem?>(
-        stream: quranAudioHandler.audioHandler.mediaItem,
+        stream: quranAudioHandler.audioHandler?.mediaItem,
         builder: (context, snapshot) {
           bool isSurahPlaying = false;
           if (snapshot.data != null) {
@@ -102,7 +104,7 @@ class SurahWidget extends StatelessWidget {
                               progressColor: Theme.of(context).primaryColor,
                               direction: Axis.horizontal,
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(20)),
+                                  const BorderRadius.all(Radius.circular(20)),
                               backgroundColor: const Color(0XFFE4EEE9),
                               maxValue: sura.ayahs.length + 0.0,
                               currentValue: sura.progress == null
@@ -113,7 +115,7 @@ class SurahWidget extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Divider()
+                      const Divider()
                     ],
                   ),
                 ),
@@ -125,7 +127,7 @@ class SurahWidget extends StatelessWidget {
                         Expanded(
                           child: Container(
                             alignment: Alignment.center,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 image: DecorationImage(
                                     image: AssetImage(
                                         "assets/images/quran_view/icon_background.png"))),
@@ -139,13 +141,14 @@ class SurahWidget extends StatelessWidget {
                                   size: ScreenUtil().setWidth(30),
                                 ),
                                 onPressed: () async {
-                                  if (isSurahPlaying)
-                                    quranAudioHandler.audioHandler.stop();
-                                  else
+                                  if (isSurahPlaying) {
+                                    quranAudioHandler.audioHandler?.stop();
+                                  } else {
                                     Provider.of<QuranProvider>(context,
                                             listen: false)
                                         .startListeningToAyah(
                                             surah: sura, ayah: sura.ayahs[0]);
+                                  }
                                 }),
                           ),
                         ),
