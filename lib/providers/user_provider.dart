@@ -37,6 +37,8 @@ class UserProvider extends ViewStateProvider {
   CountryModel get selectedCountry => _selectedCountry;
 
   set selectedCountry(CountryModel val) {
+
+    print('AhmedLog ${val.toMap()}');
     _selectedCountry = val;
     notifyListeners();
   }
@@ -44,7 +46,7 @@ class UserProvider extends ViewStateProvider {
   String get countryName => _countryName;
 
   set countryName(String value) {
-    this._countryName = value;
+    _countryName = value;
     notifyListeners();
   }
 

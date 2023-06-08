@@ -38,8 +38,6 @@ import 'package:muslim_book/utils/prefs.dart';
 import 'package:muslim_book/utils/sailor.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 import 'package:muslim_book/views/splash_view/splash_view.dart';
-import 'package:muslim_book/views/start_view/start_view.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -387,7 +385,7 @@ class MyApp extends StatefulWidget {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        fillColor: Theme.of(context).accentColor,
+                        fillColor: Theme.of(context).colorScheme.secondary,
                         child: Text(
                           AppLocalizations.of(context)!.translate("cancel"),
                           style: TextStyle(
@@ -464,12 +462,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _azanController = Get.put(AzanController());
-  final _homeController = Get.put(HomeController());
+  // final _a z anController = Get.put(A zanController());
+  // final _homeController = Get.put(HomeController());
 
   String? showCompetition;
   String? openAzkar;
-  var checkOverLay;
+  // var checkOverLay;
   late Locale localeLoaded;
 
   setLocale(Locale locale) {
@@ -483,6 +481,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    Get.put(AzanController());
+    Get.put(HomeController());
     localeLoaded = widget.localeLoaded;
     // invokeMethod();
     // WidgetsBinding.instance.addPostFrameCallback((_) => invokeMethod());
@@ -499,27 +499,27 @@ class _MyAppState extends State<MyApp> {
     super.didChangeDependencies();
   }
 
-  Future invokeMethod() async {
-    await Constants.platform.invokeMethod("fireAzan");
-    await Constants.platform.invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
-    await Constants.platform.invokeMethod("fireAzkarPopUp");
-    await receiveMessage();
-  }
-
-  Future<String> receiveMessage() async {
-    String message = '';
-    try {
-      showCompetition = await Constants.platform.invokeMethod(Constants.Open_Competition);
-      openAzkar = await Constants.platform.invokeMethod(Constants.open_Azkar);
-      checkOverLay = await Constants.platform.invokeMethod("checkOverlay");
-    } on PlatformException catch (e) {
-      message = e.message ?? '';
-    }
-    setState(() {
-
-    });
-    return message;
-  }
+  // Future invokeMethod() async {
+  //   await Constants.platform.invokeMethod("fireAzan");
+  //   await Constants.platform.invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
+  //   await Constants.platform.invokeMethod("fireAzkarPopUp");
+  //   await receiveMessage();
+  // }
+  //
+  // Future<String> receiveMessage() async {
+  //   String message = '';
+  //   try {
+  //     showCompetition = await Constants.platform.invokeMethod(Constants.Open_Competition);
+  //     openAzkar = await Constants.platform.invokeMethod(Constants.open_Azkar);
+  //     checkOverLay = await Constants.platform.invokeMethod("checkOverlay");
+  //   } on PlatformException catch (e) {
+  //     message = e.message ?? '';
+  //   }
+  //   setState(() {
+  //
+  //   });
+  //   return message;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -587,17 +587,18 @@ class _MyAppState extends State<MyApp> {
             textTheme: GoogleFonts.almaraiTextTheme(
               Theme.of(context).textTheme,
             ),
-            primarySwatch: Colors.blue,
-            accentColor: Constants.ACCENT_COLOR,
             primaryColor: Constants.PRIMARY_COLOR,
             primaryColorDark: Constants.PRIMARY_DARK_COLOR,
             canvasColor: Constants.CANVAS_COLOR,
+            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue)
+                .copyWith(secondary: Constants.ACCENT_COLOR),
           ),
-          home: checkOverLay != null
-              ? showCompetition != null || openAzkar != null
-              ? StartView()
-              : const SplashView()
-              : const SplashView(),
+          // home: checkOverLay != null
+          //     ? showCompetition != null || openAzkar != null
+          //     ? StartView()
+          //     : const SplashView()
+          //     : const SplashView(),
+          home: const SplashView(),
           navigatorKey: Routes.sailor.navigatorKey,
           onGenerateRoute: Routes.sailor.generator(),
         ),

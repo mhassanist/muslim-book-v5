@@ -37,13 +37,13 @@ class AppTextField extends StatelessWidget {
   final FocusNode? nextNode;
   final FocusNode? currentNode;
   final TextInputAction textInputAction;
-  final Function? onSubmit;
+  final ValueChanged<String>? onSubmit;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: sizeConfig.blockSizeHorizontal * 80,
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: TextFormField(
         controller: controller,
         style: TextStyle(
@@ -78,7 +78,7 @@ class AppTextField extends StatelessWidget {
         },
         validator: validator,
         onFieldSubmitted: textInputAction == TextInputAction.done
-            ? onSubmit?.call()
+            ? onSubmit?.call
             : (s) => FocusScope.of(context).requestFocus(nextNode),
       ),
     );

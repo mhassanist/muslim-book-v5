@@ -9,7 +9,7 @@ import '../utils/sizing_info_extension.dart';
 
 class RetryViewWidget extends StatefulWidget {
   final ViewStateProvider provider;
-  final Function? function;
+  final VoidCallback? function;
   final String text;
 
   const RetryViewWidget({
@@ -20,7 +20,7 @@ class RetryViewWidget extends StatefulWidget {
   });
 
   @override
-  _RetryViewWidgetState createState() => _RetryViewWidgetState();
+  State<RetryViewWidget> createState() => _RetryViewWidgetState();
 }
 
 class _RetryViewWidgetState extends State<RetryViewWidget> {
@@ -28,23 +28,23 @@ class _RetryViewWidgetState extends State<RetryViewWidget> {
   Widget build(BuildContext context) {
     return ResponsiveBuilder(builder: (context, sizeConfig) {
       return Scaffold(
-        body: Container(
+        body: SizedBox(
           width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Container(
+              SizedBox(
                 width: sizeConfig.blockSizeHorizontal * 70,
                 child: Image.asset(
                   "assets/images/azan_view/model_not_present_error_image.png",
                 ),
               ),
-              Padding(padding: EdgeInsets.only(top: 10)),
+              const Padding(padding: EdgeInsets.only(top: 10)),
               Text(
                 AppLocalizations.of(context)!.translate("cannot_reach"),
-                style: TextStyle(color: Colors.grey),
+                style: const TextStyle(color: Colors.grey),
               ),
-              Padding(padding: EdgeInsets.only(top: 20)),
+              const Padding(padding: EdgeInsets.only(top: 20)),
               Text(
                 AppLocalizations.of(context)!.translate(widget.text),
                 style: TextStyle(
@@ -52,16 +52,16 @@ class _RetryViewWidgetState extends State<RetryViewWidget> {
                     fontWeight: FontWeight.w700,
                     fontSize: sizeConfig.blockSizeHorizontal * 5),
               ),
-              Padding(padding: EdgeInsets.only(top: 20)),
+              const Padding(padding: EdgeInsets.only(top: 20)),
               LoadingButton(
                 firstWidget: ElevatedButton(
                   onPressed: () => widget.function?.call(),
-                  child: Text(
-                    AppLocalizations.of(context)!.translate("retry"),
-                    style: TextStyle(color: Constants.CANVAS_COLOR),
-                  ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                  child: Text(
+                    AppLocalizations.of(context)!.translate("retry"),
+                    style: const TextStyle(color: Constants.CANVAS_COLOR),
                   ),
                 ),
                 state: widget.provider.viewState == ViewState.Loading
@@ -79,11 +79,11 @@ class _RetryViewWidgetState extends State<RetryViewWidget> {
   void dispose() {
     if (widget.provider.mounted) {
       Future.delayed(
-        Duration(milliseconds: 300),
+        const Duration(milliseconds: 300),
         () => widget.function?.call(),
       );
+      super.dispose();
     }
-    super.dispose();
   }
 }
 
@@ -95,22 +95,22 @@ Widget modelNotPresentWidget(
   String text,
 ) {
   return Scaffold(
-    body: Container(
+    body: SizedBox(
       width: double.infinity,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Container(
+          SizedBox(
             width: sizeConfig.blockSizeHorizontal * 70,
             child: Image.asset(
                 "assets/images/azan_view/model_not_present_error_image.png"),
           ),
-          Padding(padding: EdgeInsets.only(top: 10)),
+          const Padding(padding: EdgeInsets.only(top: 10)),
           Text(
             AppLocalizations.of(context)!.translate("cannot_reach"),
-            style: TextStyle(color: Colors.grey),
+            style: const TextStyle(color: Colors.grey),
           ),
-          Padding(padding: EdgeInsets.only(top: 20)),
+          const Padding(padding: EdgeInsets.only(top: 20)),
           Text(
             AppLocalizations.of(context)!.translate(text),
             style: TextStyle(
@@ -118,16 +118,16 @@ Widget modelNotPresentWidget(
                 fontWeight: FontWeight.w700,
                 fontSize: sizeConfig.blockSizeHorizontal * 5),
           ),
-          Padding(padding: EdgeInsets.only(top: 20)),
+          const Padding(padding: EdgeInsets.only(top: 20)),
           LoadingButton(
             firstWidget: ElevatedButton(
               onPressed: () => function?.call(),
-              child: Text(
-                AppLocalizations.of(context)!.translate("retry"),
-                style: TextStyle(color: Constants.CANVAS_COLOR),
-              ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).primaryColor,
+              ),
+              child: Text(
+                AppLocalizations.of(context)!.translate("retry"),
+                style: const TextStyle(color: Constants.CANVAS_COLOR),
               ),
             ),
             state: provider.viewState == ViewState.Loading

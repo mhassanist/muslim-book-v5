@@ -40,14 +40,15 @@ class SignupMobilePortraitUi {
                 //     ?
                 child: Container(
               decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondary, shape: BoxShape.circle),
+                  color: Theme.of(context).colorScheme.secondary,
+                  shape: BoxShape.circle),
+              height: sizeConfig.blockSizeHorizontal * 30,
+              width: sizeConfig.blockSizeHorizontal * 30,
               child: Icon(
                 Icons.person,
                 size: sizeConfig.blockSizeHorizontal * 20,
                 color: Constants.CANVAS_COLOR,
               ),
-              height: sizeConfig.blockSizeHorizontal * 30,
-              width: sizeConfig.blockSizeHorizontal * 30,
             )),
           ],
         ),
@@ -57,99 +58,100 @@ class SignupMobilePortraitUi {
 
   Widget inputTextForm() {
     return SingleChildScrollView(
-      child: Container(
-        child: Form(
-          key: controllers.formKey,
-          child: Column(
-            children: <Widget>[
-              AppTextField(
-                formKey: controllers.formKey,
-                controller: controllers.nameController,
-                currentNode: controllers.nameNode,
-                nextNode: controllers.emailNode,
-                hint: AppLocalizations.of(context)!
-                    .translate("enter_account_name"),
-                icon: Icons.account_box,
-                sizeConfig: sizeConfig,
-                validator: (value) {
-                  return InputValidation.userNameValidation(
-                      controllers.nameController, context);
-                },
-                inputType: TextInputType.text,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              AppTextField(
-                formKey: controllers.formKey,
-                controller: controllers.emailController,
-                currentNode: controllers.emailNode,
-                nextNode: controllers.passwordNode,
-                inputType: TextInputType.emailAddress,
-                hint: AppLocalizations.of(context)!.translate("enter_email"),
-                icon: Icons.email,
-                sizeConfig: sizeConfig,
-                validator: (value) {
-                  return InputValidation.emailValidation(
-                      controllers.emailController, context);
-                },
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              AppTextField(
-                formKey: controllers.formKey,
-                controller: controllers.passwordController,
-                currentNode: controllers.passwordNode,
-                nextNode: controllers.confirmPasswordNode,
-                inputType: TextInputType.text,
-                obscureText: true,
-                hint: AppLocalizations.of(context)!.translate("enter_password"),
-                icon: Icons.lock,
-                sizeConfig: sizeConfig,
-                validator: (value) {
-                  return InputValidation.passwordValidation(
-                      controllers.passwordController, context);
-                },
-                textInputAction: TextInputAction.next,
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              AppTextField(
-                formKey: controllers.formKey,
-                controller: controllers.confirmPasswordController,
-                currentNode: controllers.confirmPasswordNode,
-                nextNode: null,
-                inputType: TextInputType.text,
-                obscureText: true,
-                hint:
-                    AppLocalizations.of(context)!.translate("confirm_password"),
-                icon: Icons.lock,
-                sizeConfig: sizeConfig,
-                validator: (value) {
-                  return InputValidation.confirmPasswordValidation(
-                      controllers.confirmPasswordController,
-                      controllers.passwordController,
-                      context);
-                },
-                textInputAction: TextInputAction.done,
-                onSubmit: (s) => {},
-              ),
-              IgnorePointer(
-                ignoring:
-                    userProvider.viewState == ViewState.Idle ? false : true,
-                child: Container(
-                  width: sizeConfig.blockSizeHorizontal * 80,
-                  height: sizeConfig.blockSizeVertical * 10,
-                  margin: EdgeInsets.only(top: 20, bottom: 20),
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: Constants.ACCENT_COLOR, width: 1),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: DropdownButtonHideUnderline(
-                      child: DropdownButton<CountryModel>(
+      child: Form(
+        key: controllers.formKey,
+        child: Column(
+          children: <Widget>[
+            AppTextField(
+              formKey: controllers.formKey,
+              controller: controllers.nameController,
+              currentNode: controllers.nameNode,
+              nextNode: controllers.emailNode,
+              hint:
+                  AppLocalizations.of(context)!.translate("enter_account_name"),
+              icon: Icons.account_box,
+              sizeConfig: sizeConfig,
+              validator: (value) {
+                return InputValidation.userNameValidation(
+                    controllers.nameController, context);
+              },
+              inputType: TextInputType.text,
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            AppTextField(
+              formKey: controllers.formKey,
+              controller: controllers.emailController,
+              currentNode: controllers.emailNode,
+              nextNode: controllers.passwordNode,
+              inputType: TextInputType.emailAddress,
+              hint: AppLocalizations.of(context)!.translate("enter_email"),
+              icon: Icons.email,
+              sizeConfig: sizeConfig,
+              validator: (value) {
+                return InputValidation.emailValidation(
+                    controllers.emailController, context);
+              },
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            AppTextField(
+              formKey: controllers.formKey,
+              controller: controllers.passwordController,
+              currentNode: controllers.passwordNode,
+              nextNode: controllers.confirmPasswordNode,
+              inputType: TextInputType.text,
+              obscureText: true,
+              hint: AppLocalizations.of(context)!.translate("enter_password"),
+              icon: Icons.lock,
+              sizeConfig: sizeConfig,
+              validator: (value) {
+                return InputValidation.passwordValidation(
+                    controllers.passwordController, context);
+              },
+              textInputAction: TextInputAction.next,
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+            AppTextField(
+              formKey: controllers.formKey,
+              controller: controllers.confirmPasswordController,
+              currentNode: controllers.confirmPasswordNode,
+              nextNode: null,
+              inputType: TextInputType.text,
+              obscureText: true,
+              hint: AppLocalizations.of(context)!.translate("confirm_password"),
+              icon: Icons.lock,
+              sizeConfig: sizeConfig,
+              validator: (value) {
+                return InputValidation.confirmPasswordValidation(
+                    controllers.confirmPasswordController,
+                    controllers.passwordController,
+                    context);
+              },
+              textInputAction: TextInputAction.done,
+              onSubmit: (s) => {},
+            ),
+            IgnorePointer(
+              ignoring: userProvider.viewState == ViewState.Idle ? false : true,
+              child: Container(
+                width: sizeConfig.blockSizeHorizontal * 80,
+                height: sizeConfig.blockSizeVertical * 10,
+                margin: const EdgeInsets.only(top: 20, bottom: 20),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Constants.ACCENT_COLOR, width: 1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton<CountryModel>(
                     iconSize: sizeConfig.blockSizeHorizontal * 7,
+                    value: userProvider.countries
+                            .contains(userProvider.selectedCountry)
+                        ? userProvider.selectedCountry
+                        : null,
                     hint: Row(
                       children: <Widget>[
                         Padding(
@@ -169,7 +171,6 @@ class SignupMobilePortraitUi {
                         ),
                       ],
                     ),
-                    value: userProvider.selectedCountry,
                     onChanged: (val) {
                       if (val != null) {
                         userProvider.selectedCountry = val;
@@ -183,14 +184,15 @@ class SignupMobilePortraitUi {
                           children: <Widget>[
                             Container(
                               padding: EdgeInsets.symmetric(
-                                  horizontal:
-                                      sizeConfig.blockSizeHorizontal * 2),
+                                horizontal: sizeConfig.blockSizeHorizontal * 2,
+                              ),
+                              margin: EdgeInsets.symmetric(
+                                vertical: sizeConfig.blockSizeVertical,
+                              ),
+                              width: sizeConfig.blockSizeHorizontal * 13,
                               child: CircleAvatar(
                                 backgroundImage: NetworkImage(f.flag ?? ''),
                               ),
-                              margin: EdgeInsets.symmetric(
-                                  vertical: sizeConfig.blockSizeVertical),
-                              width: sizeConfig.blockSizeHorizontal * 13,
                             ),
                             Expanded(
                               child: Padding(
@@ -198,10 +200,11 @@ class SignupMobilePortraitUi {
                                     horizontal: sizeConfig.blockSizeHorizontal),
                                 child: Text(
                                   f.name ?? '',
-                                  style: new TextStyle(
-                                      color: Colors.black,
-                                      fontSize:
-                                          sizeConfig.blockSizeHorizontal * 4),
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize:
+                                        sizeConfig.blockSizeHorizontal * 4,
+                                  ),
                                 ),
                               ),
                             ),
@@ -209,11 +212,11 @@ class SignupMobilePortraitUi {
                         ),
                       );
                     }).toList(),
-                  )),
+                  ),
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -224,14 +227,14 @@ class SignupMobilePortraitUi {
       crossFadeState: userProvider.errorMessage == ""
           ? CrossFadeState.showFirst
           : CrossFadeState.showSecond,
-      firstChild: SizedBox(),
-      duration: Duration(milliseconds: 100),
+      firstChild: const SizedBox(),
+      duration: const Duration(milliseconds: 100),
       secondChild: Container(
         width: double.infinity,
         padding: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 3),
         child: Text(
           userProvider.errorMessage,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.red,
             fontWeight: FontWeight.bold,
           ),

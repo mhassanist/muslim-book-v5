@@ -24,16 +24,14 @@ class _SignupViewMobilePortraitState extends State<SignupViewMobilePortrait> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       ui.getCountries();
-      Provider.of<UserProvider>(context,listen: false).errorMessage = "";
-
+      Provider.of<UserProvider>(context, listen: false).errorMessage = "";
     });
   }
 
   @override
   void didChangeDependencies() {
-    ui = SignupMobilePortraitUi( context,controllers);
+    ui = SignupMobilePortraitUi(context, controllers);
     super.didChangeDependencies();
-
   }
 
   @override
@@ -43,13 +41,16 @@ class _SignupViewMobilePortraitState extends State<SignupViewMobilePortrait> {
       return SafeArea(
         child: Scaffold(
           key: key,
-          appBar: appBar(context, sizeConfig,
-              AppLocalizations.of(context)!.translate("create_account"),
-              key: key),
+          appBar: appBar(
+            context,
+            sizeConfig,
+            AppLocalizations.of(context)!.translate("create_account"),
+            key: key,
+          ),
           body: Container(
             color: Constants.CANVAS_COLOR,
             child: ListView(
-              padding: EdgeInsets.only(bottom: 20),
+              padding: const EdgeInsets.only(bottom: 20),
               children: <Widget>[
                 ui.imageWidget(),
                 ui.inputTextForm(),
