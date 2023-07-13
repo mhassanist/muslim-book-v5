@@ -168,7 +168,7 @@ class HomePage extends ConsumerWidget {
                                               ? Navigator.of(context).push(
                                                   CustomPageRoute(
                                                       child: CreatePostView(
-                                                        postschanges:
+                                                        postsChanges:
                                                             postschanges,
                                                       ),
                                                       direction:
@@ -210,7 +210,7 @@ class HomePage extends ConsumerWidget {
                                                                 CustomPageRoute(
                                                                     child:
                                                                         CreatePostView(
-                                                                      postschanges:
+                                                                      postsChanges:
                                                                           postschanges,
                                                                     ),
                                                                     direction:
@@ -645,7 +645,7 @@ class HomePage extends ConsumerWidget {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (context) => CreatePostView(
-              postschanges: postschanges,
+              postsChanges: postschanges,
             ));
   }
 

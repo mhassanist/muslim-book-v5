@@ -8,15 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class CreatePostView extends StatefulWidget {
-  final PostsNotifier? postschanges;
-
   const CreatePostView({
     super.key,
-    this.postschanges,
+    this.postsChanges,
   });
 
+  final PostsNotifier? postsChanges;
+
   @override
-  _CreatePostViewState createState() => _CreatePostViewState();
+  State<CreatePostView> createState() => _CreatePostViewState();
 }
 
 class _CreatePostViewState extends State<CreatePostView> {
@@ -35,45 +35,59 @@ class _CreatePostViewState extends State<CreatePostView> {
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                topLeft: const Radius.circular(10.0),
-                topRight: const Radius.circular(10.0),
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(10.0),
               ),
             ),
             child: Stack(children: <Widget>[
               Positioned.fill(
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      top: 0, right: 10.0, left: 10.0, bottom: 10.0),
+                    top: 0,
+                    right: 10.0,
+                    left: 10.0,
+                    bottom: 10.0,
+                  ),
                   child: Column(
                     children: [
                       // Text(AppLocalizations.of(context)!.translate("be_goodness"),
                       //   style: TextStyle(fontSize: 17, color: dark_blue_green),),
                       Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 0, vertical: 5),
+                          horizontal: 0,
+                          vertical: 5,
+                        ),
                         child: Form(
                           key: formKey,
                           child: TextField(
                             decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                enabledBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: darkish_green),
-                                    borderRadius: BorderRadius.circular(20)),
-                                focusedBorder: OutlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: darkish_green),
-                                    borderRadius: BorderRadius.circular(20)),
-                                fillColor: Colors.grey[100],
-                                filled: true,
-                                hintText: AppLocalizations.of(context)!
-                                    .translate("be_goodness"),
-                                hintStyle: TextStyle(
-                                    fontSize: 17, color: Colors.black38)),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: darkish_green,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: darkish_green,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              fillColor: Colors.grey[100],
+                              filled: true,
+                              hintText: AppLocalizations.of(context)!
+                                  .translate("be_goodness"),
+                              hintStyle: const TextStyle(
+                                fontSize: 17,
+                                color: Colors.black38,
+                              ),
+                            ),
                             maxLines: 5,
                             onChanged: (val) {
                               content = val;
@@ -81,8 +95,8 @@ class _CreatePostViewState extends State<CreatePostView> {
                           ),
                         ),
                       ),
-                      AdmobBanner(bannerName: BannerName.AZKAR),
-                      SizedBox(
+                      const AdmobBanner(bannerName: BannerName.AZKAR),
+                      const SizedBox(
                         height: 20,
                       ),
                       InkWell(
@@ -92,20 +106,18 @@ class _CreatePostViewState extends State<CreatePostView> {
                           setState(() {
                             loadingHere = true;
                           });
-                          if (this.widget.postschanges != null) {
-                            this
-                                .widget
-                                .postschanges!
+                          if (widget.postsChanges != null) {
+                            widget.postsChanges!
                                 .createPost(content, 1)
                                 .then((value) {
-                              Future.delayed(Duration(seconds: 1), () {
+                              Future.delayed(const Duration(seconds: 1), () {
                                 setState(() {
                                   loadingHere = false;
                                 });
-                                if (this.widget.postschanges != null) {
+                                if (widget.postsChanges != null) {
                                   final snackBar = SnackBar(
                                     content: Text(
-                                      this.widget.postschanges!.message ?? '',
+                                      widget.postsChanges!.message ?? '',
                                     ),
                                   );
                                   ScaffoldMessenger.of(context)
@@ -125,18 +137,19 @@ class _CreatePostViewState extends State<CreatePostView> {
                           child: Center(
                             child: Text(
                               AppLocalizations.of(context)!.translate("Post"),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
-                      AdmobBanner(bannerName: BannerName.AZKAR),
+                      const AdmobBanner(bannerName: BannerName.AZKAR),
                     ],
                   ),
                 ),

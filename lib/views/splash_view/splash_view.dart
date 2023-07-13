@@ -62,7 +62,12 @@ class _SplashViewState extends State<SplashView>
       // } else
       await AzanApis().getAzan();
     }
-    var checkOverLay = await Constants.platform.invokeMethod("checkOverlay");
+    var checkOverLay = false;
+    try {
+      checkOverLay = await Constants.platform.invokeMethod("checkOverlay");
+    } catch (e) {
+      e.printError();
+    }
     await Constants.platform.invokeMethod("checkBatteryEditing");
 
     if (await locator<SettingsApis>().getAppVersion()) {

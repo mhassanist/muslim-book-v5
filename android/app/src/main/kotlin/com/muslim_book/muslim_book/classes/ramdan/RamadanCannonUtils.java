@@ -62,7 +62,7 @@ public class RamadanCannonUtils {
 
         } catch (Exception e) {
             e.printStackTrace();
-            android.widget.Toast.makeText(mContext, "EXception", android.widget.Toast.LENGTH_SHORT).show();
+            // android.widget.Toast.makeText(mContext, "EXception", android.widget.Toast.LENGTH_SHORT).show();
         }
 
     }

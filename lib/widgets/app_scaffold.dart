@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AppScaffold extends StatelessWidget {
-  AppScaffold({
+  const AppScaffold({
     super.key,
     required this.title,
     required this.child,
@@ -33,7 +33,7 @@ class AppScaffold extends StatelessWidget {
   final Function? onProfileTap;
   final List<Widget>? actions;
   final Widget? floatingActionButton;
-  final Color prymaryColor = const Color(0XFF347D53);
+  final Color primaryColor = const Color(0XFF347D53);
   final GlobalKey<ScaffoldState>? scaffoldKey;
   final bool? resizeToAvoidBottomInset;
   final DecorationImage? backgroundImage;
@@ -52,26 +52,26 @@ class AppScaffold extends StatelessWidget {
               if (addImageProfile) getProfilePicture(context),
             ],
             centerTitle: centerTitle,
-            backgroundColor: prymaryColor,
+            backgroundColor: primaryColor,
             elevation: 0,
             title: title),
         floatingActionButton: floatingActionButton,
         body: Container(
-          color: prymaryColor,
+          color: primaryColor,
           child: Container(
             padding: padding,
-            margin: EdgeInsets.only(top: 6),
-            child: child,
+            margin: const EdgeInsets.only(top: 6),
             decoration: BoxDecoration(
               color: transparentBackground
                   ? Colors.transparent
                   : backGroundColor ?? Colors.white,
               image: backgroundImage,
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
               ),
             ),
+            child: child,
           ),
         ),
       ),
@@ -87,7 +87,7 @@ class AppScaffold extends StatelessWidget {
         child: Provider.of<UserProvider>(context).user.image == null
             ? placeHolder()
             : Container(
-                margin: EdgeInsets.only(
+                margin: const EdgeInsets.only(
                   top: 12,
                   bottom: 2,
                   left: 10,
@@ -107,13 +107,14 @@ class AppScaffold extends StatelessWidget {
                 ),
               ),
       );
-    } else
-      return SizedBox();
+    } else {
+      return const SizedBox();
+    }
   }
 
   Container placeHolder() {
     return Container(
-      margin: EdgeInsets.only(top: 6, left: 10),
+      margin: const EdgeInsets.only(top: 6, left: 10),
       child: Image.asset("assets/images/sebha_view/profile.png"),
     );
   }
