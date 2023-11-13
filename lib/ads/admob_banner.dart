@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim_book/ads/ad_manager.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
-import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 
 class AdmobBanner extends StatefulWidget {
@@ -47,7 +46,7 @@ class _AdmobBannerState extends State<AdmobBanner> {
       loadBanner();
       return SizedBox(
         height: widget.height ?? 250,
-        child: Center(
+        child: const Center(
           child: Loading(
           ),
         ),
@@ -83,13 +82,13 @@ class _AdmobBannerState extends State<AdmobBanner> {
 
   void loadBanner() {
     bannerAd = BannerAd(
-      adUnitId: AdManager.getBannerAdUnitId(this.widget.bannerName),
+      adUnitId: AdManager.getBannerAdUnitId(widget.bannerName),
       size: AdSize.getInlineAdaptiveBannerAdSize(
           widget.width != null
               ? widget.width!.floor()
               : MediaQuery.of(context).size.width.floor(),
           widget.height != null ? widget.height!.floor() : 250),
-      request: AdRequest(),
+      request: const AdRequest(),
       listener: adListener,
     );
     bannerAd.load();

@@ -51,6 +51,9 @@ class _StartViewMobilePortraitViewState
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await PushNotificationService().initialise();
       await PushNotificationService().initNotification(context);
+
+      invokeMethod();
+
       final notificationAppLaunchDetails = await flutterLocalNotificationsPlugin
           .getNotificationAppLaunchDetails();
       print(notificationAppLaunchDetails);
@@ -108,6 +111,20 @@ class _StartViewMobilePortraitViewState
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  Future invokeMethod() async {
+    try {
+      await Constants.platform.invokeMethod("fireAzan");
+      await Constants.platform.invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
+      await Constants.platform.invokeMethod("fireAzkarPopUp");
+      await Constants.platform.invokeMethod(Constants.Open_Competition);
+      await Constants.platform.invokeMethod(Constants.open_Azkar);
+      await Constants.platform.invokeMethod("checkOverlay");
+    } catch (e) {
+      e.printError();
+      // message = e.toString();
+    }
   }
 
   check() async {

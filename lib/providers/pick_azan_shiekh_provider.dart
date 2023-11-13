@@ -26,19 +26,24 @@ class PickAzanShiekhProvider extends ViewStateProvider {
     notifyListeners();
   }
 
-  Future saveAssetsSelectedShiekh(context, String azanId, int azanIndex,
-      {bool saveToAll = true,}) async {
+  Future saveAssetsSelectedShiekh(
+    context,
+    String azanId,
+    int azanIndex, {
+    bool saveToAll = true,
+  }) async {
     if (saveToAll) {
       //save the same sheikh to all prayer times
       for (int i = 2; i <= 6; i++) {
-        locator<Prefs>().setAzanShiekh(Constants.AZAN_SHIEKH_LOCAL_ID+i.toString(),
+        await locator<Prefs>().setAzanShiekh(
+            Constants.AZAN_SHIEKH_LOCAL_ID + i.toString(),
             azanIndex.toString());
       }
     } else {
-      locator<Prefs>().setAzanShiekh(Constants.AZAN_SHIEKH_LOCAL_ID+azanId.toString(),
+      await locator<Prefs>().setAzanShiekh(
+          Constants.AZAN_SHIEKH_LOCAL_ID + azanId.toString(),
           azanIndex.toString());
     }
-
     Navigator.pop(context, _pickedAzanShiekhIndex);
   }
 

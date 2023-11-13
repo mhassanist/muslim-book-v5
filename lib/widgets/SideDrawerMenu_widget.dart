@@ -1,4 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/foundation.dart';
 import 'package:muslim_book/azan_feature/views/azan_view_updated.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
 import 'package:muslim_book/islamic_feature/views/islamics_view.dart';
@@ -38,7 +39,7 @@ class SideDrawerMenu {
   buildDrawer() {
     return ResponsiveBuilder(builder: (context, sizeConfig) {
       this.sizeConfig = sizeConfig;
-      return Container(
+      return SizedBox(
         width: sizeConfig.blockSizeHorizontal * 65,
         child: Drawer(
           child: Container(
@@ -49,284 +50,288 @@ class SideDrawerMenu {
             ),
             child: SafeArea(
               child: SingleChildScrollView(
-                child: Container(
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(top: 30),
-                        child: Container(
-                          height: sizeConfig.blockSizeHorizontal * 10,
-                          alignment: Alignment.centerRight,
-                          child: IconButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            icon: Icon(
-                              Icons.arrow_back,
-                              color: Constants.CANVAS_COLOR,
-                              size: sizeConfig.blockSizeHorizontal * 6,
-                            ),
+                child: Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: Container(
+                        height: sizeConfig.blockSizeHorizontal * 10,
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: Icon(
+                            Icons.arrow_back,
+                            color: Constants.CANVAS_COLOR,
+                            size: sizeConfig.blockSizeHorizontal * 6,
                           ),
                         ),
                       ),
-                      Column(
-                        children: <Widget>[
-                          Provider.of<UserProvider>(context).isLoggedIn
-                              ? Column(children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                            image: NetworkImage(
-                                              image ?? flag,
-                                            ),
-                                            fit: BoxFit.cover)),
-                                    height: sizeConfig.blockSizeHorizontal * 25,
-                                    width: sizeConfig.blockSizeHorizontal * 25,
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
+                    ),
+                    Column(
+                      children: <Widget>[
+                        Provider.of<UserProvider>(context).isLoggedIn
+                            ? Column(children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                            image ?? flag,
+                                          ),
+                                          fit: BoxFit.cover)),
+                                  height: sizeConfig.blockSizeHorizontal * 25,
+                                  width: sizeConfig.blockSizeHorizontal * 25,
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: AutoSizeText(
+                                          name,
+                                          maxLines: 2,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              // color: Constants.PRIMARY_COLOR,
+                                              color: Constants.CANVAS_COLOR,
+                                              fontSize: sizeConfig
+                                                      .blockSizeHorizontal *
+                                                  4),
+                                        ),
+                                      ),
+
+                                      Visibility(
+                                          visible: countryName.isNotEmpty,
+                                          child: const SizedBox(
+                                            height: 10,
+                                          )),
+                                      // if (countryName != null)
+                                      Visibility(
+                                          visible: countryName.isNotEmpty &&
+                                              countryName.isNotEmpty,
                                           child: AutoSizeText(
-                                            name,
-                                            maxLines: 2,
-                                            textAlign: TextAlign.center,
+                                            countryName,
                                             style: TextStyle(
-                                                color: Constants.PRIMARY_COLOR,
+                                                color:
+                                                    // Constants.PRIMARY_COLOR,
+                                                    Constants.CANVAS_COLOR,
                                                 fontSize: sizeConfig
                                                         .blockSizeHorizontal *
                                                     4),
-                                          ),
+                                          )),
+                                      Visibility(
+                                        visible: email.isNotEmpty,
+                                        child: const SizedBox(
+                                          height: 10,
                                         ),
+                                      ),
+                                      Visibility(
+                                          visible: email.isNotEmpty &&
+                                              email.isNotEmpty,
+                                          child: Text(
+                                            email,
+                                            style: TextStyle(
+                                              // color: Constants.PRIMARY_COLOR,
+                                              color: Constants.CANVAS_COLOR,
+                                              fontSize: sizeConfig
+                                                      .blockSizeHorizontal *
+                                                  3,
+                                            ),
+                                          )),
+                                    ]),
+                              ])
+                            : Container(),
+                        //
+                        // Column(
+                        //         children: <Widget>[
+                        //           SizedBox(height: 10.0),
+                        //           _buildRow(
+                        //               Icons.person,
+                        //               AppLocalizations.of(context)
+                        //                   .translate("login"), () {
+                        //             Navigator.of(context).pop();
+                        //             Navigator.pushNamed(
+                        //                 context, "/LoginPopUpView");
+                        //           }, false, ""),
+                        //           _buildDivider(),
+                        //           _buildRow(
+                        //               Icons.person_add,
+                        //               AppLocalizations.of(context)
+                        //                   .translate("create_account"), () {
+                        //             Navigator.of(context).pop();
+                        //             Navigator.pushNamed(
+                        //                 context, "/signup_view");
+                        //           }, false, ""),
+                        //           _buildDivider(),
+                        //           _buildRow(
+                        //               Icons.star,
+                        //               AppLocalizations.of(context)
+                        //                   .translate("rating_muslim_book"),
+                        //               () {
+                        //             //Navigator.of(context).pop();
+                        //             // Navigator.pushNamed(
+                        //             //     context, "/rating_view");
+                        //             LaunchReview.launch();
+                        //           }, false, ""),
+                        //           _buildDivider(),
+                        //         ],
+                        //       ),
 
-                                        Visibility(
-                                            visible: countryName.isNotEmpty,
-                                            child: SizedBox(
-                                              height: 10,
-                                            )),
-                                        // if (countryName != null)
-                                        Visibility(
-                                            visible: countryName.isNotEmpty &&
-                                                countryName.isNotEmpty,
-                                            child: AutoSizeText(
-                                              "$countryName",
-                                              style: TextStyle(
-                                                  color:
-                                                      Constants.PRIMARY_COLOR,
-                                                  fontSize: sizeConfig
-                                                          .blockSizeHorizontal *
-                                                      4),
-                                            )),
-                                        Visibility(
-                                          visible: email.isNotEmpty,
-                                          child: SizedBox(
-                                            height: 10,
-                                          ),
-                                        ),
-                                        Visibility(
-                                            visible: email.isNotEmpty &&
-                                                email.isNotEmpty,
-                                            child: Text(
-                                              email,
-                                              style: TextStyle(
-                                                color: Constants.PRIMARY_COLOR,
-                                                fontSize: sizeConfig
-                                                        .blockSizeHorizontal *
-                                                    3,
-                                              ),
-                                            )),
-                                      ]),
-                                ])
-                              : Container(),
-                          //
-                          // Column(
-                          //         children: <Widget>[
-                          //           SizedBox(height: 10.0),
-                          //           _buildRow(
-                          //               Icons.person,
-                          //               AppLocalizations.of(context)
-                          //                   .translate("login"), () {
-                          //             Navigator.of(context).pop();
-                          //             Navigator.pushNamed(
-                          //                 context, "/LoginPopUpView");
-                          //           }, false, ""),
-                          //           _buildDivider(),
-                          //           _buildRow(
-                          //               Icons.person_add,
-                          //               AppLocalizations.of(context)
-                          //                   .translate("create_account"), () {
-                          //             Navigator.of(context).pop();
-                          //             Navigator.pushNamed(
-                          //                 context, "/signup_view");
-                          //           }, false, ""),
-                          //           _buildDivider(),
-                          //           _buildRow(
-                          //               Icons.star,
-                          //               AppLocalizations.of(context)
-                          //                   .translate("rating_muslim_book"),
-                          //               () {
-                          //             //Navigator.of(context).pop();
-                          //             // Navigator.pushNamed(
-                          //             //     context, "/rating_view");
-                          //             LaunchReview.launch();
-                          //           }, false, ""),
-                          //           _buildDivider(),
-                          //         ],
-                          //       ),
+                        _buildRamadanFeature(),
+                        _buildDivider(),
+                        _buildRow(
+                            null,
+                            AppLocalizations.of(context)!
+                                .translate("Prayer_Timings"), () {
+                          Navigator.of(context).pop();
+                          Get.to(() => AzanViewUpdated());
+                        }, true, "assets/images/slider_view/prayer.svg"),
+                        _buildDivider(),
+                        _buildRow(null,
+                            AppLocalizations.of(context)!.translate("Qiblah"),
+                            () {
+                          Navigator.of(context).pop();
+                          Provider.of<UserProvider>(
+                                  Get.find<HomeController>()
+                                      .scaffoldKey
+                                      .currentContext!,
+                                  listen: false)
+                              .selectedPage = 1;
+                        }, true, "assets/images/start_view/compass_icon.svg"),
+                        _buildDivider(),
+                        _buildRow(null,
+                            AppLocalizations.of(context)!.translate("quran"),
+                            () {
+                          Navigator.of(context).pop();
+                          Provider.of<UserProvider>(
+                                  Get.find<HomeController>()
+                                      .scaffoldKey
+                                      .currentContext!,
+                                  listen: false)
+                              .selectedPage = 0;
+                        }, true, "assets/images/slider_view/koran.svg"),
+                        _buildDivider(),
+                        _buildRow(null,
+                            AppLocalizations.of(context)!.translate("rosary"),
+                            () {
+                          Navigator.of(context).pop();
+                          // await
+                          Get.to(() => SebhaView());
+                        }, true, "assets/images/sebha_view/sebha_icon.svg"),
+                        _buildDivider(),
+                        _buildRow(null,
+                            AppLocalizations.of(context)!.translate("azkar"),
+                            () {
+                          Navigator.of(context).pop();
+                          Provider.of<UserProvider>(
+                                  Get.find<HomeController>()
+                                      .scaffoldKey
+                                      .currentContext!,
+                                  listen: false)
+                              .selectedPage = 4;
+                        }, true, "assets/images/start_view/azkar.svg"),
+                        _buildDivider(),
+                        _buildRow(
+                            null,
+                            AppLocalizations.of(context)!
+                                .translate("competitions"), () {
+                          Navigator.of(context).pop();
+                          Provider.of<UserProvider>(
+                                  Get.find<HomeController>()
+                                      .scaffoldKey
+                                      .currentContext!,
+                                  listen: false)
+                              .selectedPage = 3;
+                        }, true, "assets/images/start_view/quizes_icon.svg"),
+                        _buildDivider(),
+                        _buildRow(Icons.drag_indicator,
+                            AppLocalizations.of(context)!.translate("more"),
+                            () {
+                          Navigator.of(context).pop();
+                          Get.to(() => const IslamicsView());
+                        }, false, ""),
+                        _buildDivider(),
+                        _buildRow(Icons.wine_bar,
+                            AppLocalizations.of(context)!.translate("best"),
+                            () {
+                          Navigator.of(context).pop();
+                          Navigator.pushNamed(context, "/SelectTopView");
+                        }, false, ""),
+                        // _buildDivider(),
+                        //  _buildRow(
+                        //      Icons.person_add,
+                        //      AppLocalizations.of(context)
+                        //          .translate("edit_my_profile"), () {
+                        //    Navigator.of(context).pop();
+                        //    Navigator.pushNamed(
+                        //        context, "/edit_profile_view");
+                        //  }),
+                        _buildDivider(),
 
-                          _buildRamadanFeature(),
-                          _buildDivider(),
-                          _buildRow(
-                              null,
-                              AppLocalizations.of(context)!
-                                  .translate("Prayer_Timings"), () {
-                            Navigator.of(context).pop();
-                            Get.to(() => AzanViewUpdated());
-                          }, true, "assets/images/slider_view/prayer.svg"),
-                          _buildDivider(),
-                          _buildRow(null,
-                              AppLocalizations.of(context)!.translate("Qiblah"),
-                              () {
-                            Navigator.of(context).pop();
-                            Provider.of<UserProvider>(
-                                    Get.find<HomeController>()
-                                        .scaffoldKey
-                                        .currentContext!,
-                                    listen: false)
-                                .selectedPage = 1;
-                          }, true, "assets/images/start_view/compass_icon.svg"),
-                          _buildDivider(),
-                          _buildRow(null,
-                              AppLocalizations.of(context)!.translate("quran"),
-                              () {
-                            Navigator.of(context).pop();
-                            Provider.of<UserProvider>(
-                                    Get.find<HomeController>()
-                                        .scaffoldKey
-                                        .currentContext!,
-                                    listen: false)
-                                .selectedPage = 0;
-                          }, true, "assets/images/slider_view/koran.svg"),
-                          _buildDivider(),
-                          _buildRow(null,
-                              AppLocalizations.of(context)!.translate("rosary"),
-                              () {
-                            Navigator.of(context).pop();
-                            // await
-                            Get.to(() => SebhaView());
-                          }, true, "assets/images/sebha_view/sebha_icon.svg"),
-                          _buildDivider(),
-                          _buildRow(null,
-                              AppLocalizations.of(context)!.translate("azkar"),
-                              () {
-                            Navigator.of(context).pop();
-                            Provider.of<UserProvider>(
-                                    Get.find<HomeController>()
-                                        .scaffoldKey
-                                        .currentContext!,
-                                    listen: false)
-                                .selectedPage = 4;
-                          }, true, "assets/images/start_view/azkar.svg"),
-                          _buildDivider(),
-                          _buildRow(
-                              null,
-                              AppLocalizations.of(context)!
-                                  .translate("competitions"), () {
-                            Navigator.of(context).pop();
-                            Provider.of<UserProvider>(
-                                    Get.find<HomeController>()
-                                        .scaffoldKey
-                                        .currentContext!,
-                                    listen: false)
-                                .selectedPage = 3;
-                          }, true, "assets/images/start_view/quizes_icon.svg"),
-                          _buildDivider(),
-                          _buildRow(Icons.drag_indicator,
-                              AppLocalizations.of(context)!.translate("more"),
-                              () {
-                            Navigator.of(context).pop();
-                            Get.to(() => IslamicsView());
-                          }, false, ""),
-                          _buildDivider(),
-                          _buildRow(Icons.wine_bar,
-                              AppLocalizations.of(context)!.translate("best"),
-                              () {
-                            Navigator.of(context).pop();
-                            Navigator.pushNamed(context, "/SelectTopView");
-                          }, false, ""),
-                          // _buildDivider(),
-                          //  _buildRow(
-                          //      Icons.person_add,
-                          //      AppLocalizations.of(context)
-                          //          .translate("edit_my_profile"), () {
-                          //    Navigator.of(context).pop();
-                          //    Navigator.pushNamed(
-                          //        context, "/edit_profile_view");
-                          //  }),
-                          _buildDivider(),
-
-                          _buildRow(
-                              Icons.person,
-                              AppLocalizations.of(context)!
-                                  .translate("my_profile"), () {
-                            Navigator.of(context).pop();
+                        _buildRow(
+                            Icons.person,
+                            AppLocalizations.of(context)!
+                                .translate("my_profile"), () {
+                          Navigator.of(context).pop();
+                          if (Provider.of<UserProvider>(context, listen: false).isLoggedIn) {
                             Navigator.pushNamed(context, "/myProfile_view");
-                          }, false, ""),
-                          _buildDivider(),
-                          _buildRow(
-                              Icons.privacy_tip,
-                              AppLocalizations.of(context)!
-                                  .translate("privacy_policy"), () {
-                            _launchURL();
-                            Navigator.of(context).pop();
-                          }, false, ""),
-                          _buildDivider(),
-                          _buildRow(
-                              Icons.settings,
-                              AppLocalizations.of(context)!
-                                  .translate("settings"), () {
-                            Navigator.of(context).pop();
-                            Navigator.pushNamed(context, '/settings');
-                          }, false, ""),
+                          } else {
+                            Provider.of<UserProvider>(Get.find<HomeController>().scaffoldKey.currentContext!, listen: false)
+                                .selectedPage = 3;
+                          }
+                        }, false, ""),
+                        _buildDivider(),
+                        _buildRow(
+                            Icons.privacy_tip,
+                            AppLocalizations.of(context)!
+                                .translate("privacy_policy"), () {
+                          _launchURL();
+                          Navigator.of(context).pop();
+                        }, false, ""),
+                        _buildDivider(),
+                        _buildRow(Icons.settings,
+                            AppLocalizations.of(context)!.translate("settings"),
+                            () {
+                          Navigator.of(context).pop();
+                          Navigator.pushNamed(context, '/settings');
+                        }, false, ""),
 
-                          Container(
-                            height: 20,
-                          )
-                          // _buildDivider(),
-                          // _buildRow(
-                          //     Icons.star,
-                          //     AppLocalizations.of(context)
-                          //         .translate("rating_muslim_book"),
-                          //     () {
-                          //   Navigator.of(context).pop();
-                          //   // Navigator.pushNamed(
-                          //   //     context, "/rating_view");
-                          //   LaunchReview.launch();
-                          // }),
-                          // _buildDivider(),
-                          // _buildRow(
-                          //     Icons.exit_to_app,
-                          //     AppLocalizations.of(context)
-                          //         .translate("log_out"), () {
-                          //   //locator<Prefs>().setIsLogged(false);
-                          //   exitPopUp();
-                          // }, false, ""),
-                          // _buildDivider(),
-                        ],
-                      ),
-                    ],
-                  ),
+                        Container(
+                          height: 20,
+                        )
+                        // _buildDivider(),
+                        // _buildRow(
+                        //     Icons.star,
+                        //     AppLocalizations.of(context)
+                        //         .translate("rating_muslim_book"),
+                        //     () {
+                        //   Navigator.of(context).pop();
+                        //   // Navigator.pushNamed(
+                        //   //     context, "/rating_view");
+                        //   LaunchReview.launch();
+                        // }),
+                        // _buildDivider(),
+                        // _buildRow(
+                        //     Icons.exit_to_app,
+                        //     AppLocalizations.of(context)
+                        //         .translate("log_out"), () {
+                        //   //locator<Prefs>().setIsLogged(false);
+                        //   exitPopUp();
+                        // }, false, ""),
+                        // _buildDivider(),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -337,7 +342,7 @@ class SideDrawerMenu {
   }
 
   Divider _buildDivider() {
-    return Divider(
+    return const Divider(
       color: Colors.green,
     );
   }
@@ -348,7 +353,7 @@ class SideDrawerMenu {
       color: Theme.of(context).primaryColorDark,
       child: InkWell(
         onTap: () => function?.call(),
-        child: Container(
+        child: SizedBox(
           height: sizeConfig.blockSizeVertical * 6,
           width: sizeConfig.blockSizeHorizontal * 65,
           child: Row(children: [
@@ -362,16 +367,19 @@ class SideDrawerMenu {
                     svgImage,
                     width: sizeConfig.blockSizeHorizontal * 5,
                     // fit: BoxFit.cover,
-                    color: Colors.white,
+                    colorFilter: const ColorFilter.mode(
+                      Colors.white,
+                      BlendMode.srcIn,
+                    ),
                   ),
-            SizedBox(width: 10.0),
+            const SizedBox(width: 10.0),
             Text(
               title,
               style: TextStyle(
                   color: Constants.CANVAS_COLOR,
                   fontSize: sizeConfig.blockSizeHorizontal * 4),
             ),
-          ]),
+          ],),
         ),
       ),
     );
@@ -403,7 +411,7 @@ class SideDrawerMenu {
                 Container(
                   width: sizeConfig.blockSizeHorizontal * 30,
                   height: sizeConfig.blockSizeVertical * 6,
-                  margin: EdgeInsets.only(top: 20, bottom: 20),
+                  margin: const EdgeInsets.only(top: 20, bottom: 20),
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(10)),
                   child: RawMaterialButton(
@@ -429,13 +437,13 @@ class SideDrawerMenu {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Container(
                   width: sizeConfig.blockSizeHorizontal * 30,
                   height: sizeConfig.blockSizeVertical * 6,
-                  margin: EdgeInsets.only(top: 20, bottom: 20),
+                  margin: const EdgeInsets.only(top: 20, bottom: 20),
                   decoration:
                       BoxDecoration(borderRadius: BorderRadius.circular(10)),
                   child: RawMaterialButton(
@@ -473,7 +481,9 @@ class SideDrawerMenu {
           'https://docs.google.com/document/d/1Hbvqvr2gknDXsPJ8KiDhsqxqDrzzc6OstV4UB7dh__k/edit#'),
       mode: LaunchMode.externalApplication,
     )) {
-      print('Could not launch');
+      if (kDebugMode) {
+        print('Could not launch');
+      }
     }
   }
 

@@ -3,7 +3,7 @@ import 'package:muslim_book/ramadan/models/ramadan_cannon_model.dart';
 import 'package:localstorage/localstorage.dart';
 
 class LocalStorageManager {
-  static final LocalStorage storage = new LocalStorage('azan_sounds');
+  static final LocalStorage storage = LocalStorage('azan_sounds');
 
   saveRamadanCannonModelList(List<RamadanSoundsModel> sounds) async {
     await storage.ready;

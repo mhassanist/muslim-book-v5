@@ -1,6 +1,7 @@
 // import 'package:azan_app/Screens/Home/domian/model/post_model.dart';
 // import 'package:azan_app/Screens/Home/domian/repository_home.dart';
 import 'package:dio/dio.dart';
+import 'package:muslim_book/core/dio_exception.dart';
 import 'package:muslim_book/core/dio_util.dart';
 import 'package:muslim_book/home_feature/domian/model/Posts_model.dart';
 import 'package:muslim_book/home_feature/domian/model/categories_model.dart';
@@ -44,9 +45,11 @@ class PostsNotifier extends ChangeNotifier {
       //posts=posts.reversed.toList();
       errormessage = null;
       isloading = false;
+    } on DioError catch (e) {
+      errormessage = DioExceptions.fromDioError(e).message;
     } catch (e) {
       isloading = false;
-      errormessage = DioUtil.handleDioError(e as DioError);
+      errormessage = e.toString();
       isPostListError = true;
     }
     notifyListeners();
@@ -57,10 +60,11 @@ class PostsNotifier extends ChangeNotifier {
       categories = await homeRepository.getCategories();
       errormessage = null;
       isloading = false;
+    } on DioError catch (e) {
+      errormessage = DioExceptions.fromDioError(e).message;
     } catch (e) {
       isloading = false;
-      errormessage = DioUtil.handleDioError(e as DioError);
-      print(errormessage);
+      errormessage = e.toString();
     }
     notifyListeners();
   }
@@ -70,10 +74,11 @@ class PostsNotifier extends ChangeNotifier {
       islamicPosts = await homeRepository.getIslamicPosts(pageIndex, catId);
       errormessage = null;
       isloading = false;
+    } on DioError catch (e) {
+      errormessage = DioExceptions.fromDioError(e).message;
     } catch (e) {
       isloading = false;
-      errormessage = DioUtil.handleDioError(e as DioError);
-      print(errormessage);
+      errormessage = e.toString();
     }
     notifyListeners();
   }
@@ -83,10 +88,12 @@ class PostsNotifier extends ChangeNotifier {
       islamicCatPosts = await homeRepository.getIslamicPosts(pageIndex, catId);
       islamicCatItemsErrorMessage = null;
       isIslamicCatItemsLoading = false;
+    } on DioError catch (e) {
+      isIslamicCatItemsLoading = false;
+      islamicCatItemsErrorMessage = DioExceptions.fromDioError(e).message;
     } catch (e) {
       isIslamicCatItemsLoading = false;
-      islamicCatItemsErrorMessage = DioUtil.handleDioError(e as DioError);
-      print(islamicCatItemsErrorMessage);
+      islamicCatItemsErrorMessage = e.toString();
     }
     notifyListeners();
   }

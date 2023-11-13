@@ -28,12 +28,10 @@ class MyProfileProvider extends ViewStateProvider {
 
   Future getScore() async {
     setViewState(ViewState.Loading);
-   var res = await locator<ApiService>().getUserScore();
-   if (res != null) {
-     _scoreModelData = (res).data;
-    setViewState(ViewState.Idle);
-   }
-
+    var res = await locator<ApiService>().getUserScore();
+    if (res != null) {
+      _scoreModelData = (res).data;
+      setViewState(ViewState.Idle);
     }
-
+  }
 }

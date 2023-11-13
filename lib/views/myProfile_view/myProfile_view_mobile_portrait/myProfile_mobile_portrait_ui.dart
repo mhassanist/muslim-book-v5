@@ -107,7 +107,7 @@ class MyProfileUI {
                 "correct_answers", "${provider.scoreModelData.correctAnswer}"),*/
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Row(
@@ -186,48 +186,48 @@ class MyProfileUI {
     );
   }
 
-  Widget socialmedia() {
+  Widget socialMedia() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Container(
+        SizedBox(
           width: sizeConfig.blockSizeHorizontal * 15,
           height: sizeConfig.blockSizeHorizontal * 15,
           child: ElevatedButton(
-              child: Icon(FontAwesomeIcons.facebookF),
               onPressed: () async => faceBookShare(),
               style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0XFF4266b2),
-                  shape: CircleBorder(side: BorderSide.none))),
+                  backgroundColor: const Color(0XFF4266b2),
+                  shape: const CircleBorder(side: BorderSide.none)),
+              child: const Icon(FontAwesomeIcons.facebookF)),
         ),
-        SizedBox(
+        const SizedBox(
           width: 10,
         ),
-        Container(
+        SizedBox(
           width: sizeConfig.blockSizeHorizontal * 15,
           height: sizeConfig.blockSizeHorizontal * 15,
           child: ElevatedButton(
-              child: Icon(FontAwesomeIcons.twitter),
               onPressed: () async => shareApp(),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
-                  shape: CircleBorder(side: BorderSide.none))),
+                  shape: const CircleBorder(side: BorderSide.none)),
+              child: const Icon(FontAwesomeIcons.twitter)),
         ),
-        SizedBox(
+        const SizedBox(
           width: 10,
         ),
-        Container(
+        SizedBox(
           width: sizeConfig.blockSizeHorizontal * 15,
           height: sizeConfig.blockSizeHorizontal * 15,
           child: ElevatedButton(
-              child: Icon(
-                FontAwesomeIcons.whatsapp,
-                size: sizeConfig.blockSizeHorizontal * 7,
-              ),
               onPressed: () async => shareApp(),
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0XFF4FCE5D),
-                  shape: CircleBorder(side: BorderSide.none))),
+                  shape: const CircleBorder(side: BorderSide.none)),
+              child: Icon(
+                FontAwesomeIcons.whatsapp,
+                size: sizeConfig.blockSizeHorizontal * 7,
+              )),
         )
       ],
     );
@@ -235,117 +235,126 @@ class MyProfileUI {
 
   Future shareApp() async {
     final directory = (await getApplicationDocumentsDirectory()).path;
-    String fileName = DateTime.now().microsecondsSinceEpoch.toString() + '.png';
-    final path = '$directory';
+    String fileName = '${DateTime.now().microsecondsSinceEpoch}.png';
+    final path = directory;
 
     String? fullPath =
         await screenshotController.captureAndSave(path, fileName: fileName);
 
-    if (fullPath != null) {
-      await ShareExtend.share(fullPath, "image",
-          extraText: AppLocalizations.of(context)!.translate(
-            "invite_to_download_app",
-          ));
+    if (fullPath != null && context.mounted) {
+      await ShareExtend.share(
+        fullPath,
+        "image",
+        extraText: AppLocalizations.of(context)!.translate(
+          "invite_to_download_app",
+        ),
+      );
     }
   }
 
   Widget imageWidget() {
-    return Container(
-      child: Center(
-        child: Stack(
-          // overflow: Overflow.visible,
-          fit: StackFit.passthrough,
-          //fit: StackFit.loose,
-          children: <Widget>[
-            ClipRRect(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.secondary,
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                    image: NetworkImage(
-                      provider.scoreModelData!.image!
-                          .replaceAll("http://", "https://"),
-                    ),
-                    fit: BoxFit.cover,
-                    onError: (error, stackTrace) =>
-                        AssetImage('assets/images/profile_image.png'),
-                  ),
-
-                  // image: DecorationImage(
-                  //     image: provider.scoreModelData!.image != null
-                  //         ? NetworkImage(
-                  //             provider.scoreModelData!.image!.replaceAll("http://", "https://"),
-                  //           )
-                  //         : AssetImage("assets/images/profile_image.png"),
-                  //     fit: BoxFit.cover),
-                ),
-                height: sizeConfig.blockSizeHorizontal * 30,
-                width: sizeConfig.blockSizeHorizontal * 30,
-              ),
-            ),
-            // Positioned(
-            //   top: 0,
-            //   bottom: 0,
-            //   right: -sizeConfig.blockSizeHorizontal * 7.5,
-            //   child: Container(
-            //     height: sizeConfig.blockSizeHorizontal * 15,
-            //     width: sizeConfig.blockSizeHorizontal * 15,
-            //     decoration: BoxDecoration(
-            //         border: Border.all(
-            //             width: 2, color: Theme.of(context).accentColor),
-            //         color: Constants.CANVAS_COLOR,
-            //         shape: BoxShape.circle),
-            //     child: IconButton(
-            //       onPressed: () {
-            //         _openChooseImagePopup();
-            //       },
-            //       icon: Icon(
-            //         Icons.edit,
-            //         size: 40,
-            //         color: Theme.of(context).accentColor,
-            //       ),
-            //     ),
-            //   ),
-            // ),
-            /*Positioned(
-              bottom: -sizeConfig.blockSizeHorizontal * 10,
-              right: 0,
-              left: 0,
-              child: Container(
-                height: sizeConfig.blockSizeHorizontal * 15,
-                width: sizeConfig.blockSizeHorizontal * 15,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    shape: BoxShape.circle),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      AppLocalizations.of(context)!.translate("rank"),
-                      style: TextStyle(
-                        color: Constants.CANVAS_COLOR,
-                        fontSize: sizeConfig.blockSizeHorizontal * 4,
-                      ),
-                    ),
-                    Container(
-                      alignment: Alignment.center,
-                      width: sizeConfig.blockSizeHorizontal * 20,
-                      child: AutoSizeText(
-                        provider.scoreModelData.rank.toString(),
-                        style: TextStyle(
-                            color: Constants.CANVAS_COLOR,
-                            fontSize: sizeConfig.blockSizeHorizontal * 7,
-                            fontWeight: FontWeight.bold),
-                        maxLines: 1,
+    return Center(
+      child: Stack(
+        // overflow: Overflow.visible,
+        fit: StackFit.passthrough,
+        //fit: StackFit.loose,
+        children: <Widget>[
+          ClipRRect(
+            child: Container(
+              decoration: provider.scoreModelData?.image != null
+                  ? BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          provider.scoreModelData!.image!
+                              .replaceAll("http://", "https://"),
+                        ),
+                        fit: BoxFit.cover,
                       ),
                     )
-                  ],
-                ),
+                  : BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      shape: BoxShape.circle,
+                      // image: DecorationImage(
+                      //   image: NetworkImage(
+                      //     provider.scoreModelData?.image?.replaceAll("http://", "https://") ?? '',
+                      //   ),
+                      //   fit: BoxFit.cover,
+                      //   onError: (error, stackTrace) =>
+                      //       const AssetImage('assets/images/profile_image.png'),
+                      // ),
+
+                      image: const DecorationImage(
+                        image: AssetImage("assets/images/profile_image.png"),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+              height: sizeConfig.blockSizeHorizontal * 30,
+              width: sizeConfig.blockSizeHorizontal * 30,
+            ),
+          ),
+          // Positioned(
+          //   top: 0,
+          //   bottom: 0,
+          //   right: -sizeConfig.blockSizeHorizontal * 7.5,
+          //   child: Container(
+          //     height: sizeConfig.blockSizeHorizontal * 15,
+          //     width: sizeConfig.blockSizeHorizontal * 15,
+          //     decoration: BoxDecoration(
+          //         border: Border.all(
+          //             width: 2, color: Theme.of(context).accentColor),
+          //         color: Constants.CANVAS_COLOR,
+          //         shape: BoxShape.circle),
+          //     child: IconButton(
+          //       onPressed: () {
+          //         _openChooseImagePopup();
+          //       },
+          //       icon: Icon(
+          //         Icons.edit,
+          //         size: 40,
+          //         color: Theme.of(context).accentColor,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          /*Positioned(
+            bottom: -sizeConfig.blockSizeHorizontal * 10,
+            right: 0,
+            left: 0,
+            child: Container(
+              height: sizeConfig.blockSizeHorizontal * 15,
+              width: sizeConfig.blockSizeHorizontal * 15,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  shape: BoxShape.circle),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    AppLocalizations.of(context)!.translate("rank"),
+                    style: TextStyle(
+                      color: Constants.CANVAS_COLOR,
+                      fontSize: sizeConfig.blockSizeHorizontal * 4,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    width: sizeConfig.blockSizeHorizontal * 20,
+                    child: AutoSizeText(
+                      provider.scoreModelData.rank.toString(),
+                      style: TextStyle(
+                          color: Constants.CANVAS_COLOR,
+                          fontSize: sizeConfig.blockSizeHorizontal * 7,
+                          fontWeight: FontWeight.bold),
+                      maxLines: 1,
+                    ),
+                  )
+                ],
               ),
-            ),*/
-          ],
-        ),
+            ),
+          ),*/
+        ],
       ),
     );
   }

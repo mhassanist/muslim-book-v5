@@ -6,13 +6,15 @@ import 'package:responsive_builder/responsive_builder.dart';
 
 
 class SettingsView extends StatelessWidget {
+  const SettingsView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (c)=>LocationProvider(),
       child: ScreenTypeLayout(
         mobile: OrientationLayoutBuilder(
-          portrait: (context) => SettingsViewMobilePortrait(),
+          portrait: (context) => const SettingsViewMobilePortrait(),
         ),
       ),
     );

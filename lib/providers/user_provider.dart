@@ -37,8 +37,6 @@ class UserProvider extends ViewStateProvider {
   CountryModel get selectedCountry => _selectedCountry;
 
   set selectedCountry(CountryModel val) {
-
-    print('AhmedLog ${val.toMap()}');
     _selectedCountry = val;
     notifyListeners();
   }

@@ -262,8 +262,6 @@ class AzanController extends GetxController {
     Localizations.localeOf(context).languageCode == 'ar'
         ? HijriCalendar.setLocal("ar")
         : HijriCalendar.setLocal("en");
-    print("shimoooo     ${HijriCalendar.now().hMonth}   " +
-        "${HijriCalendar.now().hYear}");
     return HijriCalendar.now().toFormat("dd MMMM yyyy");
   }
 

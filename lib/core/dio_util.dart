@@ -1,24 +1,50 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_pretty_dio_logger/flutter_pretty_dio_logger.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
 
 //singleton class to share the same dio object for the whole app
 class DioUtil {
-  static late DioUtil? _instance;
+  static DioUtil? _instance;
+
   static late Dio _dio;
+  static Dio get dio => _dio;
 
   static DioUtil getInstance() {
     if (_instance == null) {
       _dio = Dio(_getOptions());
+      if (kDebugMode) {
+        _dio.interceptors.add(
+          PrettyDioLogger(
+            requestHeader: true,
+            queryParameters: true,
+            requestBody: true,
+            responseHeader: true,
+            showProcessingTime: false,
+            canShowLog: true,
+          ),
+        );
+      }
     }
     return _instance!;
   }
 
-  static Dio get dio => _dio;
-
   static void setDioAgain() {
     _dio = Dio(_getOptions());
+
+    if (kDebugMode) {
+      _dio.interceptors.add(
+        PrettyDioLogger(
+          requestHeader: true,
+          queryParameters: true,
+          requestBody: true,
+          responseHeader: true,
+          showProcessingTime: false,
+          canShowLog: true,
+        ),
+      );
+    }
   }
 
   static BaseOptions _getOptions() {
@@ -37,9 +63,6 @@ class DioUtil {
       "Bearer ${token != null && token.isNotEmpty ? token : "YZsiAFPyX3O29xcyoflxArylNNRWfExs4fwnsVIgrYUg03TV4XoVYOq23FM3"}"
     };
     options.contentType = "application/json";
-    //print("shiammmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmma_ttttttttttt");
-    //print(options.headers);
-
     return options;
   }
 

@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:get/get.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/local_storage/local_storage_manager.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
@@ -29,7 +30,7 @@ class PickAzanShiekhView extends StatefulWidget {
   });
 
   @override
-  _PickAzanShiekhViewState createState() => _PickAzanShiekhViewState();
+  State<PickAzanShiekhView> createState() => _PickAzanShiekhViewState();
 }
 
 class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
@@ -48,18 +49,17 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
 
   @override
   void dispose() {
-    animationList.forEach((f) {
+    for (final f in animationList) {
       f.dispose();
-    });
-
-    animationListWeb.forEach((f) {
+    }
+    for (final f in animationListWeb) {
       f.dispose();
-    });
-
+    }
     try {
       audioPlayer.stop();
-    } catch (e) {}
-
+    } catch (e) {
+      e.printInfo();
+    }
     super.dispose();
   }
 
@@ -72,7 +72,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
         screenNoLongerActive = true;
         try {
           audioPlayer.stop();
-        } catch (e) {}
+        } catch (e) {e.printInfo();}
         Navigator.of(context).pop();
         return false;
       },
@@ -103,18 +103,18 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
 
   PreferredSize _buildAppBar(BuildContext context) {
     return PreferredSize(
-      preferredSize: Size.fromHeight(kToolbarHeight),
+      preferredSize: const Size.fromHeight(kToolbarHeight),
       child: AppBar(
         backgroundColor: const Color(0XFF347D53),
         title: Text(
           AppLocalizations.of(context)!.translate("select_shiekh"),
-          style: TextStyle(fontWeight: FontWeight.w500),
+          style: const TextStyle(fontWeight: FontWeight.w500),
         ),
         actions: <Widget>[
           MaterialButton(
             child: Text(
               AppLocalizations.of(context)!.translate("save"),
-              style: TextStyle(color: Constants.CANVAS_COLOR),
+              style: const TextStyle(color: Constants.CANVAS_COLOR),
             ),
             onPressed: () {
               //on clicking save button
@@ -130,7 +130,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
                 if (azanSound != null) {
                   _moreSoundsProvider.saveDownloadedShiekhJson(
                       azanSound.toJSON(),
-                      this.widget.azanId,
+                      widget.azanId,
                       context,
                       widget.applyToAll);
                 }
@@ -213,11 +213,11 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
     AppLocalizations.of(context)!.isEnglish()
         ? Constants.EN_SHIEKH_NAMES.forEach((f) {
             animationList.add(AnimationController(
-                vsync: this, duration: Duration(milliseconds: 300)));
+                vsync: this, duration: const Duration(milliseconds: 300)));
           })
         : Constants.AR_SHIEKH_NAMES.forEach((f) {
             animationList.add(AnimationController(
-                vsync: this, duration: Duration(milliseconds: 300)));
+                vsync: this, duration: const Duration(milliseconds: 300)));
           });
     return Container(
       child: Column(
@@ -261,7 +261,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
                         ? Constants.EN_SHIEKH_NAMES[index]["id"]
                         : Constants.AR_SHIEKH_NAMES[index]["id"] ==
                                 currentPlayingItemId
-                            ? Icon(Icons.check)
+                            ? const Icon(Icons.check)
                             : null,
                     trailing: IconButton(
                       onPressed: () {
@@ -296,7 +296,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
                 child: Text(
                     AppLocalizations.of(context)!
                         .translate("click_here_for_more_azan_sheikh"),
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w400,
                     )),
@@ -329,7 +329,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
       displayingFromAssets = false;
       _moreSoundsProvider.azanSounds.forEach((f) {
         animationListWeb.add(AnimationController(
-            vsync: this, duration: Duration(milliseconds: 300)));
+            vsync: this, duration: const Duration(milliseconds: 300)));
       });
       return ListView.builder(
           itemCount: _moreSoundsProvider.azanSounds.length,
@@ -355,7 +355,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
                 overflow: TextOverflow.ellipsis,
               ),
               leading: index == _moreSoundsProvider.pickedAzanShiekhIndex
-                  ? Icon(Icons.check)
+                  ? const Icon(Icons.check)
                   : null,
               trailing: _moreSoundsProvider.filesStates[index] ==
                           FileDownloadState.downloaded ||
@@ -374,7 +374,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
                       },
                       icon: _moreSoundsProvider.filesStates[index] ==
                               FileDownloadState.initial
-                          ? Icon(
+                          ? const Icon(
                               Icons.arrow_circle_down,
                               size: 32,
                             )
@@ -384,7 +384,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
                               color: Theme.of(context).primaryColor,
                             ),
                     )
-                  : CircularProgressIndicator(),
+                  : const CircularProgressIndicator(),
             );
           });
     }

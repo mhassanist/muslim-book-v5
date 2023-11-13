@@ -10,11 +10,16 @@ import 'package:muslim_book/utils/prefs.dart';
 import 'package:dio/dio.dart';
 
 class AzanSoundsAPI {
-  final Dio _dio = Dio(BaseOptions(
+  final Dio _dio = Dio(
+    BaseOptions(
       connectTimeout: const Duration(seconds: 30),
       baseUrl: Constants.BASE_URL,
-      headers: {"X-localization": locator<Prefs>().getLang(),
-        "Authorization":"Bearer YZsiAFPyX3O29xcyoflxArylNNRWfExs4fwnsVIgrYUg03TV4XoVYOq23FM3"}));
+      headers: {
+        "X-localization": locator<Prefs>().getLang(),
+        "Authorization": "Bearer YZsiAFPyX3O29xcyoflxArylNNRWfExs4fwnsVIgrYUg03TV4XoVYOq23FM3",
+      },
+    ),
+  );
 
   AzanSoundsAPI() {
     _dio.interceptors.add(ConnectionInterceptor());
@@ -23,7 +28,7 @@ class AzanSoundsAPI {
 
   Future requestAzanSounds() async {
     var response = await _dio.get("azan/list");
-    if (!(response.data is Failure)) {
+    if (response.data is! Failure) {
       List<AzanSound> models =  AzanSoundsList().fromJson(response.data["data"]);
       return models;
     } else {

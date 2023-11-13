@@ -12,7 +12,7 @@ class LoadUiWithAd extends StatefulWidget {
   });
 
   @override
-  _LoadUiWithAdState createState() => _LoadUiWithAdState();
+  State<LoadUiWithAd> createState() => _LoadUiWithAdState();
 }
 
 class _LoadUiWithAdState extends State<LoadUiWithAd> {
@@ -34,16 +34,15 @@ class _LoadUiWithAdState extends State<LoadUiWithAd> {
     return Stack(
       children: [
         Positioned.fill(
-          child: Container(child: this.widget.mainView),
+          child: Container(child: widget.mainView),
         ),
         Positioned.fill(
           child: Visibility(
             visible: loadingAddMobe,
             child: Container(
               color: Colors.white,
-              child: Center(
-                child: Loading(
-                ),
+              child: const Center(
+                child: Loading(),
               ),
             ),
           ),

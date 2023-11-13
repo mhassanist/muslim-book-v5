@@ -160,7 +160,9 @@ public class AzanIntentService extends Service {
             }
 
             try {
-                mMediaPlayer.prepare();
+                if (mMediaPlayer != null) {
+                    mMediaPlayer.prepare();
+                }
             } catch (Exception e) {
 
             }
@@ -194,7 +196,9 @@ public class AzanIntentService extends Service {
                     Log.i("_isSilentMode", "one");
                     if (_isCallActive) {
                         Log.i("_isSilentMode", "_isCallActive");
-                        mMediaPlayer.stop();
+                        if (mMediaPlayer != null) {
+                            mMediaPlayer.stop();
+                        }
                     } else {
                         Log.i("_isSilentMode", "!_isCallActive");
                         if (!_isSilentMode && mMediaPlayer != null) {
@@ -392,7 +396,9 @@ public class AzanIntentService extends Service {
             mMediaPlayer = MediaPlayer.create(this,
                     Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/korsi_ayat.mp3")));
             try {
-                mMediaPlayer.prepare();
+                if (mMediaPlayer != null) {
+                    mMediaPlayer.prepare();
+                }
             } catch (Exception e) {
 
             }
@@ -422,7 +428,9 @@ public class AzanIntentService extends Service {
                     Uri.fromFile(
                             new File(getApplicationInfo().dataDir + "/app_flutter/before_" + key + ".mp3")));
             try {
-                mMediaPlayer.prepare();
+                if (mMediaPlayer != null) {
+                    mMediaPlayer.prepare();
+                }
             } catch (Exception e) {
 
             }
@@ -508,7 +516,7 @@ public class AzanIntentService extends Service {
             if(mMediaPlayer!=null) {
                 mMediaPlayer.stop();
             }
-            mMediaPlayer.stop();
+//            mMediaPlayer.stop();
             if (Switch_Silent_Mode_After_Residence) {
                 setSilentMode(false);
             }

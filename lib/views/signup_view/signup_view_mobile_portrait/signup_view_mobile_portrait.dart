@@ -9,8 +9,10 @@ import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class SignupViewMobilePortrait extends StatefulWidget {
+  const SignupViewMobilePortrait({super.key});
+
   @override
-  _SignupViewMobilePortraitState createState() =>
+  State<SignupViewMobilePortrait> createState() =>
       _SignupViewMobilePortraitState();
 }
 

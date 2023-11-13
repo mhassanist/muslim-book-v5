@@ -35,17 +35,17 @@ class _SplashViewState extends State<SplashView>
   }
 
   Future invokeMethod() async {
-    try {
-      await Constants.platform.invokeMethod("fireAzan");
-      await Constants.platform.invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
-      await Constants.platform.invokeMethod("fireAzkarPopUp");
-      await Constants.platform.invokeMethod(Constants.Open_Competition);
-      await Constants.platform.invokeMethod(Constants.open_Azkar);
-      await Constants.platform.invokeMethod("checkOverlay");
-    } catch (e) {
-      e.printError();
-      // message = e.toString();
-    }
+    // try {
+    //   await Constants.platform.invokeMethod("fireAzan");
+    //   await Constants.platform.invokeMethod(Constants.FIRE_COMPETITION_POP_UP);
+    //   await Constants.platform.invokeMethod("fireAzkarPopUp");
+    //   await Constants.platform.invokeMethod(Constants.Open_Competition);
+    //   await Constants.platform.invokeMethod(Constants.open_Azkar);
+    //   await Constants.platform.invokeMethod("checkOverlay");
+    // } catch (e) {
+    //   e.printError();
+    //   // message = e.toString();
+    // }
   }
 
   Future initializeData() async {

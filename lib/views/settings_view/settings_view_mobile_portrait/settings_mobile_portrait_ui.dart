@@ -84,7 +84,7 @@ class SettingsMobilePortraitUi {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            margin: EdgeInsets.only(top: 20, left: 30, right: 30),
+            margin: const EdgeInsets.only(top: 20, left: 30, right: 30),
             child: Text(
               AppLocalizations.of(context)!.translate("calculation_type"),
               style: TextStyle(
@@ -101,7 +101,7 @@ class SettingsMobilePortraitUi {
           azanMethodPart(),
           divider(sizeConfig, context),
           Container(
-            margin: EdgeInsets.only(top: 20, left: 30, right: 30),
+            margin: const EdgeInsets.only(top: 20, left: 30, right: 30),
             child: Text(
               AppLocalizations.of(context)!.translate("mazhab"),
               style: TextStyle(
@@ -117,7 +117,7 @@ class SettingsMobilePortraitUi {
           ),
           mazhabPart(),
           Container(
-            margin: EdgeInsets.only(top: 20, left: 30, right: 30),
+            margin: const EdgeInsets.only(top: 20, left: 30, right: 30),
             child: Text(
               AppLocalizations.of(context)!.translate("high_altitudes"),
               style: TextStyle(
@@ -180,38 +180,61 @@ class SettingsMobilePortraitUi {
   }
 
   Widget azanShiekhPart() {
-    return Container(
+    return SizedBox(
       width: sizeConfig.blockSizeHorizontal * 90,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          AnimatedCrossFade(
-            firstChild: SizedBox(),
-            secondChild: Container(
-              margin: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 2),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Text(
-                    provider.pickedAzanShiekhMain[randomAzanId_value3] != null
-                        ? "${provider.pickedAzanShiekhMain[randomAzanId_value3]}"
-                        : "اختر شيخاً",
-
-                    //"${AppLocalizations.of(context)!.isEnglish() ? Constants.EN_SHIEKH_NAMES[0]["name"] : Constants.AR_SHIEKH_NAMES[0]["name"]}",
-                    // "${provider.pickedAzanShiekhMain[randomAzanId]["name"]}",
-                    style: TextStyle(
-                        color: Constants.PRIMARY_DARK_COLOR,
-                        fontWeight: FontWeight.w700,
-                        fontSize: sizeConfig.blockSizeHorizontal * 4),
+          Container(
+            margin: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 2),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Text(
+                  provider.pickedAzanShiekhMain[randomAzanId_value3] != null
+                      ? "${provider.pickedAzanShiekhMain[randomAzanId_value3]}"
+                      : "اختر شيخاً",
+                  // '${provider.pickedAzanShiekhMain}',
+                  //"${AppLocalizations.of(context)!.isEnglish() ? Constants.EN_SHIEKH_NAMES[0]["name"] : Constants.AR_SHIEKH_NAMES[0]["name"]}",
+                  // "${provider.pickedAzanShiekhMain[randomAzanId]["name"]}",
+                  style: TextStyle(
+                    color: Constants.PRIMARY_DARK_COLOR,
+                    fontWeight: FontWeight.w700,
+                    fontSize: sizeConfig.blockSizeHorizontal * 4,
                   ),
                 ),
               ),
             ),
-            crossFadeState: provider.pickedAzanShiekhMain.isNotEmpty
-                ? CrossFadeState.showFirst
-                : CrossFadeState.showSecond,
-            duration: Duration(milliseconds: 200),
           ),
+
+          // AnimatedCrossFade(
+          //   firstChild: const SizedBox(),
+          //   secondChild: Container(
+          //     margin: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 2),
+          //     child: Center(
+          //       child: Padding(
+          //         padding: const EdgeInsets.only(bottom: 8.0),
+          //         child: Text(
+          //           provider.pickedAzanShiekhMain[randomAzanId_value3] != null
+          //               ? "${provider.pickedAzanShiekhMain[randomAzanId_value3]}"
+          //               : "اختر شيخاً",
+          //
+          //           //"${AppLocalizations.of(context)!.isEnglish() ? Constants.EN_SHIEKH_NAMES[0]["name"] : Constants.AR_SHIEKH_NAMES[0]["name"]}",
+          //           // "${provider.pickedAzanShiekhMain[randomAzanId]["name"]}",
+          //           style: TextStyle(
+          //               color: Constants.PRIMARY_DARK_COLOR,
+          //               fontWeight: FontWeight.w700,
+          //               fontSize: sizeConfig.blockSizeHorizontal * 4,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          //   crossFadeState: provider.pickedAzanShiekhMain.isNotEmpty
+          //       ? CrossFadeState.showFirst
+          //       : CrossFadeState.showSecond,
+          //   duration: const Duration(milliseconds: 200),
+          // ),
           Center(
             child: standardButton(
                 isGo: true,
@@ -235,7 +258,7 @@ class SettingsMobilePortraitUi {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           AnimatedCrossFade(
-            firstChild: SizedBox(),
+            firstChild: const SizedBox(),
             secondChild: Container(
               margin: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 2),
               child: Center(
@@ -256,7 +279,7 @@ class SettingsMobilePortraitUi {
             crossFadeState: provider.pickedFajrAzanShiekh.isNotEmpty
                 ? CrossFadeState.showFirst
                 : CrossFadeState.showSecond,
-            duration: Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 200),
           ),
           Center(
             child: standardButton(
@@ -274,10 +297,10 @@ class SettingsMobilePortraitUi {
 
   Widget azanTime() {
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 10),
       width: sizeConfig.blockSizeHorizontal * 90,
       height: 570,
-      child: EditTimePrayer(
+      child: const EditTimePrayer(
         showAppBar: false,
 
         // azan: azanValue,
@@ -324,8 +347,8 @@ class SettingsMobilePortraitUi {
                 await showDialog(
                   context: context,
                   builder: (context) => new AlertDialog(
-                      contentPadding: EdgeInsets.all(0.0),
-                      shape: RoundedRectangleBorder(
+                      contentPadding: const EdgeInsets.all(0.0),
+                      shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12))),
                       content: show),
                 );
@@ -356,18 +379,23 @@ class SettingsMobilePortraitUi {
   //we are working with azan id 3 only in this screen
   //when we save from here, we should save to all ids
   void chooseSheikh(String azanId) async {
-    int newShiekhIndex = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (BuildContext context) => PickAzanShiekhView(
-              azanId,
-              true,
-            )));
+    int? newShiekhIndex = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => PickAzanShiekhView(
+          azanId,
+          true,
+        ),
+      ),
+    );
+    if (newShiekhIndex == null) {
+      return;
+    }
 
-    List<AzanSound>? sounds =
-        (await LocalStorageManager().loadAzanSoundsList());
+    List<AzanSound>? sounds = await LocalStorageManager().loadAzanSoundsList();
 
-    if (sounds != null && sounds.length > 0) {
+    if (sounds != null && sounds.isNotEmpty && sounds.length >= newShiekhIndex) {
       provider.pickedAzanShiekhMain = {
-        randomAzanId_value3: sounds[newShiekhIndex].name
+        randomAzanId_value3: sounds[newShiekhIndex].name,
       };
     } else {
       provider.pickedAzanShiekhMain = {
@@ -383,7 +411,7 @@ class SettingsMobilePortraitUi {
         builder: (BuildContext context) => PickFajrAzanShiekhView()));
     List<AzanSound>? sounds =
         (await LocalStorageManager().loadFajrAzanSoundsList());
-    if (sounds != null && sounds.length > 0) {
+    if (sounds != null && sounds.isNotEmpty) {
       provider.pickedFajrAzanShiekh = sounds[newShiekhIndex].toJSON();
     } else {
       provider.pickedFajrAzanShiekh = Constants.FAJR_SHIEKH_NAMES[0];
@@ -393,7 +421,7 @@ class SettingsMobilePortraitUi {
   Widget azanMethodPart() {
     return Container(
       width: sizeConfig.blockSizeHorizontal * 85,
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       padding:
           EdgeInsets.symmetric(horizontal: sizeConfig.blockSizeHorizontal * 2),
       decoration: BoxDecoration(
@@ -440,7 +468,7 @@ class SettingsMobilePortraitUi {
   Widget highAltitudesPart() {
     return Container(
       width: sizeConfig.blockSizeHorizontal * 85,
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       padding:
           EdgeInsets.symmetric(horizontal: sizeConfig.blockSizeHorizontal * 2),
       decoration: BoxDecoration(
@@ -489,7 +517,7 @@ class SettingsMobilePortraitUi {
   Widget mazhabPart() {
     return Container(
       width: sizeConfig.blockSizeHorizontal * 85,
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       padding:
           EdgeInsets.symmetric(horizontal: sizeConfig.blockSizeHorizontal * 2),
       decoration: BoxDecoration(
@@ -613,7 +641,7 @@ class SettingsMobilePortraitUi {
   Widget titleContainer(
       SizingInformation sizeConfig, BuildContext context, String text) {
     return Container(
-      margin: EdgeInsetsDirectional.fromSTEB(60, 5, 10, 0),
+      margin: const EdgeInsetsDirectional.fromSTEB(60, 5, 10, 0),
       child: Text(
         text,
         style: TextStyle(
@@ -660,7 +688,7 @@ class SettingsMobilePortraitUi {
 
   Widget _countryNameWidget(SizingInformation sizeConfig) {
     return AnimatedCrossFade(
-        firstChild: SizedBox(),
+        firstChild: const SizedBox(),
         secondChild: Container(
           margin:
               EdgeInsets.symmetric(vertical: sizeConfig.blockSizeVertical * 2),
@@ -678,14 +706,14 @@ class SettingsMobilePortraitUi {
         crossFadeState: locationProvider.countryName.isEmpty
             ? CrossFadeState.showFirst
             : CrossFadeState.showSecond,
-        duration: Duration(milliseconds: 200));
+        duration: const Duration(milliseconds: 200));
   }
 
   Widget alertItem(String title, bool value, dynamic function) {
     return Column(
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 10),
+          margin: const EdgeInsets.only(left: 20, right: 20, bottom: 5, top: 10),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: <Widget>[
@@ -699,15 +727,15 @@ class SettingsMobilePortraitUi {
                 ),
               ),
               RotationTransition(
-                turns: AlwaysStoppedAnimation(0.5),
+                turns: const AlwaysStoppedAnimation(0.5),
                 child: Switch(
                   value: value,
                   onChanged: (value) {
                     function(value);
                   },
-                  activeThumbImage: AssetImage(
+                  activeThumbImage: const AssetImage(
                       "assets/images/general/custom_switch_active.png"),
-                  inactiveThumbImage: AssetImage(
+                  inactiveThumbImage: const AssetImage(
                       "assets/images/general/custom_switch_inactive.png"),
                 ),
               ),
@@ -724,7 +752,7 @@ class SettingsMobilePortraitUi {
       width: sizeConfig.blockSizeHorizontal * 90,
       color: Theme.of(context).primaryColorDark.withOpacity(.4),
       height: 1,
-      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
     );
   }
 

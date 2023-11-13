@@ -10,8 +10,10 @@ import 'package:screenshot/screenshot.dart';
 import 'myProfile_mobile_portrait_ui.dart';
 
 class MyProfilePage extends StatefulWidget {
+  const MyProfilePage({super.key});
+
   @override
-  _MyProfilePageState createState() => _MyProfilePageState();
+  State<MyProfilePage> createState() => _MyProfilePageState();
 }
 
 class _MyProfilePageState extends State<MyProfilePage> {
@@ -34,10 +36,10 @@ class _MyProfilePageState extends State<MyProfilePage> {
                 AppLocalizations.of(context)!.translate("my_profile"),
                 key: key),
             body: model.viewState == ViewState.Loading
-                ? Container(
+                ? SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,
-                    child: Center(
+                    child: const Center(
                       child: CircularProgressIndicator(
                         valueColor: AlwaysStoppedAnimation<Color>(
                             Constants.PRIMARY_COLOR),
@@ -49,13 +51,13 @@ class _MyProfilePageState extends State<MyProfilePage> {
                   child: Container(
                     color: Theme.of(context).canvasColor,
                       child: ListView(
-                        padding: EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.only(bottom: 20),
                         children: <Widget>[
                           ui.imageWidget(),
                           ui.personalData(),
                           ui.points(),
                           ui.textShare(),
-                          ui.socialmedia()
+                          ui.socialMedia()
                         ],
                       ),
                     ),

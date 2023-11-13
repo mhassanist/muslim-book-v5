@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
 import 'package:muslim_book/azan_feature/models/azan_model.dart';
 import 'package:muslim_book/local_storage/local_storage_manager.dart';
@@ -158,145 +159,151 @@ class _AzanViewUpdatedState extends State<AzanViewUpdated> {
       child: Container(
         height: 43,
         margin: EdgeInsets.symmetric(
-            horizontal: sizeConfig.blockSizeHorizontal * 2,
-            vertical: sizeConfig.blockSizeVertical / 2),
+          horizontal: sizeConfig.blockSizeHorizontal * 2,
+          vertical: sizeConfig.blockSizeVertical / 2,
+        ),
         decoration: BoxDecoration(
-            color: Colors.white
-                .withOpacity(index == controller.nextAzanKey! - 1 ? 1 : .5),
-            borderRadius:
-                BorderRadius.circular(sizeConfig.blockSizeHorizontal * 4)),
+          color: Colors.white.withOpacity(
+            index == controller.nextAzanKey! - 1 ? 1 : .5,
+          ),
+          borderRadius:
+              BorderRadius.circular(sizeConfig.blockSizeHorizontal * 4),
+        ),
         child: Row(
           children: [
             Expanded(
-                flex: 1,
-                child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            controller.azanValue[index].volumeEnable =
-                                !controller.azanValue[index].volumeEnable;
-                            controller.saveAzanMute(
-                                controller.azanValue[index].volumeEnable,
-                                controller.azanValue[index].id);
-                          });
-                        },
-                        child: Container(
-                            height: MediaQuery.of(context).size.height,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      setState(() {
+                        controller.azanValue[index].volumeEnable =
+                            !controller.azanValue[index].volumeEnable;
+                        controller.saveAzanMute(
+                            controller.azanValue[index].volumeEnable,
+                            controller.azanValue[index].id);
+                      });
+                    },
+                    child: Container(
+                        height: MediaQuery.of(context).size.height,
 
-                            // height: double.infinity,
-                            padding: EdgeInsets.symmetric(
-                                // horizontal: sizeConfig.blockSizeHorizontal * 2,
-                                horizontal: sizeConfig.blockSizeVertical * 1.5),
-
-                            decoration: BoxDecoration(
-                                color: index == controller.nextAzanKey! - 1
-                                    ? Colors.grey.withOpacity(.2)
-                                    : Colors.white.withOpacity(.5),
-                                borderRadius: BorderRadius.circular(
-                                    sizeConfig.blockSizeHorizontal * 4)),
-                            child: controller.azanValue[index].volumeEnable
-                                ? SvgPicture.asset(
-                                    "assets/images/azan_view/volume_up.svg",
-                                    height: 20.0,
-                                    width: 20.0,
-                                    allowDrawingOutsideViewBox: true,
-                                  )
-                                : SvgPicture.asset(
-                                    "assets/images/azan_view/volume_off.svg",
-                                    height: 24.0,
-                                    width: 24.0,
-                                    allowDrawingOutsideViewBox: true,
-                                  )),
-                      ),
-                      SizedBox(
-                        width: sizeConfig.blockSizeHorizontal,
-                      ),
-                      Text(
-                        AppLocalizations.of(context)!
-                            .translate(controller.azanValue[index].key),
-                        style: TextStyle(
-                            color: Constants.PRIMARY_DARK_COLOR,
-                            fontWeight: FontWeight.bold,
-                            fontSize: sizeConfig.blockSizeHorizontal * 4),
-                      ),
-                    ])),
+                        // height: double.infinity,
+                        padding: EdgeInsets.symmetric(
+                            // horizontal: sizeConfig.blockSizeHorizontal * 2,
+                            horizontal: sizeConfig.blockSizeVertical * 1.5),
+                        decoration: BoxDecoration(
+                            color: index == controller.nextAzanKey! - 1
+                                ? Colors.grey.withOpacity(.2)
+                                : Colors.white.withOpacity(.5),
+                            borderRadius: BorderRadius.circular(
+                                sizeConfig.blockSizeHorizontal * 4)),
+                        child: controller.azanValue[index].volumeEnable
+                            ? SvgPicture.asset(
+                                "assets/images/azan_view/volume_up.svg",
+                                height: 20.0,
+                                width: 20.0,
+                                allowDrawingOutsideViewBox: true,
+                              )
+                            : SvgPicture.asset(
+                                "assets/images/azan_view/volume_off.svg",
+                                height: 24.0,
+                                width: 24.0,
+                                allowDrawingOutsideViewBox: true,
+                              )),
+                  ),
+                  SizedBox(
+                    width: sizeConfig.blockSizeHorizontal,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.translate(
+                      controller.azanValue[index].key,
+                    ),
+                    style: TextStyle(
+                      color: Constants.PRIMARY_DARK_COLOR,
+                      fontWeight: FontWeight.bold,
+                      fontSize: sizeConfig.blockSizeHorizontal * 4,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             // SizedBox(
             //   width: sizeConfig.blockSizeHorizontal,
             // ),
             Expanded(
-              flex: 1,
-              child: Container(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // SizedBox(
-                    //   width: sizeConfig.blockSizeHorizontal * 2,
-                    // ),
-                    (index == controller.nextAzanKey! - 1)
-                        ? GetBuilder<AzanController>(
-                            builder: (con) {
-                              return Expanded(
-                                flex: 2,
-                                child: Text(
-                                  "${con.remaining!.inHours > 10 ? con.remaining!.inHours : "0${con.remaining!.inHours}"}:${DateFormat("mm:ss").format(DateTime.fromMillisecondsSinceEpoch(con.remaining!.inMilliseconds))}",
-                                  style: TextStyle(
-                                    color: Constants.PRIMARY_DARK_COLOR,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize:
-                                        sizeConfig.blockSizeHorizontal * 5,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              );
-                            },
-                          )
-                        : Container()
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 65,
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          controller.getFormattedTime(
-                            controller.azanValue[index].time.split(":")[0] +
-                                ":" +
-                                ((int.parse(controller
-                                            .azanValue[index].minute) +
-                                        controller.azanValue[index].count))
-                                    .toString(),
+              child: (index == controller.nextAzanKey! - 1)
+                  ? GetBuilder<AzanController>(
+                      builder: (con) {
+                        return Text(
+                          "${con.remaining!.inHours > 10 ? con.remaining!.inHours : "0${con.remaining!.inHours}"}:${DateFormat("mm:ss").format(DateTime.fromMillisecondsSinceEpoch(con.remaining!.inMilliseconds))}",
+                          style: TextStyle(
+                            color: Constants.PRIMARY_DARK_COLOR,
+                            fontWeight: FontWeight.bold,
+                            fontSize: sizeConfig.blockSizeHorizontal * 5,
                           ),
+                          textAlign: TextAlign.center,
+                        );
+                      },
+                    )
+                  : Container(),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 70,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        child: AutoSizeText(
+                          controller.getFormattedTime(
+                            "${controller.azanValue[index].time.split(":")[0]}:${int.parse(controller.azanValue[index].minute) + controller.azanValue[index].count}",
+                          ),
+                          maxLines: 1,
                           style: TextStyle(
                             color: Constants.PRIMARY_DARK_COLOR,
                             fontSize: sizeConfig.blockSizeHorizontal * 4.5,
                           ),
                         ),
-                        SizedBox(
-                          width: 2,
-                        ),
-                        Text(
-                          "${int.parse(controller.azanValue[index].hours) >= 12 ? "م" : "ص"}",
-                          style: TextStyle(
-                              color: Constants.PRIMARY_DARK_COLOR,
-                              fontSize: sizeConfig.blockSizeHorizontal * 4),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        width: 2,
+                      ),
+                      Text(
+                        int.parse(controller.azanValue[index].hours) >= 12 ? "م" : "ص",
+                        style: TextStyle(
+                            color: Constants.PRIMARY_DARK_COLOR,
+                            fontSize: sizeConfig.blockSizeHorizontal * 4),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
-                  Container(
+                ),
+                SizedBox(
+                  height: 50,
+                  width: 40,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SvgPicture.asset(
+                        "assets/images/azan_view/setting.svg",
+                        height: 24.0,
+                        width: 24.0,
+                        allowDrawingOutsideViewBox: true,
+                      ),
+                    ],
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    _modalBottomSheetMenu(controller.azanValue[index]);
+                  },
+                  child: SizedBox(
                     height: 50,
                     width: 40,
                     child: Row(
@@ -304,36 +311,15 @@ class _AzanViewUpdatedState extends State<AzanViewUpdated> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         SvgPicture.asset(
-                          "assets/images/azan_view/setting.svg",
-                          height: 24.0,
-                          width: 24.0,
+                          "assets/images/azan_view/edite.svg",
+                          height: 20.0,
                           allowDrawingOutsideViewBox: true,
                         ),
                       ],
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      _modalBottomSheetMenu(controller.azanValue[index]);
-                    },
-                    child: Container(
-                      height: 50,
-                      width: 40,
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/images/azan_view/edite.svg",
-                            height: 20.0,
-                            allowDrawingOutsideViewBox: true,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),

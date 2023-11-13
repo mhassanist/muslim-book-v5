@@ -85,7 +85,7 @@ class Prefs {
   String getFajrAzanShiekh() =>
       prefs!.getString(Constants.FAJR_AZAN_SHIEKH) ?? '';
 
-  void setAzanShiekh(String key, String azanIndex) async {
+  Future<void> setAzanShiekh(String key, String azanIndex) async {
     await prefs!.setString(key, azanIndex); //DOWNLOADED_SHEIKH_ID
     // await prefs!.setString(Constants.AZAN_SHIEKH, value);
   }
@@ -208,13 +208,10 @@ class Prefs {
       prefs!.getBool(Constants.Activating_Al_Shaarawi_Voice_FLAG)!;
 
   bool? getSwitchSilentModeAfterResidenceFlag() =>
-      prefs!.getBool(Constants.Switch_Silent_Mode_After_Residence) == null
-          ? false
-          : prefs!.getBool(Constants.Switch_Silent_Mode_After_Residence);
+      prefs!.getBool(Constants.Switch_Silent_Mode_After_Residence) ?? false;
+
   bool? getTurnOffPrayerPhoneFlag() =>
-      prefs!.getBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone) == null
-          ? false
-          : prefs!.getBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone);
+      prefs!.getBool(Constants.Turn_Off_The_Call_To_Prayer_On_The_Phone) ?? false;
 
   void setMondaysAndThursdaysFastingAlertFlag(bool value) async {
     await prefs!
@@ -385,7 +382,7 @@ class Prefs {
 
   int? getCountOfOpenDialog() => prefs!.getInt("open_dialog_count");
 
-  setAzanShiekhJSON(Map<String, dynamic> sheikhJson, String azanId) async {
+  Future<void> setAzanShiekhJSON(Map<String, dynamic> sheikhJson, String azanId) async {
     await setAzanShiekhIdFromJSON(sheikhJson['id'].toString(), azanId);
     await prefs!.setString(
         '${Constants.SELECTED_SHEIKH_JSON}$azanId', json.encode(sheikhJson));

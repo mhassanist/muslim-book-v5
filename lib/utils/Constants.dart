@@ -13,17 +13,17 @@ const appLocals = {
 
 
 class Constants {
-  static const Color ICON_COLOR = const Color(0XFF5D9775);
+  static const Color ICON_COLOR = Color(0XFF5D9775);
   // static const Color PRIMARY_COLOR = const Color(0XFF037e40);
-  static const Color PRIMARY_COLOR = const Color(0XFF347D53);
+  static const Color PRIMARY_COLOR = Color(0XFF347D53);
   // static const Color PRIMARY_DARK_COLOR = const Color(0XFF013f37);
 
-  static const Color PRIMARY_DARK_COLOR = const Color(0XFF347D53);
-  static const Color ACCENT_COLOR = const Color(0XFFa7bdca);
-  static const Color ACCENT_SECONDARY_COLOR = const Color(0XFFfad398);
-  static const Color CANVAS_COLOR = const Color(0XFFf5f5f5);
-  static const Color SCREEN_TITLE_COLOR = const Color(0XFFa7bdca);
-  static const Color MAIN_TEXT_COLOR = const Color(0XFF4d555b);
+  static const Color PRIMARY_DARK_COLOR = Color(0XFF347D53);
+  static const Color ACCENT_COLOR = Color(0XFFa7bdca);
+  static const Color ACCENT_SECONDARY_COLOR = Color(0XFFfad398);
+  static const Color CANVAS_COLOR = Color(0XFFf5f5f5);
+  static const Color SCREEN_TITLE_COLOR = Color(0XFFa7bdca);
+  static const Color MAIN_TEXT_COLOR = Color(0XFF4d555b);
   static const String ALLOW_REPEAT_AYA = "allow_repeat_ayah";
   static const double KAABA_LAT = 21.4225;
   static const double KAABA_LNG = 39.8262;
@@ -44,7 +44,7 @@ class Constants {
   //Fields
   static const String IS_FIRST_TIME = "is_first_time";
   static const platform =
-      const MethodChannel('com.muslim_book.muslim_book/channels');
+      MethodChannel('com.muslim_book.muslim_book/channels');
   static const String COUNTRY = "country";
   static const String COUNTRY_CODE = "country_code";
   static const String CITY = "city";
@@ -121,7 +121,6 @@ class Constants {
   ];
   static const List<Map<String, dynamic>> AR_SHIEKH_NAMES = [
     {"name": "عبدالباسط عبدالصمد", "id": "1"},
-
     {"name": 'مشاري بن راشد العفاسي', "id": "2"},
     {"name": 'الحرم المكي', "id": "3"},
     {"name": 'مصطفي إسماعيل', "id": "4"},
@@ -130,7 +129,6 @@ class Constants {
 
   static const List<Map<String, dynamic>> EN_SHIEKH_NAMES = [
     {"name": "Abdul Basit Abdul Samad", "id": "1"},
-
     {"name": 'Mishary bin Rashid Al-Afasy', "id": "2"},
     {"name": 'Grand Mosque in Mecca', "id": "3"},
     {"name": 'Mustafa Ismael', "id": "4"},
@@ -147,10 +145,8 @@ class Constants {
   ];
 
   static const List<Map<String, dynamic>> EN_AZAN_Mazhabs = [
-
-
     {"title": "Shafi'i - Hanbali - Maliki", "id": "0"},
-   {"title": 'Hanafi', "id": "1"},
+    {"title": 'Hanafi', "id": "1"},
   ];
 
   static const String AZAN_MODEL = "azanModel";

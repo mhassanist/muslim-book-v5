@@ -9,8 +9,10 @@ import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class LoginViewMobilePortrait extends StatefulWidget {
+  const LoginViewMobilePortrait({super.key});
+
   @override
-  _LoginViewMobilePortraitState createState() =>
+  State<LoginViewMobilePortrait> createState() =>
       _LoginViewMobilePortraitState();
 }
 
@@ -48,7 +50,7 @@ class _LoginViewMobilePortraitState extends State<LoginViewMobilePortrait> {
           body: Container(
             color: Constants.CANVAS_COLOR,
             child: ListView(
-              padding: EdgeInsets.only(bottom: 20),
+              padding: const EdgeInsets.only(bottom: 20),
               children: <Widget>[
                 ui.userImage(),
                 ui.inputTextForm(key.currentContext),

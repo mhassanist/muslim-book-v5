@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter_pretty_dio_logger/flutter_pretty_dio_logger.dart';
 import 'package:muslim_book/exceptions/failure.dart';
 import 'package:muslim_book/interceptors/connection_interceptor.dart';
 import 'package:muslim_book/interceptors/error_interceptor.dart';
@@ -33,6 +35,18 @@ class ApiService {
   ApiService() {
     _dio.interceptors.add(ConnectionInterceptor());
     _dio.interceptors.add(ErrorInterceptor());
+    if (kDebugMode) {
+      _dio.interceptors.add(
+        PrettyDioLogger(
+          requestHeader: true,
+          queryParameters: true,
+          requestBody: true,
+          responseHeader: true,
+          showProcessingTime: false,
+          canShowLog: true,
+        ),
+      );
+    }
   }
 
   Future login(Map<String, dynamic> body) async {
@@ -149,16 +163,23 @@ class ApiService {
   }
 
   Future<ScoreModel?> getUserScore() async {
-    var response = await _dio.get(
-      "users/score/${_userProvider.user.id}",
-      options: Options(
-        headers: {"Authorization": 'Bearer ${_userProvider.user.apiToken}'},
-      ),
-    );
-    if (!(response.data is Failure)) {
-      ScoreModel model = ScoreModel.fromMap(response.data);
-      return model;
-    } else {
+    try {
+      var response = await _dio.get(
+        "users/score/${_userProvider.user.id}",
+        options: Options(
+          headers: {"Authorization": 'Bearer ${_userProvider.user.apiToken}'},
+        ),
+      );
+      if (response.data is! Failure) {
+        ScoreModel model = ScoreModel.fromMap(response.data);
+        return model;
+      } else {
+        return null;
+      }
+    } on DioError catch (e) {
+      // errormessage = DioExceptions.fromDioError(e).message;
+      return null;
+    } catch (e) {
       return null;
     }
   }
@@ -199,9 +220,9 @@ class ApiService {
     try {
       http.Response response = await http.get(
         // Uri.https('${Constants.BASE_URL}countries/list'),
-          Uri.https('${Constants.BASE_API_URL}',
-              '${Constants.BASE_API_PATH}countries/list'),
-          headers: {"X-localization": code});
+        Uri.https(Constants.BASE_API_URL, '${Constants.BASE_API_PATH}countries/list'),
+        headers: {"X-localization": code},
+      );
       if (response.statusCode == 200) {
         CountriesModel model =
         CountriesModel.fromJson(utf8.decode(response.bodyBytes));

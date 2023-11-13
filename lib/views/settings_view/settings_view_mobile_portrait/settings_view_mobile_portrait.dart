@@ -19,14 +19,14 @@ import '../../../locals_utils/app_localizations.dart';
 import '../../../main.dart';
 import '../../../widgets/appBar_widget.dart';
 
-class ExpansionpanelItem {
+class ExpansionPanelItem {
   bool isExpanded;
   final String? title;
   final Widget? content;
   final Icon leading;
   final String? icon;
 
-  ExpansionpanelItem({
+  ExpansionPanelItem({
     required this.isExpanded,
     this.title,
     this.content,
@@ -36,13 +36,13 @@ class ExpansionpanelItem {
 }
 
 class SettingsViewMobilePortrait extends StatefulWidget {
+  const SettingsViewMobilePortrait({super.key});
+
   @override
-  _SettingsViewMobilePortraitState createState() =>
-      _SettingsViewMobilePortraitState();
+  State<SettingsViewMobilePortrait> createState() => _SettingsViewMobilePortraitState();
 }
 
-class _SettingsViewMobilePortraitState
-    extends State<SettingsViewMobilePortrait> {
+class _SettingsViewMobilePortraitState extends State<SettingsViewMobilePortrait> {
   late SettingsMobilePortraitUi ui;
   Language? lang;
 
@@ -51,44 +51,44 @@ class _SettingsViewMobilePortraitState
     super.initState();
   }
 
-  List<ExpansionpanelItem> items = [
-    ExpansionpanelItem(
+  List<ExpansionPanelItem> items = [
+    ExpansionPanelItem(
       isExpanded: false,
-      leading: Icon(Icons.arrow_back_ios),
+      leading: const Icon(Icons.arrow_back_ios),
       icon: "assets/images/setting_view/bell.svg",
     ),
-    ExpansionpanelItem(
+    ExpansionPanelItem(
       isExpanded: false,
-      leading: Icon(Icons.arrow_back_ios),
+      leading: const Icon(Icons.arrow_back_ios),
       icon: "assets/images/setting_view/world.svg",
     ),
-    ExpansionpanelItem(
+    ExpansionPanelItem(
       isExpanded: false,
-      leading: Icon(Icons.arrow_back_ios),
+      leading: const Icon(Icons.arrow_back_ios),
       icon: "assets/images/setting_view/eclipse.svg",
     ),
-    ExpansionpanelItem(
+    ExpansionPanelItem(
       isExpanded: false,
-      leading: Icon(Icons.arrow_back_ios),
+      leading: const Icon(Icons.arrow_back_ios),
       icon: "assets/images/setting_view/clock.svg",
     ),
-    ExpansionpanelItem(
+    ExpansionPanelItem(
       isExpanded: false,
-      leading: Icon(Icons.arrow_back_ios),
+      leading: const Icon(Icons.arrow_back_ios),
       icon: "assets/images/setting_view/shaikh.svg",
     ),
-    ExpansionpanelItem(
+    ExpansionPanelItem(
       isExpanded: false,
-      leading: Icon(Icons.arrow_back_ios),
+      leading: const Icon(Icons.arrow_back_ios),
       icon: "assets/images/setting_view/moon.svg",
     ),
-    ExpansionpanelItem(
+    ExpansionPanelItem(
       isExpanded: false,
-      leading: Icon(Icons.arrow_back_ios),
+      leading: const Icon(Icons.arrow_back_ios),
       icon: "assets/images/setting_view/gear.svg",
     ),
   ];
-  List<ExpansionpanelItem> contents = [];
+  List<ExpansionPanelItem> contents = [];
 
   Widget show() {
     getLocale().then((locale) {
@@ -100,7 +100,7 @@ class _SettingsViewMobilePortraitState
         lang = Language.france;
       }
     });
-    return Container(
+    return SizedBox(
         height: 200,
         child: Column(
           children: [
@@ -146,102 +146,105 @@ class _SettingsViewMobilePortraitState
 
   void _changeLanguage(String language) async {
     Locale locale = await setLocale(language);
-    MyApp.setLocale(context, locale);
-    Navigator.pop(context);
+    if (context.mounted) {
+      MyApp.setLocale(context, locale);
+      Navigator.pop(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: ResponsiveBuilder(builder: (context, sizeConfig) {
-        return BaseView<SettingsProvider>(onModelReady: (model) async {
-          model.context = context;
-          ui = SettingsMobilePortraitUi(
-            Provider.of<LocationProvider>(context),
-            context: context,
-            provider: model,
-            sizeConfig: sizeConfig,
-          );
-        }, builder: (_, model, __) {
-          model.fillTheSettingsData();
-          // return Scaffold(
-          //   body: Center(
-          //     child: Text('${model.alreadyFilledData}'),
-          //   ),
-          // );
-          contents = [
-            ExpansionpanelItem(
-                isExpanded: false,
-                title: AppLocalizations.of(context)!.translate("alerts"),
-                content: ui.alertsPart(),
-                leading: Icon(Icons.arrow_back_ios)),
-            ExpansionpanelItem(
-                isExpanded: false,
-                title:
-                    AppLocalizations.of(context)!.translate("country_specify"),
-                content: ui.countrySelectionPart(),
-                leading: Icon(Icons.arrow_back_ios)),
-            ExpansionpanelItem(
-                isExpanded: false,
-                title:
-                    AppLocalizations.of(context)!.translate("calculation_type"),
-                content: ui.azanMethodSelectionPart(),
-                leading: Icon(Icons.arrow_back_ios)),
-            ExpansionpanelItem(
-                isExpanded: false,
-                title: AppLocalizations.of(context)!
-                    .translate("edite_tieme_prayer"),
-                content: ui.azanTime(),
-                leading: Icon(Icons.arrow_back_ios)),
-            ExpansionpanelItem(
-                isExpanded: false,
-                title: AppLocalizations.of(context)!.translate("azan_shiekh"),
-                content: ui.azanShiekhPart(),
-                leading: Icon(Icons.arrow_back_ios)),
-            ExpansionpanelItem(
-                isExpanded: false,
-                content: ui.fajrAzanShiekhPart(),
-                title:
-                    AppLocalizations.of(context)!.translate("azan_shiekh_fajr"),
-                leading: Icon(Icons.arrow_back_ios)),
-            ExpansionpanelItem(
-                isExpanded: false,
-                title:
-                    AppLocalizations.of(context)!.translate("general_settings"),
-                content: ui.generalSettingsPart(show()),
-                leading: Icon(Icons.arrow_back_ios))
-          ];
-          return SafeArea(
-            child: Scaffold(
-              appBar: appBar(
-                context,
-                sizeConfig,
-                AppLocalizations.of(context)!.translate("settings"),
-              ),
-              body: Container(
-                color: Constants.CANVAS_COLOR,
-                child: LoadUiWithAd(
-                  mainView: CustomScrollView(slivers: <Widget>[
-                    SliverToBoxAdapter(
-                      child: CustomExpansionPanelList(
-                          expansionCallback: (int index, bool isExpanded) {
-                            setState(() {
-                              items[index].isExpanded =
-                                  !items[index].isExpanded;
-                            });
-                          },
-                          children: [
-                            ...items.map((ExpansionpanelItem item) {
-                              return ExpansionPanel(
-                                headerBuilder:
-                                    (BuildContext context, bool isExpanded) {
-                                  return Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Container(
+    return ResponsiveBuilder(
+      builder: (context, sizeConfig) {
+        return BaseView<SettingsProvider>(
+          onModelReady: (model) async {
+            model.context = context;
+            ui = SettingsMobilePortraitUi(
+              Provider.of<LocationProvider>(context),
+              context: context,
+              provider: model,
+              sizeConfig: sizeConfig,
+            );
+          },
+          builder: (_, model, __) {
+            model.fillTheSettingsData();
+            // return Scaffold(
+            //   body: Center(
+            //     child: Text('${model.alreadyFilledData}'),
+            //   ),
+            // );
+            contents = [
+              ExpansionPanelItem(
+                  isExpanded: false,
+                  title: AppLocalizations.of(context)!.translate("alerts"),
+                  content: ui.alertsPart(),
+                  leading: const Icon(Icons.arrow_back_ios)),
+              ExpansionPanelItem(
+                  isExpanded: false,
+                  title: AppLocalizations.of(context)!
+                      .translate("country_specify"),
+                  content: ui.countrySelectionPart(),
+                  leading: const Icon(Icons.arrow_back_ios)),
+              ExpansionPanelItem(
+                  isExpanded: false,
+                  title: AppLocalizations.of(context)!
+                      .translate("calculation_type"),
+                  content: ui.azanMethodSelectionPart(),
+                  leading: const Icon(Icons.arrow_back_ios)),
+              ExpansionPanelItem(
+                  isExpanded: false,
+                  title: AppLocalizations.of(context)!
+                      .translate("edite_tieme_prayer"),
+                  content: ui.azanTime(),
+                  leading: const Icon(Icons.arrow_back_ios)),
+              ExpansionPanelItem(
+                  isExpanded: false,
+                  title: AppLocalizations.of(context)!.translate("azan_shiekh"),
+                  content: ui.azanShiekhPart(),
+                  leading: const Icon(Icons.arrow_back_ios)),
+              ExpansionPanelItem(
+                  isExpanded: false,
+                  content: ui.fajrAzanShiekhPart(),
+                  title: AppLocalizations.of(context)!
+                      .translate("azan_shiekh_fajr"),
+                  leading: const Icon(Icons.arrow_back_ios)),
+              ExpansionPanelItem(
+                  isExpanded: false,
+                  title: AppLocalizations.of(context)!
+                      .translate("general_settings"),
+                  content: ui.generalSettingsPart(show()),
+                  leading: const Icon(Icons.arrow_back_ios))
+            ];
+            return SafeArea(
+              child: Scaffold(
+                appBar: appBar(
+                  context,
+                  sizeConfig,
+                  AppLocalizations.of(context)!.translate("settings"),
+                ),
+                body: Container(
+                  color: Constants.CANVAS_COLOR,
+                  child: LoadUiWithAd(
+                    mainView: CustomScrollView(
+                      slivers: <Widget>[
+                        SliverToBoxAdapter(
+                          child: CustomExpansionPanelList(
+                            expansionCallback: (int index, bool isExpanded) {
+                              setState(() {
+                                items[index].isExpanded = !items[index].isExpanded;
+                              });
+                            },
+                            children: [
+                              ...items.map((ExpansionPanelItem item) {
+                                return ExpansionPanel(
+                                  headerBuilder: (context, isExpanded) {
+                                    return Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
                                           alignment: Alignment.center,
-                                          margin: EdgeInsets.symmetric(
+                                          margin: const EdgeInsets.symmetric(
                                             horizontal: 15,
                                           ),
                                           child: Row(
@@ -253,31 +256,31 @@ class _SettingsViewMobilePortraitState
                                                 allowDrawingOutsideViewBox:
                                                     true,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 10,
                                               ),
                                               Text(
                                                 contents[items.indexOf(item)]
                                                         .title ??
                                                     '',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              )
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
+                                              ),
                                             ],
-                                          ))
-                                    ],
-                                  );
-                                },
-                                isExpanded: item.isExpanded,
-                                body: Container(
-                                  margin: EdgeInsets.only(
-                                      right: 4, left: 4, bottom: 4, top: 4),
-                                  width: MediaQuery.of(context).size.width,
-                                  // height: MediaQuery.of(context).size.height,
-                                  decoration: BoxDecoration(
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                  isExpanded: item.isExpanded,
+                                  body: Container(
+                                    margin: const EdgeInsets.all(4),
+                                    width: MediaQuery.of(context).size.width,
+                                    // height: MediaQuery.of(context).size.height,
+                                    decoration: const BoxDecoration(
                                       borderRadius: BorderRadius.only(
                                         // topRight: Radius.circular(12),
                                         // topLeft: Radius.circular(12),
@@ -285,36 +288,44 @@ class _SettingsViewMobilePortraitState
                                         bottomLeft: Radius.circular(12),
                                       ),
                                       gradient: LinearGradient(
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          colors: [
-                                            Colors.white,
-                                            Colors.white,
-                                          ])),
-                                  child: contents[items.indexOf(item)].content,
-                                ),
-                              );
-                            }).toList(),
-                          ]),
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Colors.white,
+                                          Colors.white,
+                                        ],
+                                      ),
+                                    ),
+                                    child:
+                                        contents[items.indexOf(item)].content,
+                                  ),
+                                );
+                              }).toList(),
+                            ],
+                          ),
+                        ),
+                        const SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 10,
+                          ),
+                        ),
+                        const SliverToBoxAdapter(
+                          child: AdmobBanner(bannerName: BannerName.BOSLA),
+                        ),
+                        const SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: 10,
+                          ),
+                        ),
+                      ],
                     ),
-                    SliverToBoxAdapter(
-                        child: SizedBox(
-                      height: 10,
-                    )),
-                    SliverToBoxAdapter(
-                      child: AdmobBanner(bannerName: BannerName.BOSLA),
-                    ),
-                    SliverToBoxAdapter(
-                        child: SizedBox(
-                      height: 10,
-                    )),
-                  ]),
+                  ),
                 ),
               ),
-            ),
-          );
-        });
-      }),
+            );
+          },
+        );
+      },
     );
   }
 }
