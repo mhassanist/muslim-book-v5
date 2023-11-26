@@ -4,7 +4,9 @@ enum BannerName {
   BOSLA,
   COMPETITION,
   DownEditAzan,
-  DownStartCompetition,
+  downStartCompetition,
   TOP,
-  TheMiddleOfTheCompetition, INTERSTITIAL,
+  theMiddleOfTheCompetition,
+  INTERSTITIAL,
+  downCompetition1,
 }

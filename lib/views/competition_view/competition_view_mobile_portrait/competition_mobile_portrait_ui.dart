@@ -651,7 +651,7 @@ class CompetitionUI {
   }
 
   Widget faceBookAdsWidget(id) {
-    if (AdManager.showFacebookAds) {
+    if (locator<RemoteConfigService>().showFacebookInterstitial) {
       return Container(
         child: FacebookBannerAd(
           // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2964944860251047",

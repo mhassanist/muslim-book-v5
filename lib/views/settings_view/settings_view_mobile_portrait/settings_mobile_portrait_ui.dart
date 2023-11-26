@@ -3,6 +3,7 @@ import 'package:muslim_book/local_storage/local_storage_manager.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/azan_sound.dart';
 import 'package:muslim_book/network_utils/azan_apis.dart';
+import 'package:muslim_book/providers/azan_fajr_sounds_provider.dart';
 import 'package:muslim_book/providers/location_provider.dart';
 import 'package:muslim_book/providers/settings_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
@@ -14,6 +15,7 @@ import 'package:muslim_book/views/pick_azan_shiekh_view/pick_fajr_azan_shiekh_vi
 import 'package:muslim_book/widgets/general_wigets/loading_button.dart';
 import 'package:muslim_book/widgets/standardButton_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 import '../../../utils/sizing_info_extension.dart';
@@ -185,27 +187,34 @@ class SettingsMobilePortraitUi {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 2),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: Text(
-                  provider.pickedAzanShiekhMain[randomAzanId_value3] != null
-                      ? "${provider.pickedAzanShiekhMain[randomAzanId_value3]}"
-                      : "اختر شيخاً",
-                  // '${provider.pickedAzanShiekhMain}',
-                  //"${AppLocalizations.of(context)!.isEnglish() ? Constants.EN_SHIEKH_NAMES[0]["name"] : Constants.AR_SHIEKH_NAMES[0]["name"]}",
-                  // "${provider.pickedAzanShiekhMain[randomAzanId]["name"]}",
-                  style: TextStyle(
-                    color: Constants.PRIMARY_DARK_COLOR,
-                    fontWeight: FontWeight.w700,
-                    fontSize: sizeConfig.blockSizeHorizontal * 4,
+          if (locator<Prefs>().getAzanShiekh("3").isNotEmpty)
+            Container(
+              margin: EdgeInsets.only(top: sizeConfig.blockSizeVertical * 2),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8.0),
+                  child: Text(
+                    // '${locator<Prefs>().getAzanShiekh("3")}',
+                    // provider.pickedAzanShiekhMain[randomAzanId_value3] != null
+                    //     ? "${provider.pickedAzanShiekhMain[randomAzanId_value3]}"
+                    //     : "اختر شيخاً",
+
+                    // '${provider.pickedAzanShiekhMain}',
+
+                    "${AppLocalizations.of(context)!.isEnglish()
+                        ? Constants.EN_SHIEKH_NAMES[int.parse(locator<Prefs>().getAzanShiekh("3"))]["name"]
+                        : Constants.AR_SHIEKH_NAMES[int.parse(locator<Prefs>().getAzanShiekh("3"))]["name"]}",
+
+                    // "${provider.pickedAzanShiekhMain[randomAzanId]["name"]}",
+                    style: TextStyle(
+                      color: Constants.PRIMARY_DARK_COLOR,
+                      fontWeight: FontWeight.w700,
+                      fontSize: sizeConfig.blockSizeHorizontal * 4,
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
 
           // AnimatedCrossFade(
           //   firstChild: const SizedBox(),
@@ -265,6 +274,8 @@ class SettingsMobilePortraitUi {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
+                    // '${locator<Prefs>().getFajrAzanShiekh()} -- ${locator<Prefs>().getFajrAzanShiekhJSON()}',
+
                     provider.pickedFajrAzanShiekh.isNotEmpty
                         ? "${provider.pickedFajrAzanShiekh["name"]}"
                         : "شيخ اذان الفجر",
@@ -411,6 +422,7 @@ class SettingsMobilePortraitUi {
         builder: (BuildContext context) => PickFajrAzanShiekhView()));
     List<AzanSound>? sounds =
         (await LocalStorageManager().loadFajrAzanSoundsList());
+
     if (sounds != null && sounds.isNotEmpty) {
       provider.pickedFajrAzanShiekh = sounds[newShiekhIndex].toJSON();
     } else {

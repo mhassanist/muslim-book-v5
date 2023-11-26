@@ -107,7 +107,7 @@ class SettingsProvider extends ViewStateProvider {
 
       //fajr part
       String savedFajrShiekLocalJSON = locator<Prefs>().getFajrAzanShiekhJSON();
-      if (savedFajrShiekLocalJSON.isNotEmpty) {
+          if (savedFajrShiekLocalJSON.isNotEmpty) {
         String savedShiekhId = locator<Prefs>().getFajrAzanShiekh();
         if (savedShiekhId.isNotEmpty) {
           for (Map<String, dynamic> shiekh
@@ -126,6 +126,7 @@ class SettingsProvider extends ViewStateProvider {
       } else {
         _pickedFajrAzanShiekh = AzanSound.toMap(savedFajrShiekLocalJSON);
       }
+      notifyListeners();
     }
   }
 

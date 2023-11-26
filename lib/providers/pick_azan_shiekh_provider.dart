@@ -36,8 +36,13 @@ class PickAzanShiekhProvider extends ViewStateProvider {
       //save the same sheikh to all prayer times
       for (int i = 2; i <= 6; i++) {
         await locator<Prefs>().setAzanShiekh(
-            Constants.AZAN_SHIEKH_LOCAL_ID + i.toString(),
-            azanIndex.toString());
+          Constants.AZAN_SHIEKH_LOCAL_ID + i.toString(),
+          azanIndex.toString(),
+        );
+        await locator<Prefs>().setAzanShiekh(
+          Constants.AZAN_SHIEKH + i.toString(),
+          azanIndex.toString(),
+        );
       }
     } else {
       await locator<Prefs>().setAzanShiekh(

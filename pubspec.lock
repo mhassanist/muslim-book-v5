@@ -17,14 +17,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.9"
-  advertising_id:
-    dependency: "direct main"
-    description:
-      name: advertising_id
-      sha256: "49d7cf862c82dd5d4be921493da782ef321f3a86d461f63e7f2a0c86ba0cc95e"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.5.0"
   analyzer:
     dependency: transitive
     description:

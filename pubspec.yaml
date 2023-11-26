@@ -13,7 +13,8 @@ dependencies:
   # Now I'm trying to use one only
   # admob_flutter: ^3.0.0
   #  alice: ^0.1.5
-  advertising_id: ^2.5.0
+#  Used to get device ad id
+#  advertising_id: ^2.5.0
   android_alarm_manager_plus: ^3.0.0
   #  android_intent: ^2.0.2
   android_intent_plus: ^4.0.0

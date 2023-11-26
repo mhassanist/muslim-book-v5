@@ -175,45 +175,52 @@ class _SettingsViewMobilePortraitState extends State<SettingsViewMobilePortrait>
             // );
             contents = [
               ExpansionPanelItem(
-                  isExpanded: false,
-                  title: AppLocalizations.of(context)!.translate("alerts"),
-                  content: ui.alertsPart(),
-                  leading: const Icon(Icons.arrow_back_ios)),
+                isExpanded: false,
+                title: AppLocalizations.of(context)!.translate("alerts"),
+                content: ui.alertsPart(),
+                leading: const Icon(Icons.arrow_back_ios),
+              ),
               ExpansionPanelItem(
-                  isExpanded: false,
-                  title: AppLocalizations.of(context)!
-                      .translate("country_specify"),
-                  content: ui.countrySelectionPart(),
-                  leading: const Icon(Icons.arrow_back_ios)),
+                isExpanded: false,
+                title:
+                    AppLocalizations.of(context)!.translate("country_specify"),
+                content: ui.countrySelectionPart(),
+                leading: const Icon(Icons.arrow_back_ios),
+              ),
               ExpansionPanelItem(
-                  isExpanded: false,
-                  title: AppLocalizations.of(context)!
-                      .translate("calculation_type"),
-                  content: ui.azanMethodSelectionPart(),
-                  leading: const Icon(Icons.arrow_back_ios)),
+                isExpanded: false,
+                title:
+                    AppLocalizations.of(context)!.translate("calculation_type"),
+                content: ui.azanMethodSelectionPart(),
+                leading: const Icon(Icons.arrow_back_ios),
+              ),
               ExpansionPanelItem(
-                  isExpanded: false,
-                  title: AppLocalizations.of(context)!
-                      .translate("edite_tieme_prayer"),
-                  content: ui.azanTime(),
-                  leading: const Icon(Icons.arrow_back_ios)),
+                isExpanded: false,
+                title: AppLocalizations.of(context)!
+                    .translate("edite_tieme_prayer"),
+                content: ui.azanTime(),
+                leading: const Icon(Icons.arrow_back_ios),
+              ),
               ExpansionPanelItem(
-                  isExpanded: false,
-                  title: AppLocalizations.of(context)!.translate("azan_shiekh"),
-                  content: ui.azanShiekhPart(),
-                  leading: const Icon(Icons.arrow_back_ios)),
+                isExpanded: false,
+                title: AppLocalizations.of(context)!.translate("azan_shiekh"),
+                content: ui.azanShiekhPart(),
+                leading: const Icon(Icons.arrow_back_ios),
+              ),
               ExpansionPanelItem(
-                  isExpanded: false,
-                  content: ui.fajrAzanShiekhPart(),
-                  title: AppLocalizations.of(context)!
-                      .translate("azan_shiekh_fajr"),
-                  leading: const Icon(Icons.arrow_back_ios)),
+                isExpanded: false,
+                content: ui.fajrAzanShiekhPart(),
+                title:
+                    AppLocalizations.of(context)!.translate("azan_shiekh_fajr"),
+                leading: const Icon(Icons.arrow_back_ios),
+              ),
               ExpansionPanelItem(
-                  isExpanded: false,
-                  title: AppLocalizations.of(context)!
-                      .translate("general_settings"),
-                  content: ui.generalSettingsPart(show()),
-                  leading: const Icon(Icons.arrow_back_ios))
+                isExpanded: false,
+                title:
+                    AppLocalizations.of(context)!.translate("general_settings"),
+                content: ui.generalSettingsPart(show()),
+                leading: const Icon(Icons.arrow_back_ios),
+              ),
             ];
             return SafeArea(
               child: Scaffold(
@@ -231,7 +238,8 @@ class _SettingsViewMobilePortraitState extends State<SettingsViewMobilePortrait>
                           child: CustomExpansionPanelList(
                             expansionCallback: (int index, bool isExpanded) {
                               setState(() {
-                                items[index].isExpanded = !items[index].isExpanded;
+                                items[index].isExpanded =
+                                    !items[index].isExpanded;
                               });
                             },
                             children: [

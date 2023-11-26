@@ -109,16 +109,17 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
             ),
             onPressed: () {
               //on clicking save button
-              if (displayingFromAssets)
-                _fajrAzanSoundFromAssetsProvider
-                    ?.saveAssetsFajrSheikhId(context);
-              else {
-                AzanSound? azanSound = _moreFajrAzanSoundsProvider
-                    .getAzanSound(
-                        _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex);
+              if (displayingFromAssets) {
+                _fajrAzanSoundFromAssetsProvider?.saveAssetsFajrSheikhId(context);
+              } else {
+                final azanSound = _moreFajrAzanSoundsProvider.getAzanSound(
+                  _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex,
+                );
                 if (azanSound != null) {
                   _moreFajrAzanSoundsProvider.saveDownloadedFajrShiekhJson(
-                      azanSound.toJSON(), context);
+                    azanSound.toJSON(),
+                    context,
+                  );
                 }
               }
             },
@@ -204,7 +205,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
             child: ListView.builder(
                 itemCount: Constants.FAJR_SHIEKH_NAMES.length + 1,
                 itemBuilder: (context, index) {
-                  if (index == Constants.FAJR_SHIEKH_NAMES.length)
+                  if (index == Constants.FAJR_SHIEKH_NAMES.length) {
                     return Column(children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 10.0),
@@ -218,7 +219,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
                       ),
                       _buildGetMoreAzanSoundsButton(sizeConfig)
                     ]);
-                  else
+                  } else {
                     return ListTile(
                       selected: _fajrAzanSoundFromAssetsProvider!
                               .pickedAzanShiekhIndex ==
@@ -263,6 +264,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
                         ),
                       ),
                     );
+                  }
                 }),
           ),
         ],

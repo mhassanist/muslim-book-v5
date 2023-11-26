@@ -1,9 +1,7 @@
-import 'dart:io';
 import 'dart:ui';
 
-import 'package:advertising_id/advertising_id.dart';
+// import 'package:advertising_id/advertising_id.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:fancy_dialog/FancyGif.dart';
 import 'package:fancy_dialog/fancy_dialog.dart';
@@ -42,7 +40,6 @@ import 'package:muslim_book/utils/prefs.dart';
 import 'package:muslim_book/utils/sailor.dart';
 import 'package:muslim_book/utils/sizing_info_extension.dart';
 import 'package:muslim_book/views/splash_view/splash_view.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -71,9 +68,9 @@ Future<void> _initAdMob() async {
   // Admob.initialize();
   MobileAds.instance.initialize();
 
+  /// Used to get device ad id
   // final id = await AdvertisingId.id(true);
   // if (id != null) {
-  //
   //   // thing to add
   //   final configuration = RequestConfiguration(testDeviceIds: [id]);
   //   MobileAds.instance.updateRequestConfiguration(configuration);
@@ -83,14 +80,28 @@ Future<void> _initAdMob() async {
 Future<FirebaseRemoteConfig> _setupRemoteConfig() async {
   final remoteConfig = FirebaseRemoteConfig.instance;
   remoteConfig.setDefaults(<String, dynamic>{
-    'down_Competition_1': 'ca-app-pub-8586064191208277/2234874389',
-    'Sabha': 'ca-app-pub-8586064191208277/9405322350',
-    'Azkar': 'ca-app-pub-8586064191208277/2234874389',
-    'Bosla': 'ca-app-pub-8586064191208277/2234874389',
-    'Down_Edit_Azan': 'ca-app-pub-8586064191208277/6219411880',
-    'down_start_Competition': 'ca-app-pub-8586064191208277/4415375627',
-    'Top': 'ca-app-pub-8586064191208277/5354527555',
-    'The_middle_of_the_competition': 'ca-app-pub-8586064191208277/2784204532',
+    'downCompetition1': 'ca-app-pub-8586064191208277/2234874389',
+    'SEBHA': 'ca-app-pub-8586064191208277/9405322350',
+    'COMPETITION': 'ca-app-pub-8586064191208277/9405322350',
+    'AZKAR': 'ca-app-pub-8586064191208277/2234874389',
+    'BOSLA': 'ca-app-pub-8586064191208277/2234874389',
+    'DownEditAzan': 'ca-app-pub-8586064191208277/6219411880',
+    'downStartCompetition': 'ca-app-pub-8586064191208277/4415375627',
+    'TOP': 'ca-app-pub-8586064191208277/5354527555',
+    'theMiddleOfTheCompetition': 'ca-app-pub-8586064191208277/2784204532',
+
+    'downCompetition1_facebook': '679514076185741_968800320590447',
+    'COMPETITION_facebook': '679514076185741_968800320590447',
+    'SEBHA_facebook': '679514076185741_968800320590447',
+    'AZKAR_facebook': '679514076185741_968800320590447',
+    'BOSLA_facebook': '679514076185741_968800320590447',
+    'DownEditAzan_facebook': '679514076185741_968800320590447',
+    'downStartCompetition_facebook': '679514076185741_968800320590447',
+    'TOP_facebook': '679514076185741_968800320590447',
+    'theMiddleOfTheCompetition_facebook': '679514076185741_968800320590447',
+
+    'show_facebook_banner': true,
+    'show_facebook_interstitial': true,
   });
   try {
     // Using default duration to force fetching from remote server.

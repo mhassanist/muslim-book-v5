@@ -974,7 +974,7 @@ class _RamadanViewState extends State<RamadanView>
 
   @override
   void deactivate() {
-    if (AdManager.showFacebookAds) {
+    if (locator<RemoteConfigService>().showFacebookInterstitial) {
       FacebookInterstitialAd.loadInterstitialAd(
         // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
         placementId: locator<RemoteConfigService>().azanPopUpAdId,

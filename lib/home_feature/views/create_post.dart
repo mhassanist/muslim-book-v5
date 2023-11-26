@@ -5,6 +5,7 @@ import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 class CreatePostView extends StatefulWidget {
@@ -99,53 +100,65 @@ class _CreatePostViewState extends State<CreatePostView> {
                       const SizedBox(
                         height: 20,
                       ),
-                      InkWell(
-                        onTap: () {
-                          FocusScope.of(context).requestFocus(FocusNode());
 
-                          setState(() {
-                            loadingHere = true;
-                          });
-                          if (widget.postsChanges != null) {
-                            widget.postsChanges!
-                                .createPost(content, 1)
-                                .then((value) {
-                              Future.delayed(const Duration(seconds: 1), () {
-                                setState(() {
-                                  loadingHere = false;
-                                });
-                                if (widget.postsChanges != null) {
-                                  final snackBar = SnackBar(
-                                    content: Text(
-                                      widget.postsChanges!.message ?? '',
-                                    ),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
-                                }
-                                Navigator.of(context).pop();
-                              });
-                            });
-                          }
-                        },
-                        child: Container(
-                          width: 200,
-                          height: 45,
-                          decoration: BoxDecoration(
-                              color: darkish_green,
-                              borderRadius: BorderRadius.circular(15)),
+                      if (loadingHere)
+                        const SizedBox(
+                          height: 100,
                           child: Center(
-                            child: Text(
-                              AppLocalizations.of(context)!.translate("Post"),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                            child: Loading(),
+                          ),
+                        )
+                      else
+                        InkWell(
+                          onTap: () {
+                            if (loadingHere) {
+                              return;
+                            }
+                            FocusScope.of(context).requestFocus(FocusNode());
+
+                            setState(() {
+                              loadingHere = true;
+                            });
+                            if (widget.postsChanges != null) {
+                              widget.postsChanges!
+                                  .createPost(content, 1)
+                                  .then((value) {
+                                Future.delayed(const Duration(seconds: 1), () {
+                                  // setState(() {
+                                  //   loadingHere = false;
+                                  // });
+                                  if (widget.postsChanges != null) {
+                                    Navigator.of(context).pop();
+                                    // final snackBar = SnackBar(
+                                    //   content: Text(
+                                    //     widget.postsChanges!.message ?? '',
+                                    //   ),
+                                    // );
+                                    // ScaffoldMessenger.of(context)
+                                    //     .showSnackBar(snackBar);
+                                  }
+                                });
+                              });
+                            }
+                          },
+                          child: Container(
+                            width: 200,
+                            height: 45,
+                            decoration: BoxDecoration(
+                                color: darkish_green,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Center(
+                              child: Text(
+                                AppLocalizations.of(context)!.translate("Post"),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
                       const SizedBox(
                         height: 20,
                       ),

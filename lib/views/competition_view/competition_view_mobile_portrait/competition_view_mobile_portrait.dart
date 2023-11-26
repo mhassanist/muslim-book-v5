@@ -56,7 +56,7 @@ class _CompetitionViewMobilePortraitState
                 borderRadius: BorderRadius.all(Radius.circular(12))),
             content: AdWidgetEdit(
               title: "المسابقات",
-              bannerName: BannerName.TheMiddleOfTheCompetition,
+              bannerName: BannerName.theMiddleOfTheCompetition,
               buttomTitle: "مواصله اللعب",
               exit: go,
             ),

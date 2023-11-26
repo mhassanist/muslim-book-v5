@@ -85,8 +85,8 @@ class Prefs {
   String getFajrAzanShiekh() =>
       prefs!.getString(Constants.FAJR_AZAN_SHIEKH) ?? '';
 
-  Future<void> setAzanShiekh(String key, String azanIndex) async {
-    await prefs!.setString(key, azanIndex); //DOWNLOADED_SHEIKH_ID
+  Future<bool> setAzanShiekh(String key, String azanIndex) async {
+    return await prefs!.setString(key, azanIndex); //DOWNLOADED_SHEIKH_ID
     // await prefs!.setString(Constants.AZAN_SHIEKH, value);
   }
 
