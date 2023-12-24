@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../utils/locator.dart';
 
 class BaseView<T extends ChangeNotifier> extends StatefulWidget {
-  BaseView({
+  const BaseView({
     super.key,
     required this.builder,
     T? viewModel,
@@ -16,11 +16,11 @@ class BaseView<T extends ChangeNotifier> extends StatefulWidget {
   final Function(T)? onModelReady;
 
   @override
-  _BaseWidget<T> createState() => _BaseWidget<T>();
+  State<BaseView<T>> createState() => _BaseWidget<T>();
 }
 
 class _BaseWidget<T extends ChangeNotifier> extends State<BaseView<T>> {
-  T _viewModel = locator<T>();
+  final T _viewModel = locator<T>();
 
   @override
   void initState() {

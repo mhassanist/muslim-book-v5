@@ -120,19 +120,19 @@ class Constants {
     {"title": 'Angle Based', "id": "3"},
   ];
   static const List<Map<String, dynamic>> AR_SHIEKH_NAMES = [
-    {"name": "عبدالباسط عبدالصمد", "id": "1"},
-    {"name": 'مشاري بن راشد العفاسي', "id": "2"},
-    {"name": 'الحرم المكي', "id": "3"},
-    {"name": 'مصطفي إسماعيل', "id": "4"},
-    {"name": 'المسجد الأقصي (ناجي قزاز)', "id": "5"},
+    {"name": "عبدالباسط عبدالصمد", "id": "0"},
+    {"name": 'مشاري بن راشد العفاسي', "id": "1"},
+    {"name": 'الحرم المكي', "id": "2"},
+    {"name": 'مصطفي إسماعيل', "id": "3"},
+    {"name": 'المسجد الأقصي (ناجي قزاز)', "id": "4"},
   ];
 
   static const List<Map<String, dynamic>> EN_SHIEKH_NAMES = [
-    {"name": "Abdul Basit Abdul Samad", "id": "1"},
-    {"name": 'Mishary bin Rashid Al-Afasy', "id": "2"},
-    {"name": 'Grand Mosque in Mecca', "id": "3"},
-    {"name": 'Mustafa Ismael', "id": "4"},
-    {"name": 'Al-Aqsa Mosque (Naji Qazzaz)', "id": "5"},
+    {"name": "Abdul Basit Abdul Samad", "id": "0"},
+    {"name": 'Mishary bin Rashid Al-Afasy', "id": "1"},
+    {"name": 'Grand Mosque in Mecca', "id": "2"},
+    {"name": 'Mustafa Ismael', "id": "3"},
+    {"name": 'Al-Aqsa Mosque (Naji Qazzaz)', "id": "4"},
   ];
 
   static const List<Map<String, dynamic>> FAJR_SHIEKH_NAMES = [

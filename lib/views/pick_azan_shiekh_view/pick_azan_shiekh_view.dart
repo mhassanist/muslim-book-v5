@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:get/get.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/local_storage/local_storage_manager.dart';
@@ -76,28 +77,33 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
         Navigator.of(context).pop();
         return false;
       },
-      child: BaseView<PickAzanShiekhProvider>(onModelReady: (model) {
-        _azanSoundFromAssetsProvider = model;
-        _azanSoundFromAssetsProvider.loadSelectedShiekh(widget.azanId, context);
-      }, builder: (_, model, __) {
-        return SafeArea(
-          child: Scaffold(
-              appBar: _buildAppBar(context),
-              body: ResponsiveBuilder(builder: (context, sizeConfig) {
-                return FutureBuilder(
-                  future: LocalStorageManager.storage.ready,
-                  builder: (BuildContext context, snapshot) {
-                    if (snapshot.data == true) {
-                      //local storage ready
-                      return _buildAzanSoundsList(sizeConfig, widget.azanId);
-                    } else {
-                      return Container();
-                    }
-                  },
-                );
-              })),
-        );
-      }),
+      child: BaseView<PickAzanShiekhProvider>(
+        onModelReady: (model) {
+          _azanSoundFromAssetsProvider = model;
+          _azanSoundFromAssetsProvider.loadSelectedShiekh(
+              widget.azanId, context,
+          );
+        },
+        builder: (_, model, __) {
+          return SafeArea(
+            child: Scaffold(
+                appBar: _buildAppBar(context),
+                body: ResponsiveBuilder(builder: (context, sizeConfig) {
+                  return FutureBuilder(
+                    future: LocalStorageManager.storage.ready,
+                    builder: (BuildContext context, snapshot) {
+                      if (snapshot.data == true) {
+                        //local storage ready
+                        return _buildAzanSoundsList(sizeConfig, widget.azanId);
+                      } else {
+                        return Container();
+                      }
+                    },
+                  );
+                })),
+          );
+        },
+      ),
     );
   }
 
@@ -106,8 +112,9 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
       preferredSize: const Size.fromHeight(kToolbarHeight),
       child: AppBar(
         backgroundColor: const Color(0XFF347D53),
-        title: Text(
+        title: AutoSizeText(
           AppLocalizations.of(context)!.translate("select_shiekh"),
+          maxLines: 1,
           style: const TextStyle(fontWeight: FontWeight.w500),
         ),
         actions: <Widget>[

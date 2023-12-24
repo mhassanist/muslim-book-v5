@@ -44,6 +44,11 @@ class AzanSound {
         ? json.decode(savedShiekLocalJSON)
         : {};
   }
+
+  @override
+  String toString() {
+    return 'AzanSound{id: $id, fajr: $fajr, name: $name, key: $key, fileUrl: $fileUrl, localPath: $localPath}';
+  }
 }
 
 class AzanSoundsList {
