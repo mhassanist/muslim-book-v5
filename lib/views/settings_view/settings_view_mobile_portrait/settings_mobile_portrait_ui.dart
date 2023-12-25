@@ -3,7 +3,6 @@ import 'package:muslim_book/local_storage/local_storage_manager.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/azan_sound.dart';
 import 'package:muslim_book/network_utils/azan_apis.dart';
-import 'package:muslim_book/providers/azan_fajr_sounds_provider.dart';
 import 'package:muslim_book/providers/location_provider.dart';
 import 'package:muslim_book/providers/settings_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
@@ -15,7 +14,6 @@ import 'package:muslim_book/views/pick_azan_shiekh_view/pick_fajr_azan_shiekh_vi
 import 'package:muslim_book/widgets/general_wigets/loading_button.dart';
 import 'package:muslim_book/widgets/standardButton_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 import '../../../utils/sizing_info_extension.dart';
@@ -261,7 +259,20 @@ class SettingsMobilePortraitUi {
   }
 
   Widget fajrAzanShiekhPart() {
-    return Container(
+    final dataJsonIndex = locator<Prefs>().getFajrAzanShiekh();
+    print('AhmedLog $dataJsonIndex ===>>>');
+    late final Map<String, dynamic> jsonData;
+    try {
+      if (int.tryParse(dataJsonIndex) != null &&
+          int.tryParse(dataJsonIndex)! >= 0) {
+        jsonData = Constants.FAJR_SHIEKH_NAMES[int.parse(dataJsonIndex)];
+      } else {
+        jsonData = {};
+      }
+    } catch (_) {
+      jsonData = {};
+    }
+    return SizedBox(
       width: sizeConfig.blockSizeHorizontal * 90,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -275,9 +286,11 @@ class SettingsMobilePortraitUi {
                   padding: const EdgeInsets.only(bottom: 8.0),
                   child: Text(
                     // '${locator<Prefs>().getFajrAzanShiekh()} -- ${locator<Prefs>().getFajrAzanShiekhJSON()}',
-
+                    //
                     provider.pickedFajrAzanShiekh.isNotEmpty
                         ? "${provider.pickedFajrAzanShiekh["name"]}"
+                        : jsonData.isNotEmpty
+                        ? '${jsonData['name']}'
                         : "شيخ اذان الفجر",
                     style: TextStyle(
                         color: Constants.PRIMARY_DARK_COLOR,
@@ -418,8 +431,12 @@ class SettingsMobilePortraitUi {
   }
 
   void chooseFajrSheikh() async {
-    int newShiekhIndex = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (BuildContext context) => PickFajrAzanShiekhView()));
+    int newShiekhIndex = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) => PickFajrAzanShiekhView(),
+      ),
+    );
+
     List<AzanSound>? sounds =
         (await LocalStorageManager().loadFajrAzanSoundsList());
 

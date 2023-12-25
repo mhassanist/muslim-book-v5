@@ -136,7 +136,7 @@ class Constants {
   ];
 
   static const List<Map<String, dynamic>> FAJR_SHIEKH_NAMES = [
-    {"name": "مشاري بن راشد العفاسي", "id": "1"},
+    {"name": "مشاري بن راشد العفاسي", "id": "0"},
   ];
 
   static const List<Map<String, dynamic>> AR_AZAN_Mazhabs = [

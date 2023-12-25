@@ -19,8 +19,10 @@ import 'package:path/path.dart' show join;
 // if there is no data in a local database, show the sounds from assets
 //
 class PickFajrAzanShiekhView extends StatefulWidget {
+  const PickFajrAzanShiekhView({super.key});
+
   @override
-  _PickAzanShiekhViewState createState() => _PickAzanShiekhViewState();
+  State<PickFajrAzanShiekhView> createState() => _PickAzanShiekhViewState();
 }
 
 class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
