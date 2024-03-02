@@ -67,21 +67,39 @@ class _IslamicsViewState extends State<IslamicsView> {
   }
 
   @override
-  void deactivate() {
+  void dispose() {
     if (locator<RemoteConfigService>().showFacebookInterstitial) {
       FacebookInterstitialAd.loadInterstitialAd(
         // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
         placementId: locator<RemoteConfigService>().azanPopUpAdId,
         listener: (result, value) {
-          if (result == InterstitialAdResult.LOADED)
+          if (result == InterstitialAdResult.LOADED) {
             FacebookInterstitialAd.showInterstitialAd();
+          }
         },
       );
     } else {
       AdmobInterstitial interstitialAd = AdmobInterstitial();
       interstitialAd.createInterstitialAd();
     }
-
-    super.deactivate();
+    super.dispose();
   }
+  // @override
+  // void deactivate() {
+  //   if (locator<RemoteConfigService>().showFacebookInterstitial) {
+  //     FacebookInterstitialAd.loadInterstitialAd(
+  //       // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
+  //       placementId: locator<RemoteConfigService>().azanPopUpAdId,
+  //       listener: (result, value) {
+  //         if (result == InterstitialAdResult.LOADED)
+  //           FacebookInterstitialAd.showInterstitialAd();
+  //       },
+  //     );
+  //   } else {
+  //     AdmobInterstitial interstitialAd = AdmobInterstitial();
+  //     interstitialAd.createInterstitialAd();
+  //   }
+  //
+  //   super.deactivate();
+  // }
 }

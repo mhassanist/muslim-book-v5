@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:facebook_audience_network/facebook_audience_network.dart';
+import 'package:muslim_book/ads/admob_interstitial.dart';
 import 'package:muslim_book/azkar_feature/screens/azkar_categories_grid_screen.dart';
 import 'package:muslim_book/core/push_notification_service.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
@@ -9,6 +11,7 @@ import 'package:muslim_book/islamic_feature/views/islamic_post_details_from_noti
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/main.dart';
 import 'package:muslim_book/models/push_notification_model.dart';
+import 'package:muslim_book/network_utils/remote_config.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/quran/views/quran_section_screen.dart';
 import 'package:muslim_book/utils/Constants.dart';
@@ -503,15 +506,22 @@ class _StartViewMobilePortraitViewState
     Provider.of<UserProvider>(context, listen: false).selectedPage = position;
   }
 
-//  void openFaceBookAds() {
-//    FacebookInterstitialAd.loadInterstitialAd(
-//      placementId: locator<RemoteConfigService>().azanPopUpAdId,
-//      listener: (result, value) {
-//        if (result == InterstitialAdResult.LOADED) {
-//          FacebookInterstitialAd.showInterstitialAd();
-//        }
-//        SystemNavigator.pop();
-//      },
-//    );
-//  }
+ void openFaceBookAds() {
+   if (locator<RemoteConfigService>().showFacebookInterstitial) {
+     FacebookInterstitialAd.loadInterstitialAd(
+       // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
+       placementId: locator<RemoteConfigService>().azanPopUpAdId,
+       listener: (result, value) {
+         if (result == InterstitialAdResult.LOADED) {
+           FacebookInterstitialAd.showInterstitialAd();
+         }
+         if (result == InterstitialAdResult.ERROR) {
+         }
+       },
+     );
+   } else {
+     AdmobInterstitial interstitialAd = AdmobInterstitial();
+     interstitialAd.createInterstitialAd();
+   }
+ }
 }

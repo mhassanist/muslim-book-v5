@@ -57,22 +57,23 @@ class AzanHomeWidget extends StatelessWidget {
                       }
                       return Padding(
                         padding: EdgeInsets.symmetric(
-                            vertical: sizeConfig.blockSizeVertical * 3),
+                            vertical: sizeConfig.blockSizeVertical * 3,
+                        ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
-                                AppLocalizations.of(context)!
-                                        .translate("salah") +
-                                    " " +
-                                    AppLocalizations.of(context)!
-                                        .translate(nextSalah?.key ?? ''),
-                                // "صلاة ${nextSalah.title}",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize:
-                                        sizeConfig.blockSizeHorizontal * 5)),
+                              AppLocalizations.of(context)!.translate("salah") +
+                                  " " +
+                                  AppLocalizations.of(context)!.translate(
+                                    nextSalah?.key ?? '',
+                                  ),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: sizeConfig.blockSizeHorizontal * 5,
+                              ),
+                            ),
                             Text(
                                 "${nextSalah?.time} ${int.parse(nextSalah?.hours ?? '0') >= 12 ? AppLocalizations.of(context)!.translate("evening") : AppLocalizations.of(context)!.translate("morning")}",
                                 style: TextStyle(

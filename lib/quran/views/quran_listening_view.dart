@@ -132,7 +132,7 @@ class _QuranListeningViewState extends State<QuranListeningView> {
   }
 
   @override
-  void deactivate() {
+  void dispose() {
     if (locator<RemoteConfigService>().showFacebookInterstitial) {
       FacebookInterstitialAd.loadInterstitialAd(
         // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
@@ -149,6 +149,26 @@ class _QuranListeningViewState extends State<QuranListeningView> {
       AdmobInterstitial interstitialAd = AdmobInterstitial();
       interstitialAd.createInterstitialAd();
     }
-    super.deactivate();
+    super.dispose();
   }
+  // @override
+  // void deactivate() {
+  //   if (locator<RemoteConfigService>().showFacebookInterstitial) {
+  //     FacebookInterstitialAd.loadInterstitialAd(
+  //       // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
+  //       placementId: locator<RemoteConfigService>().azanPopUpAdId,
+  //       listener: (result, value) {
+  //         if (result == InterstitialAdResult.LOADED) {
+  //           FacebookInterstitialAd.showInterstitialAd();
+  //         }
+  //         if (result == InterstitialAdResult.ERROR) {
+  //         }
+  //       },
+  //     );
+  //   } else {
+  //     AdmobInterstitial interstitialAd = AdmobInterstitial();
+  //     interstitialAd.createInterstitialAd();
+  //   }
+  //   super.deactivate();
+  // }
 }

@@ -260,7 +260,6 @@ class SettingsMobilePortraitUi {
 
   Widget fajrAzanShiekhPart() {
     final dataJsonIndex = locator<Prefs>().getFajrAzanShiekh();
-    print('AhmedLog $dataJsonIndex ===>>>');
     late final Map<String, dynamic> jsonData;
     try {
       if (int.tryParse(dataJsonIndex) != null &&

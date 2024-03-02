@@ -32,22 +32,22 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: (MediaQuery.of(context).size.height / 1.8),
       width: (MediaQuery.of(context).size.width),
-      child: new Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           Container(
             alignment: Alignment.center,
             child: Text(
               AppLocalizations.of(context)!.translate("Exit") +
-                  this.widget.title,
+                  widget.title,
               style: GoogleFonts.almarai(
                 color: Constants.PRIMARY_DARK_COLOR,
                 fontWeight: FontWeight.bold,
@@ -55,7 +55,7 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           AdmobBanner(
@@ -64,7 +64,7 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
             height: 250,
           ),
           Container(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 5,
             ),
             child: Row(
@@ -79,12 +79,12 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
                       Navigator.pop(context);
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: Constants.PRIMARY_DARK_COLOR,
                         borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Colors.black12,
                             offset: Offset(5, 5),
@@ -94,8 +94,8 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
                       ),
                       child: Center(
                         child: Text(
-                          this.widget.buttomTitle,
-                          style: TextStyle(
+                          widget.buttomTitle,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
@@ -105,7 +105,7 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
@@ -119,13 +119,13 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
                           (widget.title ==
                               AppLocalizations.of(context)!
                                   .translate('competitions'))) {
-                        this.widget.exit?.call();
+                        widget.exit?.call();
                       } else {
                         Navigator.pop(context);
                       }
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         border: Border.all(
@@ -134,7 +134,7 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
                         ),
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Colors.black12,
                             offset: Offset(5, 5),
@@ -145,7 +145,7 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
                       child: Center(
                         child: Text(
                           AppLocalizations.of(context)!.translate("Exit_from"),
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Constants.PRIMARY_DARK_COLOR,
                             fontSize: 20,
                             fontWeight: FontWeight.w500,
@@ -158,7 +158,7 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
               ],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
         ],

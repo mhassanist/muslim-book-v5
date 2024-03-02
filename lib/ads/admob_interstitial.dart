@@ -9,7 +9,7 @@ class AdmobInterstitial {
   int maxFailedLoadAttempts = 3;
   late InterstitialAd? _interstitialAd;
   void createInterstitialAd() {
-    final AdRequest request = AdRequest(
+    const AdRequest request = AdRequest(
       keywords: <String>['foo', 'bar'],
       contentUrl: 'http://foo.com/bar.html',
       nonPersonalizedAds: true,
@@ -20,14 +20,12 @@ class AdmobInterstitial {
         request: request,
         adLoadCallback: InterstitialAdLoadCallback(
           onAdLoaded: (InterstitialAd ad) {
-            print('$ad loaded');
             _interstitialAd = ad;
             _numInterstitialLoadAttempts = 0;
             _interstitialAd!.setImmersiveMode(true);
             _showInterstitialAd();
           },
           onAdFailedToLoad: (LoadAdError error) {
-            print('InterstitialAd failed to load: $error.');
             _numInterstitialLoadAttempts += 1;
             _interstitialAd = null;
             if (_numInterstitialLoadAttempts < maxFailedLoadAttempts) {

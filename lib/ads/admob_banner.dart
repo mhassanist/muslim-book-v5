@@ -59,20 +59,20 @@ class _AdmobBannerState extends State<AdmobBanner> {
               setState(() {
                 isAdLoaded = true;
               });
-              // switch (result) {
-              //   case BannerAdResult.ERROR:
-              //     print("Error: $value");
-              //     break;
-              //   case BannerAdResult.LOADED:
-              //     print("Loaded: $value");
-              //     break;
-              //   case BannerAdResult.CLICKED:
-              //     print("Clicked: $value");
-              //     break;
-              //   case BannerAdResult.LOGGING_IMPRESSION:
-              //     print("Logging Impression: $value");
-              //     break;
-              // }
+              switch (result) {
+                case BannerAdResult.ERROR:
+                  debugPrint("FacebookBannerAd Error: $value");
+                  break;
+                case BannerAdResult.LOADED:
+                  debugPrint("FacebookBannerAd Loaded: $value");
+                  break;
+                case BannerAdResult.CLICKED:
+                  debugPrint("FacebookBannerAd Clicked: $value");
+                  break;
+                case BannerAdResult.LOGGING_IMPRESSION:
+                  debugPrint("FacebookBannerAd Logging Impression: $value");
+                  break;
+              }
             },
           ),
           if (!isAdLoaded)
