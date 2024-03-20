@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:advertising_id/advertising_id.dart';
+// import 'package:advertising_id/advertising_id.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:fancy_dialog/FancyGif.dart';
@@ -70,12 +70,12 @@ Future<void> _initAdMob() async {
 
   /// TODO: Need to be commit to avoid crashes
   /// Used to get device ad id (google_advertising_id)
-  final id = await AdvertisingId.id(true);
-  if (id != null) {
-    // thing to add
-    final configuration = RequestConfiguration(testDeviceIds: [id]);
-    MobileAds.instance.updateRequestConfiguration(configuration);
-  }
+  // final id = await AdvertisingId.id(true);
+  // if (id != null) {
+  //   // thing to add
+  //   final configuration = RequestConfiguration(testDeviceIds: [id]);
+  //   MobileAds.instance.updateRequestConfiguration(configuration);
+  // }
 }
 
 Future<FirebaseRemoteConfig> _setupRemoteConfig() async {

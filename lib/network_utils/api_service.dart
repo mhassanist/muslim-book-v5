@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_pretty_dio_logger/flutter_pretty_dio_logger.dart';
+import 'package:get/get.dart';
 import 'package:muslim_book/exceptions/failure.dart';
 import 'package:muslim_book/interceptors/connection_interceptor.dart';
 import 'package:muslim_book/interceptors/error_interceptor.dart';
@@ -50,44 +51,61 @@ class ApiService {
   }
 
   Future login(Map<String, dynamic> body) async {
-    var response = await _dio.post("users/login", data: body);
-    if (!(response.data is Failure)) {
-      UserModel model = UserModel.fromMap(response.data["data"]);
-      return model;
-    } else {
-      return response.data;
+    try {
+      var response = await _dio.post("users/login", data: body);
+      if (response.data is! Failure) {
+        return UserModel.fromMap(response.data["data"]);
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      e.printInfo(info: 'ApiService login');
     }
   }
 
   Future register(Map<String, dynamic> body) async {
-    var response = await _dio.post("users/register", data: body);
-    if (!(response.data is Failure)) {
-      UserModel model = UserModel.fromMap(response.data["data"]);
-      return model;
-    } else
-      return response.data;
+    try {
+      var response = await _dio.post("users/register", data: body);
+      if (response.data is! Failure) {
+        UserModel model = UserModel.fromMap(response.data["data"]);
+        return model;
+      } else {
+        return response.data;
+      }
+    }  catch (e) {
+      e.printInfo(info: 'ApiService register');
+    }
   }
 
   Future googleLogin(map) async {
-    var response = await _dio.post("users/google/login", data: map);
-    if (!(response.data is Failure)) {
-      UserModel model = UserModel.fromMap(response.data["data"]);
-      return model;
-    } else {
-      return response.data;
+    try {
+      var response = await _dio.post("users/google/login", data: map);
+      if (response.data is! Failure) {
+        UserModel model = UserModel.fromMap(response.data["data"]);
+        return model;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      e.printInfo(info: 'ApiService google login');
     }
   }
 
   Future getQuestions() async {
-    var response = await _dio.get("questions/daily",
-        options: Options(headers: {
-          "Authorization": "Bearer ${_userProvider.user.apiToken}"
-        }));
-    if (!(response.data is Failure)) {
-      QuestionsModel model = QuestionsModel.fromMap(response.data);
-      return model;
-    } else
-      return response.data;
+    try {
+      var response = await _dio.get("questions/daily",
+          options: Options(headers: {
+            "Authorization": "Bearer ${_userProvider.user.apiToken}"
+          }));
+      if (response.data is! Failure) {
+        QuestionsModel model = QuestionsModel.fromMap(response.data);
+        return model;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      e.printInfo(info: 'ApiService getQuestions');
+    }
   }
 
   Future postAnswer(Map<String, dynamic> map) async {
@@ -104,8 +122,7 @@ class ApiService {
     try {
       var resource = await http.post(
         // Uri.https('${Constants.BASE_URL}answers'),
-        Uri.https(
-            '${Constants.BASE_API_URL}', '${Constants.BASE_API_PATH}answers'),
+        Uri.https(Constants.BASE_API_URL, '${Constants.BASE_API_PATH}answers'),
         body: map,
         headers: {
           "Authorization": "Bearer ${_userProvider.user.apiToken}",
@@ -125,39 +142,53 @@ class ApiService {
   }
 
   Future faceBookLogging(map) async {
-    var response = await _dio.post("users/facebook/login", data: map);
-    if (!(response.data is Failure)) {
-      UserModel model = UserModel.fromMap(response.data["data"]);
-      return model;
-    } else {
-      return response.data;
+    try {
+      var response = await _dio.post("users/facebook/login", data: map);
+      if (response.data is! Failure) {
+        UserModel model = UserModel.fromMap(response.data["data"]);
+        return model;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      e.printInfo(info: 'ApiService faceBookLogging');
     }
   }
 
   Future<TopModel?> getTop() async {
-    var response = await _dio.get("users/top/11",
-        options: Options(headers: {
-          "Authorization": 'Bearer ${_userProvider.user.apiToken}',
-        }));
-    //print(response.data);
-    if (!(response.data is Failure)) {
-      TopModel model = TopModel.fromMap(response.data);
-      return model;
-    } else {
+    try {
+      var response = await _dio.get("users/top/11",
+          options: Options(headers: {
+            "Authorization": 'Bearer ${_userProvider.user.apiToken}',
+          }));
+      //print(response.data);
+      if (response.data is! Failure) {
+        TopModel model = TopModel.fromMap(response.data);
+        return model;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      e.printInfo(info: 'ApiService getTop');
       return null;
     }
   }
 
   Future<TopModel?> getTasbeehTop() async {
-    var response = await _dio.get("reminds/top/11",
-        options: Options(headers: {
-          "Authorization": 'Bearer ${_userProvider.user.apiToken}',
-        }));
-    //print(response.data);
-    if (!(response.data is Failure)) {
-      TopModel model = TopModel.fromMap(response.data);
-      return model;
-    } else {
+    try {
+      var response = await _dio.get("reminds/top/11",
+          options: Options(headers: {
+            "Authorization": 'Bearer ${_userProvider.user.apiToken}',
+          }));
+      //print(response.data);
+      if (response.data is! Failure) {
+        TopModel model = TopModel.fromMap(response.data);
+        return model;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      e.printInfo(info: 'ApiService getTasbeehTop');
       return null;
     }
   }
@@ -184,36 +215,41 @@ class ApiService {
     }
   }
 
-  Future<FacebookModel> faceBookAccountDetails(token) async {
-    // var response = await http.get(Uri.https(
-    //     'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=$token'));
-    var response = await http.get(
-      Uri.https('graph.facebook.com', '/v16.0/me', {
-        "fields": "name,first_name,last_name,email,picture",
-        "access_token": "$token"
-      }),
-    );
-    FacebookModel model = FacebookModel.fromJson(response.body);
-    // final graphResponse = await http.get(Uri.https(
-    //   'https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${token}',
-    // ));
-    final graphResponse = await http.get(
-      Uri.https('graph.facebook.com', '/v16.0/me', {
-        "fields":
-        "name,picture.width(800).height(800),first_name,last_name,email",
-        "access_token": "$token"
-      }),
-    );
+  Future<FacebookModel?> faceBookAccountDetails(token) async {
+    try {
+      // var response = await http.get(Uri.https(
+      //     'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email,picture&access_token=$token'));
+      var response = await http.get(
+        Uri.https('graph.facebook.com', '/v16.0/me', {
+          "fields": "name,first_name,last_name,email,picture",
+          "access_token": "$token"
+        }),
+      );
+      FacebookModel model = FacebookModel.fromJson(response.body);
+      // final graphResponse = await http.get(Uri.https(
+      //   'https://graph.facebook.com/v2.12/me?fields=name,picture.width(800).height(800),first_name,last_name,email&access_token=${token}',
+      // ));
+      final graphResponse = await http.get(
+        Uri.https('graph.facebook.com', '/v16.0/me', {
+          "fields":
+          "name,picture.width(800).height(800),first_name,last_name,email",
+          "access_token": "$token"
+        }),
+      );
 
-    Map ddddv = json.decode(graphResponse.body);
-    //print(graphResponse.body);
-    //print("--------------");
-    //print(response.body);
-    model.image = ddddv['picture']['data']['url'];
-    //print(ddddv['picture']['data']['url']);
-    //print("--------------");
-    //print(model.image);
-    return model;
+      Map ddddv = json.decode(graphResponse.body);
+      //print(graphResponse.body);
+      //print("--------------");
+      //print(response.body);
+      model.image = ddddv['picture']['data']['url'];
+      //print(ddddv['picture']['data']['url']);
+      //print("--------------");
+      //print(model.image);
+      return model;
+    } catch (e) {
+      e.printInfo(info: 'ApiService FacebookModel');
+      return null;
+    }
   }
 
   Future getCountries(String code) async {
@@ -234,16 +270,22 @@ class ApiService {
   }
 
   Future editProfile(Map<String, dynamic> body) async {
-    var response = await _dio.patch("users/${_userProvider.user.id}",
-        data: body,
-        options: Options(headers: {
-          "Authorization": 'Bearer ${_userProvider.user.apiToken}',
-        }));
-    if (!(response.data is Failure)) {
-      UserModel model = UserModel.fromMap(response.data["data"]);
-      return model;
-    } else
-      return response.data;
+    try {
+      var response = await _dio.patch("users/${_userProvider.user.id}",
+          data: body,
+          options: Options(headers: {
+            "Authorization": 'Bearer ${_userProvider.user.apiToken}',
+          }));
+      if (response.data is! Failure) {
+        UserModel model = UserModel.fromMap(response.data["data"]);
+        return model;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      e.printInfo(info: 'ApiService editProfile');
+      return null;
+    }
   }
 
   Future<bool> updateSebhaCount() async {
@@ -259,7 +301,7 @@ class ApiService {
       );
       return true;
     } catch (e) {
-      print("arrived to updateUserCount ${e}");
+      e.printInfo(info: 'ApiService updateSebhaCount => arrived to updateUserCount $e');
       return false;
     }
   }
@@ -277,7 +319,7 @@ class ApiService {
       TasabeehModel model = TasabeehModel.fromMap(res.data);
       return model.tasbeehList;
     } catch (e) {
-      print("sebha error is $e");
+      e.printInfo(info: 'ApiService getTasbeehList => $e');
       return [];
     }
   }
@@ -290,7 +332,9 @@ class ApiService {
             "Authorization": 'Bearer ${_userProvider.user.apiToken}',
           }));
       return true;
-    } catch (e) {}
+    } catch (e) {
+      e.printInfo(info: 'ApiService addNewTasbeeh');
+    }
     return false;
   }
 
@@ -304,6 +348,7 @@ class ApiService {
       List<SebhaTopModelData> model = SebhaTopModel.fromMap(res.data).list;
       return model;
     } catch (e) {
+      e.printInfo(info: 'ApiService getTopSebha');
       return [];
     }
   }
@@ -321,6 +366,7 @@ class ApiService {
       SebhaTopModelData model = SebhaTopModelData.fromMap(res.data["data"]);
       return model;
     } catch (e) {
+      e.printInfo(info: 'ApiService getSebhaProfile');
       return SebhaTopModelData();
     }
   }

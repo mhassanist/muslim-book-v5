@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
 import 'package:muslim_book/home_feature/controllers/providers_get_post.dart';
@@ -366,22 +367,26 @@ class HomePage extends ConsumerWidget {
 
 
   Future checkNotificationPermissionAndInvokeMethod() async {
-    /// TODO: need to fix crash
+    /// TODO: need to fix crash (Done) => Need test
     /// https://console.firebase.google.com/project/muslim-book-ab937/crashlytics/app/android:com.muslim_book.muslim_book/issues/bba63a3e9edf6891d72565f96a6c5883?time=last-seven-days&types=crash&sessionEventKey=65F93576035300212CEFE1B6D56E8144_1926751953138626893
-    await Permission.notification.isDenied.then((value) async {
-      if (value) {
-        await Permission.notification.request();
-        if (!await Permission.notification.isDenied) {
-          try {
-            await Constants.platform.invokeMethod("fireAzan");
-          } catch (e) {
-            if (kDebugMode) {
-              print('$e');
+    try {
+      await Permission.notification.isDenied.then((value) async {
+        if (value) {
+          await Permission.notification.request();
+          if (!await Permission.notification.isDenied) {
+            try {
+              await Constants.platform.invokeMethod("fireAzan");
+            } catch (e) {
+              if (kDebugMode) {
+                print('$e');
+              }
             }
           }
         }
-      }
-    });
+      });
+    } catch (e) {
+      e.printInfo(info: 'Almost, another Permission.notification request is running',);
+    }
   }
 
   Widget buildPostItem(Post _post) {
