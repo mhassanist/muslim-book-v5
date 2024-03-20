@@ -207,6 +207,7 @@ class _AdjustBatteryViewState extends State<AdjustBatteryView>
   }
 
   _checkBattery(context) async {
+    /// TODO: Need to fix to avoid crashes
     Constants.platform.invokeMethod("checkBatteryEditing").then((result) async {
       if (result) {
         goToNextPage(context);

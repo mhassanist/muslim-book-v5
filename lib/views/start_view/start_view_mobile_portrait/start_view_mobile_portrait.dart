@@ -51,6 +51,9 @@ class _StartViewMobilePortraitViewState
 
   @override
   void initState() {
+    /// TODO: Need to fix crash
+    /// Null check operator used on a null value
+    /// https://console.firebase.google.com/project/muslim-book-ab937/crashlytics/app/android:com.muslim_book.muslim_book/issues/47ca52f70117154164fdd5e218968ae4?time=last-seven-days&types=crash&versions=4.5.9%20(86);4.5.9%20(85)&sessionEventKey=65FA6BD5029B00167A97ECE83220EF99_1926750034962515725
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await PushNotificationService().initialise();
       await PushNotificationService().initNotification(context);
@@ -146,8 +149,8 @@ class _StartViewMobilePortraitViewState
   }
 
   checkPermissions() async {
-    var checkBattery =
-        await Constants.platform.invokeMethod("checkBatteryEditing");
+    /// TODO: Fix Crash
+    var checkBattery = await Constants.platform.invokeMethod("checkBatteryEditing");
     if (!checkBattery) {
       Get.dialog(AdjustBatteryView(isStart: false));
       setState(() {

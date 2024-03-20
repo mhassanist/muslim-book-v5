@@ -24,6 +24,9 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/// TODO: Need To Fix
+/// TODO: Context.startForegroundService() did not then call Service.startForeground(): ServiceRecord
+/// https://console.firebase.google.com/project/muslim-book-ab937/crashlytics/app/android:com.muslim_book.muslim_book/issues/57e81623525a3c96913d01929e34b333?time=last-seven-days&types=crash&versions=4.5.9%20(86);4.5.9%20(85)&sessionEventKey=65FA730D02BB00014BE4962ADF9F8A05_1926757980284820822
 public class OverLayService extends Service {
     private String TAG = "MyService";
     public static boolean isServiceRunning;

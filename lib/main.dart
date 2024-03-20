@@ -68,6 +68,7 @@ Future<void> _initAdMob() async {
   // Admob.initialize();
   MobileAds.instance.initialize();
 
+  /// TODO: Need to be commit to avoid crashes
   /// Used to get device ad id (google_advertising_id)
   final id = await AdvertisingId.id(true);
   if (id != null) {

@@ -19,6 +19,7 @@ dependencies:
   #  android_intent: ^2.0.2
   android_intent_plus: ^4.0.0
   animated_text_kit: ^4.2.2
+  # TODO: Need to be updated => To Fix crashes
   audioplayers: ^1.1.1
   auto_size_text: ^3.0.0
   audio_service: ^0.18.9

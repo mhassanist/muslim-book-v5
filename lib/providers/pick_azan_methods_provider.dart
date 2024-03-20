@@ -105,8 +105,8 @@ class PickAzanMethodsProvider extends ViewStateProvider {
     Get.find<AzanController>().setNextSalah();
     setViewState(ViewState.Idle);
     locator<Prefs>().setShowSettings(true);
-    var checkBattery =
-        await Constants.platform.invokeMethod("checkBatteryEditing");
+    /// TODO: Need to Fix crash
+    var checkBattery = await Constants.platform.invokeMethod("checkBatteryEditing");
     if (!checkBattery)
       Get.dialog(AdjustBatteryView(isStart: true ));
     else {

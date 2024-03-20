@@ -68,6 +68,7 @@ class _SplashViewState extends State<SplashView>
     } catch (e) {
       e.printError();
     }
+    /// TODO: Need to Fix crash
     await Constants.platform.invokeMethod("checkBatteryEditing");
 
     if (await locator<SettingsApis>().getAppVersion()) {

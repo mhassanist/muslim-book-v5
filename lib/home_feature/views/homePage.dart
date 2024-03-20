@@ -366,6 +366,8 @@ class HomePage extends ConsumerWidget {
 
 
   Future checkNotificationPermissionAndInvokeMethod() async {
+    /// TODO: need to fix crash
+    /// https://console.firebase.google.com/project/muslim-book-ab937/crashlytics/app/android:com.muslim_book.muslim_book/issues/bba63a3e9edf6891d72565f96a6c5883?time=last-seven-days&types=crash&sessionEventKey=65F93576035300212CEFE1B6D56E8144_1926751953138626893
     await Permission.notification.isDenied.then((value) async {
       if (value) {
         await Permission.notification.request();
@@ -380,7 +382,6 @@ class HomePage extends ConsumerWidget {
         }
       }
     });
-
   }
 
   Widget buildPostItem(Post _post) {
