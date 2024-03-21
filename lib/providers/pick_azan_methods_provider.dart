@@ -8,6 +8,7 @@ import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
 import 'package:muslim_book/views/azan_settings_views/adjust_battery_view.dart';
 import 'package:get/get.dart';
+import 'package:optimization_battery/optimization_battery.dart';
 
 class PickAzanMethodsProvider extends ViewStateProvider {
   Map<String, dynamic> _pickedMazhab = {};
@@ -105,11 +106,12 @@ class PickAzanMethodsProvider extends ViewStateProvider {
     Get.find<AzanController>().setNextSalah();
     setViewState(ViewState.Idle);
     locator<Prefs>().setShowSettings(true);
-    /// TODO: Need to Fix crash
-    var checkBattery = await Constants.platform.invokeMethod("checkBatteryEditing");
-    if (!checkBattery)
-      Get.dialog(AdjustBatteryView(isStart: true ));
-    else {
+    /// TODO: Need to Fix crash (Done) => Need test
+    // var checkBattery = await Constants.platform.invokeMethod("checkBatteryEditing");
+    var checkBattery = await OptimizationBattery.isIgnoringBatteryOptimizations();
+    if (!checkBattery) {
+      Get.dialog(const AdjustBatteryView(isStart: true ));
+    } else {
       locator<Prefs>().setShowSettings(true);
       locator<Prefs>().setIsFirstTime(false);
       Get.offAllNamed("/start_view");
@@ -232,9 +234,5 @@ class PickAzanMethodsProvider extends ViewStateProvider {
       }
     }
     return index;
-  }
-  @override
-  void dispose() {
-     super.dispose();
   }
 }

@@ -5,6 +5,7 @@ import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:optimization_battery/optimization_battery.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../utils/sizing_info_extension.dart';
 
@@ -207,8 +208,8 @@ class _AdjustBatteryViewState extends State<AdjustBatteryView>
   }
 
   _checkBattery(context) async {
-    /// TODO: Need to fix to avoid crashes
-    Constants.platform.invokeMethod("checkBatteryEditing").then((result) async {
+    // Constants.platform.invokeMethod("checkBatteryEditing");
+    OptimizationBattery.isIgnoringBatteryOptimizations().then((result) async {
       if (result) {
         goToNextPage(context);
       }

@@ -11,6 +11,7 @@ import 'package:muslim_book/ramadan/models/ramadan_data.dart';
 import 'package:muslim_book/ramadan/provider/ramadan_provider.dart';
 import 'package:muslim_book/ramadan/utils/helper_methods.dart';
 import 'package:muslim_book/ramadan/views/ramadan_mobile_portrait_ui.dart';
+import 'package:muslim_book/text_styles.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/expand_widget/custom_expansion_tile.dart';
 import 'package:muslim_book/utils/expand_widget/custom_expansion_tile2.dart';
@@ -23,7 +24,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -106,7 +106,7 @@ class _RamadanViewState extends State<RamadanView>
               elevation: 0,
               title: Text(
                 "رمضان",
-                style: GoogleFonts.almarai(
+                style: almaraiTextStyle?.copyWith(
                   fontSize: ScreenUtil().setSp(25),
                   color: Constants.PRIMARY_DARK_COLOR,
                   fontWeight: FontWeight.bold,

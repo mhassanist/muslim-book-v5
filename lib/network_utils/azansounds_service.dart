@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:muslim_book/models/azan_sound.dart';
 // import 'package:muslim_book/sebha_feature/models/sebha_top_model.dart';
 // import 'package:muslim_book/sebha_feature/online_sebha/models/tasabeeh_model.dart';
@@ -27,12 +28,17 @@ class AzanSoundsAPI {
   }
 
   Future requestAzanSounds() async {
-    var response = await _dio.get("azan/list");
-    if (response.data is! Failure) {
-      List<AzanSound> models =  AzanSoundsList().fromJson(response.data["data"]);
-      return models;
-    } else {
-      return response.data;
+    try {
+      var response = await _dio.get("azan/list");
+      if (response.data is! Failure) {
+        List<AzanSound> models = AzanSoundsList().fromJson(
+            response.data["data"]);
+        return models;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      e.printInfo(info: 'AzanSoundsAPI requestAzanSounds');
     }
   }
 

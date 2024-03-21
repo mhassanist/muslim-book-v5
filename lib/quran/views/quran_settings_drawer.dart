@@ -1,13 +1,12 @@
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/quran/provider/quran_provider.dart';
 import 'package:muslim_book/quran/views/quran_settings_generated_list.dart';
+import 'package:muslim_book/text_styles.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
-// import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class QuranSettingsDrawer extends StatefulWidget {
@@ -57,10 +56,11 @@ class _QuranSettingsDrawerState extends State<QuranSettingsDrawer> {
                 width: double.infinity,
                 child: Text(
                   AppLocalizations.of(context)!.translate("quran_setting"),
-                  style: GoogleFonts.almarai(
+                  style: almaraiTextStyle?.copyWith(
                       color: Theme.of(context).primaryColorDark,
                       fontWeight: FontWeight.bold,
-                      fontSize: ScreenUtil().setSp(23)),
+                      fontSize: ScreenUtil().setSp(23),
+                  ),
                 ),
               ),
             ),

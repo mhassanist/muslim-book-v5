@@ -1,4 +1,3 @@
-import 'package:muslim_book/ads/ad_manager.dart';
 import 'package:muslim_book/ads/admob_interstitial.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
@@ -9,6 +8,7 @@ import 'package:muslim_book/quran/views/quran_loading_view.dart';
 import 'package:muslim_book/quran/views/quran_settings_drawer.dart';
 import 'package:muslim_book/quran/views/suras_view.dart';
 import 'package:muslim_book/quran/widgets/retry_view_widget.dart';
+import 'package:muslim_book/text_styles.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/widgets/share_dialog.dart';
 import 'package:facebook_audience_network/ad/ad_interstitial.dart';
@@ -16,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class QuranListeningView extends StatefulWidget {
@@ -51,15 +50,15 @@ class _QuranListeningViewState extends State<QuranListeningView> {
             Provider.of<QuranProvider>(context).viewState != ViewState.Loading
                 ? Text(
                     AppLocalizations.of(context)!.translate("moshaf"),
-                    style: GoogleFonts.almarai(
-                      fontSize: ScreenUtil().setSp(25),
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
+                    style: almaraiTextStyle?.copyWith(
+                        fontSize: ScreenUtil().setSp(25),
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
                     ),
                   )
                 : Text(
                     AppLocalizations.of(context)!.translate("Loading_moshaf"),
-                    style: GoogleFonts.almarai(
+                    style: almaraiTextStyle?.copyWith(
                       fontSize: ScreenUtil().setSp(25),
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

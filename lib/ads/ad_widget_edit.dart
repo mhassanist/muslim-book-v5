@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
+import 'package:muslim_book/text_styles.dart';
 import 'package:muslim_book/utils/Constants.dart';
 
 class AdWidgetEdit extends StatefulWidget {
@@ -21,7 +21,7 @@ class AdWidgetEdit extends StatefulWidget {
   });
 
   @override
-  _AdWidgetEditState createState() => _AdWidgetEditState();
+  State<AdWidgetEdit> createState() => _AdWidgetEditState();
 }
 
 class _AdWidgetEditState extends State<AdWidgetEdit> {
@@ -48,11 +48,7 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
             child: Text(
               AppLocalizations.of(context)!.translate("Exit") +
                   widget.title,
-              style: GoogleFonts.almarai(
-                color: Constants.PRIMARY_DARK_COLOR,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
+              style: almaraiTextStyle,
             ),
           ),
           const SizedBox(

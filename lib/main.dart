@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-// import 'package:advertising_id/advertising_id.dart';
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:fancy_dialog/FancyGif.dart';
@@ -34,6 +33,7 @@ import 'package:muslim_book/quran/utils/quran_audio_handler.dart';
 import 'package:muslim_book/ramadan/provider/ramadan_provider.dart';
 import 'package:muslim_book/sebha_feature/online_sebha/controllers/online_sebha_controller.dart';
 import 'package:muslim_book/sebha_feature/providers/sebha_provider.dart';
+import 'package:muslim_book/text_styles.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
@@ -68,7 +68,7 @@ Future<void> _initAdMob() async {
   // Admob.initialize();
   MobileAds.instance.initialize();
 
-  /// TODO: Need to be commit to avoid crashes
+  /// Need to be commit to avoid crashes
   /// Used to get device ad id (google_advertising_id)
   // final id = await AdvertisingId.id(true);
   // if (id != null) {
@@ -132,6 +132,9 @@ Future<void> main() async {
 
   /// Ads
   _initAdMob();
+
+  /// init google font text to handle no connection
+  await initGoogleFontsTextStyles();
 
   /// Make App Portrait
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -630,9 +633,9 @@ class _MyAppState extends State<MyApp> {
             return localeLoaded;
           },
           theme: ThemeData(
-            textTheme: GoogleFonts.almaraiTextTheme(
-              Theme.of(context).textTheme,
-            ),
+            textTheme: almaraiTextTheme != null
+                ? GoogleFonts.almaraiTextTheme(Theme.of(context).textTheme)
+                : null,
             primaryColor: Constants.PRIMARY_COLOR,
             primaryColorDark: Constants.PRIMARY_DARK_COLOR,
             canvasColor: Constants.CANVAS_COLOR,

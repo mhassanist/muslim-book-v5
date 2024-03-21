@@ -29,6 +29,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:launch_review/launch_review.dart';
+import 'package:optimization_battery/optimization_battery.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -62,7 +63,6 @@ class _StartViewMobilePortraitViewState
 
       final notificationAppLaunchDetails = await flutterLocalNotificationsPlugin
           .getNotificationAppLaunchDetails();
-      print(notificationAppLaunchDetails);
       if (notificationAppLaunchDetails != null &&
           notificationAppLaunchDetails.didNotificationLaunchApp == true) {
         Map<String, dynamic> dataa = jsonDecode(
@@ -149,10 +149,9 @@ class _StartViewMobilePortraitViewState
   }
 
   checkPermissions() async {
-    /// TODO: Fix Crash
-    var checkBattery = await Constants.platform.invokeMethod("checkBatteryEditing");
+    var checkBattery = await OptimizationBattery.isIgnoringBatteryOptimizations();
     if (!checkBattery) {
-      Get.dialog(AdjustBatteryView(isStart: false));
+      Get.dialog(const AdjustBatteryView(isStart: false));
       setState(() {
         isAdd = true;
       });

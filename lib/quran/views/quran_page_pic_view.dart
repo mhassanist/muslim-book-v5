@@ -3,10 +3,10 @@ import 'dart:typed_data';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/quran/provider/quran_pages_pic_bloc.dart';
+import 'package:muslim_book/text_styles.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -77,7 +77,7 @@ class _QuranPagePicViewState extends State<QuranPagePicView>
       return AppScaffold(
         title: Text(
           AppLocalizations.of(context)!.translate("Loading_moshaf"),
-          style: GoogleFonts.almarai(
+          style: almaraiTextStyle?.copyWith(
             fontSize: 20,
             color: Colors.white,
             fontWeight: FontWeight.bold,

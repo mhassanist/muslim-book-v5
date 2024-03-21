@@ -1,4 +1,5 @@
 
+import 'package:get/get.dart';
 import 'package:muslim_book/exceptions/failure.dart';
 import 'package:muslim_book/interceptors/connection_interceptor.dart';
 import 'package:muslim_book/interceptors/error_interceptor.dart';
@@ -21,14 +22,18 @@ class RamadanCannonAPI {
   }
 
   Future requestRamadanCannon() async {
-    var response = await _dio.get("ramadan/mp3/2");
-    if (!(response.data is Failure)) {
-      List<RamadanSoundsModel> model=List<RamadanSoundsModel>.from( response.data["data"].map((x) => RamadanSoundsModel.fromJson(x)));
-      return model;
-    } else {
-      return response.data;
+    try {
+      var response = await _dio.get("ramadan/mp3/2");
+      if (response.data is! Failure) {
+        List<RamadanSoundsModel> model = List<RamadanSoundsModel>.from(
+            response.data["data"].map((x) => RamadanSoundsModel.fromJson(x)));
+        return model;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      e.printInfo(info: 'RamadanCannonAPI requestRamadanCannon');
     }
-
   }
 
 }

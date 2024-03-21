@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:muslim_book/text_styles.dart';
 
 class AppScaffoldTitleWidget extends StatelessWidget {
   const AppScaffoldTitleWidget({
@@ -13,7 +13,7 @@ class AppScaffoldTitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: GoogleFonts.almarai(
+      style: almaraiTextStyle?.copyWith(
         color: Colors.white,
         fontWeight: FontWeight.bold,
         fontSize: 23,
