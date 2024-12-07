@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class RetryViewWidget extends StatefulWidget {
   final ViewStateProvider provider;
-  final Function? function;
+  final VoidCallback? function;
   final String text;
 
   const RetryViewWidget({

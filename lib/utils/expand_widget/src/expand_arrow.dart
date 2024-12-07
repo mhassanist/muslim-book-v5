@@ -84,6 +84,7 @@ class ExpandArrow extends StatelessWidget {
     final arrow = InkResponse(
       containedInkWell: isNotIcon,
       highlightShape: isNotIcon ? BoxShape.rectangle : BoxShape.circle,
+      onTap: onTap?.call,
       child: Padding(
         padding: padding ??
             EdgeInsets.all(expandArrowStyle == ExpandArrowStyle.text ? 8 : 4),
@@ -96,15 +97,15 @@ class ExpandArrow extends StatelessWidget {
                 child: Icon(
                   icon ?? Icons.expand_more,
                   color:
-                      arrowColor ?? Theme.of(context).textTheme.caption!.color,
+                      arrowColor ?? Theme.of(context).textTheme.bodySmall!.color,
                   size: arrowSize,
                 ),
               ),
             if (isNotIcon) ...[
               const SizedBox(width: 2.0),
               DefaultTextStyle(
-                style: Theme.of(context).textTheme.subtitle2!.copyWith(
-                      color: Theme.of(context).textTheme.caption!.color,
+                style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                      color: Theme.of(context).textTheme.bodySmall!.color,
                     ),
                 child: Text(
                   capitalArrowText == true
@@ -118,7 +119,6 @@ class ExpandArrow extends StatelessWidget {
           ],
         ),
       ),
-      onTap: onTap?.call,
     );
 
     return expandArrowStyle != ExpandArrowStyle.icon

@@ -249,8 +249,8 @@ class _ExpandTextState extends State<ExpandText>
       child: DefaultTextStyle(
         style: Theme.of(context)
             .textTheme
-            .bodyText2!
-            .copyWith(color: Theme.of(context).textTheme.caption!.color)
+            .bodyMedium!
+            .copyWith(color: Theme.of(context).textTheme.bodySmall!.color)
             .merge(widget.style),
         child: Text(
           widget.data,

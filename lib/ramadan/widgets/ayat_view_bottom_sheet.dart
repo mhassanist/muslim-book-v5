@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AyatViewBottomSheet extends StatelessWidget {
-  final Function? saveProgress;
+  final VoidCallback? saveProgress;
 
   const AyatViewBottomSheet({super.key, this.saveProgress,});
 
