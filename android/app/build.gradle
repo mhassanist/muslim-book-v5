@@ -135,12 +135,12 @@ dependencies {
 
     implementation 'net.danlew:android.joda:2.12.1.1'
     implementation 'com.github.markushi:circlebutton:1.1'
-//    implementation 'com.facebook.android:audience-network-sdk:6.18.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.18.0'
     implementation 'com.google.android.gms:play-services-ads:22.6.0'
-//    implementation("com.google.ads.mediation:facebook:6.16.0.0")
+    implementation("com.google.ads.mediation:facebook:6.16.0.0")
 
     implementation 'com.google.code.gson:gson:2.10.1'
 
-//    implementation 'com.facebook.android:facebook-login:latest.release'
+    implementation 'com.facebook.android:facebook-login:latest.release'
 
 }

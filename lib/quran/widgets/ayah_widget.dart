@@ -10,8 +10,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:scrollable_positioned_list/src/scrollable_positioned_list.dart';
-import 'package:share_extend/share_extend.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 class AyahWidget extends StatefulWidget {
   const AyahWidget({
@@ -315,10 +315,11 @@ class _AyahWidgetState extends State<AyahWidget> {
         await screenshotController.captureAndSave(path, fileName: fileName);
 
     if (fullPath != null) {
-      await ShareExtend.share(
-        fullPath,
-        "image",
-      );
+      await Share.shareXFiles([XFile(fullPath)], text: '');
+      // await ShareExtend.share(
+      //   fullPath,
+      //   "image",
+      // );
     }
 
     setState(() {

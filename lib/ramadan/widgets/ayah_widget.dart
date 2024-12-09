@@ -11,7 +11,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:scrollable_positioned_list/src/scrollable_positioned_list.dart';
-import 'package:share_extend/share_extend.dart';
+import 'package:share_plus/share_plus.dart';
 
 class BuildAyahWidget extends StatefulWidget {
   final Surah surah;
@@ -303,10 +303,12 @@ class _BuildAyahWidgetState extends State<BuildAyahWidget> {
     });
     final screenShot = await screenshotController.capture();
     if (screenShot != null) {
-      ShareExtend.share(
-        File.fromRawPath(screenShot).path,
-        "image",
-      );
+      Share.shareXFiles([XFile(File.fromRawPath(screenShot).path)], text: '');
+
+      // ShareExtend.share(
+      //   File.fromRawPath(screenShot).path,
+      //   "image",
+      // );
     }
 
     setState(() {

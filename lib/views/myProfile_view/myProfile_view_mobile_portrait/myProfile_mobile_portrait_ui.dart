@@ -7,7 +7,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:screenshot/screenshot.dart';
 
-import 'package:share_extend/share_extend.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../utils/sizing_info_extension.dart';
 
@@ -242,13 +241,18 @@ class MyProfileUI {
         await screenshotController.captureAndSave(path, fileName: fileName);
 
     if (fullPath != null && context.mounted) {
-      await ShareExtend.share(
-        fullPath,
-        "image",
-        extraText: AppLocalizations.of(context)!.translate(
-          "invite_to_download_app",
-        ),
+      Share.shareXFiles(
+        [XFile(fullPath)],
+        text: AppLocalizations.of(context)!.translate('invite_to_download_app'),
       );
+
+      // await ShareExtend.share(
+      //   fullPath,
+      //   "image",
+      //   extraText: AppLocalizations.of(context)!.translate(
+      //     "invite_to_download_app",
+      //   ),
+      // );
     }
   }
 

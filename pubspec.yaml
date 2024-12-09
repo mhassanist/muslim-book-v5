@@ -155,7 +155,7 @@ dependencies:
   store_redirect: ^2.0.3
 
   screenshot: ^3.0.0
-  share_extend: ^2.0.0
+#  share_extend: ^2.0.0
   ##  sensors: ^2.0.3
   sensors_plus: ^6.1.0
   video_player: ^2.9.2
