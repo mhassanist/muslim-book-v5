@@ -4,8 +4,9 @@ import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
 import 'package:flutter/material.dart';
 // import 'package:search_map_place/search_map_place.dart';
-import 'package:search_map_place_updated/search_map_place_updated.dart';
+// import 'package:search_map_place_updated/search_map_place_updated.dart';
 
+/// TODO: Fix place lib
 class PickLocationViaMapView extends StatefulWidget {
   @override
   _PickLocationViaMapViewState createState() => _PickLocationViaMapViewState();
@@ -13,7 +14,7 @@ class PickLocationViaMapView extends StatefulWidget {
 
 class _PickLocationViaMapViewState extends State<PickLocationViaMapView> {
 //  final Completer<GoogleMapController> _controller = Completer();
-  Place? place;
+//   Place? place;
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +35,9 @@ class _PickLocationViaMapViewState extends State<PickLocationViaMapView> {
                   style: TextStyle(color: Constants.CANVAS_COLOR),
                 ),
                 onPressed: () {
-                  if (place != null) {
-                    Navigator.pop(context, place);
-                  }
+                  // if (place != null) {
+                  //   Navigator.pop(context, place);
+                  // }
                 },
               )
             ],
@@ -56,16 +57,16 @@ class _PickLocationViaMapViewState extends State<PickLocationViaMapView> {
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 16),
                 child: SingleChildScrollView(
-                  child: SearchMapPlaceWidget(
-                    iconColor: Theme.of(context).primaryColor,
-                    placeholder:
-                        AppLocalizations.of(context)!.translate("search"),
-                    apiKey: "${Constants.GOOGLE_API_KEY}",
-                    language: locator<Prefs>().getLang(),
-                    onSelected: (Place place) async {
-                      this.place = place;
-                    },
-                  ),
+                  // child: SearchMapPlaceWidget(
+                  //   iconColor: Theme.of(context).primaryColor,
+                  //   placeholder:
+                  //       AppLocalizations.of(context)!.translate("search"),
+                  //   apiKey: "${Constants.GOOGLE_API_KEY}",
+                  //   language: locator<Prefs>().getLang(),
+                  //   onSelected: (Place place) async {
+                  //     this.place = place;
+                  //   },
+                  // ),
                 ),
               ),
             ),

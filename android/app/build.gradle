@@ -1,3 +1,13 @@
+plugins {
+    id "com.android.application"
+    id 'com.google.gms.google-services'
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+
+    // Add the Crashlytics Gradle plugin
+    id("com.google.firebase.crashlytics")
+}
+
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
@@ -29,23 +39,18 @@ if (keystorePropertiesFile.exists()) {
     }
 }
 
-apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.crashlytics'
-apply plugin: 'kotlin-android'
-apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
-
 android {
-    compileSdk 33
+    namespace 'com.muslim_book.muslim_book'
+    compileSdk 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_17
     }
 
     sourceSets {
@@ -55,7 +60,7 @@ android {
     defaultConfig {
         applicationId "com.muslim_book.muslim_book"
         minSdkVersion 23
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
@@ -95,7 +100,6 @@ android {
             }
         }
     }
-    namespace 'com.muslim_book.muslim_book'
 
     packagingOptions {
         merge '**/LICENSE.txt'
@@ -108,11 +112,11 @@ flutter {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:multidex:2.0.1'
 
     // Import the BoM for the Firebase platform
-    implementation platform('com.google.firebase:firebase-bom:30.2.0')
+    implementation platform('com.google.firebase:firebase-bom:33.6.0')
     implementation 'com.google.firebase:firebase-config-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-messaging-ktx'
@@ -120,7 +124,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-dynamic-links-ktx'
 
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.annotation:annotation:1.5.0'
     implementation 'com.google.android.material:material:1.7.0'
     // 2.2.0-alpha05
@@ -131,12 +135,12 @@ dependencies {
 
     implementation 'net.danlew:android.joda:2.12.1.1'
     implementation 'com.github.markushi:circlebutton:1.1'
-    implementation 'com.facebook.android:audience-network-sdk:6.16.0'
+//    implementation 'com.facebook.android:audience-network-sdk:6.18.0'
     implementation 'com.google.android.gms:play-services-ads:22.6.0'
-    implementation("com.google.ads.mediation:facebook:6.16.0.0")
+//    implementation("com.google.ads.mediation:facebook:6.16.0.0")
 
     implementation 'com.google.code.gson:gson:2.10.1'
 
-    implementation 'com.facebook.android:facebook-login:latest.release'
+//    implementation 'com.facebook.android:facebook-login:latest.release'
 
 }

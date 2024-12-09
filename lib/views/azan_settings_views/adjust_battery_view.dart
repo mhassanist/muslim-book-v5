@@ -1,3 +1,4 @@
+import 'package:disable_battery_optimization/disable_battery_optimization.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/views/azan_settings_views/xiaomi_settings_view.dart';
 import 'package:muslim_book/utils/Constants.dart';
@@ -5,7 +6,6 @@ import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:optimization_battery/optimization_battery.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import '../../utils/sizing_info_extension.dart';
 
@@ -209,8 +209,8 @@ class _AdjustBatteryViewState extends State<AdjustBatteryView>
 
   _checkBattery(context) async {
     // Constants.platform.invokeMethod("checkBatteryEditing");
-    OptimizationBattery.isIgnoringBatteryOptimizations().then((result) async {
-      if (result) {
+    DisableBatteryOptimization.isBatteryOptimizationDisabled.then((result) async {
+      if (result != null && result) {
         goToNextPage(context);
       }
     });

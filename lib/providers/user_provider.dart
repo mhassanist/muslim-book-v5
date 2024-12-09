@@ -225,9 +225,8 @@ class UserProvider extends ViewStateProvider {
         // you are logged
         final AccessToken? accessToken = result.accessToken;
         if (accessToken != null) {
-          final facebookData = await locator<ApiService>()
-              .faceBookAccountDetails(accessToken.token);
-          faceBookLogging(facebookData);
+          // final facebookData = await locator<ApiService>().faceBookAccountDetails(accessToken.accessToken);
+          // faceBookLogging(facebookData);
         }
       }
     } catch (e) {

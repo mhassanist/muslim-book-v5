@@ -35,7 +35,7 @@ class _AzkarCarouselScreenState extends State<AzkarCarouselScreen> {
   List<Zikr>? azkar;
   late Zikr currentZikr;
   int currentIndex = 0;
-  final CarouselController controller = CarouselController();
+  final controller = CarouselSliderController();
   // late AudioCache _audioCache;
   // late AudioPlayer audioPlayer;
   final player = AudioPlayer();

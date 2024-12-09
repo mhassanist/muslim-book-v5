@@ -8,7 +8,7 @@ import 'package:responsive_builder/responsive_builder.dart';
 class ZikrCounterButton extends StatefulWidget {
   final SizingInformation sizeConfig;
   final List<Zikr> azkar;
-  final CarouselController controller;
+  final CarouselSliderController controller;
   const ZikrCounterButton(
       {super.key,
       required this.sizeConfig,

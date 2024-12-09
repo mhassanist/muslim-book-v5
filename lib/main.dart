@@ -1,9 +1,11 @@
 import 'dart:ui';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
-import 'package:facebook_audience_network/facebook_audience_network.dart';
-import 'package:fancy_dialog/FancyGif.dart';
-import 'package:fancy_dialog/fancy_dialog.dart';
+// import 'package:facebook_audience_network/facebook_audience_network.dart';
+import 'package:easy_audience_network/easy_audience_network.dart';
+
+// import 'package:fancy_dialog/FancyGif.dart';
+// import 'package:fancy_dialog/fancy_dialog.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -148,7 +150,8 @@ Future<void> main() async {
   FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   DioUtil.setDioAgain();
-  await FacebookAudienceNetwork.init();
+  // await FacebookAudienceNetwork.init();
+  EasyAudienceNetwork.init();
   // final loaded = await getLocale();
 
   await QuranAudioHandler().initialize();
@@ -257,7 +260,7 @@ class MyApp extends StatefulWidget {
                             onPressed: () {
                               Navigator.of(context).pop();
                               if (locator<Prefs>().getDateOfClickLike() ==
-                                      null &&
+                                  null &&
                                   locator<Prefs>().getDateOfClickNotLike() ==
                                       null) {
                                 _showRateAppDialog(context);
@@ -267,47 +270,47 @@ class MyApp extends StatefulWidget {
                                   SystemNavigator.pop();
                                 } else {
                                   if (locator<Prefs>().getDateOfClickLike() !=
-                                          null &&
+                                      null &&
                                       locator<Prefs>()
-                                              .getDateOfClickNotLike() ==
+                                          .getDateOfClickNotLike() ==
                                           null) {
                                     final before =
-                                        DateTime.fromMillisecondsSinceEpoch(
+                                    DateTime.fromMillisecondsSinceEpoch(
                                       locator<Prefs>().getDateOfClickLike() ??
                                           0,
                                     );
                                     final now = DateTime.now();
                                     final timeDifference =
-                                        now.difference(before);
+                                    now.difference(before);
                                     if (kDebugMode) {
                                       print(timeDifference.inDays);
                                     }
 
                                     if ((timeDifference.inDays >= 30 &&
-                                            locator<Prefs>()
-                                                    .getCountOfClickLike() ==
-                                                1) ||
+                                        locator<Prefs>()
+                                            .getCountOfClickLike() ==
+                                            1) ||
                                         (timeDifference.inDays >= 90 &&
                                             locator<Prefs>()
-                                                    .getCountOfClickLike() ==
+                                                .getCountOfClickLike() ==
                                                 2)) {
                                       _showRateAppDialog(context);
                                     } else {
                                       SystemNavigator.pop();
                                     }
                                   } else if (locator<Prefs>()
-                                              .getDateOfClickNotLike() !=
-                                          null &&
+                                      .getDateOfClickNotLike() !=
+                                      null &&
                                       locator<Prefs>().getDateOfClickLike() ==
                                           null) {
                                     DateTime before =
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                            locator<Prefs>()
-                                                    .getDateOfClickNotLike() ??
-                                                0);
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        locator<Prefs>()
+                                            .getDateOfClickNotLike() ??
+                                            0);
                                     DateTime now = DateTime.now();
                                     Duration timeDifference =
-                                        now.difference(before);
+                                    now.difference(before);
                                     if (kDebugMode) {
                                       print(timeDifference.inDays);
                                     }
@@ -315,52 +318,52 @@ class MyApp extends StatefulWidget {
                                     if ((timeDifference.inDays >= 15 && locator<Prefs>().getCountOfClickNotLike() == 1) ||
                                         (timeDifference.inDays >= 30 &&
                                             locator<Prefs>()
-                                                    .getCountOfClickNotLike() ==
+                                                .getCountOfClickNotLike() ==
                                                 2) ||
                                         (timeDifference.inDays >= 45 &&
                                             locator<Prefs>()
-                                                    .getCountOfClickNotLike() ==
+                                                .getCountOfClickNotLike() ==
                                                 3)) {
                                       _showRateAppDialog(context);
                                     } else {
                                       SystemNavigator.pop();
                                     }
                                   } else if (locator<Prefs>()
-                                              .getDateOfClickLike() !=
-                                          null &&
+                                      .getDateOfClickLike() !=
+                                      null &&
                                       locator<Prefs>()
-                                              .getDateOfClickNotLike() !=
+                                          .getDateOfClickNotLike() !=
                                           null) {
                                     DateTime dateOfLike =
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                            locator<Prefs>()
-                                                    .getDateOfClickLike() ??
-                                                0);
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        locator<Prefs>()
+                                            .getDateOfClickLike() ??
+                                            0);
                                     DateTime now = DateTime.now();
                                     Duration likeTimeDifference =
-                                        now.difference(dateOfLike);
+                                    now.difference(dateOfLike);
                                     if (kDebugMode) {
                                       print(likeTimeDifference.inDays);
                                     }
 
                                     DateTime dateOfNotLike =
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                            locator<Prefs>()
-                                                    .getDateOfClickNotLike() ??
-                                                0);
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                        locator<Prefs>()
+                                            .getDateOfClickNotLike() ??
+                                            0);
                                     DateTime dateOfNotLikeNow = DateTime.now();
                                     Duration notLikeTimeDifference =
-                                        dateOfNotLikeNow
-                                            .difference(dateOfNotLike);
+                                    dateOfNotLikeNow
+                                        .difference(dateOfNotLike);
                                     if (kDebugMode) {
                                       print(notLikeTimeDifference.inDays);
                                     }
 
                                     if (locator<Prefs>()
-                                                .getCountOfClickLike() ==
-                                            1 &&
+                                        .getCountOfClickLike() ==
+                                        1 &&
                                         locator<Prefs>()
-                                                .getCountOfClickNotLike() ==
+                                            .getCountOfClickNotLike() ==
                                             1) {
                                       if (likeTimeDifference.inDays >= 30 &&
                                           notLikeTimeDifference.inDays >= 15) {
@@ -372,10 +375,10 @@ class MyApp extends StatefulWidget {
                                         SystemNavigator.pop();
                                       }
                                     } else if (locator<Prefs>()
-                                                .getCountOfClickLike() ==
-                                            2 &&
+                                        .getCountOfClickLike() ==
+                                        2 &&
                                         locator<Prefs>()
-                                                .getCountOfClickNotLike() ==
+                                            .getCountOfClickNotLike() ==
                                             1) {
                                       if (likeTimeDifference.inDays >= 90 &&
                                           notLikeTimeDifference.inDays >= 30) {
@@ -387,10 +390,10 @@ class MyApp extends StatefulWidget {
                                         SystemNavigator.pop();
                                       }
                                     } else if (locator<Prefs>()
-                                                .getCountOfClickLike() ==
-                                            1 &&
+                                        .getCountOfClickLike() ==
+                                        1 &&
                                         locator<Prefs>()
-                                                .getCountOfClickNotLike() ==
+                                            .getCountOfClickNotLike() ==
                                             2) {
                                       if (likeTimeDifference.inDays >= 30) {
                                         _showRateAppDialog(context);
@@ -455,58 +458,59 @@ class MyApp extends StatefulWidget {
   }
 
   static void _showRateAppDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) => FancyDialog(
-        title: AppLocalizations.of(context)!.translate("thanx_to_use_app"),
-        description:
-        AppLocalizations.of(context)!.translate("rate_app_description"),
-        okColor: Theme.of(context).primaryColor,
-        okFun: () async {
-          if (locator<Prefs>().getCountOfOpenDialog() == null) {
-            await locator<Prefs>().setCountOfOpenDialog(1);
-          } else {
-            await locator<Prefs>().setCountOfOpenDialog(
-                (locator<Prefs>().getCountOfOpenDialog() ?? 0) + 1);
-          }
-          if (locator<Prefs>().getDateOfClickNotLike() == null) {
-            await locator<Prefs>()
-                .setDateOfClickNotLike(DateTime.now().millisecondsSinceEpoch);
-            await locator<Prefs>().setCountOfClickNotLike(1);
-          } else {
-            if (locator<Prefs>().getCountOfClickNotLike() != null) {
-              await locator<Prefs>().setCountOfClickNotLike(
-                  (locator<Prefs>().getCountOfClickNotLike() ?? 0) + 1);
-            }
-          }
-          SystemNavigator.pop();
-        },
-        cancelFun: () async {
-          if (locator<Prefs>().getCountOfOpenDialog() == null) {
-            await locator<Prefs>().setCountOfOpenDialog(1);
-          } else {
-            await locator<Prefs>().setCountOfOpenDialog(
-                (locator<Prefs>().getCountOfOpenDialog() ?? 0) + 1);
-          }
-          if (locator<Prefs>().getDateOfClickLike() == null) {
-            await locator<Prefs>()
-                .setDateOfClickLike(DateTime.now().millisecondsSinceEpoch);
-            await locator<Prefs>().setCountOfClickLike(1);
-          } else {
-            if (locator<Prefs>().getCountOfClickLike() != null) {
-              await locator<Prefs>().setCountOfClickLike(
-                  (locator<Prefs>().getCountOfClickLike() ?? 0) + 1);
-            }
-          }
-          _launchURL();
-          SystemNavigator.pop();
-        },
-        gifPath: FancyGif.SUBMIT,
-        cancelColor: Theme.of(context).primaryColor,
-        cancel: AppLocalizations.of(context)!.translate("like"),
-        ok: AppLocalizations.of(context)!.translate("not_like"),
-      ),
-    );
+    /// TODO: Show rate dialog
+    // showDialog(
+    //   context: context,
+    //   builder: (BuildContext context) => FancyDialog(
+    //     title: AppLocalizations.of(context)!.translate("thanx_to_use_app"),
+    //     description:
+    //     AppLocalizations.of(context)!.translate("rate_app_description"),
+    //     okColor: Theme.of(context).primaryColor,
+    //     okFun: () async {
+    //       if (locator<Prefs>().getCountOfOpenDialog() == null) {
+    //         await locator<Prefs>().setCountOfOpenDialog(1);
+    //       } else {
+    //         await locator<Prefs>().setCountOfOpenDialog(
+    //             (locator<Prefs>().getCountOfOpenDialog() ?? 0) + 1);
+    //       }
+    //       if (locator<Prefs>().getDateOfClickNotLike() == null) {
+    //         await locator<Prefs>()
+    //             .setDateOfClickNotLike(DateTime.now().millisecondsSinceEpoch);
+    //         await locator<Prefs>().setCountOfClickNotLike(1);
+    //       } else {
+    //         if (locator<Prefs>().getCountOfClickNotLike() != null) {
+    //           await locator<Prefs>().setCountOfClickNotLike(
+    //               (locator<Prefs>().getCountOfClickNotLike() ?? 0) + 1);
+    //         }
+    //       }
+    //       SystemNavigator.pop();
+    //     },
+    //     cancelFun: () async {
+    //       if (locator<Prefs>().getCountOfOpenDialog() == null) {
+    //         await locator<Prefs>().setCountOfOpenDialog(1);
+    //       } else {
+    //         await locator<Prefs>().setCountOfOpenDialog(
+    //             (locator<Prefs>().getCountOfOpenDialog() ?? 0) + 1);
+    //       }
+    //       if (locator<Prefs>().getDateOfClickLike() == null) {
+    //         await locator<Prefs>()
+    //             .setDateOfClickLike(DateTime.now().millisecondsSinceEpoch);
+    //         await locator<Prefs>().setCountOfClickLike(1);
+    //       } else {
+    //         if (locator<Prefs>().getCountOfClickLike() != null) {
+    //           await locator<Prefs>().setCountOfClickLike(
+    //               (locator<Prefs>().getCountOfClickLike() ?? 0) + 1);
+    //         }
+    //       }
+    //       _launchURL();
+    //       SystemNavigator.pop();
+    //     },
+    //     gifPath: FancyGif.SUBMIT,
+    //     cancelColor: Theme.of(context).primaryColor,
+    //     cancel: AppLocalizations.of(context)!.translate("like"),
+    //     ok: AppLocalizations.of(context)!.translate("not_like"),
+    //   ),
+    // );
   }
 }
 

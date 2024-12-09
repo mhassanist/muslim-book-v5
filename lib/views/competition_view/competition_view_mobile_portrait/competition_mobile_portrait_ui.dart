@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:easy_audience_network/easy_audience_network.dart';
 import 'package:muslim_book/ads/ad_manager.dart';
 import 'package:muslim_book/ads/ad_widget_edit.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
@@ -12,7 +13,7 @@ import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/widgets/standardButton_widget.dart';
-import 'package:facebook_audience_network/ad/ad_banner.dart';
+// import 'package:facebook_audience_network/ad/ad_banner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -652,25 +653,23 @@ class CompetitionUI {
 
   Widget faceBookAdsWidget(id) {
     if (locator<RemoteConfigService>().showFacebookInterstitial) {
-      return Container(
-        child: FacebookBannerAd(
-          // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2964944860251047",
-          placementId: id,
-          bannerSize: BannerSize.MEDIUM_RECTANGLE,
-          listener: (result, value) {
-            switch (result) {
-              case BannerAdResult.ERROR:
-                print("FaceBookError: $value");
-                break;
-              case BannerAdResult.LOADED:
-                break;
-              case BannerAdResult.CLICKED:
-                break;
-              case BannerAdResult.LOGGING_IMPRESSION:
-                break;
-            }
-          },
-        ),
+      return BannerAd(
+        // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2964944860251047",
+        placementId: id,
+        bannerSize: BannerSize.MEDIUM_RECTANGLE,
+        // listener: (result, value) {
+        //   switch (result) {
+        //     case BannerAdResult.ERROR:
+        //       print("FaceBookError: $value");
+        //       break;
+        //     case BannerAdResult.LOADED:
+        //       break;
+        //     case BannerAdResult.CLICKED:
+        //       break;
+        //     case BannerAdResult.LOGGING_IMPRESSION:
+        //       break;
+        //   }
+        // },
       );
     } else {
       return Container();

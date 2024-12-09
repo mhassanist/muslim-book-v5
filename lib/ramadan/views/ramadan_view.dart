@@ -1,5 +1,6 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:easy_audience_network/easy_audience_network.dart';
 import 'package:muslim_book/ads/ad_manager.dart';
 import 'package:muslim_book/ads/admob_interstitial.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
@@ -19,7 +20,7 @@ import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/widgets/base_widget.dart';
 import 'package:muslim_book/widgets/share_dialog.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
-import 'package:facebook_audience_network/ad/ad_interstitial.dart';
+// import 'package:facebook_audience_network/ad/ad_interstitial.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -975,14 +976,26 @@ class _RamadanViewState extends State<RamadanView>
   @override
   void deactivate() {
     if (locator<RemoteConfigService>().showFacebookInterstitial) {
-      FacebookInterstitialAd.loadInterstitialAd(
-        // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
-        placementId: locator<RemoteConfigService>().azanPopUpAdId,
-        listener: (result, value) {
-          if (result == InterstitialAdResult.LOADED)
-            FacebookInterstitialAd.showInterstitialAd();
+      final interstitialAd = InterstitialAd(locator<RemoteConfigService>().azanPopUpAdId);
+      interstitialAd.listener = InterstitialAdListener(
+        onLoaded: () {
+          interstitialAd.show();
+        },
+        onDismissed: () {
+          interstitialAd.destroy();
+          debugPrint('Interstitial dismissed');
         },
       );
+      interstitialAd.load();
+
+      // FacebookInterstitialAd.loadInterstitialAd(
+      //   // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
+      //   placementId: locator<RemoteConfigService>().azanPopUpAdId,
+      //   listener: (result, value) {
+      //     if (result == InterstitialAdResult.LOADED)
+      //       FacebookInterstitialAd.showInterstitialAd();
+      //   },
+      // );
     } else {
       AdmobInterstitial interstitialAd = AdmobInterstitial();
       interstitialAd.createInterstitialAd();

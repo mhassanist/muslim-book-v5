@@ -11,35 +11,37 @@ import 'package:flutter/material.dart';
 // import 'package:geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:search_map_place_updated/search_map_place_updated.dart';
+// import 'package:search_map_place_updated/search_map_place_updated.dart';
 // import 'package:search_map_place/search_map_place.dart';
 
+
+/// TODO: Fix place lib
 class LocationProvider extends ViewStateProvider {
   String _countryName = '';
   double? _latitude;
   double? _longitude;
   bool _enablePicker = false;
   String _pickedCountryName = "EG";
-  late Place _place;
+  // late Place _place;
 
-  void setPlace(Place value) async {
-    _place = value;
-    _countryName = _place.description ?? '';
-    Geolocation? geoLocation = await value.geolocation;
-    if (geoLocation != null) {
-      double lat = (geoLocation.coordinates as LatLng).latitude;
-      double long = (geoLocation.coordinates as LatLng).longitude;
-      // final coordinates = Coordinates(lat, long);
-      // var addresses = await Geocoder.google(Constants.GOOGLE_API_KEY,
-      //         language: locator<Prefs>().getLang())
-      //     .findAddressesFromCoordinates(coordinates);
-      // pickedCountryName = addresses[0].countryCode;
-
-      final placeMarks = await placemarkFromCoordinates(lat, long);
-      pickedCountryName = placeMarks[0].isoCountryCode ?? '';
-      setLatLing(lat, long);
-    }
-  }
+  // void setPlace(Place value) async {
+  //   _place = value;
+  //   _countryName = _place.description ?? '';
+  //   Geolocation? geoLocation = await value.geolocation;
+  //   if (geoLocation != null) {
+  //     double lat = (geoLocation.coordinates as LatLng).latitude;
+  //     double long = (geoLocation.coordinates as LatLng).longitude;
+  //     // final coordinates = Coordinates(lat, long);
+  //     // var addresses = await Geocoder.google(Constants.GOOGLE_API_KEY,
+  //     //         language: locator<Prefs>().getLang())
+  //     //     .findAddressesFromCoordinates(coordinates);
+  //     // pickedCountryName = addresses[0].countryCode;
+  //
+  //     final placeMarks = await placemarkFromCoordinates(lat, long);
+  //     pickedCountryName = placeMarks[0].isoCountryCode ?? '';
+  //     setLatLing(lat, long);
+  //   }
+  // }
 
   void setLatLing(double lat, double long) {
     _latitude = lat;
@@ -49,7 +51,7 @@ class LocationProvider extends ViewStateProvider {
     notifyListeners();
   }
 
-  Place get place => _place;
+  // Place get place => _place;
 
   set countryName(String s) {
     _countryName = s;

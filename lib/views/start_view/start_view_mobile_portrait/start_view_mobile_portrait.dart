@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:ui';
 
-import 'package:facebook_audience_network/facebook_audience_network.dart';
+// import 'package:facebook_audience_network/facebook_audience_network.dart';
+import 'package:disable_battery_optimization/disable_battery_optimization.dart';
+import 'package:easy_audience_network/easy_audience_network.dart';
 import 'package:muslim_book/ads/admob_interstitial.dart';
 import 'package:muslim_book/azkar_feature/screens/azkar_categories_grid_screen.dart';
 import 'package:muslim_book/core/push_notification_service.dart';
@@ -28,8 +30,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:launch_review/launch_review.dart';
-import 'package:optimization_battery/optimization_battery.dart';
+// import 'package:launch_review/launch_review.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -110,6 +111,8 @@ class _StartViewMobilePortraitViewState
         break;
       case AppLifecycleState.detached:
         break;
+      case AppLifecycleState.hidden:
+        break;
     }
   }
 
@@ -149,8 +152,8 @@ class _StartViewMobilePortraitViewState
   }
 
   checkPermissions() async {
-    var checkBattery = await OptimizationBattery.isIgnoringBatteryOptimizations();
-    if (!checkBattery) {
+    bool? checkBattery = await DisableBatteryOptimization.isBatteryOptimizationDisabled;
+    if (checkBattery != null && !checkBattery) {
       Get.dialog(const AdjustBatteryView(isStart: false));
       setState(() {
         isAdd = true;
@@ -392,7 +395,8 @@ class _StartViewMobilePortraitViewState
                       onPressed: () {
                         Navigator.of(context).pop();
                         // Navigator.pushNamed(context, "/rating_view");
-                        LaunchReview.launch();
+                        /// TODO: Select a new lib to review
+                        // LaunchReview.launch();
                         SystemNavigator.pop();
                       },
                       fillColor: Theme.of(context).primaryColor,
@@ -510,17 +514,29 @@ class _StartViewMobilePortraitViewState
 
  void openFaceBookAds() {
    if (locator<RemoteConfigService>().showFacebookInterstitial) {
-     FacebookInterstitialAd.loadInterstitialAd(
-       // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
-       placementId: locator<RemoteConfigService>().azanPopUpAdId,
-       listener: (result, value) {
-         if (result == InterstitialAdResult.LOADED) {
-           FacebookInterstitialAd.showInterstitialAd();
-         }
-         if (result == InterstitialAdResult.ERROR) {
-         }
+     final interstitialAd = InterstitialAd(locator<RemoteConfigService>().azanPopUpAdId);
+     interstitialAd.listener = InterstitialAdListener(
+       onLoaded: () {
+         interstitialAd.show();
+       },
+       onDismissed: () {
+         interstitialAd.destroy();
+         debugPrint('Interstitial dismissed');
        },
      );
+     interstitialAd.load();
+
+     // FacebookInterstitialAd.loadInterstitialAd(
+     //   // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
+     //   placementId: locator<RemoteConfigService>().azanPopUpAdId,
+     //   listener: (result, value) {
+     //     if (result == InterstitialAdResult.LOADED) {
+     //       FacebookInterstitialAd.showInterstitialAd();
+     //     }
+     //     if (result == InterstitialAdResult.ERROR) {
+     //     }
+     //   },
+     // );
    } else {
      AdmobInterstitial interstitialAd = AdmobInterstitial();
      interstitialAd.createInterstitialAd();

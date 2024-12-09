@@ -11,7 +11,8 @@ import 'package:muslim_book/quran/widgets/retry_view_widget.dart';
 import 'package:muslim_book/text_styles.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/widgets/share_dialog.dart';
-import 'package:facebook_audience_network/ad/ad_interstitial.dart';
+// import 'package:facebook_audience_network/ad/ad_interstitial.dart';
+import 'package:easy_audience_network/easy_audience_network.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -133,17 +134,29 @@ class _QuranListeningViewState extends State<QuranListeningView> {
   @override
   void dispose() {
     if (locator<RemoteConfigService>().showFacebookInterstitial) {
-      FacebookInterstitialAd.loadInterstitialAd(
-        // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
-        placementId: locator<RemoteConfigService>().azanPopUpAdId,
-        listener: (result, value) {
-          if (result == InterstitialAdResult.LOADED) {
-            FacebookInterstitialAd.showInterstitialAd();
-          }
-          if (result == InterstitialAdResult.ERROR) {
-          }
+      final interstitialAd = InterstitialAd(locator<RemoteConfigService>().azanPopUpAdId);
+      interstitialAd.listener = InterstitialAdListener(
+        onLoaded: () {
+          interstitialAd.show();
+        },
+        onDismissed: () {
+          interstitialAd.destroy();
+          debugPrint('Interstitial dismissed');
         },
       );
+      interstitialAd.load();
+
+      // FacebookInterstitialAd.loadInterstitialAd(
+      //   // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
+      //   placementId: locator<RemoteConfigService>().azanPopUpAdId,
+      //   listener: (result, value) {
+      //     if (result == InterstitialAdResult.LOADED) {
+      //       FacebookInterstitialAd.showInterstitialAd();
+      //     }
+      //     if (result == InterstitialAdResult.ERROR) {
+      //     }
+      //   },
+      // );
     } else {
       AdmobInterstitial interstitialAd = AdmobInterstitial();
       interstitialAd.createInterstitialAd();

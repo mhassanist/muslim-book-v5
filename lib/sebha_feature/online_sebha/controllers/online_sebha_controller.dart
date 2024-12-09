@@ -18,7 +18,7 @@ class OnlineSebhaProvider extends ChangeNotifier {
       id: 0,
       totalCounted: 0,
       note: '');
-  final CarouselController controller = CarouselController();
+  final controller = CarouselSliderController();
   bool _allowClickSound = locator<Prefs>().allowTasbeehClickSound;
   List<TasbeehModel> _tsabeehList = [];
   bool _mounted = true;

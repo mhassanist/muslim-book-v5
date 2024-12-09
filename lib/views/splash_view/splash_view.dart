@@ -9,7 +9,7 @@ import 'package:muslim_book/views/start_view/start_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:launch_review/launch_review.dart';
+// import 'package:launch_review/launch_review.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -244,7 +244,8 @@ class _SplashViewState extends State<SplashView>
                     style: TextStyle(color: Colors.white),
                   ),
                   onPressed: () {
-                    LaunchReview.launch();
+                    /// TODO: Select a new lib to review
+                    // LaunchReview.launch();
                   },
                   // color: Constants.ACCENT_COLOR,
                 ),

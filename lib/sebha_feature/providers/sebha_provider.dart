@@ -12,7 +12,7 @@ class SebhaProvider extends ChangeNotifier {
   int _currentIndex = 0;
   Tasbeeh _currentTasbeeh =
       Tasbeeh(id: 0, name: '', note: '', totalCounter: 0, counted: 0);
-  final CarouselController controller = CarouselController();
+  final controller = CarouselSliderController();
   bool _allowClickSound = locator<Prefs>().allowTasbeehClickSound;
   List<Tasbeeh> _tsabeehList = [];
 

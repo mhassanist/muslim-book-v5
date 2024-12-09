@@ -1,3 +1,4 @@
+import 'package:disable_battery_optimization/disable_battery_optimization.dart';
 import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
@@ -8,7 +9,6 @@ import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/utils/prefs.dart';
 import 'package:muslim_book/views/azan_settings_views/adjust_battery_view.dart';
 import 'package:get/get.dart';
-import 'package:optimization_battery/optimization_battery.dart';
 
 class PickAzanMethodsProvider extends ViewStateProvider {
   Map<String, dynamic> _pickedMazhab = {};
@@ -108,8 +108,9 @@ class PickAzanMethodsProvider extends ViewStateProvider {
     locator<Prefs>().setShowSettings(true);
     /// TODO: Need to Fix crash (Done) => Need test
     // var checkBattery = await Constants.platform.invokeMethod("checkBatteryEditing");
-    var checkBattery = await OptimizationBattery.isIgnoringBatteryOptimizations();
-    if (!checkBattery) {
+    // var checkBattery = await OptimizationBattery.isIgnoringBatteryOptimizations();
+    bool? checkBattery = await DisableBatteryOptimization.isBatteryOptimizationDisabled;
+    if (checkBattery != null && !checkBattery) {
       Get.dialog(const AdjustBatteryView(isStart: true ));
     } else {
       locator<Prefs>().setShowSettings(true);
