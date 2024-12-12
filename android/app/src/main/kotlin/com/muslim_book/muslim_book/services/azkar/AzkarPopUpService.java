@@ -3,8 +3,9 @@ package com.muslim_book.muslim_book.services.azkar;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.content.Context.WINDOW_SERVICE;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.facebook.ads.CacheFlag.ALL;
+//import static com.facebook.ads.CacheFlag.ALL;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -15,6 +16,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -22,10 +24,16 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.facebook.ads.Ad;
-import com.facebook.ads.AdError;
-import com.facebook.ads.InterstitialAd;
-import com.facebook.ads.InterstitialAdListener;
+//import com.facebook.ads.Ad;
+//import com.facebook.ads.AdError;
+//import com.facebook.ads.InterstitialAd;
+//import com.facebook.ads.InterstitialAdListener;
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.muslim_book.muslim_book.MainActivity;
@@ -38,7 +46,7 @@ import at.markushi.ui.CircleButton;
 
 public class AzkarPopUpService {
 
-  private InterstitialAd interstitialAd;
+  private InterstitialAd mInterstitialAd;
   private WindowManager mWindowManager;
   private View mView;
   private Context context;
@@ -57,19 +65,16 @@ public class AzkarPopUpService {
 
 
   private boolean canDrawOverLays() {
-    if (VERSION.SDK_INT >= VERSION_CODES.M) {
       return Settings.canDrawOverlays(context);
-    }
-    return true;
   }
 
+  @SuppressLint("InflateParams")
   void drawView() {
     mMediaPlayer = MediaPlayer.create(context,
             R.raw.azkar);
-    try{
+    try {
       mMediaPlayer.prepare();
-    }catch(Exception e){
-
+    } catch (Exception ignored) {
     }
 
     mMediaPlayer.start();
@@ -106,40 +111,60 @@ public class AzkarPopUpService {
       mWindowManager.removeView(mView);
     }
 
-    interstitialAd = new InterstitialAd(context,
-            mFirebaseRemoteConfig.getString("after_azan_pop_up"));
-    interstitialAd.loadAd(interstitialAd.buildLoadAdConfig()
-            .withAdListener(new InterstitialAdListener() {
+
+    AdRequest adRequest = new AdRequest.Builder().build();
+    InterstitialAd.load(context, mFirebaseRemoteConfig.getString("after_azan_pop_up_1"), adRequest,
+            new InterstitialAdLoadCallback() {
               @Override
-              public void onInterstitialDisplayed(Ad ad) {
+              public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                // The mInterstitialAd reference will be null until
+                // an ad is loaded.
+                mInterstitialAd = interstitialAd;
+                Log.i("AzanServiceIntersecialAd", "onAdLoaded");
               }
 
               @Override
-              public void onInterstitialDismissed(Ad ad) {
-
+              public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                // Handle the error
+                Log.d("AzanServiceIntersecialAd", loadAdError.toString());
+                mInterstitialAd = null;
               }
+            });
 
-              @Override
-              public void onError(Ad ad, AdError adError) {
-              }
-
-              @Override
-              public void onAdLoaded(Ad ad) {
-                interstitialAd.show();
-              }
-
-              @Override
-              public void onAdClicked(Ad ad) {
-
-              }
-
-              @Override
-              public void onLoggingImpression(Ad ad) {
-
-              }
-            })
-            .withCacheFlags(ALL)
-            .build());
+//    interstitialAd = new InterstitialAd(context,
+//            mFirebaseRemoteConfig.getString("after_azan_pop_up"));
+//    interstitialAd.loadAd(interstitialAd.buildLoadAdConfig()
+//            .withAdListener(new InterstitialAdListener() {
+//              @Override
+//              public void onInterstitialDisplayed(Ad ad) {
+//              }
+//
+//              @Override
+//              public void onInterstitialDismissed(Ad ad) {
+//
+//              }
+//
+//              @Override
+//              public void onError(Ad ad, AdError adError) {
+//              }
+//
+//              @Override
+//              public void onAdLoaded(Ad ad) {
+//                interstitialAd.show();
+//              }
+//
+//              @Override
+//              public void onAdClicked(Ad ad) {
+//
+//              }
+//
+//              @Override
+//              public void onLoggingImpression(Ad ad) {
+//
+//              }
+//            })
+//            .withCacheFlags(ALL)
+//            .build());
   }
 
   private void setAzkarName() {

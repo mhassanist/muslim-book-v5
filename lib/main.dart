@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 // import 'package:facebook_audience_network/facebook_audience_network.dart';
-import 'package:easy_audience_network/easy_audience_network.dart';
+// import 'package:easy_audience_network/easy_audience_network.dart';
 
 // import 'package:fancy_dialog/FancyGif.dart';
 // import 'package:fancy_dialog/fancy_dialog.dart';
@@ -151,7 +151,7 @@ Future<void> main() async {
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   DioUtil.setDioAgain();
   // await FacebookAudienceNetwork.init();
-  EasyAudienceNetwork.init();
+  // EasyAudienceNetwork.init();
   // final loaded = await getLocale();
 
   await QuranAudioHandler().initialize();

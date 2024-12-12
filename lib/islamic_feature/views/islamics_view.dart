@@ -7,7 +7,7 @@ import 'package:muslim_book/network_utils/remote_config.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:muslim_book/widgets/app_scaffold_title.dart';
-import 'package:easy_audience_network/easy_audience_network.dart';
+// import 'package:easy_audience_network/easy_audience_network.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
@@ -68,28 +68,17 @@ class _IslamicsViewState extends State<IslamicsView> {
   @override
   void dispose() {
     if (locator<RemoteConfigService>().showFacebookInterstitial) {
-      final interstitialAd = InterstitialAd(locator<RemoteConfigService>().azanPopUpAdId);
-      interstitialAd.listener = InterstitialAdListener(
-        onLoaded: () {
-          interstitialAd.show();
-        },
-        onDismissed: () {
-          interstitialAd.destroy();
-          debugPrint('Interstitial dismissed');
-        },
-      );
-      interstitialAd.load();
-
-
-      // ad.InterstitialAd.loadInterstitialAd(
-      //   // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
-      //   placementId: locator<RemoteConfigService>().azanPopUpAdId,
-      //   listener: (result, value) {
-      //     if (result == ad.InterstitialAdResult.LOADED) {
-      //       ad.InterstitialAd.showInterstitialAd();
-      //     }
+      // final interstitialAd = InterstitialAd(locator<RemoteConfigService>().azanPopUpAdId);
+      // interstitialAd.listener = InterstitialAdListener(
+      //   onLoaded: () {
+      //     interstitialAd.show();
+      //   },
+      //   onDismissed: () {
+      //     interstitialAd.destroy();
+      //     debugPrint('Interstitial dismissed');
       //   },
       // );
+      // interstitialAd.load();
     } else {
       AdmobInterstitial interstitialAd = AdmobInterstitial();
       interstitialAd.createInterstitialAd();

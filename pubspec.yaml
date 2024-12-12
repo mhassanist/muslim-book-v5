@@ -3,10 +3,10 @@ description: A new Flutter project.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 4.6.0+88
+version: 4.7.0+89
 
 environment:
-  sdk: ^3.5.4
+  sdk: ^3.6.0
 #  sdk: '>=3.4.4 <4.0.0'
 #  sdk: '>=2.19.6 <3.0.0'
 
@@ -21,7 +21,6 @@ dependencies:
   ##  android_intent: ^2.0.2
   android_intent_plus: ^5.2.0
   animated_text_kit: ^4.2.2
-  ## TODO: Need to be updated => To Fix crashes
   audioplayers: ^6.1.0
   auto_size_text: ^3.0.0
   audio_service: ^0.18.15
@@ -54,7 +53,7 @@ dependencies:
   extended_image: ^9.0.7
 
 #  facebook_audience_network: ^1.0.1
-  easy_audience_network: ^0.0.7
+#  easy_audience_network: ^0.0.7
 
   # No null safety
   fancy_dialog:
@@ -75,7 +74,7 @@ dependencies:
   ##  flutter_cupertino_date_picker: ^1.0.26+2     disconnected
   flutter_cupertino_datetime_picker: ^3.0.0
   flutter_cupertino_date_picker_fork: ^1.0.7
-  flutter_facebook_app_links: ^3.0.2
+#  flutter_facebook_app_links: ^3.0.2
   flutter_facebook_auth: ^7.1.1
 #  flutter_launcher_icons: ^0.14.2
   flutter_local_notifications: ^18.0.1

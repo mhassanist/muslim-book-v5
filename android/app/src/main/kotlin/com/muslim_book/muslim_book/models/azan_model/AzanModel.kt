@@ -1,44 +1,42 @@
-package com.muslim_book.muslim_book.models.azan_model;
+package com.muslim_book.muslim_book.models.azan_model
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
 
-import java.util.List;
-
-public class AzanModel {
-
+class AzanModel {
     @SerializedName("code")
     @Expose
-    private Integer code;
+    private var code: Int? = null
+
     @SerializedName("status")
     @Expose
-    private String status;
+    private var status: String? = null
+
     @SerializedName("data")
     @Expose
-    private List<AzanModelData> data = null;
+    private var data: List<AzanModelData>? = null
 
-    public Integer getCode() {
-        return code;
+    fun getCode(): Int? {
+        return code
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
+    fun setCode(code: Int?) {
+        this.code = code
     }
 
-    public String getStatus() {
-        return status;
+    fun getStatus(): String? {
+        return status
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    fun setStatus(status: String?) {
+        this.status = status
     }
 
-    public List<AzanModelData> getData() {
-        return data;
+    fun getData(): List<AzanModelData>? {
+        return data
     }
 
-    public void setData(List<AzanModelData> data) {
-        this.data = data;
+    fun setData(data: List<AzanModelData>?) {
+        this.data = data
     }
-
 }

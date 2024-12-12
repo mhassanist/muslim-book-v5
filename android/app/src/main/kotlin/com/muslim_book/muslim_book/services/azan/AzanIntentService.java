@@ -1,11 +1,12 @@
 package com.muslim_book.muslim_book.services.azan;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.facebook.ads.CacheFlag.ALL;
+//import static com.facebook.ads.CacheFlag.ALL;
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_CHANNEL_NAME;
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_CHANNEL_ID;
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_ID;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -16,6 +17,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
@@ -37,14 +39,20 @@ import android.widget.ImageView;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.facebook.ads.Ad;
-import com.facebook.ads.AdError;
-import com.facebook.ads.InterstitialAd;
-import com.facebook.ads.InterstitialAdListener;
+//import com.facebook.ads.Ad;
+//import com.facebook.ads.AdError;
+//import com.facebook.ads.InterstitialAd;
+//import com.facebook.ads.InterstitialAdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.muslim_book.muslim_book.MainActivity;
@@ -75,7 +83,7 @@ public class AzanIntentService extends Service {
     WindowManager mWindowManager;
     MediaPlayer mMediaPlayer;
     MediaPlayer mAfterAzanMediaPlayer;
-    private InterstitialAd interstitialAd;
+    private InterstitialAd mInterstitialAd;
     FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
     private TextView mAzanName;
     private ImageView mSlider;
@@ -338,40 +346,59 @@ public class AzanIntentService extends Service {
 //  }
 
     private void showAd() {
-        interstitialAd = new InterstitialAd(this, mFirebaseRemoteConfig.getString("after_azan_pop_up"));
-
-        interstitialAd.loadAd(interstitialAd.buildLoadAdConfig()
-                .withAdListener(new InterstitialAdListener() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        InterstitialAd.load(this,mFirebaseRemoteConfig.getString("after_azan_pop_up_1"), adRequest,
+                new InterstitialAdLoadCallback() {
                     @Override
-                    public void onInterstitialDisplayed(Ad ad) {
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        Log.i("AzanServiceIntersecialAd", "onAdLoaded");
                     }
 
                     @Override
-                    public void onInterstitialDismissed(Ad ad) {
-
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.d("AzanServiceIntersecialAd", loadAdError.toString());
+                        mInterstitialAd = null;
                     }
+                });
 
-                    @Override
-                    public void onError(Ad ad, AdError adError) {
-                    }
-
-                    @Override
-                    public void onAdLoaded(Ad ad) {
-                        interstitialAd.show();
-                    }
-
-                    @Override
-                    public void onAdClicked(Ad ad) {
-
-                    }
-
-                    @Override
-                    public void onLoggingImpression(Ad ad) {
-
-                    }
-                })
-                .withCacheFlags(ALL)
-                .build());
+//        interstitialAd = new InterstitialAd(this, mFirebaseRemoteConfig.getString("after_azan_pop_up"));
+//
+//        interstitialAd.loadAd(interstitialAd.buildLoadAdConfig()
+//                .withAdListener(new InterstitialAdListener() {
+//                    @Override
+//                    public void onInterstitialDisplayed(Ad ad) {
+//                    }
+//
+//                    @Override
+//                    public void onInterstitialDismissed(Ad ad) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Ad ad, AdError adError) {
+//                    }
+//
+//                    @Override
+//                    public void onAdLoaded(Ad ad) {
+//                        interstitialAd.show();
+//                    }
+//
+//                    @Override
+//                    public void onAdClicked(Ad ad) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onLoggingImpression(Ad ad) {
+//
+//                    }
+//                })
+//                .withCacheFlags(ALL)
+//                .build());
     }
 
     private String azanSoundUriString(String nextAzanKey) {
@@ -549,6 +576,18 @@ public class AzanIntentService extends Service {
 
         Notification notification = builder.build();
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+
+        /// TODO: Aslan check permission
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         notificationManagerCompat.notify(beforeAzan && !(nextAzanKey.equalsIgnoreCase("1")
                 && new Prefs(this).getAllowAlfajrIbtehal()) ? AZAN_NOTIFICATION_ID + 1
                 : AZAN_NOTIFICATION_ID, notification);
@@ -569,6 +608,7 @@ public class AzanIntentService extends Service {
         }
     }
 
+    @SuppressLint("NotificationTrampoline")
     private void setNotificationBuilder(String nextAzanKey) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a", Locale.ENGLISH);
         String currentDateFormated = dateFormat.format(Calendar.getInstance().getTime());
@@ -648,7 +688,7 @@ public class AzanIntentService extends Service {
             );
         } else {
             pendingIntent = PendingIntent.getBroadcast(this, AZAN_NOTIFICATION_ID,
-                    intent, 0);
+                    intent, PendingIntent.FLAG_IMMUTABLE);
         }
         builder.setContentIntent(pendingIntent);
         builder.setDeleteIntent(pendingIntent);

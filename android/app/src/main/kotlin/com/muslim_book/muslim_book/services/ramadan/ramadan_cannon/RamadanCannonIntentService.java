@@ -5,6 +5,7 @@ import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_CANNON_CHANN
 import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_CANNON_NOTIFICATION_CHANNEL_ID;
 import static com.muslim_book.muslim_book.classes.Constants.RAMADAN_CANNON_NOTIFICATION_ID;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -14,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
@@ -33,10 +35,12 @@ import android.widget.RemoteViews;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.facebook.ads.InterstitialAd;
+//import com.facebook.ads.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.muslim_book.muslim_book.MainActivity;
@@ -60,7 +64,7 @@ public class RamadanCannonIntentService extends Service {
     WindowManager mWindowManager;
     MediaPlayer mMediaPlayer;
     MediaPlayer mAfterAzanMediaPlayer;
-    private InterstitialAd interstitialAd;
+    private InterstitialAd mInterstitialAd;
     FirebaseRemoteConfig mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
     private TextView mAzanName;
     private TextView title;
@@ -278,6 +282,18 @@ public class RamadanCannonIntentService extends Service {
 
         Notification notification = builder.build();
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+
+        /// TODO: ASLAN check permission
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
         notificationManagerCompat.notify(RAMADAN_CANNON_NOTIFICATION_ID, notification);
     }
 

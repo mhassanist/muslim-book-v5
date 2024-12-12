@@ -3,7 +3,7 @@ import 'dart:ui';
 
 // import 'package:facebook_audience_network/facebook_audience_network.dart';
 import 'package:disable_battery_optimization/disable_battery_optimization.dart';
-import 'package:easy_audience_network/easy_audience_network.dart';
+// import 'package:easy_audience_network/easy_audience_network.dart';
 import 'package:muslim_book/ads/admob_interstitial.dart';
 import 'package:muslim_book/azkar_feature/screens/azkar_categories_grid_screen.dart';
 import 'package:muslim_book/core/push_notification_service.dart';
@@ -513,33 +513,36 @@ class _StartViewMobilePortraitViewState
   }
 
  void openFaceBookAds() {
-   if (locator<RemoteConfigService>().showFacebookInterstitial) {
-     final interstitialAd = InterstitialAd(locator<RemoteConfigService>().azanPopUpAdId);
-     interstitialAd.listener = InterstitialAdListener(
-       onLoaded: () {
-         interstitialAd.show();
-       },
-       onDismissed: () {
-         interstitialAd.destroy();
-         debugPrint('Interstitial dismissed');
-       },
-     );
-     interstitialAd.load();
+   AdmobInterstitial interstitialAd = AdmobInterstitial();
+   interstitialAd.createInterstitialAd();
 
-     // FacebookInterstitialAd.loadInterstitialAd(
-     //   // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
-     //   placementId: locator<RemoteConfigService>().azanPopUpAdId,
-     //   listener: (result, value) {
-     //     if (result == InterstitialAdResult.LOADED) {
-     //       FacebookInterstitialAd.showInterstitialAd();
-     //     }
-     //     if (result == InterstitialAdResult.ERROR) {
-     //     }
-     //   },
-     // );
-   } else {
-     AdmobInterstitial interstitialAd = AdmobInterstitial();
-     interstitialAd.createInterstitialAd();
-   }
+   // if (locator<RemoteConfigService>().showFacebookInterstitial) {
+   //   final interstitialAd = InterstitialAd(locator<RemoteConfigService>().azanPopUpAdId);
+   //   interstitialAd.listener = InterstitialAdListener(
+   //     onLoaded: () {
+   //       interstitialAd.show();
+   //     },
+   //     onDismissed: () {
+   //       interstitialAd.destroy();
+   //       debugPrint('Interstitial dismissed');
+   //     },
+   //   );
+   //   interstitialAd.load();
+   //
+   //   FacebookInterstitialAd.loadInterstitialAd(
+   //     // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
+   //     placementId: locator<RemoteConfigService>().azanPopUpAdId,
+   //     listener: (result, value) {
+   //       if (result == InterstitialAdResult.LOADED) {
+   //         FacebookInterstitialAd.showInterstitialAd();
+   //       }
+   //       if (result == InterstitialAdResult.ERROR) {
+   //       }
+   //     },
+   //   );
+   // } else {
+   //   AdmobInterstitial interstitialAd = AdmobInterstitial();
+   //   interstitialAd.createInterstitialAd();
+   // }
  }
 }

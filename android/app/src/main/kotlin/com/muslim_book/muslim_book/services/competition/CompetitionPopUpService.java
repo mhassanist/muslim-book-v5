@@ -4,11 +4,12 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static android.content.Context.WINDOW_SERVICE;
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.facebook.ads.CacheFlag.ALL;
+//import static com.facebook.ads.CacheFlag.ALL;
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_CHANNEL_NAME;
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_CHANNEL_ID;
 import static com.muslim_book.muslim_book.classes.Constants.AZAN_NOTIFICATION_ID;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -17,6 +18,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build.VERSION;
@@ -24,6 +26,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -31,13 +34,19 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.facebook.ads.Ad;
-import com.facebook.ads.AdError;
-import com.facebook.ads.InterstitialAd;
-import com.facebook.ads.InterstitialAdListener;
+//import com.facebook.ads.Ad;
+//import com.facebook.ads.AdError;
+//import com.facebook.ads.InterstitialAd;
+//import com.facebook.ads.InterstitialAdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.muslim_book.muslim_book.MainActivity;
@@ -48,7 +57,7 @@ import at.markushi.ui.CircleButton;
 
 public class CompetitionPopUpService {
 
-  private InterstitialAd interstitialAd;
+  private InterstitialAd mInterstitialAd;
   private WindowManager mWindowManager;
   private View mView;
   private Context context;
@@ -68,6 +77,7 @@ public class CompetitionPopUpService {
       showNotification();
   }
 
+  @SuppressLint("MissingPermission")
   private void showNotification() {
     notificationManager = (NotificationManager) context.getSystemService(
         NOTIFICATION_SERVICE);
@@ -75,6 +85,8 @@ public class CompetitionPopUpService {
     setNotificationBuilder();
     Notification notification = builder.build();
     NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
+
+    /// TODO: ASLAN check permission
     notificationManagerCompat.notify( AZAN_NOTIFICATION_ID +  100 +  100, notification);
   }
 
@@ -169,40 +181,60 @@ public class CompetitionPopUpService {
       if (mWindowManager != null && mView.getWindowToken() != null) {
         mWindowManager.removeView(mView);
       }
-      interstitialAd = new InterstitialAd(context,
-          mFirebaseRemoteConfig.getString("after_azan_pop_up"));
-      interstitialAd.loadAd(interstitialAd.buildLoadAdConfig()
-          .withAdListener(new InterstitialAdListener() {
-            @Override
-            public void onInterstitialDisplayed(Ad ad) {
-            }
 
-            @Override
-            public void onInterstitialDismissed(Ad ad) {
+      AdRequest adRequest = new AdRequest.Builder().build();
+      InterstitialAd.load(context,mFirebaseRemoteConfig.getString("after_azan_pop_up_1"), adRequest,
+              new InterstitialAdLoadCallback() {
+                @Override
+                public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                  // The mInterstitialAd reference will be null until
+                  // an ad is loaded.
+                  mInterstitialAd = interstitialAd;
+                  Log.i("AzanServiceIntersecialAd", "onAdLoaded");
+                }
 
-            }
+                @Override
+                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                  // Handle the error
+                  Log.d("AzanServiceIntersecialAd", loadAdError.toString());
+                  mInterstitialAd = null;
+                }
+              });
 
-            @Override
-            public void onError(Ad ad, AdError adError) {
-            }
-
-            @Override
-            public void onAdLoaded(Ad ad) {
-              interstitialAd.show();
-            }
-
-            @Override
-            public void onAdClicked(Ad ad) {
-
-            }
-
-            @Override
-            public void onLoggingImpression(Ad ad) {
-
-            }
-          })
-          .withCacheFlags(ALL)
-          .build());
+//      interstitialAd = new InterstitialAd(context,
+//          mFirebaseRemoteConfig.getString("after_azan_pop_up"));
+//      interstitialAd.loadAd(interstitialAd.buildLoadAdConfig()
+//          .withAdListener(new InterstitialAdListener() {
+//            @Override
+//            public void onInterstitialDisplayed(Ad ad) {
+//            }
+//
+//            @Override
+//            public void onInterstitialDismissed(Ad ad) {
+//
+//            }
+//
+//            @Override
+//            public void onError(Ad ad, AdError adError) {
+//            }
+//
+//            @Override
+//            public void onAdLoaded(Ad ad) {
+//              interstitialAd.show();
+//            }
+//
+//            @Override
+//            public void onAdClicked(Ad ad) {
+//
+//            }
+//
+//            @Override
+//            public void onLoggingImpression(Ad ad) {
+//
+//            }
+//          })
+//          .withCacheFlags(ALL)
+//          .build());
 
     });
 

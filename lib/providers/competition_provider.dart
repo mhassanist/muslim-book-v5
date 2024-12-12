@@ -13,7 +13,7 @@ import 'package:muslim_book/providers/view_state_provider.dart';
 import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/views/competition_view/competition_view_mobile_portrait/competition_mobile_portrait_ui.dart';
 // import 'package:facebook_audience_network/ad/ad_interstitial.dart';
-import 'package:easy_audience_network/easy_audience_network.dart';
+// import 'package:easy_audience_network/easy_audience_network.dart';
 import 'package:flutter/material.dart';
 import 'package:quiver/async.dart';
 
@@ -269,17 +269,17 @@ class CompetitionProvider extends ViewStateProvider {
 
   void openFaceBookAd() {
     if(locator<RemoteConfigService>().showFacebookInterstitial) {
-      final interstitialAd = InterstitialAd(locator<RemoteConfigService>().azanPopUpAdId);
-      interstitialAd.listener = InterstitialAdListener(
-        onLoaded: () {
-          interstitialAd.show();
-        },
-        onDismissed: () {
-          interstitialAd.destroy();
-          debugPrint('Interstitial dismissed');
-        },
-      );
-      interstitialAd.load();
+      // final interstitialAd = InterstitialAd(locator<RemoteConfigService>().azanPopUpAdId);
+      // interstitialAd.listener = InterstitialAdListener(
+      //   onLoaded: () {
+      //     interstitialAd.show();
+      //   },
+      //   onDismissed: () {
+      //     interstitialAd.destroy();
+      //     debugPrint('Interstitial dismissed');
+      //   },
+      // );
+      // interstitialAd.load();
 
 
     // FacebookInterstitialAd.loadInterstitialAd(

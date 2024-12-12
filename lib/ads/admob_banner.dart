@@ -1,5 +1,5 @@
 // import 'package:facebook_audience_network/ad/ad_banner.dart';
-import 'package:easy_audience_network/easy_audience_network.dart' as ad;
+// import 'package:easy_audience_network/easy_audience_network.dart' as ad;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -50,68 +50,49 @@ class _AdmobBannerState extends State<AdmobBanner> {
 
   @override
   Widget build(BuildContext context) {
-    if (locator<RemoteConfigService>().showFacebookAdsBanner) {
-      return Stack(
-        children: [
-          ad.BannerAd(
-            placementId: AdManager.getBannerAdUnitId(widget.bannerName),
-            bannerSize: ad.BannerSize.STANDARD,
-            listener: ad.BannerAdListener(
-              onClicked: () {
-                setState(() {
-                  isAdLoaded = true;
-                });
-                debugPrint("BannerAd Clicked");
-              },
-              onError: (code, message) {
-                setState(() {
-                  isAdLoaded = true;
-                });
-                debugPrint("BannerAd Error: code: $code, message: $message");
-              },
-              onLoaded: () {
-                setState(() {
-                  isAdLoaded = true;
-                });
-                debugPrint("BannerAd Loaded");
-              },
-              onLoggingImpression: () {
-                setState(() {
-                  isAdLoaded = true;
-                });
-                debugPrint("BannerAd Logging Impression");
-              },
-            ),
-            // listener: (result, value) {
-            //   setState(() {
-            //     isAdLoaded = true;
-            //   });
-              // switch (result) {
-              //   case BannerAdResult.ERROR:
-              //     debugPrint("FacebookBannerAd Error: $value");
-              //     break;
-              //   case BannerAdResult.LOADED:
-              //     debugPrint("FacebookBannerAd Loaded: $value");
-              //     break;
-              //   case BannerAdResult.CLICKED:
-              //     debugPrint("FacebookBannerAd Clicked: $value");
-              //     break;
-              //   case BannerAdResult.LOGGING_IMPRESSION:
-              //     debugPrint("FacebookBannerAd Logging Impression: $value");
-              //     break;
-              // }
-            // },
-          ),
-          if (!isAdLoaded)
-            SizedBox(
-              height: widget.height ?? 100,
-              child: const Center(
-                child: Loading(),
-              ),
-            ),
-        ],
-      );
-    }
+    // if (locator<RemoteConfigService>().showFacebookAdsBanner) {
+    //   return Stack(
+    //     children: [
+    //       ad.BannerAd(
+    //         placementId: AdManager.getBannerAdUnitId(widget.bannerName),
+    //         bannerSize: ad.BannerSize.STANDARD,
+    //         listener: ad.BannerAdListener(
+    //           onClicked: () {
+    //             setState(() {
+    //               isAdLoaded = true;
+    //             });
+    //             debugPrint("BannerAd Clicked");
+    //           },
+    //           onError: (code, message) {
+    //             setState(() {
+    //               isAdLoaded = true;
+    //             });
+    //             debugPrint("BannerAd Error: code: $code, message: $message");
+    //           },
+    //           onLoaded: () {
+    //             setState(() {
+    //               isAdLoaded = true;
+    //             });
+    //             debugPrint("BannerAd Loaded");
+    //           },
+    //           onLoggingImpression: () {
+    //             setState(() {
+    //               isAdLoaded = true;
+    //             });
+    //             debugPrint("BannerAd Logging Impression");
+    //           },
+    //         ),
+    //       ),
+    //       if (!isAdLoaded)
+    //         SizedBox(
+    //           height: widget.height ?? 100,
+    //           child: const Center(
+    //             child: Loading(),
+    //           ),
+    //         ),
+    //     ],
+    //   );
+    // }
     if (isAdLoaded) {
       final AdWidget adWidget = AdWidget(ad: bannerAd);
       return SizedBox(height: widget.height ?? 250, child: adWidget);

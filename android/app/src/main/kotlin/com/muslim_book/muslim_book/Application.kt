@@ -1,8 +1,9 @@
 package com.muslim_book.muslim_book
 
+//import com.facebook.ads.AudienceNetworkAds
 import androidx.multidex.MultiDex
 import androidx.startup.AppInitializer
-import com.facebook.ads.AudienceNetworkAds
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.FirebaseApp
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
@@ -16,7 +17,10 @@ class Application: FlutterApplication() {
         MultiDex.install(this)
 
         FirebaseApp.initializeApp(this)
-        AudienceNetworkAds.initialize(this)
+//        AudienceNetworkAds.initialize(this)
+        // Initialize the Google Mobile Ads SDK on a background thread.
+        Thread { MobileAds.initialize(this) { } }.start()
+
         mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance()
         mFirebaseRemoteConfig!!.setConfigSettingsAsync(
             FirebaseRemoteConfigSettings.Builder()
