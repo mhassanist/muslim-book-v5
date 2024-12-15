@@ -73,7 +73,7 @@ class _SplashViewState extends State<SplashView>
       _showVersionDialog(context);
     } else {
       if (locator<Prefs>().getIsFirstTime()) {
-        await sendAzanFilesToTemperory();
+        await sendAzanFilesToTemporary();
         Get.offNamed("/azan_draw_over");
       } else if (!checkOverLay) {
         Get.offNamed("/azan_draw_over");
@@ -140,7 +140,7 @@ class _SplashViewState extends State<SplashView>
     });
   }
 
-  Future<void> sendAzanFilesToTemperory() async {
+  Future<void> sendAzanFilesToTemporary() async {
     String tempPath = (await getApplicationDocumentsDirectory()).path;
 
     var dbPath2 = join(tempPath, "after_azan.mp3");

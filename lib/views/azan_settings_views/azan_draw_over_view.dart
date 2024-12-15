@@ -9,7 +9,7 @@ class AzanDrawOverView extends StatefulWidget {
   const AzanDrawOverView({super.key});
 
   @override
-  _AzanDrawOverViewState createState() => _AzanDrawOverViewState();
+  State<AzanDrawOverView> createState() => _AzanDrawOverViewState();
 }
 
 class _AzanDrawOverViewState extends State<AzanDrawOverView>
@@ -33,9 +33,11 @@ class _AzanDrawOverViewState extends State<AzanDrawOverView>
             width: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage(
-                      "assets/images/onboarding/draw_over_apps_background.png"),
-                  fit: BoxFit.cover),
+                image: AssetImage(
+                  "assets/images/onboarding/draw_over_apps_background.png",
+                ),
+                fit: BoxFit.cover,
+              ),
             ),
             padding: EdgeInsets.only(
                 bottom: sizeConfig.blockSizeVertical * 5,
