@@ -13,8 +13,10 @@ import 'package:responsive_builder/responsive_builder.dart';
 import '../../utils/sizing_info_extension.dart';
 
 class PickCountryView extends StatefulWidget {
+  const PickCountryView({super.key});
+
   @override
-  _PickCountryViewState createState() => _PickCountryViewState();
+  State<PickCountryView> createState() => _PickCountryViewState();
 }
 
 class _PickCountryViewState extends State<PickCountryView> {
@@ -39,7 +41,7 @@ class _PickCountryViewState extends State<PickCountryView> {
               return SafeArea(
                 child: Scaffold(
                   appBar: appBar(context, sizeConfig,
-                      AppLocalizations.of(context)!.translate("set_location")),
+                      AppLocalizations.of(context)!.translate("set_location"),),
                   body: ResponsiveBuilder(builder: (context, sizeConfig) {
                     return SingleChildScrollView(
                       child: ConstrainedBox(
@@ -82,12 +84,12 @@ class _PickCountryViewState extends State<PickCountryView> {
                         ),
                       ),
                     );
-                  }),
+                  },),
                 ),
               );
-            });
-      });
-    });
+            },);
+      },);
+    },);
   }
 
   Container divider(SizingInformation sizeConfig, BuildContext context) {
