@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
@@ -158,7 +159,7 @@
             android:exported="false" />
 
         <receiver
-            android:name=".recievers.azan.AzanReceiver"
+            android:name=".receivers.azan.AzanReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -167,7 +168,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".recievers.ramadan.RamadanCannonReceiver"
+            android:name=".receivers.ramadan.RamadanCannonReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -175,14 +176,14 @@
                 <action android:name="android.intent.action.NOTIFY" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".recievers.phoneState.PhoneStateBroadcastReceiver"
+        <receiver android:name=".receivers.phoneState.PhoneStateBroadcastReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".recievers.ramadan.RamadanMshartReceiver"
+            android:name=".receivers.ramadan.RamadanMshartReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -191,7 +192,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".recievers.competition.CompetitionsAlarmReceiver"
+            android:name=".receivers.competition.CompetitionsAlarmReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -200,7 +201,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".recievers.azan.OverLayReceiver"
+            android:name=".receivers.azan.OverLayReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -210,7 +211,7 @@
         </receiver>
 
         <receiver
-            android:name=".recievers.azkar.AzkarAlarm"
+            android:name=".receivers.azkar.AzkarAlarm"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -219,7 +220,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".recievers.FastingAlertsReceiver"
+            android:name=".receivers.FastingAlertsReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -229,6 +230,7 @@
         </receiver>
         <service
             android:name=".services.azan.AzanIntentService"
+            android:foregroundServiceType="mediaPlayback"
             android:exported="false" />
         <service
             android:name=".services.ramadan.ramadan_cannon.RamadanCannonIntentService"

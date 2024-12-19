@@ -99,7 +99,8 @@ class PickAzanMethodsProvider extends ViewStateProvider {
         .indexOf( _pickedMazhab ): 0);
 
     enableWeeklyFastingAlerts();
-     await AzanApis().getAzan();
+
+    await AzanApis().getAzan();
     await Constants.platform.invokeMethod("fireAzan");
     await Constants.platform.invokeMethod("fireCannonRamadan");
     await Constants.platform.invokeMethod("fireMshartRamadan");
