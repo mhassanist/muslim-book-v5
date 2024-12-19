@@ -47,7 +47,7 @@ import com.muslim_book.muslim_book.MainActivity;
 import com.muslim_book.muslim_book.R;
 import com.muslim_book.muslim_book.classes.Constants;
 import com.muslim_book.muslim_book.classes.ramdan.RamadanCannonUtils;
-import com.muslim_book.muslim_book.recievers.ramadan.RamadanCannonReceiver;
+import com.muslim_book.muslim_book.receivers.ramadan.RamadanCannonReceiver;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

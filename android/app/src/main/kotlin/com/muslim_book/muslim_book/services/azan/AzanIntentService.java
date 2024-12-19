@@ -60,7 +60,7 @@ import com.muslim_book.muslim_book.R;
 import com.muslim_book.muslim_book.classes.AzanUtils;
 import com.muslim_book.muslim_book.classes.Constants;
 import com.muslim_book.muslim_book.classes.Prefs;
-import com.muslim_book.muslim_book.recievers.azan.AzanReceiver;
+import com.muslim_book.muslim_book.receivers.azan.AzanReceiver;
 
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -100,7 +100,7 @@ public class AzanIntentService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (VERSION.SDK_INT >= 26) {
+        if (VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     AZAN_NOTIFICATION_CHANNEL_ID,
                     AZAN_CHANNEL_NAME,

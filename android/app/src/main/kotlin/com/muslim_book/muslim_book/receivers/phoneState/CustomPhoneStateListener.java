@@ -1,4 +1,4 @@
-package com.muslim_book.muslim_book.recievers.phoneState;
+package com.muslim_book.muslim_book.receivers.phoneState;
 import android.content.Context;
 import android.content.Intent;
 import android.telephony.PhoneStateListener;

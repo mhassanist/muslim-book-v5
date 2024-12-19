@@ -15,7 +15,6 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.PowerManager;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.TextView;
 
@@ -25,16 +24,15 @@ import androidx.core.content.ContextCompat;
 import com.muslim_book.muslim_book.R;
 import com.muslim_book.muslim_book.classes.ramdan.RamadanCannonUtils;
 import com.muslim_book.muslim_book.classes.ramdan.RamadanMshartUtils;
-import com.muslim_book.muslim_book.recievers.FastingAlertsReceiver;
-import com.muslim_book.muslim_book.recievers.azkar.AzkarAlarm;
-import com.muslim_book.muslim_book.recievers.competition.CompetitionsAlarmReceiver;
-import com.muslim_book.muslim_book.recievers.phoneState.PhoneStateBroadcastReceiver;
+import com.muslim_book.muslim_book.receivers.FastingAlertsReceiver;
+import com.muslim_book.muslim_book.receivers.azkar.AzkarAlarm;
+import com.muslim_book.muslim_book.receivers.competition.CompetitionsAlarmReceiver;
+import com.muslim_book.muslim_book.receivers.phoneState.PhoneStateBroadcastReceiver;
 import com.muslim_book.muslim_book.services.azan.OverLayService;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import io.flutter.embedding.engine.dart.DartExecutor;
 import io.flutter.plugin.common.MethodChannel;

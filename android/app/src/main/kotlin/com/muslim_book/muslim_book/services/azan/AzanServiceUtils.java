@@ -14,7 +14,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,11 +21,10 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.muslim_book.muslim_book.MainActivity;
 import com.muslim_book.muslim_book.R;
 import com.muslim_book.muslim_book.classes.Constants;
 import com.muslim_book.muslim_book.classes.Prefs;
-import com.muslim_book.muslim_book.recievers.azan.AzanReceiver;
+import com.muslim_book.muslim_book.receivers.azan.AzanReceiver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -9,10 +9,13 @@ import android.provider.Settings
 import com.muslim_book.muslim_book.classes.AzanUtils
 import com.muslim_book.muslim_book.classes.ChannelMethods
 import com.muslim_book.muslim_book.classes.Constants
-import com.muslim_book.muslim_book.recievers.azkar.AzkarAlarm
-import com.muslim_book.muslim_book.recievers.competition.CompetitionsAlarmReceiver
+import com.muslim_book.muslim_book.receivers.azkar.AzkarAlarm
+import com.muslim_book.muslim_book.receivers.competition.CompetitionsAlarmReceiver
 import com.ryanheise.audioservice.AudioServiceActivity
+import dev.fluttercommunity.plus.androidalarmmanager.AndroidAlarmManagerPlugin
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugins.firebase.core.FlutterFirebaseCorePlugin
+import io.flutter.plugins.googlemobileads.GoogleMobileAdsPlugin
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 

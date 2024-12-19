@@ -1,4 +1,4 @@
-package com.muslim_book.muslim_book.recievers.ramadan;
+package com.muslim_book.muslim_book.receivers.ramadan;
 
 import static com.muslim_book.muslim_book.classes.Constants.FLUTTER_SHARED_PREFERENCES;
 

@@ -1,4 +1,4 @@
-package com.muslim_book.muslim_book.recievers.azan;
+package com.muslim_book.muslim_book.receivers.azan;
 
 import static com.muslim_book.muslim_book.classes.Constants.FLUTTER_SHARED_PREFERENCES;
 
@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 

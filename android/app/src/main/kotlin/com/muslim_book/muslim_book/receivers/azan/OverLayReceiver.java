@@ -1,4 +1,4 @@
-package com.muslim_book.muslim_book.recievers.azan;
+package com.muslim_book.muslim_book.receivers.azan;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

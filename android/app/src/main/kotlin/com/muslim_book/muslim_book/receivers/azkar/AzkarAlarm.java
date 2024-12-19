@@ -1,4 +1,4 @@
-package com.muslim_book.muslim_book.recievers.azkar;
+package com.muslim_book.muslim_book.receivers.azkar;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;

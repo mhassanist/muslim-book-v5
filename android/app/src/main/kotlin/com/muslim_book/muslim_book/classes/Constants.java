@@ -6,9 +6,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
-import com.muslim_book.muslim_book.recievers.azan.AzanReceiver;
-import com.muslim_book.muslim_book.recievers.ramadan.RamadanCannonReceiver;
-import com.muslim_book.muslim_book.recievers.ramadan.RamadanMshartReceiver;
+import com.muslim_book.muslim_book.receivers.azan.AzanReceiver;
+import com.muslim_book.muslim_book.receivers.ramadan.RamadanCannonReceiver;
+import com.muslim_book.muslim_book.receivers.ramadan.RamadanMshartReceiver;
   
 public class Constants {
 

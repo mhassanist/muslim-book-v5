@@ -1,4 +1,4 @@
-package com.muslim_book.muslim_book.recievers.competition;
+package com.muslim_book.muslim_book.receivers.competition;
 
 import static android.content.Context.MODE_PRIVATE;
 

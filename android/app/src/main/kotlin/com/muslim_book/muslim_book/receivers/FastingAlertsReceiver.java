@@ -1,4 +1,4 @@
-package com.muslim_book.muslim_book.recievers;
+package com.muslim_book.muslim_book.receivers;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static com.muslim_book.muslim_book.classes.Constants.WEEKLY_FASTING_CHANNEL_NAME;

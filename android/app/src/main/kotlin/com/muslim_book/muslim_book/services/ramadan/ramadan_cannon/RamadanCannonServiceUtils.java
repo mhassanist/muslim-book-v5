@@ -24,7 +24,7 @@ import androidx.core.app.NotificationManagerCompat;
 import com.muslim_book.muslim_book.R;
 import com.muslim_book.muslim_book.classes.Constants;
 import com.muslim_book.muslim_book.classes.Prefs;
-import com.muslim_book.muslim_book.recievers.ramadan.RamadanCannonReceiver;
+import com.muslim_book.muslim_book.receivers.ramadan.RamadanCannonReceiver;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
