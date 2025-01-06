@@ -5,9 +5,12 @@ import 'package:muslim_book/widgets/progress_dialog_pkg/progress_dialog.dart';
 import 'Constants.dart';
 
 class LoadingUtils {
-  setIsLoading(BuildContext context, bool condition) {
-    final pr = ProgressDialog(context,
-        isDismissible: false, type: ProgressDialogType.Normal);
+  setIsLoading(BuildContext context, bool condition, {bool isDismissible = false,}) {
+    final pr = ProgressDialog(
+      context,
+      isDismissible: isDismissible,
+      type: ProgressDialogType.Normal,
+    );
     if (condition) {
       pr.style(
           message: AppLocalizations.of(context)!.translate("please_wait"),
