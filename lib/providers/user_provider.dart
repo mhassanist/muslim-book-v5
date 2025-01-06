@@ -93,6 +93,9 @@ class UserProvider extends ViewStateProvider {
     if (res is UserModel) {
       saveUser(res, Constants.LOGIN_WITH_Email, password: map["password"]);
       return true;
+    } else if (res is String) {
+      errorMessage = res;
+      return false;
     } else {
       errorMessage = (res as Failure).message;
       return false;

@@ -72,8 +72,11 @@ class ApiService {
       } else {
         return response.data;
       }
-    }  catch (e) {
+    } catch (e) {
       e.printInfo(info: 'ApiService register');
+      if (e is DioException) {
+        return e.error;
+      }
     }
   }
 
