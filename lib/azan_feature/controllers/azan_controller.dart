@@ -12,7 +12,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 class AzanController extends GetxController {
-  DateTime _now = DateTime.now();
+  final _now = DateTime.now();
   String _currentDate = '';
   bool _volume = false;
   String _currentDayName = '';
@@ -269,7 +269,7 @@ class AzanController extends GetxController {
     var str = locator<Prefs>().getMutedAzanList();
     if (str != null) {
       mutedAzanList =
-          str.runes.map((rune) => new String.fromCharCode(rune)).toList();
+          str.runes.map((rune) => String.fromCharCode(rune)).toList();
     }
   }
 
