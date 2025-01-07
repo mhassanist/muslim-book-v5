@@ -1,4 +1,5 @@
 import 'package:muslim_book/locals_utils/app_localizations.dart';
+import 'package:muslim_book/models/month_azan_model.dart';
 import 'package:muslim_book/network_utils/azan_apis.dart';
 import 'package:muslim_book/network_utils/settings_apis.dart';
 import 'package:muslim_book/providers/user_provider.dart';
@@ -52,15 +53,14 @@ class _SplashViewState extends State<SplashView>
     await Provider.of<UserProvider>(context, listen: false).checkLogin();
     await invokeMethod();
     if (locator<Prefs>().getIsAzanUrlValid) {
-      // if (locator<Prefs>().getAzanModel() != null) {
-      //   MonthAzanModel model =
-      //       MonthAzanModel.fromJson(locator<Prefs>().getAzanModel());
-      //   if (model.data.first.date.gregorian.month.number !=
-      //       DateTime.now().month) {
-      //     await AzanApis().getAzan();
-      //   }
-      // } else
-      await AzanApis().getAzan();
+      if (locator<Prefs>().getAzanModel().isNotEmpty) {
+        final model = MonthAzanModel.fromJson(locator<Prefs>().getAzanModel());
+        if (model.data.first.date.gregorian.month.number != DateTime.now().month) {
+          await AzanApis().getAzan();
+        }
+      } else {
+        await AzanApis().getAzan();
+      }
     }
     var checkOverLay = false;
     try {

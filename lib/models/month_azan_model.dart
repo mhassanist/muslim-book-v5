@@ -26,11 +26,11 @@ class MonthAzanModel {
       MonthAzanModel.fromMap(json.decode(str));
 
   factory MonthAzanModel.fromMap(Map<String, dynamic> json) => MonthAzanModel(
-        code: json["code"],
-        status: json["status"],
-        data: List<AzanModel>.from(
-            json["data"].map((x) => AzanModel.fromJson(x))),
-      );
+    code: json["code"],
+    status: json["status"],
+    data: List<AzanModel>.from(
+        json["data"].map((x) => AzanModel.fromJson(x))),
+  );
 
   Map<String, dynamic> toJson() => {
         "code": code,
@@ -218,16 +218,16 @@ class Hijri {
   List<String> holidays;
 
   factory Hijri.fromJson(Map<String, dynamic> json) => Hijri(
-        date: json["date"],
-        // format: formatValues.map[json["format"]],
-        format: Format.fromStringValue(json["format"]),
-        day: json["day"],
-        weekday: HijriWeekday.fromJson(json["weekday"]),
-        month: HijriMonth.fromJson(json["month"]),
-        year: json["year"],
-        designation: Designation.fromJson(json["designation"]),
-        holidays: List<String>.from(json["holidays"].map((x) => x)),
-      );
+    date: json["date"],
+    // format: formatValues.map[json["format"]],
+    format: Format.fromStringValue(json["format"]),
+    day: '${json["day"]}',
+    weekday: HijriWeekday.fromJson(json["weekday"]),
+    month: HijriMonth.fromJson(json["month"]),
+    year: '${json["year"]}',
+    designation: Designation.fromJson(json["designation"]),
+    holidays: List<String>.from(json["holidays"].map((x) => x)),
+  );
 
   Map<String, dynamic> toJson() => {
         "date": date,
