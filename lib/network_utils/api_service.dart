@@ -60,6 +60,9 @@ class ApiService {
       }
     } catch (e) {
       e.printInfo(info: 'ApiService login');
+      if (e is DioException) {
+        return e.error;
+      }
     }
   }
 
@@ -67,8 +70,7 @@ class ApiService {
     try {
       var response = await _dio.post("users/register", data: body);
       if (response.data is! Failure) {
-        UserModel model = UserModel.fromMap(response.data["data"]);
-        return model;
+        return UserModel.fromMap(response.data["data"]);
       } else {
         return response.data;
       }

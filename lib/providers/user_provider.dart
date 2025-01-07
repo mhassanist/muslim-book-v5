@@ -58,11 +58,13 @@ class UserProvider extends ViewStateProvider {
   }
 
   Future<bool> login(String email, String password) async {
-    var res = await locator<ApiService>()
-        .login({"email": "$email", "password": "$password"});
+    var res = await locator<ApiService>().login({"email": email, "password": password});
     if (res is UserModel) {
       saveUser(res, Constants.LOGIN_WITH_Email, password: password);
       return true;
+    } else if (res is String) {
+      errorMessage = res;
+      return false;
     } else {
       errorMessage = (res as Failure).message;
       return false;
