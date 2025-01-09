@@ -1,5 +1,4 @@
 import 'package:muslim_book/azkar_feature/screens/azkar_categories_grid_screen.dart';
-
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/quran/views/quran_section_screen.dart';
 import 'package:muslim_book/utils/Constants.dart';
@@ -9,13 +8,15 @@ import 'package:flutter/material.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:muslim_book/utils/sizing_info_extension.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import '../../../utils/sizing_info_extension.dart';
 
 class HomeViewMobilePortrait extends StatefulWidget {
+  const HomeViewMobilePortrait({super.key});
+
   @override
-  _HomeViewMobilePortraitState createState() => _HomeViewMobilePortraitState();
+  State<HomeViewMobilePortrait> createState() => _HomeViewMobilePortraitState();
 }
 
 class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
@@ -49,7 +50,7 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                                 context, "/start_view");
                           }
                         },
-                        child: Container(
+                        child: SizedBox(
                           height: sizeConfig.blockSizeHorizontal * 40,
                           width: sizeConfig.blockSizeHorizontal * 40,
                           child: Column(
@@ -112,7 +113,7 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                               MaterialPageRoute(
                                   builder: (c) => QuranSectionScreen()));
                         },
-                        child: Container(
+                        child: SizedBox(
                           height: sizeConfig.blockSizeHorizontal * 40,
                           width: sizeConfig.blockSizeHorizontal * 40,
                           child: Column(
@@ -143,7 +144,7 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
                           onPressed: () {
                             Navigator.pushNamed(context, '/settings');
                           },
-                          child: Container(
+                          child: SizedBox(
                             height: sizeConfig.blockSizeHorizontal * 40,
                             width: sizeConfig.blockSizeHorizontal * 40,
                             child: Column(
@@ -197,7 +198,7 @@ class _HomeViewMobilePortraitState extends State<HomeViewMobilePortrait> {
               Provider.of<UserProvider>(context, listen: false).selectedPage =
                   position;
             },
-      child: Container(
+      child: SizedBox(
         height: sizeConfig.blockSizeHorizontal * 40,
         width: sizeConfig.blockSizeHorizontal * 40,
         child: Column(

@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 4.7.0+89
+version: 4.7.1+89
 
 environment:
   sdk: ^3.6.0
@@ -55,8 +55,9 @@ dependencies:
 #  easy_audience_network: ^0.0.7
 
   # No null safety
-  fancy_dialog:
-    git: https://github.com/DokkarRachidReda/Fancy-Flutter-Alert-Dialog
+#  fancy_flutter_dialog: ^1.0.1
+#  fancy_dialog:
+#    git: https://github.com/DokkarRachidReda/Fancy-Flutter-Alert-Dialog
 
   ffi: ^2.1.3
   firebase_admob_config: ^1.3.1
@@ -222,7 +223,8 @@ flutter:
     - assets/audio/questions/
     - assets/images/islamic_icons/
     - assets/images/islamic_offline_icons/
-  #    - assets/audio/azkar/
+#    - assets/audio/azkar/
+    - assets/fancy_dialog/
 
   fonts:
     - family: arabic
