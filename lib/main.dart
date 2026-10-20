@@ -18,7 +18,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim_book/ads/admob_banner.dart';
-import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
 import 'package:muslim_book/azkar_feature/providers/azkar_provider.dart';
 import 'package:muslim_book/core/dio_util.dart';
@@ -69,6 +68,10 @@ Future<void> _initAdMob() async {
   // version = packageInfo.version;
 
   // Admob.initialize();
+  // Restrict ads to content suitable for general audiences
+  await MobileAds.instance.updateRequestConfiguration(
+    RequestConfiguration(maxAdContentRating: MaxAdContentRating.g),
+  );
   MobileAds.instance.initialize();
 
   /// Need to be commit to avoid crashes
@@ -291,15 +294,17 @@ class MyApp extends StatefulWidget {
     }
   }
 
-  static Future<Widget> exitBottomSheet(context) async {
-    return await showModalBottomSheet(
+  static Future<void> exitBottomSheet(context) async {
+    await showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => ResponsiveBuilder(
         builder: (context, sizeConfig) {
           return Container(
-            height: MediaQuery.of(context).size.height * 0.55,
+            constraints: BoxConstraints(
+              maxHeight: MediaQuery.of(context).size.height * 0.85,
+            ),
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
@@ -307,90 +312,89 @@ class MyApp extends StatefulWidget {
                 topRight: Radius.circular(25.0),
               ),
             ),
-            child: Center(
-              child: LoadUiWithAd(
-                mainView: Column(
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(25.0),
-                          topRight: Radius.circular(25.0),
-                        ),
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)!
-                            .translate("are_you_sure_exit"),
-                        style: TextStyle(
-                          fontSize: sizeConfig.blockSizeHorizontal * 5,
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(25.0),
+                        topRight: Radius.circular(25.0),
                       ),
                     ),
-                    // Expanded(
-                    //   child: AdMobRectangle(BannerName.Top),
-                    // ),
-                    const AdmobBanner(bannerName: BannerName.TOP),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: sizeConfig.blockSizeHorizontal * 30,
-                          height: sizeConfig.blockSizeVertical * 6,
-                          margin: const EdgeInsets.only(top: 20, bottom: 20),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: RawMaterialButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  sizeConfig.blockSizeVertical),
-                            ),
-                            onPressed: () => _onExitButtonTap(context),
-                            fillColor: Theme.of(context).primaryColor,
-                            child: Text(
-                              AppLocalizations.of(context)!.translate("yes"),
-                              style: TextStyle(
-                                fontSize: sizeConfig.blockSizeHorizontal * 6,
-                                color: Constants.CANVAS_COLOR,
-                              ),
+                    child: Text(
+                      AppLocalizations.of(context)!
+                          .translate("are_you_sure_exit"),
+                      style: TextStyle(
+                        fontSize: sizeConfig.blockSizeHorizontal * 5,
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  // Expanded(
+                  //   child: AdMobRectangle(BannerName.Top),
+                  // ),
+                  const AdmobBanner(bannerName: BannerName.TOP),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Container(
+                        width: sizeConfig.blockSizeHorizontal * 30,
+                        height: sizeConfig.blockSizeVertical * 6,
+                        margin: const EdgeInsets.only(top: 20, bottom: 20),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: RawMaterialButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                sizeConfig.blockSizeVertical),
+                          ),
+                          onPressed: () => _onExitButtonTap(context),
+                          fillColor: Theme.of(context).primaryColor,
+                          child: Text(
+                            AppLocalizations.of(context)!.translate("yes"),
+                            style: TextStyle(
+                              fontSize: sizeConfig.blockSizeHorizontal * 6,
+                              color: Constants.CANVAS_COLOR,
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          width: sizeConfig.blockSizeHorizontal * 30,
-                          height: sizeConfig.blockSizeVertical * 6,
-                          margin: const EdgeInsets.only(top: 20, bottom: 20),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: RawMaterialButton(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  sizeConfig.blockSizeVertical),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            fillColor: Theme.of(context).colorScheme.secondary,
-                            child: Text(
-                              AppLocalizations.of(context)!.translate("cancel"),
-                              style: TextStyle(
-                                fontSize: sizeConfig.blockSizeHorizontal * 6,
-                                color: Constants.CANVAS_COLOR,
-                              ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                        width: sizeConfig.blockSizeHorizontal * 30,
+                        height: sizeConfig.blockSizeVertical * 6,
+                        margin: const EdgeInsets.only(top: 20, bottom: 20),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10)),
+                        child: RawMaterialButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                sizeConfig.blockSizeVertical),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          fillColor: Theme.of(context).colorScheme.secondary,
+                          child: Text(
+                            AppLocalizations.of(context)!.translate("cancel"),
+                            style: TextStyle(
+                              fontSize: sizeConfig.blockSizeHorizontal * 6,
+                              color: Constants.CANVAS_COLOR,
                             ),
                           ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
           );

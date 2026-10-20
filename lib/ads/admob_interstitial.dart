@@ -10,8 +10,6 @@ class AdmobInterstitial {
   late InterstitialAd? _interstitialAd;
   void createInterstitialAd() {
     const AdRequest request = AdRequest(
-      keywords: <String>['foo', 'bar'],
-      contentUrl: 'http://foo.com/bar.html',
       nonPersonalizedAds: true,
     );
     InterstitialAd.load(
