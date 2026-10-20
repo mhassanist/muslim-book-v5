@@ -9,6 +9,15 @@ rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+// Some plugins (connectivity_plus 5, fluttertoast 8, geocoding 3) still compile against
+// SDK 33, while newer AndroidX dependencies require 34+. Force a common compileSdk.
+subprojects {
+    afterEvaluate { project ->
+        if (project.plugins.hasPlugin('com.android.library')) {
+            project.android.compileSdk = 36
+        }
+    }
+}
 subprojects {
     project.evaluationDependsOn(':app')
 }
