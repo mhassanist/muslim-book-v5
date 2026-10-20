@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim_book/ads/ad_manager.dart';
+import 'package:muslim_book/ads/ad_placeholder.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/network_utils/remote_config.dart';
 import 'package:muslim_book/utils/locator.dart';
-import 'package:muslim_book/widgets/loading_pkg/loading.dart';
 
 class AdmobBanner extends StatefulWidget {
   final BannerName bannerName;
@@ -101,17 +101,17 @@ class _AdmobBannerState extends State<AdmobBanner> {
     if (hasFailed || locator<RemoteConfigService>().showFacebookAdsBanner) {
       return const SizedBox.shrink();
     }
-    if (isAdLoaded && bannerAd != null) {
-      return SizedBox(
-        height: widget.height ?? 250,
-        child: AdWidget(ad: bannerAd!),
-      );
-    }
-    return SizedBox(
-      height: widget.height ?? 250,
-      child: const Center(
-        child: Loading(),
-      ),
+    final height = widget.height ?? 250;
+    // Fade from the animated placeholder into the ad once it arrives
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 500),
+      child: isAdLoaded && bannerAd != null
+          ? SizedBox(
+              key: const ValueKey('ad'),
+              height: height,
+              child: AdWidget(ad: bannerAd!),
+            )
+          : AdPlaceholder(key: const ValueKey('placeholder'), height: height),
     );
   }
 
