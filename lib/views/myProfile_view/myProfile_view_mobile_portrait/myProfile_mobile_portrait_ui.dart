@@ -197,7 +197,7 @@ class MyProfileUI {
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0XFF4266b2),
                   shape: const CircleBorder(side: BorderSide.none)),
-              child: const Icon(FontAwesomeIcons.facebookF)),
+              child: const FaIcon(FontAwesomeIcons.facebookF)),
         ),
         const SizedBox(
           width: 10,
@@ -210,7 +210,7 @@ class MyProfileUI {
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
                   shape: const CircleBorder(side: BorderSide.none)),
-              child: const Icon(FontAwesomeIcons.twitter)),
+              child: const FaIcon(FontAwesomeIcons.twitter)),
         ),
         const SizedBox(
           width: 10,
@@ -223,7 +223,7 @@ class MyProfileUI {
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0XFF4FCE5D),
                   shape: const CircleBorder(side: BorderSide.none)),
-              child: Icon(
+              child: FaIcon(
                 FontAwesomeIcons.whatsapp,
                 size: sizeConfig.blockSizeHorizontal * 7,
               )),

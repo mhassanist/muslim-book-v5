@@ -257,7 +257,7 @@ class _BuildAyahWidgetState extends State<BuildAyahWidget> {
       child: Row(
         children: <Widget>[
           IconButton(
-              icon: Icon(
+              icon: FaIcon(
                 FontAwesomeIcons.share,
                 size: ScreenUtil().setWidth(20),
                 color: prymaryColor,

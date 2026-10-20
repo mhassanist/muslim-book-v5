@@ -78,7 +78,7 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
           buildLoginButton(
             sizeConfig,
             AppLocalizations.of(context)!.translate("facebook_login"),
-            FontAwesomeIcons.squareFacebook,
+            FontAwesomeIcons.squareFacebook.data,
             const Color(0XFF3b5998),
             onPressed: () async {
               LoadingUtils util = LoadingUtils();
@@ -104,7 +104,7 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
           buildLoginButton(
               sizeConfig,
               AppLocalizations.of(context)!.translate("google_login"),
-              FontAwesomeIcons.squareGooglePlus,
+              FontAwesomeIcons.squareGooglePlus.data,
               const Color(0XFFDB4437), onPressed: () async {
             LoadingUtils util = LoadingUtils();
             util.setIsLoading(context, true);

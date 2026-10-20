@@ -89,8 +89,9 @@ class MainActivity: AudioServiceActivity() {
 //                .getPackageInfo(pContext.getPackageName(), PackageManager.GET_SIGNATURES)
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                if (info.signingInfo != null) {
-                    for (signature in info.signingInfo.signingCertificateHistory) {
+                val signingInfo = info.signingInfo
+                if (signingInfo != null) {
+                    for (signature in signingInfo.signingCertificateHistory) {
                         val md = MessageDigest.getInstance("SHA")
                         md.update(signature.toByteArray())
 //                        val hashKey = Base64.encodeToString(md.digest(), 0)
@@ -103,8 +104,9 @@ class MainActivity: AudioServiceActivity() {
                 }
             } else {
                 @Suppress("DEPRECATION")
-                if (info.signatures != null) {
-                    for (signature in info.signatures) {
+                val signatures = info.signatures
+                if (signatures != null) {
+                    for (signature in signatures) {
                         val md = MessageDigest.getInstance("SHA")
                         md.update(signature.toByteArray())
 //                        val hashKey = Base64.encodeToString(md.digest(), 0)

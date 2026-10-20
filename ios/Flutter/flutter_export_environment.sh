@@ -1,12 +1,13 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/Users/ahmetaslan/SDK/flutter"
-export "FLUTTER_APPLICATION_PATH=/Users/ahmetaslan/StudioProjects/Self/muslim-book-v4"
+export "FLUTTER_ROOT=/Users/msaudi/development/flutter"
+export "FLUTTER_APPLICATION_PATH=/Users/msaudi/development/muslim-book-v4"
+export "FLUTTER_FRAMEWORK_SWIFT_PACKAGE_PATH=/Users/msaudi/development/muslim-book-v4/ios/Flutter/ephemeral/Packages/.packages/FlutterFramework"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"
-export "FLUTTER_BUILD_NAME=4.6.0"
-export "FLUTTER_BUILD_NUMBER=88"
+export "FLUTTER_BUILD_NAME=4.7.1"
+export "FLUTTER_BUILD_NUMBER=89"
 export "DART_OBFUSCATION=false"
 export "TRACK_WIDGET_CREATION=true"
 export "TREE_SHAKE_ICONS=false"
