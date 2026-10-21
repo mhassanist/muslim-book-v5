@@ -173,28 +173,17 @@ class UserProvider extends ViewStateProvider {
       "id": res == null ? id : res.id,
       "image_url": res == null ? imageUrl : res.image
     });
-    // FlutterFlexibleToast.showToast(
-    //     message: response.name + " login ...",
-    //     toastLength: Toast.LENGTH_LONG,
-    //     toastGravity: ToastGravity.BOTTOM,
-    //     icon: ICON.LOADING,
-    //     radius: 100,
-    //     elevation: 10,
-    //     imageSize: 35,
-    //     textColor: Colors.white,
-    //     backgroundColor: Colors.black,
-    //     timeInSeconds: 2);
-    Fluttertoast.showToast(
-      msg: response.name + " login ...",
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 2,
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
-      fontSize: 16.0,
-    );
 
     if (response is UserModel) {
+      Fluttertoast.showToast(
+        msg: "${response.name ?? ''} login ...",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 2,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
       saveUser(
         response,
         Constants.LOGIN_WITH_FACEBOOK,

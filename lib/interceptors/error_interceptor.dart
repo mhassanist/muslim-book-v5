@@ -6,12 +6,20 @@ class ErrorInterceptor extends InterceptorsWrapper {
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
     print("error is ${err.error}");
+    // Pass the Failure along via the handler instead of throwing, so the
+    // caller's catch block receives it (as DioException.error)
     if (err.response == null) {
-      throw Failure(err.toString(), Constants.NO_CONNECTION_EXCEPTION);
+      // No raw Dio text: Failure falls back to its localized message
+      handler.next(err.copyWith(
+          error: Failure(null, Constants.NO_CONNECTION_EXCEPTION)));
+      return;
     }
     var res = err.response!.data;
-    throw Failure(
-        res["errors"].toString().replaceAll("[", "").replaceAll("]", ""),
-        err.response!.statusCode!);
+    handler.next(err.copyWith(
+        error: Failure(
+            res is Map
+                ? res["errors"].toString().replaceAll("[", "").replaceAll("]", "")
+                : null,
+            err.response!.statusCode!)));
   }
 }

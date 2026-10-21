@@ -50,6 +50,14 @@ class ApiService {
     }
   }
 
+  /// Normalises anything thrown by a request into a [Failure] so callers can
+  /// rely on getting either a model or a Failure back.
+  Failure _toFailure(Object e) {
+    if (e is Failure) return e;
+    if (e is DioException && e.error is Failure) return e.error as Failure;
+    return Failure(null, Constants.NO_CONNECTION_EXCEPTION);
+  }
+
   Future login(Map<String, dynamic> body) async {
     try {
       var response = await _dio.post("users/login", data: body);
@@ -60,9 +68,7 @@ class ApiService {
       }
     } catch (e) {
       e.printInfo(info: 'ApiService login');
-      if (e is DioException) {
-        return e.error;
-      }
+      return _toFailure(e);
     }
   }
 
@@ -76,9 +82,7 @@ class ApiService {
       }
     } catch (e) {
       e.printInfo(info: 'ApiService register');
-      if (e is DioException) {
-        return e.error;
-      }
+      return _toFailure(e);
     }
   }
 
@@ -93,6 +97,7 @@ class ApiService {
       }
     } catch (e) {
       e.printInfo(info: 'ApiService google login');
+      return _toFailure(e);
     }
   }
 
@@ -157,6 +162,7 @@ class ApiService {
       }
     } catch (e) {
       e.printInfo(info: 'ApiService faceBookLogging');
+      return _toFailure(e);
     }
   }
 
@@ -289,7 +295,7 @@ class ApiService {
       }
     } catch (e) {
       e.printInfo(info: 'ApiService editProfile');
-      return null;
+      return _toFailure(e);
     }
   }
 

@@ -37,7 +37,10 @@ class Failure {
   }
 
   Map<String, String> _noConnectionException() {
-    return {"en": "There Is No Connection", "ar": "لا يوجد إنترنت"};
+    return {
+      "en": "Could not reach the server. Check your internet connection",
+      "ar": "تعذر الاتصال بالخادم، تحقق من اتصالك بالإنترنت",
+    };
   }
 
   @override

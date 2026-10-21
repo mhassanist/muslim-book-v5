@@ -11,9 +11,14 @@ class ConnectionInterceptor extends InterceptorsWrapper {
       RequestOptions options, RequestInterceptorHandler handler) async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.none) {
-      /// TODO: Fix crash
-      /// https://console.firebase.google.com/project/muslim-book-ab937/crashlytics/app/android:com.muslim_book.muslim_book/issues/e6b833756f0374065790607b1cba6ccd?time=last-seven-days&types=crash&sessionEventKey=65F92918008800013804FC4A61B279E6_1926756546075250190
-      throw Failure(null, Constants.NO_CONNECTION_EXCEPTION);
+      // Reject instead of throwing: a throw from this async callback escaped
+      // as an uncaught error and crashed the app
+      handler.reject(DioException(
+        requestOptions: options,
+        type: DioExceptionType.connectionError,
+        error: Failure(null, Constants.NO_CONNECTION_EXCEPTION),
+      ));
+      return;
     }
     super.onRequest(options, handler);
   }
