@@ -28,6 +28,27 @@ class PostsNotifier extends ChangeNotifier {
   bool isnews = false;
   bool isPosts = true;
   bool isPostListError = false;
+  bool _isFetching = false;
+
+  /// Loads the home feed while [isloading] is set. Safe to call from build:
+  /// only one fetch runs at a time, so rebuilds don't fire duplicate requests.
+  Future<void> loadIfNeeded(int pageIndex, int islamicPageIndex) async {
+    if (!isloading || _isFetching) return;
+    _isFetching = true;
+    await Future.wait([
+      getPosts(pageIndex),
+      getcategories(),
+      getIslamicPosts(islamicPageIndex, 8),
+    ]);
+    _isFetching = false;
+  }
+
+  void retry() {
+    errormessage = null;
+    isPostListError = false;
+    isloading = true;
+    notifyListeners();
+  }
 
   changeisPosts(bool value) {
     isPosts = value;
@@ -39,13 +60,15 @@ class PostsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  getPosts(int pageIndex) async {
+  Future<void> getPosts(int pageIndex) async {
     try {
       posts = await homeRepository.getPosts(pageIndex);
       //posts=posts.reversed.toList();
       errormessage = null;
       isloading = false;
     } on DioError catch (e) {
+      isloading = false;
+      isPostListError = true;
       errormessage = DioExceptions.fromDioError(e).message;
     } catch (e) {
       isloading = false;
@@ -55,12 +78,13 @@ class PostsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  getcategories() async {
+  Future<void> getcategories() async {
     try {
       categories = await homeRepository.getCategories();
       errormessage = null;
       isloading = false;
     } on DioError catch (e) {
+      isloading = false;
       errormessage = DioExceptions.fromDioError(e).message;
     } catch (e) {
       isloading = false;
@@ -69,12 +93,13 @@ class PostsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  getIslamicPosts(int pageIndex, int catId) async {
+  Future<void> getIslamicPosts(int pageIndex, int catId) async {
     try {
       islamicPosts = await homeRepository.getIslamicPosts(pageIndex, catId);
       errormessage = null;
       isloading = false;
     } on DioError catch (e) {
+      isloading = false;
       errormessage = DioExceptions.fromDioError(e).message;
     } catch (e) {
       isloading = false;

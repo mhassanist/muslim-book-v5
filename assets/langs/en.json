@@ -300,7 +300,11 @@
   "privacy_policy": "Privacy Policy",
   "thanx_to_use_app": "Thank you for using Muslim book",
   "rate_app_description": "We will be very grateful if you add a good comment on the app, it helps us to develop the app for free for Muslims and publish it on the Android market among Islamic countries\n\n",
-  "not_like": "Dislike"
+  "not_like": "Dislike",
+  "connectionError": "Could not reach the server. Check your internet connection",
+  "timeout": "The connection timed out. Please try again",
+  "unknown_error": "Something went wrong. Please try again",
+  "request_cancelled": "The request was cancelled"
 
 
 

@@ -80,9 +80,7 @@ class HomePage extends ConsumerWidget {
     checkNotificationPermissionAndInvokeMethod();
     double width = MediaQuery.of(context).size.width;
     postschanges = ref.watch(getPosts);
-    if (postschanges.isloading == true) {
-      postschanges.getPosts(pageIndex);
-    }
+    postschanges.loadIfNeeded(pageIndex, islamicPageIndex);
     if (postschanges.posts.data.isNotEmpty) {
       if (postschanges.posts.data.isNotEmpty) {
         if (postschanges.posts.meta!.currentPage == 1) {
@@ -103,10 +101,6 @@ class HomePage extends ConsumerWidget {
           }
         }
       }
-    }
-    if (postschanges.isloading == true) {
-      postschanges.getcategories();
-      postschanges.getIslamicPosts(islamicPageIndex, 8);
     }
     if (postschanges.islamicPosts.isNotEmpty) {
       for (int i = 1; i <= postschanges.islamicPosts.length; i++) {
@@ -273,14 +267,7 @@ class HomePage extends ConsumerWidget {
                                 ),
                                 Expanded(
                                     child: postschanges.errormessage != null
-                                        ? Center(
-                                            child: Text(
-                                              AppLocalizations.of(context)!
-                                                  .translate(
-                                                postschanges.errormessage ?? '',
-                                              ),
-                                            ),
-                                          )
+                                        ? _buildErrorView(context)
                                         : postschanges.isPosts
                                             ? postschanges.posts.data.isNotEmpty
                                                 ? _buildPostsList()
@@ -653,6 +640,38 @@ class HomePage extends ConsumerWidget {
         builder: (context) => CreatePostView(
               postsChanges: postschanges,
             ));
+  }
+
+  Widget _buildErrorView(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
+    final message = localizations.translate(postschanges.errormessage ?? '');
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.wifi_off_rounded, size: 40, color: warm_grey),
+            const SizedBox(height: 12),
+            Text(
+              message.isNotEmpty ? message : localizations.translate('unknown_error'),
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: dark_blue_green, fontSize: 15),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+              onPressed: postschanges.retry,
+              icon: const Icon(Icons.refresh),
+              label: Text(localizations.translate('retry')),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: darkish_green,
+                foregroundColor: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget buildTabbar(PostsNotifier postschanges, context) {

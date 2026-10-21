@@ -294,7 +294,11 @@
   "privacy_policy": "Politique de confidentialité",
   "thanx_to_use_app": "Merci d'utiliser le book musulman",
   "rate_app_description": "Nous vous serons très reconnaissants si vous ajoutez un bon commentaire sur le programme, cela nous aide à développer le programme gratuitement pour les musulmans et à le publier sur le marché Android parmi les pays islamiques\n\n",
-  "not_like": "Ne pas aimer"
+  "not_like": "Ne pas aimer",
+  "connectionError": "Impossible de joindre le serveur. Vérifiez votre connexion internet",
+  "timeout": "Le délai de connexion a expiré. Veuillez réessayer",
+  "unknown_error": "Une erreur s'est produite. Veuillez réessayer",
+  "request_cancelled": "La requête a été annulée"
 
 
 
