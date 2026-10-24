@@ -2,11 +2,9 @@ import 'dart:ui';
 
 // import 'package:easy_audience_network/easy_audience_network.dart';
 import 'package:muslim_book/ads/ad_manager.dart';
-import 'package:muslim_book/ads/ad_widget_edit.dart';
-import 'package:muslim_book/ads/load_ui_with_add.dart';
+import 'package:muslim_book/widgets/exit_confirm_dialog.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
-import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/network_utils/remote_config.dart';
 import 'package:muslim_book/providers/competition_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
@@ -260,18 +258,12 @@ class CompetitionUI {
                               shape: RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(12))),
-                              content: Container(
-                                height: 400,
-                                child: LoadUiWithAd(
-                                  mainView: AdWidgetEdit(
-                                    title: AppLocalizations.of(context)!
-                                        .translate("competition"),
-                                    bannerName: BannerName.COMPETITION,
-                                    buttomTitle: AppLocalizations.of(context)!
-                                        .translate("follow"),
-                                    exit: go,
-                                  ),
-                                ),
+                              content: ExitConfirmDialog(
+                                title: AppLocalizations.of(context)!
+                                    .translate("competition"),
+                                buttomTitle: AppLocalizations.of(context)!
+                                    .translate("follow"),
+                                exit: go,
                               ),
                             ),
                           );
@@ -498,7 +490,7 @@ class CompetitionUI {
                       shape: StadiumBorder(),
                       fillColor: Colors.white,
                       onPressed: () async {
-                        provider.openFaceBookAd();
+                        provider.showInterstitialAd();
                         goToStart(context, pageNumber: 3);
                       },
                       child: Text(
@@ -519,7 +511,7 @@ class CompetitionUI {
                         vertical: sizeConfig.blockSizeVertical * 2,
                       ),
                       onPressed: () {
-                        provider.openFaceBookAd();
+                        provider.showInterstitialAd();
                         goToStart(context);
                       },
                       child: Text(

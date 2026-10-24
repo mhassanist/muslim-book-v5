@@ -1,4 +1,4 @@
-import 'package:muslim_book/ads/ad_widget_edit.dart';
+import 'package:muslim_book/widgets/exit_confirm_dialog.dart';
 import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
@@ -54,9 +54,8 @@ class _CompetitionViewMobilePortraitState
             contentPadding: EdgeInsets.all(0.0),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12))),
-            content: AdWidgetEdit(
+            content: ExitConfirmDialog(
               title: "المسابقات",
-              bannerName: BannerName.theMiddleOfTheCompetition,
               buttomTitle: "مواصله اللعب",
               exit: go,
             ),

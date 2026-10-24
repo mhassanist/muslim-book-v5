@@ -3,7 +3,7 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/azkar_feature/models/azkar_model.dart';
-import 'package:muslim_book/ads/ad_widget_edit.dart';
+import 'package:muslim_book/widgets/exit_confirm_dialog.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/utils/Constants.dart';
@@ -58,16 +58,10 @@ class _AzkarCarouselScreenState extends State<AzkarCarouselScreen> {
             contentPadding: EdgeInsets.all(0.0),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12))),
-            content: Container(
-                height: 400,
-                child: LoadUiWithAd(
-                  mainView: AdWidgetEdit(
-                    title: AppLocalizations.of(context)!.translate("azkar"),
-                    bannerName: BannerName.AZKAR,
-                    buttomTitle:
-                        AppLocalizations.of(context)!.translate("follow"),
-                  ),
-                )),
+            content: ExitConfirmDialog(
+              title: AppLocalizations.of(context)!.translate("azkar"),
+              buttomTitle: AppLocalizations.of(context)!.translate("follow"),
+            ),
           ),
         )) ??
         false;

@@ -16,8 +16,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:muslim_book/ads/admob_banner.dart';
+import 'package:muslim_book/ads/ads_service.dart';
 import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
 import 'package:muslim_book/azkar_feature/providers/azkar_provider.dart';
 import 'package:muslim_book/core/dio_util.dart';
@@ -25,7 +24,6 @@ import 'package:muslim_book/firebase_options.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/mine_edits/fancy_dialog.dart';
-import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/providers/azan_fajr_sounds_provider.dart';
 import 'package:muslim_book/providers/azan_sounds_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
@@ -63,27 +61,6 @@ void _passErrorsToCrashlytics() {
   };
 }
 
-Future<void> _initAdMob() async {
-  // final packageInfo = await PackageInfo.fromPlatform();
-  // version = packageInfo.version;
-
-  // Admob.initialize();
-  // Restrict ads to content suitable for general audiences
-  await MobileAds.instance.updateRequestConfiguration(
-    RequestConfiguration(maxAdContentRating: MaxAdContentRating.g),
-  );
-  MobileAds.instance.initialize();
-
-  /// Need to be commit to avoid crashes
-  /// Used to get device ad id (google_advertising_id)
-  // final id = await AdvertisingId.id(true);
-  // if (id != null) {
-  //   // thing to add
-  //   final configuration = RequestConfiguration(testDeviceIds: [id]);
-  //   MobileAds.instance.updateRequestConfiguration(configuration);
-  // }
-}
-
 Future<FirebaseRemoteConfig> _setupRemoteConfig() async {
   final remoteConfig = FirebaseRemoteConfig.instance;
   remoteConfig.setDefaults(<String, dynamic>{
@@ -96,19 +73,8 @@ Future<FirebaseRemoteConfig> _setupRemoteConfig() async {
     'downStartCompetition': 'ca-app-pub-8586064191208277/4415375627',
     'TOP': 'ca-app-pub-8586064191208277/5354527555',
     'theMiddleOfTheCompetition': 'ca-app-pub-8586064191208277/2784204532',
+    'INTERSTITIAL': 'ca-app-pub-8586064191208277/1649095149',
 
-    'downCompetition1_facebook': '679514076185741_968800320590447',
-    'COMPETITION_facebook': '679514076185741_968800320590447',
-    'SEBHA_facebook': '679514076185741_968800320590447',
-    'AZKAR_facebook': '679514076185741_968800320590447',
-    'BOSLA_facebook': '679514076185741_968800320590447',
-    'DownEditAzan_facebook': '679514076185741_968800320590447',
-    'downStartCompetition_facebook': '679514076185741_968800320590447',
-    'TOP_facebook': '679514076185741_968800320590447',
-    'theMiddleOfTheCompetition_facebook': '679514076185741_968800320590447',
-
-    'show_facebook_banner': true,
-    'show_facebook_interstitial': true,
   });
   try {
     // Using default duration to force fetching from remote server.
@@ -136,9 +102,6 @@ Future<void> main() async {
   /// Catch errors via Crashlytics
   _passErrorsToCrashlytics();
 
-  /// Ads
-  _initAdMob();
-
   /// init google font text to handle no connection
   await initGoogleFontsTextStyles();
 
@@ -165,6 +128,9 @@ Future<void> main() async {
       child: MyApp(localeLoaded: await getLocale()),
     ), // Wrap your app
   );
+
+  /// Ads: consent first, then the SDK. Needs the first frame for the consent form.
+  WidgetsBinding.instance.addPostFrameCallback((_) => AdsService.initialize());
 }
 
 class MyApp extends StatefulWidget {
@@ -336,10 +302,8 @@ class MyApp extends StatefulWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  // Expanded(
-                  //   child: AdMobRectangle(BannerName.Top),
-                  // ),
-                  const AdmobBanner(bannerName: BannerName.TOP),
+                  // No ad here: AdMob discourages ads next to the buttons of an
+                  // exit confirmation screen (accidental clicks)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[

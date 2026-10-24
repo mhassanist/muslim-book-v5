@@ -1,4 +1,5 @@
 import 'package:muslim_book/ads/admob_banner.dart';
+import 'package:muslim_book/ads/ads_service.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
 import 'package:muslim_book/home_feature/const/color.dart';
 import 'package:muslim_book/home_feature/views/home_view.dart';
@@ -44,6 +45,8 @@ class SettingsViewMobilePortrait extends StatefulWidget {
 
 class _SettingsViewMobilePortraitState extends State<SettingsViewMobilePortrait> {
   late SettingsMobilePortraitUi ui;
+  final Future<bool> _adPrivacyOptionsRequired =
+      AdsService.isPrivacyOptionsRequired();
   Language? lang;
 
   @override
@@ -314,6 +317,9 @@ class _SettingsViewMobilePortraitState extends State<SettingsViewMobilePortrait>
                             ],
                           ),
                         ),
+                        SliverToBoxAdapter(
+                          child: _buildAdPrivacyOptions(context),
+                        ),
                         const SliverToBoxAdapter(
                           child: SizedBox(
                             height: 10,
@@ -334,6 +340,30 @@ class _SettingsViewMobilePortraitState extends State<SettingsViewMobilePortrait>
               ),
             );
           },
+        );
+      },
+    );
+  }
+
+  /// Entry point to change ad consent; required where the consent form applies
+  Widget _buildAdPrivacyOptions(BuildContext context) {
+    return FutureBuilder<bool>(
+      future: _adPrivacyOptionsRequired,
+      builder: (context, snapshot) {
+        if (snapshot.data != true) return const SizedBox.shrink();
+        return Card(
+          margin: const EdgeInsets.fromLTRB(4, 10, 4, 0),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          child: ListTile(
+            leading: const Icon(Icons.privacy_tip_outlined,
+                color: Constants.PRIMARY_DARK_COLOR),
+            title: Text(
+              AppLocalizations.of(context)!.translate("ad_privacy_settings"),
+              style: const TextStyle(fontWeight: FontWeight.w700),
+            ),
+            onTap: AdsService.showPrivacyOptionsForm,
+          ),
         );
       },
     );

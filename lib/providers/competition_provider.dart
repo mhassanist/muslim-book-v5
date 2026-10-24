@@ -7,7 +7,6 @@ import 'package:muslim_book/models/answer_model.dart' as answer;
 import 'package:muslim_book/models/answer_result_model.dart';
 import 'package:muslim_book/models/competitions_model.dart';
 import 'package:muslim_book/network_utils/api_service.dart';
-import 'package:muslim_book/network_utils/remote_config.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/providers/view_state_provider.dart';
 import 'package:muslim_book/utils/locator.dart';
@@ -203,9 +202,6 @@ class CompetitionProvider extends ViewStateProvider {
     });
 
     sub.onDone(() {
-      if (questionIndex > 1 && questionIndex % 5 == 0 && questionIndex != 10) {
-        openFaceBookAd();
-      }
       if (questions.isNotEmpty) {
         if (_chosenPosition == null) chosenPosition = _correctAnswerPosition;
         if (_chosenPosition != null &&
@@ -267,34 +263,8 @@ class CompetitionProvider extends ViewStateProvider {
     }
   }
 
-  void openFaceBookAd() {
-    if(locator<RemoteConfigService>().showFacebookInterstitial) {
-      // final interstitialAd = InterstitialAd(locator<RemoteConfigService>().azanPopUpAdId);
-      // interstitialAd.listener = InterstitialAdListener(
-      //   onLoaded: () {
-      //     interstitialAd.show();
-      //   },
-      //   onDismissed: () {
-      //     interstitialAd.destroy();
-      //     debugPrint('Interstitial dismissed');
-      //   },
-      // );
-      // interstitialAd.load();
-
-
-    // FacebookInterstitialAd.loadInterstitialAd(
-    //   // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
-    //   placementId: locator<RemoteConfigService>().azanPopUpAdId,
-    //   listener: (result, value) {
-    //     if (result == InterstitialAdResult.LOADED) {
-    //       FacebookInterstitialAd.showInterstitialAd();
-    //     }
-    //   },
-    // );
+  /// Shown at the end of a competition (a natural break), never mid-question
+  void showInterstitialAd() {
+    AdmobInterstitial.instance.showIfReady();
   }
-  else {
-      AdmobInterstitial interstitialAd = AdmobInterstitial();
-      interstitialAd.createInterstitialAd();
-    }
-}
 }

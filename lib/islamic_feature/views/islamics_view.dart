@@ -3,8 +3,6 @@ import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/admob_interstitial.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
-import 'package:muslim_book/network_utils/remote_config.dart';
-import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:muslim_book/widgets/app_scaffold_title.dart';
 // import 'package:easy_audience_network/easy_audience_network.dart';
@@ -67,22 +65,7 @@ class _IslamicsViewState extends State<IslamicsView> {
 
   @override
   void dispose() {
-    if (locator<RemoteConfigService>().showFacebookInterstitial) {
-      // final interstitialAd = InterstitialAd(locator<RemoteConfigService>().azanPopUpAdId);
-      // interstitialAd.listener = InterstitialAdListener(
-      //   onLoaded: () {
-      //     interstitialAd.show();
-      //   },
-      //   onDismissed: () {
-      //     interstitialAd.destroy();
-      //     debugPrint('Interstitial dismissed');
-      //   },
-      // );
-      // interstitialAd.load();
-    } else {
-      AdmobInterstitial interstitialAd = AdmobInterstitial();
-      interstitialAd.createInterstitialAd();
-    }
+    AdmobInterstitial.instance.showIfReady();
     super.dispose();
   }
   // @override

@@ -16,8 +16,6 @@ class RemoteConfigService {
   }
 
 
-  bool get showFacebookAdsBanner => remoteConfig.getBool('show_facebook_banner');
-  bool get showFacebookInterstitial => remoteConfig.getBool('show_facebook_interstitial');
 
 
   String get betweenQuestionsPopUpAdsId =>

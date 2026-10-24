@@ -304,7 +304,8 @@
   "connectionError": "Could not reach the server. Check your internet connection",
   "timeout": "The connection timed out. Please try again",
   "unknown_error": "Something went wrong. Please try again",
-  "request_cancelled": "The request was cancelled"
+  "request_cancelled": "The request was cancelled",
+  "ad_privacy_settings": "Ad privacy settings"
 
 
 

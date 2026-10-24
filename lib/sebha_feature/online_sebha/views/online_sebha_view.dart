@@ -1,6 +1,4 @@
-import 'package:muslim_book/ads/ad_widget_edit.dart';
-import 'package:muslim_book/ads/load_ui_with_add.dart';
-import 'package:muslim_book/models/banner_names_enum.dart';
+import 'package:muslim_book/widgets/exit_confirm_dialog.dart';
 import 'package:muslim_book/providers/tasbeeh_top_provider.dart';
 import 'package:muslim_book/providers/user_provider.dart';
 import 'package:muslim_book/sebha_feature/online_sebha/controllers/online_sebha_controller.dart';
@@ -50,14 +48,10 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
             contentPadding: EdgeInsets.all(0.0),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12))),
-            content: Container(
-                height: 400,
-                child: LoadUiWithAd(
-                    mainView: AdWidgetEdit(
-                  title: "المسبحة",
-                  bannerName: BannerName.SEBHA,
-                  buttomTitle: "متابعه",
-                ))),
+            content: ExitConfirmDialog(
+              title: "المسبحة",
+              buttomTitle: "متابعه",
+            ),
           ),
         )) ??
         false;

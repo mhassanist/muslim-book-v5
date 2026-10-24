@@ -1,5 +1,3 @@
-// import 'package:facebook_audience_network/ad/ad_banner.dart';
-// import 'package:easy_audience_network/easy_audience_network.dart' as ad;
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -7,13 +5,17 @@ import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:muslim_book/ads/ad_manager.dart';
 import 'package:muslim_book/ads/ad_placeholder.dart';
+import 'package:muslim_book/ads/ads_service.dart';
 import 'package:muslim_book/models/banner_names_enum.dart';
-import 'package:muslim_book/network_utils/remote_config.dart';
-import 'package:muslim_book/utils/locator.dart';
 
+/// Inline adaptive banner. Loads once consent allows it, shows [AdPlaceholder]
+/// while loading, then resizes to the height the SDK actually returned.
+/// https://developers.google.com/admob/flutter/banner/inline-adaptive
 class AdmobBanner extends StatefulWidget {
   final BannerName bannerName;
   final double? width;
+
+  /// Maximum height of the ad (and the placeholder height while loading).
   final double? height;
   const AdmobBanner({
     super.key,
@@ -30,19 +32,31 @@ class _AdmobBannerState extends State<AdmobBanner> {
   static const int _maxRetries = 3;
 
   BannerAd? bannerAd;
-  bool isAdLoaded = false;
+  AdSize? _loadedSize;
   bool hasFailed = false;
+  bool _loadStarted = false;
   int _retryAttempt = 0;
   Timer? _retryTimer;
+
+  double get _maxHeight => widget.height ?? 250;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Load once; MediaQuery is needed for the ad width, so it can't be done in initState
-    if (bannerAd == null &&
-        !hasFailed &&
-        !locator<RemoteConfigService>().showFacebookAdsBanner) {
+    if (!_loadStarted) {
+      _loadStarted = true;
+      _loadWhenAllowed();
+    }
+  }
+
+  Future<void> _loadWhenAllowed() async {
+    final allowed = await AdsService.canRequestAds;
+    if (!mounted) return;
+    if (allowed) {
       loadBanner();
+    } else {
+      setState(() => hasFailed = true);
     }
   }
 
@@ -55,63 +69,21 @@ class _AdmobBannerState extends State<AdmobBanner> {
 
   @override
   Widget build(BuildContext context) {
-    // if (locator<RemoteConfigService>().showFacebookAdsBanner) {
-    //   return Stack(
-    //     children: [
-    //       ad.BannerAd(
-    //         placementId: AdManager.getBannerAdUnitId(widget.bannerName),
-    //         bannerSize: ad.BannerSize.STANDARD,
-    //         listener: ad.BannerAdListener(
-    //           onClicked: () {
-    //             setState(() {
-    //               isAdLoaded = true;
-    //             });
-    //             debugPrint("BannerAd Clicked");
-    //           },
-    //           onError: (code, message) {
-    //             setState(() {
-    //               isAdLoaded = true;
-    //             });
-    //             debugPrint("BannerAd Error: code: $code, message: $message");
-    //           },
-    //           onLoaded: () {
-    //             setState(() {
-    //               isAdLoaded = true;
-    //             });
-    //             debugPrint("BannerAd Loaded");
-    //           },
-    //           onLoggingImpression: () {
-    //             setState(() {
-    //               isAdLoaded = true;
-    //             });
-    //             debugPrint("BannerAd Logging Impression");
-    //           },
-    //         ),
-    //       ),
-    //       if (!isAdLoaded)
-    //         SizedBox(
-    //           height: widget.height ?? 100,
-    //           child: const Center(
-    //             child: Loading(),
-    //           ),
-    //         ),
-    //     ],
-    //   );
-    // }
-    if (hasFailed || locator<RemoteConfigService>().showFacebookAdsBanner) {
+    if (hasFailed) {
       return const SizedBox.shrink();
     }
-    final height = widget.height ?? 250;
+    final loadedSize = _loadedSize;
     // Fade from the animated placeholder into the ad once it arrives
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 500),
-      child: isAdLoaded && bannerAd != null
+      child: loadedSize != null && bannerAd != null
           ? SizedBox(
               key: const ValueKey('ad'),
-              height: height,
+              width: loadedSize.width.toDouble(),
+              height: loadedSize.height.toDouble(),
               child: AdWidget(ad: bannerAd!),
             )
-          : AdPlaceholder(key: const ValueKey('placeholder'), height: height),
+          : AdPlaceholder(key: const ValueKey('placeholder'), height: _maxHeight),
     );
   }
 
@@ -121,19 +93,19 @@ class _AdmobBannerState extends State<AdmobBanner> {
         : MediaQuery.of(context).size.width.floor();
     bannerAd = BannerAd(
       adUnitId: AdManager.getBannerAdUnitId(widget.bannerName),
-      size: AdSize.getInlineAdaptiveBannerAdSize(
-          width, widget.height != null ? widget.height!.floor() : 250),
+      size: AdSize.getInlineAdaptiveBannerAdSize(width, _maxHeight.floor()),
       request: const AdRequest(),
       listener: BannerAdListener(
         // Called when an ad is successfully received.
-        onAdLoaded: (Ad ad) {
+        onAdLoaded: (Ad ad) async {
           if (!mounted) {
             ad.dispose();
             return;
           }
-          setState(() {
-            isAdLoaded = true;
-          });
+          // The returned height can differ from the requested maximum
+          final size = await (ad as BannerAd).getPlatformAdSize();
+          if (!mounted || size == null) return;
+          setState(() => _loadedSize = size);
           Get.log('Ad loaded.');
         },
         // Called when an ad request failed.

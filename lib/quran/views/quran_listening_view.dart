@@ -2,14 +2,12 @@ import 'package:muslim_book/ads/admob_interstitial.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/home_feature/controllers/home_controller.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
-import 'package:muslim_book/network_utils/remote_config.dart';
 import 'package:muslim_book/quran/provider/quran_provider.dart';
 import 'package:muslim_book/quran/views/quran_loading_view.dart';
 import 'package:muslim_book/quran/views/quran_settings_drawer.dart';
 import 'package:muslim_book/quran/views/suras_view.dart';
 import 'package:muslim_book/quran/widgets/retry_view_widget.dart';
 import 'package:muslim_book/text_styles.dart';
-import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/widgets/share_dialog.dart';
 // import 'package:facebook_audience_network/ad/ad_interstitial.dart';
 // import 'package:easy_audience_network/easy_audience_network.dart';
@@ -133,34 +131,7 @@ class _QuranListeningViewState extends State<QuranListeningView> {
 
   @override
   void dispose() {
-    if (locator<RemoteConfigService>().showFacebookInterstitial) {
-      // final interstitialAd = InterstitialAd(locator<RemoteConfigService>().azanPopUpAdId);
-      // interstitialAd.listener = InterstitialAdListener(
-      //   onLoaded: () {
-      //     interstitialAd.show();
-      //   },
-      //   onDismissed: () {
-      //     interstitialAd.destroy();
-      //     debugPrint('Interstitial dismissed');
-      //   },
-      // );
-      // interstitialAd.load();
-
-      // FacebookInterstitialAd.loadInterstitialAd(
-      //   // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
-      //   placementId: locator<RemoteConfigService>().azanPopUpAdId,
-      //   listener: (result, value) {
-      //     if (result == InterstitialAdResult.LOADED) {
-      //       FacebookInterstitialAd.showInterstitialAd();
-      //     }
-      //     if (result == InterstitialAdResult.ERROR) {
-      //     }
-      //   },
-      // );
-    } else {
-      AdmobInterstitial interstitialAd = AdmobInterstitial();
-      interstitialAd.createInterstitialAd();
-    }
+    AdmobInterstitial.instance.showIfReady();
     super.dispose();
   }
   // @override

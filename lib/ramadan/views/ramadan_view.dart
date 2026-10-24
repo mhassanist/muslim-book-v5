@@ -6,7 +6,6 @@ import 'package:muslim_book/ads/admob_interstitial.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/local_storage/local_storage_manager.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
-import 'package:muslim_book/network_utils/remote_config.dart';
 import 'package:muslim_book/ramadan/models/ramadan_cannon_model.dart';
 import 'package:muslim_book/ramadan/models/ramadan_data.dart';
 import 'package:muslim_book/ramadan/provider/ramadan_provider.dart';
@@ -16,7 +15,6 @@ import 'package:muslim_book/text_styles.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/expand_widget/custom_expansion_tile.dart';
 import 'package:muslim_book/utils/expand_widget/custom_expansion_tile2.dart';
-import 'package:muslim_book/utils/locator.dart';
 import 'package:muslim_book/widgets/base_widget.dart';
 import 'package:muslim_book/widgets/share_dialog.dart';
 import 'package:muslim_book/widgets/loading_pkg/loading.dart';
@@ -975,31 +973,7 @@ class _RamadanViewState extends State<RamadanView>
 
   @override
   void deactivate() {
-    if (locator<RemoteConfigService>().showFacebookInterstitial) {
-      // final interstitialAd = InterstitialAd(locator<RemoteConfigService>().azanPopUpAdId);
-      // interstitialAd.listener = InterstitialAdListener(
-      //   onLoaded: () {
-      //     interstitialAd.show();
-      //   },
-      //   onDismissed: () {
-      //     interstitialAd.destroy();
-      //     debugPrint('Interstitial dismissed');
-      //   },
-      // );
-      // interstitialAd.load();
-
-      // FacebookInterstitialAd.loadInterstitialAd(
-      //   // placementId: "IMG_16_9_APP_INSTALL#2312433698835503_2650502525028617",
-      //   placementId: locator<RemoteConfigService>().azanPopUpAdId,
-      //   listener: (result, value) {
-      //     if (result == InterstitialAdResult.LOADED)
-      //       FacebookInterstitialAd.showInterstitialAd();
-      //   },
-      // );
-    } else {
-      AdmobInterstitial interstitialAd = AdmobInterstitial();
-      interstitialAd.createInterstitialAd();
-    }
+    AdmobInterstitial.instance.showIfReady();
     super.deactivate();
   }
 

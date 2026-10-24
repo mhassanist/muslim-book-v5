@@ -298,7 +298,8 @@
   "connectionError": "Impossible de joindre le serveur. Vérifiez votre connexion internet",
   "timeout": "Le délai de connexion a expiré. Veuillez réessayer",
   "unknown_error": "Une erreur s'est produite. Veuillez réessayer",
-  "request_cancelled": "La requête a été annulée"
+  "request_cancelled": "La requête a été annulée",
+  "ad_privacy_settings": "Paramètres de confidentialité des annonces"
 
 
 

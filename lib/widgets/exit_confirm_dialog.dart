@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/text_styles.dart';
 import 'package:muslim_book/utils/Constants.dart';
 
-class AdWidgetEdit extends StatefulWidget {
+/// "Leave this section?" confirmation. Deliberately ad-free: AdMob discourages
+/// ads next to the buttons of exit confirmation screens (accidental clicks).
+class ExitConfirmDialog extends StatefulWidget {
   final String title;
   final String buttomTitle;
   final Function? exit;
-  final bannerName;
   final Widget? mainView;
 
-  const AdWidgetEdit({
+  const ExitConfirmDialog({
     super.key,
     this.title = '',
-    this.bannerName,
     this.buttomTitle = '',
     this.exit,
     this.mainView,
   });
 
   @override
-  State<AdWidgetEdit> createState() => _AdWidgetEditState();
+  State<ExitConfirmDialog> createState() => _ExitConfirmDialogState();
 }
 
-class _AdWidgetEditState extends State<AdWidgetEdit> {
+class _ExitConfirmDialogState extends State<ExitConfirmDialog> {
   @override
   void initState() {
     super.initState();
@@ -33,12 +32,10 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: (MediaQuery.of(context).size.height / 1.8),
       width: (MediaQuery.of(context).size.width),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           const SizedBox(
             height: 15,
@@ -54,10 +51,8 @@ class _AdWidgetEditState extends State<AdWidgetEdit> {
           const SizedBox(
             height: 10,
           ),
-          AdmobBanner(
-            bannerName: widget.bannerName,
-            width: MediaQuery.of(context).size.width * 0.72,
-            height: 250,
+          const SizedBox(
+            height: 20,
           ),
           Container(
             padding: const EdgeInsets.symmetric(
