@@ -82,8 +82,8 @@ class _RetryViewWidgetState extends State<RetryViewWidget> {
         const Duration(milliseconds: 300),
         () => widget.function?.call(),
       );
-      super.dispose();
     }
+    super.dispose();
   }
 }
 

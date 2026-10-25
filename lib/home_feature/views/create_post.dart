@@ -34,7 +34,8 @@ class _CreatePostViewState extends State<CreatePostView> {
         title: Text(AppLocalizations.of(context)!.translate("Post")),
         child: SingleChildScrollView(
           child: Container(
-            height: MediaQuery.of(context).size.height,
+            constraints:
+                BoxConstraints(minHeight: MediaQuery.of(context).size.height),
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               color: Colors.white,
@@ -43,131 +44,150 @@ class _CreatePostViewState extends State<CreatePostView> {
                 topRight: Radius.circular(10.0),
               ),
             ),
-            child: Stack(children: <Widget>[
-              Positioned.fill(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    top: 0,
-                    right: 10.0,
-                    left: 10.0,
-                    bottom: 10.0,
-                  ),
-                  child: Column(
-                    children: [
-                      // Text(AppLocalizations.of(context)!.translate("be_goodness"),
-                      //   style: TextStyle(fontSize: 17, color: dark_blue_green),),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 0,
-                          vertical: 5,
-                        ),
-                        child: Form(
-                          key: formKey,
-                          child: TextField(
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: darkish_green,
-                                ),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: darkish_green,
-                                ),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              fillColor: Colors.grey[100],
-                              filled: true,
-                              hintText: AppLocalizations.of(context)!
-                                  .translate("be_goodness"),
-                              hintStyle: const TextStyle(
-                                fontSize: 17,
-                                color: Colors.black38,
-                              ),
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 0,
+                right: 10.0,
+                left: 10.0,
+                bottom: 10.0,
+              ),
+              child: Column(
+                children: [
+                  // Text(AppLocalizations.of(context)!.translate("be_goodness"),
+                  //   style: TextStyle(fontSize: 17, color: dark_blue_green),),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 0,
+                      vertical: 5,
+                    ),
+                    child: Form(
+                      key: formKey,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: darkish_green,
                             ),
-                            maxLines: 5,
-                            onChanged: (val) {
-                              content = val;
-                            },
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: darkish_green,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          fillColor: Colors.grey[100],
+                          filled: true,
+                          hintText: AppLocalizations.of(context)!
+                              .translate("be_goodness"),
+                          hintStyle: const TextStyle(
+                            fontSize: 17,
+                            color: Colors.black38,
                           ),
                         ),
+                        maxLines: 5,
+                        onChanged: (val) {
+                          content = val;
+                        },
                       ),
-                      const AdmobBanner(bannerName: BannerName.AZKAR),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                    ),
+                  ),
+                  const AdmobBanner(bannerName: BannerName.AZKAR),
+                  const SizedBox(
+                    height: 20,
+                  ),
 
-                      if (loadingHere)
-                        const SizedBox(
-                          height: 100,
-                          child: Center(
-                            child: Loading(),
-                          ),
-                        )
-                      else
-                        InkWell(
-                          onTap: () {
-                            if (loadingHere) {
+                  if (loadingHere)
+                    const SizedBox(
+                      height: 100,
+                      child: Center(
+                        child: Loading(),
+                      ),
+                    )
+                  else
+                    InkWell(
+                      onTap: () {
+                        if (loadingHere) {
+                          return;
+                        }
+                        if (content.trim().isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(AppLocalizations.of(context)!
+                                  .translate("post_empty")),
+                            ),
+                          );
+                          return;
+                        }
+                        FocusScope.of(context).requestFocus(FocusNode());
+
+                        setState(() {
+                          loadingHere = true;
+                        });
+                        if (widget.postsChanges != null) {
+                          widget.postsChanges!
+                              .createPost(content, 1)
+                              .then((sent) {
+                            if (!context.mounted) return;
+                            if (!sent) {
+                              setState(() {
+                                loadingHere = false;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(AppLocalizations.of(context)!
+                                      .translate("cannot_reach")),
+                                ),
+                              );
                               return;
                             }
-                            FocusScope.of(context).requestFocus(FocusNode());
-
-                            setState(() {
-                              loadingHere = true;
+                            Future.delayed(const Duration(seconds: 1), () {
+                              if (!context.mounted) return;
+                              // setState(() {
+                              //   loadingHere = false;
+                              // });
+                              if (widget.postsChanges != null) {
+                                Navigator.of(context).pop();
+                                // final snackBar = SnackBar(
+                                //   content: Text(
+                                //     widget.postsChanges!.message ?? '',
+                                //   ),
+                                // );
+                                // ScaffoldMessenger.of(context)
+                                //     .showSnackBar(snackBar);
+                              }
                             });
-                            if (widget.postsChanges != null) {
-                              widget.postsChanges!
-                                  .createPost(content, 1)
-                                  .then((value) {
-                                Future.delayed(const Duration(seconds: 1), () {
-                                  // setState(() {
-                                  //   loadingHere = false;
-                                  // });
-                                  if (widget.postsChanges != null) {
-                                    Navigator.of(context).pop();
-                                    // final snackBar = SnackBar(
-                                    //   content: Text(
-                                    //     widget.postsChanges!.message ?? '',
-                                    //   ),
-                                    // );
-                                    // ScaffoldMessenger.of(context)
-                                    //     .showSnackBar(snackBar);
-                                  }
-                                });
-                              });
-                            }
-                          },
-                          child: Container(
-                            width: 200,
-                            height: 45,
-                            decoration: BoxDecoration(
-                                color: darkish_green,
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                              child: Text(
-                                AppLocalizations.of(context)!.translate("Post"),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                          });
+                        }
+                      },
+                      child: Container(
+                        width: 200,
+                        height: 45,
+                        decoration: BoxDecoration(
+                            color: darkish_green,
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Center(
+                          child: Text(
+                            AppLocalizations.of(context)!.translate("Post"),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                      const SizedBox(
-                        height: 20,
                       ),
-                      const AdmobBanner(bannerName: BannerName.AZKAR),
-                    ],
+                    ),
+                  const SizedBox(
+                    height: 20,
                   ),
-                ),
+                  const AdmobBanner(bannerName: BannerName.AZKAR),
+                ],
               ),
-            ]),
+            ),
           ),
         ),
       );

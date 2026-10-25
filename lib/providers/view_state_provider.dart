@@ -11,6 +11,8 @@ class ViewStateProvider extends ChangeNotifier {
 
   void setViewState(ViewState viewState) {
     _viewState = viewState;
+    // Requests often finish after the screen (and its provider) is gone.
+    if (!_mounted) return;
     notifyListeners();
   }
 
@@ -25,7 +27,7 @@ class ViewStateProvider extends ChangeNotifier {
 
   @override
   void dispose() {
-    super.dispose();
     _mounted = false;
+    super.dispose();
   }
 }

@@ -123,41 +123,82 @@ class PostsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  createPost(String content, int pageIndex) async {
-    message = await homeRepository.createPost(content);
-    posts = await homeRepository.getPosts(pageIndex);
+  /// Returns false if the post could not be sent.
+  Future<bool> createPost(String content, int pageIndex) async {
+    try {
+      message = await homeRepository.createPost(content);
+    } catch (e) {
+      debugPrint('createPost failed: $e');
+      return false;
+    }
+    try {
+      posts = await homeRepository.getPosts(pageIndex);
+    } catch (e) {
+      debugPrint('refreshing posts after createPost failed: $e');
+    }
     //posts=posts.reversed.toList();
     isloading = true;
     notifyListeners();
+    return true;
   }
 
   likePost(int id) async {
-    await homeRepository.likePost(id);
+    try {
+      await homeRepository.likePost(id);
+    } catch (e) {
+      // Likes are fire-and-forget; don't let a network error go uncaught.
+      debugPrint('likePost failed: $e');
+    }
     notifyListeners();
   }
 
   unlikePost(int id) async {
-    await homeRepository.unlikePost(id);
+    try {
+      await homeRepository.unlikePost(id);
+    } catch (e) {
+      // Likes are fire-and-forget; don't let a network error go uncaught.
+      debugPrint('unlikePost failed: $e');
+    }
     notifyListeners();
   }
 
   likeCategoryPost(int id) async {
-    await homeRepository.likeCategoryPost(id);
+    try {
+      await homeRepository.likeCategoryPost(id);
+    } catch (e) {
+      // Likes are fire-and-forget; don't let a network error go uncaught.
+      debugPrint('likeCategoryPost failed: $e');
+    }
     notifyListeners();
   }
 
   unlikeCategoryPost(int id) async {
-    await homeRepository.unlikeCategoryPost(id);
+    try {
+      await homeRepository.unlikeCategoryPost(id);
+    } catch (e) {
+      // Likes are fire-and-forget; don't let a network error go uncaught.
+      debugPrint('unlikeCategoryPost failed: $e');
+    }
     notifyListeners();
   }
 
   likeIslamicPost(int id) async {
-    await homeRepository.likeIslamicPost(id);
+    try {
+      await homeRepository.likeIslamicPost(id);
+    } catch (e) {
+      // Likes are fire-and-forget; don't let a network error go uncaught.
+      debugPrint('likeIslamicPost failed: $e');
+    }
     notifyListeners();
   }
 
   unlikeIslamicPost(int id) async {
-    await homeRepository.unlikeIslamicPost(id);
+    try {
+      await homeRepository.unlikeIslamicPost(id);
+    } catch (e) {
+      // Likes are fire-and-forget; don't let a network error go uncaught.
+      debugPrint('unlikeIslamicPost failed: $e');
+    }
     notifyListeners();
   }
 }

@@ -57,7 +57,7 @@ class TopProvider extends ViewStateProvider {
         _userScore = _apiResponseModel.userScoreModel ?? UserScoreModel();
         if (_userScore.points > 1000) {
           // _audioCache.play("u_made_achievment.wav");
-          await player.play(AssetSource('assets/audio/u_made_achievment.wav'));
+          await player.play(AssetSource('audio/u_made_achievment.wav'));
         }
       }
       setViewState(ViewState.Idle);
@@ -73,7 +73,7 @@ class TopProvider extends ViewStateProvider {
         _userScore = _apiResponseModel.userScoreModel ?? UserScoreModel();
         if (_userScore.points > 1000) {
           // _audioCache.play("u_made_achievment.wav");
-          await player.play(AssetSource('assets/audio/u_made_achievment.wav'));
+          await player.play(AssetSource('audio/u_made_achievment.wav'));
         }
       }
       setViewState(ViewState.Idle);

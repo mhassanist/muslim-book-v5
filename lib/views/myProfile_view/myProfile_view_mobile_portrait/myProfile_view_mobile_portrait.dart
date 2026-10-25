@@ -1,3 +1,4 @@
+import 'package:muslim_book/widgets/retry_view_widget.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/providers/myProfile_provider.dart';
@@ -35,7 +36,15 @@ class _MyProfilePageState extends State<MyProfilePage> {
             appBar: appBar(context, sizeConfig,
                 AppLocalizations.of(context)!.translate("my_profile"),
                 key: key),
-            body: model.viewState == ViewState.Loading
+            // Checked first so the retry view stays mounted while retrying;
+            // it refetches when disposed.
+            body: model.loadFailed
+                ? RetryViewWidget(
+                    provider: model,
+                    function: model.getScore,
+                    text: "my_profile",
+                  )
+                : model.viewState == ViewState.Loading
                 ? SizedBox(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height,

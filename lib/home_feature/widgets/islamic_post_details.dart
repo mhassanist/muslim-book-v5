@@ -40,37 +40,34 @@ class _IslamicPostDetailsState extends State<IslamicPostDetails> {
                 _buildSizedBox(),
                 _buildPostVideoUi(),
                 _buildAdSection(),
-                Expanded(
-                  flex: 1,
-                  child: InkWell(
-                    onTap: () {
-                      Share.share(widget.islamicPost.name +
-                          "\n \n " +
-                          "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book");
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      child: Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              AppLocalizations.of(context)!.translate("share"),
-                              style: TextStyle(fontSize: 13),
-                            ),
-                            SizedBox(
-                              width: 8,
-                            ),
-                            SvgPicture.asset(
-                              'assets/icons/path_514.svg',
-                              height: 15,
-                            )
-                          ],
-                        ),
+                InkWell(
+                  onTap: () {
+                    Share.share(widget.islamicPost.name +
+                        "\n \n " +
+                        "ادعوكم للانضمام الي تطبيق الاذان ، القران ،الاذكار . مسلم بوك من هنا \n👇👇👇\n https://play.google.com/store/apps/details?id=com.muslim_book.muslim_book");
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)!.translate("share"),
+                            style: TextStyle(fontSize: 13),
+                          ),
+                          SizedBox(
+                            width: 8,
+                          ),
+                          SvgPicture.asset(
+                            'assets/icons/path_514.svg',
+                            height: 15,
+                          )
+                        ],
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

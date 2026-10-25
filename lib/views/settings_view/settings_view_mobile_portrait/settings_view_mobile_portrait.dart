@@ -169,9 +169,11 @@ class _SettingsViewMobilePortraitState extends State<SettingsViewMobilePortrait>
               provider: model,
               sizeConfig: sizeConfig,
             );
+            // Runs before the provider has listeners; calling it from the
+            // builder notified listeners during build.
+            model.fillTheSettingsData();
           },
           builder: (_, model, __) {
-            model.fillTheSettingsData();
             // return Scaffold(
             //   body: Center(
             //     child: Text('${model.alreadyFilledData}'),

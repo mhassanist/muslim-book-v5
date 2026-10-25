@@ -26,12 +26,17 @@ class MyProfileProvider extends ViewStateProvider {
 //    notifyListeners();
 //  }
 
+  bool loadFailed = false;
+
   Future getScore() async {
-    setViewState(ViewState.Loading);
+    // Refreshes after the first load happen without the full-page spinner.
+    if (_scoreModelData == null) setViewState(ViewState.Loading);
     var res = await locator<ApiService>().getUserScore();
     if (res != null) {
       _scoreModelData = (res).data;
-      setViewState(ViewState.Idle);
     }
+    // Leave the loading state on failure too; the view shows a retry.
+    loadFailed = _scoreModelData == null;
+    setViewState(ViewState.Idle);
   }
 }

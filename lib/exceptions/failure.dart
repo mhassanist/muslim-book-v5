@@ -15,15 +15,13 @@ class Failure {
   }
 
   String get message {
-    if (_message == null) {
-      switch (statusCode) {
-        case Constants.NO_CONNECTION_EXCEPTION:
-          return locator<Prefs>().getLang() == Constants.EN
-              ? _noConnectionException()["en"] as String
-              : _noConnectionException()["ar"] as String;
-      }
-    }
-    return _message!;
+    if (_message != null) return _message!;
+    final messages = statusCode == Constants.NO_CONNECTION_EXCEPTION
+        ? _noConnectionException()
+        : _unknownError();
+    return locator<Prefs>().getLang() == Constants.EN
+        ? messages["en"]!
+        : messages["ar"]!;
   }
 
   void _getMessage() {
@@ -40,6 +38,13 @@ class Failure {
     return {
       "en": "Could not reach the server. Check your internet connection",
       "ar": "تعذر الاتصال بالخادم، تحقق من اتصالك بالإنترنت",
+    };
+  }
+
+  Map<String, String> _unknownError() {
+    return {
+      "en": "Something went wrong. Please try again",
+      "ar": "حدث خطأ، يرجى المحاولة مرة أخرى",
     };
   }
 

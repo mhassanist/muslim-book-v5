@@ -52,16 +52,21 @@ class TasbeehTopProvider extends ViewStateProvider {
   Future<void> getTasbeehTop() async {
     if (_userProvider != null && _userProvider!.isLoggedIn) {
       setViewState(ViewState.Loading);
-      TopModel? _apiResponseModel = await locator<ApiService>().getTasbeehTop();
-      if (_apiResponseModel != null) {
-        _topList = _apiResponseModel.data;
-        _userScore = _apiResponseModel.userScoreModel ?? UserScoreModel();
-        if (_userScore.points > 1000) {
-          // _audioCache.play("u_made_achievment.wav");
-          await player.play(AssetSource('assets/audio/u_made_achievment.wav'));
+      try {
+        TopModel? _apiResponseModel =
+            await locator<ApiService>().getTasbeehTop();
+        if (_apiResponseModel != null) {
+          _topList = _apiResponseModel.data;
+          _userScore = _apiResponseModel.userScoreModel ?? UserScoreModel();
+          if (_userScore.points > 1000) {
+            // _audioCache.play("u_made_achievment.wav");
+            await player
+                .play(AssetSource('audio/u_made_achievment.wav'));
+          }
         }
+      } finally {
+        setViewState(ViewState.Idle);
       }
-      setViewState(ViewState.Idle);
     }
   }
 }
