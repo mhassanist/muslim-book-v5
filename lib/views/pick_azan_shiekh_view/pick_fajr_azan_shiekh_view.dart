@@ -60,14 +60,15 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
   Widget build(BuildContext context) {
     _moreFajrAzanSoundsProvider = Provider.of<AzanFairSoundsProvider>(context);
 
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
         screenNoLongerActive = true;
         try {
           audioPlayer.stop();
         } catch (e) {}
         Navigator.of(context).pop();
-        return false;
       },
       child: BaseView<PickFajrAzanShiekhProvider>(onModelReady: (model) {
         _fajrAzanSoundFromAssetsProvider = model;

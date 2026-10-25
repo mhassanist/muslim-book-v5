@@ -78,8 +78,10 @@ class IslamicItemDetails extends ConsumerWidget {
       }
     }
     return ResponsiveBuilder(builder: (context, SizingInformation sizeConfig) {
-      return WillPopScope(
-        onWillPop: () async {
+      return PopScope(
+        canPop: false,
+        onPopInvokedWithResult: (didPop, _) {
+          if (didPop) return;
           islamicPostsList = [];
           islamicPostsListWidget = [];
           postschanges.islamicCatPosts = [];
@@ -87,7 +89,6 @@ class IslamicItemDetails extends ConsumerWidget {
           postschanges.isIslamicCatItemsLoading = true;
           Navigator.pop(context);
           //return CatsSubCatsBloc().categoryName = null;
-          return false;
         },
         child: Scaffold(
           appBar: AppBar(

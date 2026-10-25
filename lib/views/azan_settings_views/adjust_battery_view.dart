@@ -33,10 +33,8 @@ class _AdjustBatteryViewState extends State<AdjustBatteryView>
   @override
   Widget build(BuildContext context) {
     return ResponsiveBuilder(builder: (context, sizeConfig) {
-      return WillPopScope(
-        onWillPop: () async {
-          return false;
-        },
+      return PopScope(
+        canPop: false,
         child: ClipRRect(
           borderRadius:
               BorderRadius.circular(sizeConfig.blockSizeHorizontal * 5),

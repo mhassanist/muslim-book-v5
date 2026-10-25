@@ -82,14 +82,15 @@ class _RamadanViewState extends State<RamadanView>
         MediaQuery.of(context).size.height,
       ),
     );
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
         screenNoLongerActive = true;
         try {
           audioPlayer.stop();
         } catch (e) {}
         Navigator.of(context).pop();
-        return false;
       },
       child: BaseView<RamadanProvider>(onModelReady: (model) {
         ui = RamadanMobilePortraitUi(

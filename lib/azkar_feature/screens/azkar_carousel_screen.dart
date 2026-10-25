@@ -71,8 +71,14 @@ class _AzkarCarouselScreenState extends State<AzkarCarouselScreen> {
   Widget build(BuildContext context) {
     return ResponsiveBuilder(
       builder: (context, SizingInformation sizeConfig) {
-        return WillPopScope(
-            onWillPop: _onWillPop,
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, _) async {
+            if (didPop) return;
+            if (await _onWillPop() && context.mounted) {
+              Navigator.of(context).pop();
+            }
+          },
             child: AppScaffold(
               padding: EdgeInsets.only(top: 20),
               title: AppScaffoldTitleWidget(title: "${widget.zikr["name"]}"),

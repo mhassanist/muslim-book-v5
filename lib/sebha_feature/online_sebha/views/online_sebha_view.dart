@@ -63,8 +63,14 @@ class _OnlineSebhaViewState extends State<OnlineSebhaView>
         ? LoginPopUpView()
         : ResponsiveBuilder(
             builder: (context, SizingInformation sizeConfig) {
-              return WillPopScope(
-                  onWillPop: _onWillPop,
+              return PopScope(
+                canPop: false,
+                onPopInvokedWithResult: (didPop, _) async {
+                  if (didPop) return;
+                  if (await _onWillPop() && context.mounted) {
+                    Navigator.of(context).pop();
+                  }
+                },
                   child: AppScaffold(
                     resizeToAvoidBottomInset: false,
                     onProfileTap: () => Get.to(() => MyProfileView()),

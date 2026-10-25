@@ -13,10 +13,8 @@ class _DownloadingTranslationWidgetState
     with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+    return PopScope(
+      canPop: false,
       child: Center(
         child: Material(
           borderRadius: BorderRadius.circular(

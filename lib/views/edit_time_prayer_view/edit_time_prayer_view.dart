@@ -50,12 +50,13 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
     azanValue = controller.getAzanList(context) ?? [];
     final size = MediaQuery.of(context).size;
     final isSmall = size.width <= 450;
-    return new WillPopScope(
-        onWillPop: () {
-          if (widget.showAppBar) widget.updateAzan?.call();
-          Navigator.pop(context);
-          return Future.value(false);
-        },
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        if (widget.showAppBar) widget.updateAzan?.call();
+        Navigator.pop(context);
+      },
         child: Scaffold(
             appBar: widget.showAppBar ? _buildAppBar(context) : null,
             body: ResponsiveBuilder(builder: (context, sizeConfig) {

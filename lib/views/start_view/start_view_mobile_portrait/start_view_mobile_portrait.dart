@@ -174,9 +174,16 @@ class _StartViewMobilePortraitViewState
           : LoginPopUpView(),
       AzkarCategoriesGridScreen(),
     ];
-    return WillPopScope(
-      onWillPop: () {
-        return _onWillPop();
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, _) async {
+        if (didPop) return;
+        // Every PopScope in the route is notified (unlike WillPopScope), so let
+        // the competition tab's own confirmation handle back while it's shown
+        if (_isCompetitionTabShown()) return;
+        if (await _onWillPop() && context.mounted) {
+          Navigator.of(context).pop();
+        }
       },
       child: Scaffold(
         // appBar: AppBar(
@@ -279,6 +286,11 @@ class _StartViewMobilePortraitViewState
             child: Text('Modal'),
           );
         });
+  }
+
+  bool _isCompetitionTabShown() {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    return userProvider.selectedPage == 3 && userProvider.isLoggedIn;
   }
 
   Future<bool> _onWillPop() async {

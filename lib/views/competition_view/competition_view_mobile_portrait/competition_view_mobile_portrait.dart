@@ -65,6 +65,7 @@ class _CompetitionViewMobilePortraitState
   }
 
   go() {
+    if (!mounted) return;
     Provider.of<UserProvider>(context, listen: false).selectedPage = 2;
   }
 
@@ -74,8 +75,14 @@ class _CompetitionViewMobilePortraitState
       return Consumer<CompetitionProvider>(builder: (context, model, __) {
         model.ui = ui;
         ui.sizeConfig = sizeConfig;
-        return WillPopScope(
-            onWillPop: _onWillPop,
+        return PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, _) async {
+            if (didPop) return;
+            if (await _onWillPop() && context.mounted) {
+              Navigator.of(context).pop();
+            }
+          },
             child: SafeArea(
               child: Scaffold(
                 key: _scaffoldKey,
