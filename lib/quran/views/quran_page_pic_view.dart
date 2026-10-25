@@ -34,12 +34,19 @@ class _QuranPagePicViewState extends State<QuranPagePicView>
     _currentPageNumber = widget.quranPage;
     //save current page to local storage
     saveCurrentPage();
-    QuranPagesPicBloc().downloadQuranSinglePage(widget.quranPage).then((value) {
-      setState(() {
-        quranPagePic = value;
+    // The bloc notifies listeners synchronously, so start after the first
+    // frame to avoid "setState() called during build".
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      QuranPagesPicBloc()
+          .downloadQuranSinglePage(widget.quranPage)
+          .then((value) {
+        if (!mounted) return;
+        setState(() {
+          quranPagePic = value;
+        });
       });
+      QuranPagesPicBloc().checkIfFullQuranDownloaded();
     });
-    QuranPagesPicBloc().checkIfFullQuranDownloaded();
 
     _controller = AnimationController(
       vsync: this,
@@ -64,6 +71,7 @@ class _QuranPagePicViewState extends State<QuranPagePicView>
 
   @override
   void dispose() {
+    _controller.dispose();
     _linearProgressController.dispose();
     super.dispose();
   }
@@ -121,6 +129,7 @@ class _QuranPagePicViewState extends State<QuranPagePicView>
                   QuranPagesPicBloc()
                       .downloadQuranSinglePage(_currentPageNumber - 1)
                       .then((value) {
+                    if (!mounted) return;
                     setState(() {
                       quranPagePic = value;
                       _currentPageNumber = _currentPageNumber - 1;
@@ -131,6 +140,7 @@ class _QuranPagePicViewState extends State<QuranPagePicView>
                   QuranPagesPicBloc()
                       .downloadQuranSinglePage(_currentPageNumber + 1)
                       .then((value) {
+                    if (!mounted) return;
                     setState(() {
                       quranPagePic = value;
                       _currentPageNumber = _currentPageNumber + 1;

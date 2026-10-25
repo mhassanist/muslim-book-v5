@@ -44,7 +44,9 @@ class AppScaffold extends StatelessWidget {
       color: Colors.green,
       child: Scaffold(
         resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-        key: scaffoldKey ?? UniqueKey(),
+        // A UniqueKey here remounted the whole page on every rebuild, which
+        // reset carousels/counters and restarted FutureBuilders.
+        key: scaffoldKey,
         appBar: AppBar(
             leading: leading,
             actions: [

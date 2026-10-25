@@ -5,6 +5,7 @@ import 'package:muslim_book/quran/provider/quran_pages_pic_bloc.dart';
 import 'package:muslim_book/quran/views/quran_page_pic_view.dart';
 import 'package:muslim_book/widgets/app_scaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class QuranReadingIndex extends StatefulWidget {
@@ -15,6 +16,11 @@ class QuranReadingIndex extends StatefulWidget {
 }
 
 class _QuranReadingIndexState extends State<QuranReadingIndex> {
+  final Future<List> _parts = _loadJson("parts_page_list.json");
+  final Future<List> _soras = _loadJson("sora_list.json");
+
+  static Future<List> _loadJson(String name) async => jsonDecode(
+      await rootBundle.loadString("assets/databases/quran_database/$name"));
 
   Route _createRoute(pgNumber) {
     return PageRouteBuilder(
@@ -37,20 +43,22 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Future.delayed(Duration(seconds: 1), () {
-        SharedPreferences.getInstance().then((value) {
-          if (value.getInt("LAST_READ_PAGE") != null) {
-            QuranPagesPicBloc().setState(APIStatus.initial);
-
-            Navigator.push(
-                context, _createRoute(value.getInt("LAST_READ_PAGE")));
-          }
-        });
-      });
+  void initState() {
+    super.initState();
+    // Resume the last read page once, when the index is first opened.
+    // Doing this in build() pushed a new page on every rebuild, so Back
+    // could never get out of the reader.
+    Future.delayed(Duration(seconds: 1), () async {
+      final lastPage =
+          (await SharedPreferences.getInstance()).getInt("LAST_READ_PAGE");
+      if (lastPage == null || !mounted) return;
+      QuranPagesPicBloc().setState(APIStatus.initial);
+      Navigator.push(context, _createRoute(lastPage));
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return AppScaffold(
         title: Text("قراءة القرءان بالصور"),
         centerTitle: true,
@@ -165,12 +173,11 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
     return Container(
       width: MediaQuery.of(context).size.width / 9,
       padding: EdgeInsets.only(bottom: 10.0),
-      child: FutureBuilder(
-          future: DefaultAssetBundle.of(context).loadString(
-              "assets/databases/quran_database/parts_page_list.json"),
+      child: FutureBuilder<List>(
+          future: _parts,
           builder: (context, snapshot) {
-            var data = jsonDecode(snapshot.data.toString());
-            if (snapshot.connectionState == ConnectionState.done) {
+            final data = snapshot.data;
+            if (data != null) {
               return ListView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: 30,
@@ -204,12 +211,11 @@ class _QuranReadingIndexState extends State<QuranReadingIndex> {
   }
 
   _buildQuranSoraList() {
-    return FutureBuilder(
-        future: DefaultAssetBundle.of(context)
-            .loadString("assets/databases/quran_database/sora_list.json"),
+    return FutureBuilder<List>(
+        future: _soras,
         builder: (context, snapshot) {
-          var data = jsonDecode(snapshot.data.toString());
-          if (snapshot.connectionState == ConnectionState.done) {
+          final data = snapshot.data;
+          if (data != null) {
             return Column(children: [
               for (int i = 0; i < data.length; i++)
                 InkWell(

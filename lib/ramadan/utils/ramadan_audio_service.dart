@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:muslim_book/quran/utils/ayah_audio.dart';
 import 'package:muslim_book/quran/models/quran_model.dart';
 import 'package:muslim_book/quran/utils/quran_top_level_functions.dart';
 import 'package:muslim_book/utils/Constants.dart';
@@ -11,7 +12,6 @@ class QuranAudioService extends BaseAudioHandler {
   late SharedPreferences prefs;
 
   final _audioPlayer = AudioPlayer();
-  final String baseUrl = "https://cdn.alquran.cloud/media/audio/ayah/";
   String ayahUrl = '';
   int surahNumber = 0;
   int ayahIndex = 0;
@@ -102,7 +102,7 @@ class QuranAudioService extends BaseAudioHandler {
       processingState: AudioProcessingState.ready,
       systemActions: {MediaAction.seek},
     ));
-    await _audioPlayer.play(UrlSource(ayahUrl));
+    await AyahAudio.play(_audioPlayer, sheikhId, surah?.ayahs[ayahIndex].number);
     renewSurah = 0;
   }
 
@@ -148,7 +148,7 @@ class QuranAudioService extends BaseAudioHandler {
   void playNext() async {
     ayahIndex++;
     if (ayahIndex < surah!.ayahs.length) {
-      ayahUrl = "$baseUrl$sheikhId/${surah!.ayahs[ayahIndex].number}";
+      ayahUrl = AyahAudio.url(sheikhId, surah!.ayahs[ayahIndex].number);
       this.play();
     } else
       changeNextSurahIndex();
@@ -162,7 +162,7 @@ class QuranAudioService extends BaseAudioHandler {
       surahNumber++;
     ayahIndex = 0;
     surah = model?.surahs[surahNumber];
-    ayahUrl = "$baseUrl$sheikhId/${surah?.ayahs[ayahIndex].number}";
+    ayahUrl = AyahAudio.url(sheikhId, surah?.ayahs[ayahIndex].number);
     this.play();
   }
 
@@ -174,14 +174,14 @@ class QuranAudioService extends BaseAudioHandler {
     ayahIndex = 0;
     renewSurah = 1;
     surah = model?.surahs[surahNumber];
-    ayahUrl = "$baseUrl$sheikhId/${surah?.ayahs[ayahIndex].number}";
+    ayahUrl = AyahAudio.url(sheikhId, surah?.ayahs[ayahIndex].number);
     this.play();
   }
 
   void playPrevious() async {
     if (ayahIndex > 0) {
       ayahIndex--;
-      ayahUrl = "$baseUrl$sheikhId/${surah?.ayahs[ayahIndex].number}";
+      ayahUrl = AyahAudio.url(sheikhId, surah?.ayahs[ayahIndex].number);
       this.play();
     } else {
       changePreviousSurahIndex();
