@@ -36,9 +36,14 @@ public class AzanReceiver extends BroadcastReceiver {
         beforeAzan(context, intent);
       } else {
         startAzanAlarm(context, intent);
-        Intent dialogIntent = new Intent(context, MainActivity.class);
-        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(dialogIntent);
+        // Only a tap on the azan notification should open the app. Scheduling
+        // (fireAzan, boot) must not: it put a second MainActivity on top of
+        // whatever was showing, e.g. closing interstitial ads instantly.
+        if (intent.getBooleanExtra(Constants.OPEN_APP_FROM_AZAN_NOTIFICATION, false)) {
+          Intent dialogIntent = new Intent(context, MainActivity.class);
+          dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+          context.startActivity(dialogIntent);
+        }
       }
 
     }

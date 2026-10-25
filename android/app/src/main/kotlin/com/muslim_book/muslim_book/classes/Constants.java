@@ -63,6 +63,7 @@ public class Constants {
   public static final String CLOSE_RAMADAN_CANNON = "close_ramadan_cannon";
   public static final String CLOSE_RAMADAN_MSHART = "close_ramadan_msharat";
   public static final String START_AZAN = "open_azan";
+  public static final String OPEN_APP_FROM_AZAN_NOTIFICATION = "open_app_from_azan_notification";
   public static final String START_RAMADAN_CANNON = "open_ramadan_cannon";
   public static final String START_RAMADAN_MSHARAT = "open_ramadan_msharat";
   public static final String MUAZEN_KEY = "flutter.azan_shiekh";

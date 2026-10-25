@@ -151,6 +151,7 @@ public class AzanServiceUtils {
         builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
         Intent intent = new Intent(mContext, AzanReceiver.class);
+        intent.putExtra(Constants.OPEN_APP_FROM_AZAN_NOTIFICATION, true);
 //        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext,
 //                AZAN_NOTIFICATION_ID,
 //                intent,
