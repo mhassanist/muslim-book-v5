@@ -141,7 +141,12 @@ public class AzanUtils {
     }
 
     private void getNextDayFajrAzan(AzanModel model) {
-        AzanModelData azanOfDay = model.getData().get(mCalendar.get(Calendar.DAY_OF_MONTH));
+        // On the last day of the month the next day isn't in this month's
+        // table; that threw, no alarm was set and the azan stopped until the
+        // app was opened. Today's Fajr is within a minute or two of tomorrow's.
+        int nextDayIndex = Math.min(mCalendar.get(Calendar.DAY_OF_MONTH),
+                model.getData().size() - 1);
+        AzanModelData azanOfDay = model.getData().get(nextDayIndex);
         setNextAzan(azanOfDay.getTimings().getFajr().split(" ")[0].split(":")[0] + ":"
                 + String.valueOf(Integer.parseInt(azanOfDay.getTimings().getFajr().split(" ")[0].split(":")[1])
                 + Integer.parseInt(mPreferences.getString(Constants.FLUTTER_TAG + "update1", "0"))), "1");

@@ -1,5 +1,6 @@
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/models/month_azan_model.dart';
+import 'package:muslim_book/singletons/azan_singleton.dart';
 import 'package:muslim_book/network_utils/azan_apis.dart';
 import 'package:muslim_book/network_utils/settings_apis.dart';
 import 'package:muslim_book/providers/user_provider.dart';
@@ -61,6 +62,17 @@ class _SplashViewState extends State<SplashView>
       } else {
         await AzanApis().getAzan();
       }
+    }
+    // The displayed prayer times were only refreshed when the timetable was
+    // re-fetched, so they could show an older day's times. Take today's row.
+    await locator<AzanSingleton>().saveAzanTimes();
+    // Schedule the next azan on every start. Nothing did on a normal launch,
+    // so after an update/reinstall (which clears alarms) the azan stayed
+    // silent until the user changed a setting. Native skips it if disabled.
+    try {
+      await Constants.platform.invokeMethod("fireAzan");
+    } catch (e) {
+      e.printError();
     }
     var checkOverLay = false;
     try {
@@ -231,7 +243,8 @@ class _SplashViewState extends State<SplashView>
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return WillPopScope(
+        return PopScope(
+            canPop: false,
             child: AlertDialog(
               title:
               Text(AppLocalizations.of(context)!.translate("new_update")),
@@ -250,10 +263,7 @@ class _SplashViewState extends State<SplashView>
                   // color: Constants.ACCENT_COLOR,
                 ),
               ],
-            ),
-            onWillPop: () async {
-              return false;
-            });
+            ));
       },
     );
   }
