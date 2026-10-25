@@ -26,7 +26,6 @@ class CompetitionProvider extends ViewStateProvider {
   int? _correctAnswerPosition;
   bool _isDisposed = false;
   bool _isDialogOpened = false;
-  bool _isExiteOpened = false;
   List<QuestionModel> _questions = [];
   List<AnswerModel> _answers = [];
   AnswerResultModelData _answerResultModelData = AnswerResultModelData();
@@ -70,13 +69,6 @@ class CompetitionProvider extends ViewStateProvider {
     notifyListeners();
   }
 
-  set isExiteOpened(position) {
-    _isExiteOpened = position;
-    notifyListeners();
-  }
-
-  bool get isExiteOpened => _isExiteOpened;
-
   bool get isAnsweredClicked => _isAnsweredClicked;
 
   set correctAnswerPosition(position) {
@@ -109,7 +101,9 @@ class CompetitionProvider extends ViewStateProvider {
     if (_countDownTimer != null) {
       _countDownTimer!.cancel();
     }
-    notifyListeners();
+    // Leaving the competition must silence any answer sound still playing
+    player.stop();
+    player.dispose();
     super.dispose();
   }
 
@@ -201,7 +195,11 @@ class CompetitionProvider extends ViewStateProvider {
       notifyListeners();
     });
 
+    // Fires when time runs out and also on cancel() (quiver closes the stream),
+    // which is how stopTimer() evaluates an answer
     sub.onDone(() {
+      // Cancelled by dispose(): the user left, so don't judge the question
+      if (_isDisposed) return;
       if (questions.isNotEmpty) {
         if (_chosenPosition == null) chosenPosition = _correctAnswerPosition;
         if (_chosenPosition != null &&

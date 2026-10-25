@@ -2,7 +2,6 @@ import 'dart:ui';
 
 // import 'package:easy_audience_network/easy_audience_network.dart';
 import 'package:muslim_book/ads/ad_manager.dart';
-import 'package:muslim_book/widgets/exit_confirm_dialog.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/locals_utils/app_localizations.dart';
 import 'package:muslim_book/network_utils/remote_config.dart';
@@ -247,27 +246,6 @@ class CompetitionUI {
                 onPressed: provider.disablePickingAnswers ||
                         provider.current == 0
                     ? () async {
-                        int totalQuestions = provider.questionIndex;
-                        if (provider.questionIndex == 2 &&
-                            !provider.isExiteOpened) {
-                          provider.isExiteOpened = true;
-                          await showDialog(
-                            context: context,
-                            builder: (context) => new AlertDialog(
-                              contentPadding: EdgeInsets.all(0.0),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12))),
-                              content: ExitConfirmDialog(
-                                title: AppLocalizations.of(context)!
-                                    .translate("competition"),
-                                buttomTitle: AppLocalizations.of(context)!
-                                    .translate("follow"),
-                                exit: go,
-                              ),
-                            ),
-                          );
-                        }
                         provider.startTimer();
                         await provider.changeIndex();
                         // }
@@ -292,10 +270,8 @@ class CompetitionUI {
 
   startPopUp() {
     String totalQuestions = provider.totalQuestions.toString();
-    Get.dialog(WillPopScope(
-        onWillPop: () async {
-          return false;
-        },
+    Get.dialog(PopScope(
+        canPop: false,
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: SimpleDialog(
@@ -389,10 +365,8 @@ class CompetitionUI {
   }
 
   endPopUp() async {
-    Get.dialog(WillPopScope(
-      onWillPop: () async {
-        return false;
-      },
+    Get.dialog(PopScope(
+      canPop: false,
       child: Scaffold(
         body: Column(
           mainAxisSize: MainAxisSize.min,
@@ -632,10 +606,6 @@ class CompetitionUI {
         ),
       ),
     ));
-  }
-
-  go() {
-    Provider.of<UserProvider>(context, listen: false).selectedPage = 2;
   }
 
   void goToStart(BuildContext context, {int pageNumber = 2}) {
