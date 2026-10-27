@@ -107,7 +107,9 @@ public class AzanReceiver extends BroadcastReceiver {
       Intent intent = new Intent(context, AzanReceiver.class);
       intent.putExtra(Constants.START_AZAN, true);
       intent.putExtra(Constants.NEXT_AZAN_KEY, key);
-      intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+      // Deliver even if the package is in the "stopped" state (after a force
+      // stop), otherwise the azan alarm is silently dropped
+      intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND | Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
       PendingIntent alarmIntent = PendingIntent
           .getBroadcast(context, Constants.AZAN_PENDING_INTENT_REQUEST_CODE, intent,
               PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
@@ -130,7 +132,7 @@ public class AzanReceiver extends BroadcastReceiver {
     Intent intent = new Intent(context, AzanReceiver.class);
     intent.putExtra(Constants.BEFORE_AZAN,  new Prefs(context).getVoiceReminderBeforePraying());
     intent.putExtra(Constants.NEXT_AZAN_KEY, azanKey);
-    intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
+    intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND | Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
     PendingIntent alarmIntent = PendingIntent
         .getBroadcast(context, Constants.BEFORE_AZAN_PENDING_INTENT_REQUEST_CODE, intent,
         PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);

@@ -188,7 +188,10 @@ public class AzanServiceUtils {
             //        mContext.sendBroadcast(intent);
             //  } else
             //    Constants.sendImplicitBroadcast(mContext,intent);
-            mContext.sendBroadcast(intent);
+            // Call the receiver directly: after a force stop the package stays
+            // "stopped" and Android drops broadcasts to it, so the alarm was
+            // never set even though the app was running.
+            new AzanReceiver().onReceive(mContext, intent);
 //            ContextCompat.starre(mContext, intent);
         }
     }
