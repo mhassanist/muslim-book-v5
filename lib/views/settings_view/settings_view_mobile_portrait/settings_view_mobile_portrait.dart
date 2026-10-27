@@ -1,3 +1,4 @@
+import 'package:muslim_book/widgets/app_version_text.dart';
 import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/ads_service.dart';
 import 'package:muslim_book/ads/load_ui_with_add.dart';
@@ -327,6 +328,9 @@ class _SettingsViewMobilePortraitState extends State<SettingsViewMobilePortrait>
                         ),
                         const SliverToBoxAdapter(
                           child: AdmobBanner(bannerName: BannerName.BOSLA),
+                        ),
+                        const SliverToBoxAdapter(
+                          child: AppVersionText(),
                         ),
                         const SliverToBoxAdapter(
                           child: SizedBox(
