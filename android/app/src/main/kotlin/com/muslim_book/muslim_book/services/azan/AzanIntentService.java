@@ -125,6 +125,13 @@ public class AzanIntentService extends Service {
 
         if (intent != null) {
             beforeAzan = intent.getBooleanExtra(Constants.BEFORE_AZAN, false);
+            if (!beforeAzan) {
+                // Schedule the next prayer now rather than only when this azan
+                // ends: if the phone is silent, the sound file is missing or
+                // after-azan dua is off, playback never completes and the chain
+                // stopped here until the user tapped the notification.
+                new AzanUtils(this);
+            }
             showNotification(
                     intent.getStringExtra(Constants.NEXT_AZAN_KEY));
             playAzan(beforeAzan,
