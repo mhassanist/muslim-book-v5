@@ -145,6 +145,10 @@ class _PickAzanMethodViewState extends State<PickAzanMethodView> {
                       "assets/images/general/custom_switch_active.png"),
                   inactiveThumbImage: AssetImage(
                       "assets/images/general/custom_switch_inactive.png"),
+                  activeTrackColor: const Color(0XFF347D53).withOpacity(.35),
+                  inactiveTrackColor: Colors.grey.shade300,
+                  trackOutlineColor:
+                      const WidgetStatePropertyAll(Colors.transparent),
                 ),
               ),
             ],

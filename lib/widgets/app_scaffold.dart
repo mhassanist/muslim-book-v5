@@ -55,6 +55,8 @@ class AppScaffold extends StatelessWidget {
             ],
             centerTitle: centerTitle,
             backgroundColor: primaryColor,
+            // Material 3 defaults the title/icons to black on the green bar
+            foregroundColor: Colors.white,
             elevation: 0,
             title: title),
         floatingActionButton: floatingActionButton,

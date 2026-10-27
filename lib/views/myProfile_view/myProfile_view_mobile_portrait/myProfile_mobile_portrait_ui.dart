@@ -196,6 +196,7 @@ class MyProfileUI {
               onPressed: () async => faceBookShare(),
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0XFF4266b2),
+                  foregroundColor: Colors.white,
                   shape: const CircleBorder(side: BorderSide.none)),
               child: const FaIcon(FontAwesomeIcons.facebookF)),
         ),
@@ -209,6 +210,7 @@ class MyProfileUI {
               onPressed: () async => shareApp(),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blueAccent,
+                  foregroundColor: Colors.white,
                   shape: const CircleBorder(side: BorderSide.none)),
               child: const FaIcon(FontAwesomeIcons.twitter)),
         ),
@@ -222,6 +224,7 @@ class MyProfileUI {
               onPressed: () async => shareApp(),
               style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0XFF4FCE5D),
+                  foregroundColor: Colors.white,
                   shape: const CircleBorder(side: BorderSide.none)),
               child: FaIcon(
                 FontAwesomeIcons.whatsapp,

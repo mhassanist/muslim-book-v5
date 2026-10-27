@@ -137,7 +137,7 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       );
                     },
-                    icon: Icon(Icons.language))
+                    icon: Icon(Icons.language, color: Colors.white))
               ],
             ),
           ),
@@ -150,7 +150,7 @@ class _HomeViewState extends State<HomeView> {
             },
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 5),
-              child: Icon(Icons.settings),
+              child: Icon(Icons.settings, color: Colors.white),
             ),
           ),
           SizedBox(

@@ -546,6 +546,10 @@ class _MyAppState extends State<MyApp> {
             return localeLoaded;
           },
           theme: ThemeData(
+            // The UI was designed for Material 2; Material 3 (the default
+            // since Flutter 3.16) turned switches, button icons and bar titles
+            // blue/black across the app
+            useMaterial3: false,
             textTheme: almaraiTextTheme != null
                 ? GoogleFonts.almaraiTextTheme(Theme.of(context).textTheme)
                 : null,
