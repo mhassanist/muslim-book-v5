@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
 import 'package:muslim_book/singletons/azan_singleton.dart';
 import 'package:muslim_book/utils/Constants.dart';
 import 'package:muslim_book/utils/locator.dart';
@@ -19,6 +21,14 @@ class AzanApis {
       if (response.statusCode == 200) {
         await locator<Prefs>().setAzanModel(response.body);
         await locator<AzanSingleton>().saveAzanTimes();
+        // New timetable (method, madhab, location or month changed): move
+        // the scheduled azan and the home countdown to the new times
+        try {
+          await Constants.platform.invokeMethod("fireAzan");
+        } catch (_) {}
+        if (Get.isRegistered<AzanController>()) {
+          Get.find<AzanController>().setNextSalah();
+        }
       }
     } catch (_) {
       print("error is ${_.toString()}");

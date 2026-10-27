@@ -148,21 +148,27 @@ class AzanController extends GetxController {
     try {
       for (var data in azanList) {
         final azan = Azan.fromMap(data);
-        final product = azanValue.firstWhere((product) => product.id == azan.id,
-            orElse: () => Azan());
-        if (product.id.isEmpty) {
-          if (mutedAzanList.isNotEmpty && mutedAzanList.contains(azan.id)) {
-            azan.volumeEnable = false;
-          } else {
-            azan.volumeEnable = true;
-          }
-          azan.count = locator<Prefs>()
-                  .getAssalahTime("update${azan.id}")
-                  .isNotEmpty
-              ? int.parse(locator<Prefs>().getAssalahTime("update${azan.id}"))
-              : 0;
+        azan.volumeEnable = !mutedAzanList.contains(azan.id);
+        azan.count = locator<Prefs>()
+                .getAssalahTime("update${azan.id}")
+                .isNotEmpty
+            ? int.parse(locator<Prefs>().getAssalahTime("update${azan.id}"))
+            : 0;
 
+        // Refresh entries that are already listed too: they used to be added
+        // once and never updated, so the times stayed frozen after a new
+        // timetable (settings change, new day or month) until a restart.
+        final index = azanValue.indexWhere((product) => product.id == azan.id);
+        if (index == -1) {
           azanValue.add(azan);
+        } else {
+          azanValue[index]
+            ..hours = azan.hours
+            ..time = azan.time
+            ..minute = azan.minute
+            ..count = azan.count
+            ..title = azan.title
+            ..volumeEnable = azan.volumeEnable;
         }
       }
 
