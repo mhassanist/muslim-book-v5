@@ -72,24 +72,23 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                             child: LoadUiWithAd(
                           mainView: CustomScrollView(slivers: <Widget>[
                             SliverToBoxAdapter(
-                              child: Container(
-                                height: 400,
-                                child: Stack(
+                              // Sized by its rows: a fixed 400px box cut off
+                              // the last prayer and could not be scrolled
+                              child: Stack(
                                     //alignment:new Alignment(x, y)
                                     children: <Widget>[
-                                      Positioned.fill(
-                                        child: ListView.builder(
-                                          physics:
-                                              NeverScrollableScrollPhysics(),
-                                          itemCount: azanValue.length,
-                                          itemBuilder: (context, index) {
-                                            return _buildSingleAzan(
-                                                azanValue[index],
-                                                sizeConfig,
-                                                index,
-                                                isSmall);
-                                          },
-                                        ),
+                                      ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            NeverScrollableScrollPhysics(),
+                                        itemCount: azanValue.length,
+                                        itemBuilder: (context, index) {
+                                          return _buildSingleAzan(
+                                              azanValue[index],
+                                              sizeConfig,
+                                              index,
+                                              isSmall);
+                                        },
                                       ),
                                       Positioned(
                                         left: 0,
@@ -108,7 +107,6 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
                                         ),
                                       )
                                     ]),
-                              ),
                             ),
                             SliverToBoxAdapter(
                                 child: Visibility(
@@ -435,14 +433,18 @@ class _EditTimePrayerState extends State<EditTimePrayer> {
   }
 
   Future<String> saveAllData() async {
-    setState(() {
-      for (var i = 0; i < azanValue.length; i++) {
-        var minute = ((int.parse(azanValue[i].minute) + azanValue[i].count));
-        String timeUpdate = "${azanValue[i].hours}:${minute}";
-        updateDate(azanValue[i].id, timeUpdate, azanValue[i].count);
-      }
-    });
-
+    for (var i = 0; i < azanValue.length; i++) {
+      var minute = ((int.parse(azanValue[i].minute) + azanValue[i].count));
+      String timeUpdate = "${azanValue[i].hours}:${minute}";
+      await updateDate(azanValue[i].id, timeUpdate, azanValue[i].count);
+    }
+    // The scheduled azan and the home countdown still used the old
+    // correction; move them to the corrected times
+    try {
+      await Constants.platform.invokeMethod("fireAzan");
+    } catch (_) {}
+    controller.setNextSalah();
+    if (mounted) setState(() {});
     return "done";
   }
 

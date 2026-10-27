@@ -227,16 +227,25 @@ class SettingsMobilePortraitUi {
     );
   }
 
+  // Opens the full editor instead of embedding it: embedded, its own scroll
+  // view trapped the settings scrolling (Save was unreachable) and its
+  // Save/Cancel popped the whole settings screen
   Widget azanTime() {
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      width: sizeConfig.blockSizeHorizontal * 90,
-      height: 570,
-      child: const EditTimePrayer(
-        showAppBar: false,
-
-        // azan: azanValue,
-        // updateAzan: listenToUpdate,
+      margin: const EdgeInsets.symmetric(vertical: 16),
+      child: Center(
+        child: standardButton(
+          isGo: true,
+          context: context,
+          sizeConfig: sizeConfig,
+          color: Theme.of(context).primaryColor,
+          title: AppLocalizations.of(context)!.translate("edite_tieme_prayer"),
+          onPressed: () => Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (_) => const EditTimePrayer(showAppBar: true),
+            ),
+          ),
+        ),
       ),
     );
   }
