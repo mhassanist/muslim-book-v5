@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Resources looked up by name with getIdentifier() must be kept explicitly,
+     otherwise resource shrinking removes them and the azan service crashes
+     with "String resource ID #0x0" -->
 <resources xmlns:tools="http://schemas.android.com/tools"
-    tools:keep="@drawable/*" />
+    tools:keep="@drawable/*,@raw/*,@string/before_azan_*,@string/monday,@string/thursday,@string/Ramadan_Iftar_time,@string/Ramadan_sohor_time" />
