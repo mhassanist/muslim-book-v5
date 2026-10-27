@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -229,7 +230,11 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
     for (int i = 0; i < animationListWeb.length; i++) {
       i == index ? animationListWeb[i].forward() : animationListWeb[i].reverse();
     }
-    if (_moreSoundsProvider.getAzanSound(index) != null) {
+    // Only download when the file isn't on the device yet; this used to
+    // re-download on every tap, delaying each preview by seconds
+    final existing = _moreSoundsProvider.getAzanSound(index);
+    if (existing != null &&
+        (existing.localPath.isEmpty || !File(existing.localPath).existsSync())) {
       await _moreSoundsProvider.downloadFile(index);
     }
     final azanSound = _moreSoundsProvider.getAzanSound(index);
