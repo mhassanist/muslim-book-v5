@@ -492,6 +492,14 @@ class HomePage extends ConsumerWidget {
                       flex: 1,
                       child: InkWell(
                         onTap: () {
+                          // Likes need an account; logged out it only turned
+                          // green locally while the server call failed
+                          if (!ProviderUser.Provider.of<UserProvider>(context,
+                                  listen: false)
+                              .isLoggedIn) {
+                            showSheet(context);
+                            return;
+                          }
                           setstate(() {
                             _post.liked
                                 ? postschanges.unlikePost(_post.id ?? -1)
@@ -1013,6 +1021,13 @@ class HomePage extends ConsumerWidget {
                             flex: 1,
                             child: InkWell(
                               onTap: () {
+                                if (!ProviderUser.Provider.of<UserProvider>(
+                                        context,
+                                        listen: false)
+                                    .isLoggedIn) {
+                                  showSheet(context);
+                                  return;
+                                }
                                 setstate(() {
                                   islamicPost.liked
                                       ? postschanges
