@@ -70,63 +70,47 @@ class SettingsProvider extends ViewStateProvider {
           ? Constants.EN_AZAN_Mazhabs
           : Constants.AR_AZAN_Mazhabs)[locator<Prefs>().getAzanMazhab()];
 
-      String savedShiekLocalJSON = locator<Prefs>().getAzanShiekhJSON("3");
-
-      if (savedShiekLocalJSON.isNotEmpty) {
-        String savedShiekhId = locator<Prefs>().getAzanShiekh("3");
-        if (savedShiekhId.isNotEmpty) {
-          for (Map<String, dynamic> shiekh
-              in AppLocalizations.of(_context)!.isEnglish()
-                  ? Constants.EN_SHIEKH_NAMES
-                  : Constants.AR_SHIEKH_NAMES) {
-            if (shiekh.isNotEmpty) {
-              _pickedAzanShiekhMain = {
-                "3": AppLocalizations.of(_context)!.isEnglish()
-                    ? Constants.EN_SHIEKH_NAMES[0]['name']
-                    : Constants.AR_SHIEKH_NAMES[0]['name']
-              };
-            } else if (shiekh["id"] == savedShiekhId) {
-              _pickedAzanShiekhMain = {"3": shiekh['name']};
-              break;
-            }
-          }
-        } else {
-          // _pickedAzanShiekh = Constants.SHIEKH_NAMES[0];
-          _pickedAzanShiekhMain = {
-            "3": AppLocalizations.of(_context)!.isEnglish()
-                ? Constants.EN_SHIEKH_NAMES[0]['name']
-                : Constants.AR_SHIEKH_NAMES[0]['name']
-          };
-        }
-        alreadyFilledData = true;
-      } else {
-        _pickedAzanShiekhMain = {
-          "3": AzanSound.toMap(savedShiekLocalJSON)['name']
-        };
-      }
-
-      //fajr part
-      String savedFajrShiekLocalJSON = locator<Prefs>().getFajrAzanShiekhJSON();
-          if (savedFajrShiekLocalJSON.isNotEmpty) {
-        String savedShiekhId = locator<Prefs>().getFajrAzanShiekh();
-        if (savedShiekhId.isNotEmpty) {
-          for (Map<String, dynamic> shiekh
-              in AppLocalizations.of(_context)!.isEnglish()
-                  ? Constants.EN_SHIEKH_NAMES
-                  : Constants.AR_SHIEKH_NAMES) {
-            if (shiekh["id"] == savedShiekhId) {
-              _pickedFajrAzanShiekh = shiekh;
-              break;
-            }
-          }
-        } else {
-          _pickedFajrAzanShiekh = Constants.FAJR_SHIEKH_NAMES[0];
-        }
-        alreadyFilledData = true;
-      } else {
-        _pickedFajrAzanShiekh = AzanSound.toMap(savedFajrShiekLocalJSON);
-      }
+      refreshShiekhNames();
+      alreadyFilledData = true;
       notifyListeners();
+    }
+  }
+
+  /// Shows the sheikhs the azan will actually play, read from the same keys
+  /// the native side uses. Prayer 3 stands for "all prayers" in settings.
+  void refreshShiekhNames() {
+    final prefs = locator<Prefs>();
+    final names = AppLocalizations.of(_context)!.isEnglish()
+        ? Constants.EN_SHIEKH_NAMES
+        : Constants.AR_SHIEKH_NAMES;
+    String? name;
+    if (prefs.getDownloadedAzanShiekhIdFor("3").isNotEmpty) {
+      name = _sheikhNameFromJson(prefs.getAzanShiekhJSON("3"));
+    }
+    if (name == null) {
+      final index = int.tryParse(prefs.getAzanShiekhLocalIdFor("3"));
+      // With nothing picked the native side plays sheikh 1
+      name = names[index != null && index >= 0 && index < names.length
+          ? index
+          : 1]["name"];
+    }
+    _pickedAzanShiekhMain = {"3": name};
+
+    String? fajrName;
+    if (prefs.getDownloadedFajrAzanSheikhId().isNotEmpty) {
+      fajrName = _sheikhNameFromJson(prefs.getFajrAzanShiekhJSON());
+    }
+    _pickedFajrAzanShiekh = {
+      "name": fajrName ?? Constants.FAJR_SHIEKH_NAMES[0]["name"],
+    };
+    notifyListeners();
+  }
+
+  String? _sheikhNameFromJson(String json) {
+    try {
+      return AzanSound.toMap(json)['name'] as String?;
+    } catch (_) {
+      return null;
     }
   }
 

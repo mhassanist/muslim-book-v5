@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:muslim_book/enums/view_state_enum.dart';
 import 'package:muslim_book/local_storage/local_storage_manager.dart';
@@ -39,8 +41,55 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
   bool displayingFromAssets = false;
   bool screenNoLongerActive = false;
 
+  // Bumped on every play/stop, so a slow load from an earlier tap can't start
+  // playing after a later one (fast taps used to leave the wrong one playing)
+  int _playRequest = 0;
+  int? _playingWebIndex;
+  StreamSubscription<void>? _completeSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _completeSubscription =
+        audioPlayer.onPlayerComplete.listen((_) => _stopPreview());
+  }
+
+  void _stopPreview() {
+    _playRequest++;
+    audioPlayer.stop();
+    if (!mounted) return;
+    setState(() {
+      currentPlayingItemId = '';
+      _playingWebIndex = null;
+    });
+    for (final c in animationList) {
+      c.reverse();
+    }
+    for (final c in animationListWeb) {
+      c.reverse();
+    }
+  }
+
+  void _toggleAssetPreview(int index) {
+    final id = Constants.FAJR_SHIEKH_NAMES[index]["id"];
+    if (id == currentPlayingItemId) {
+      _stopPreview();
+    } else {
+      playAzan(id, index);
+    }
+  }
+
+  void _toggleWebPreview(int index) {
+    if (_playingWebIndex == index) {
+      _stopPreview();
+    } else {
+      playAzanFromLocalDatabase(index);
+    }
+  }
+
   @override
   void dispose() {
+    _completeSubscription?.cancel();
     animationList.forEach((f) {
       f.dispose();
     });
@@ -133,43 +182,40 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
   }
 
   Future playAzan(id, index) async {
+    final request = ++_playRequest;
+    setState(() {
+      currentPlayingItemId = id;
+      _playingWebIndex = null;
+    });
+    for (int i = 0; i < animationList.length; i++) {
+      i == index ? animationList[i].forward() : animationList[i].reverse();
+    }
     String tempPath = (await getApplicationDocumentsDirectory()).path;
     //WE DONT USE IDS BUT LEFT IF THERE IS FUTURE ADDITIONS
     String path = join(tempPath, "azan_mshary_fajr.mp3");
-    if (!screenNoLongerActive) await audioPlayer.play(DeviceFileSource(path));
-    animationList[index].forward();
-    setState(() {
-      currentPlayingItemId = id;
-    });
-    for (int i = 0; i < animationList.length; i++) {
-      if (i != index) {
-        animationList[i].reverse();
-      }
-    }
-    animationList.forEach((f) {});
+    if (request != _playRequest || screenNoLongerActive) return;
+    await audioPlayer.play(DeviceFileSource(path));
   }
 
   Future playAzanFromLocalDatabase(index) async {
+    final request = ++_playRequest;
+    _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex = index;
+    setState(() {
+      _playingWebIndex = index;
+      currentPlayingItemId = '';
+    });
+    for (int i = 0; i < animationListWeb.length; i++) {
+      i == index ? animationListWeb[i].forward() : animationListWeb[i].reverse();
+    }
     AzanSound? azanSound = _moreFajrAzanSoundsProvider.getAzanSound(index);
     if (azanSound != null && azanSound.localPath.isEmpty) {
       await _moreFajrAzanSoundsProvider.downloadFile(index);
+      azanSound = _moreFajrAzanSoundsProvider.getAzanSound(index);
     }
-    if (!screenNoLongerActive)
-    // await audioPlayer.play(_moreFajrAzanSoundsProvider!.getAzanSound(index).localPath);
-    if (azanSound != null) {
-      await audioPlayer.play(DeviceFileSource(azanSound.localPath));
+    if (request != _playRequest || screenNoLongerActive || azanSound == null) {
+      return;
     }
-    _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex = index;
-    setState(() {
-      animationListWeb[index].forward();
-    });
-
-    for (int i = 0; i < animationListWeb.length; i++) {
-      if (i != index) {
-        animationListWeb[i].reverse();
-      }
-    }
-    animationListWeb.forEach((f) {});
+    await audioPlayer.play(DeviceFileSource(azanSound.localPath));
   }
 
   _buildGetMoreAzanSoundsButton(sizeConfig) {
@@ -196,10 +242,11 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
   _buildAzanSoundsListFromAssets(sizeConfig) {
     displayingFromAssets = true;
 
-    Constants.FAJR_SHIEKH_NAMES.forEach((f) {
+    // Create the controllers once; this used to add a new set on every build
+    while (animationList.length < Constants.FAJR_SHIEKH_NAMES.length) {
       animationList.add(AnimationController(
           vsync: this, duration: Duration(milliseconds: 300)));
-    });
+    }
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -230,15 +277,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
                       onTap: () {
                         _fajrAzanSoundFromAssetsProvider!
                             .pickedAzanShiekhIndex = index;
-                        if (Constants.FAJR_SHIEKH_NAMES[index]["id"] ==
-                            currentPlayingItemId) {
-                          audioPlayer.stop();
-                          currentPlayingItemId = '';
-                          animationList[index].reverse();
-                        } else {
-                          playAzan(
-                              Constants.FAJR_SHIEKH_NAMES[index]["id"], index);
-                        }
+                        _toggleAssetPreview(index);
                       },
                       title: Text(
                         Constants.FAJR_SHIEKH_NAMES[index]["name"],
@@ -249,17 +288,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
                           ? Icon(Icons.check)
                           : null,
                       trailing: IconButton(
-                        onPressed: () {
-                          if (Constants.FAJR_SHIEKH_NAMES[index]["id"] ==
-                              currentPlayingItemId) {
-                            audioPlayer.stop();
-                            currentPlayingItemId = '';
-                            animationList[index].reverse();
-                          } else {
-                            playAzan(Constants.FAJR_SHIEKH_NAMES[index]["id"],
-                                index);
-                          }
-                        },
+                        onPressed: () => _toggleAssetPreview(index),
                         icon: AnimatedIcon(
                           icon: AnimatedIcons.play_pause,
                           progress: animationList[index],
@@ -291,31 +320,25 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
         DataLoadingState.localAvailable) {
       displayingFromAssets = false;
 
-      _moreFajrAzanSoundsProvider.azanSounds.forEach((f) {
+      while (animationListWeb.length <
+          _moreFajrAzanSoundsProvider.azanSounds.length) {
         animationListWeb.add(AnimationController(
             vsync: this, duration: Duration(milliseconds: 300)));
-      });
+      }
       return ListView.builder(
           itemCount: _moreFajrAzanSoundsProvider.azanSounds.length,
           itemBuilder: (context, index) {
             if (_moreFajrAzanSoundsProvider.filesStates[index] ==
                     FileDownloadState.initial &&
                 index == _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex) {
-                  playAzanFromLocalDatabase(index);
+                  // Not during build: it updates the selection and state
+                  WidgetsBinding.instance.addPostFrameCallback(
+                      (_) => playAzanFromLocalDatabase(index));
                 }
             return ListTile(
               selected:
                   _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex == index,
-              onTap: () async {
-                if (_moreFajrAzanSoundsProvider.pickedAzanShiekhIndex ==
-                    index) {
-                  audioPlayer.stop();
-                  _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex;
-                  animationListWeb[index].reverse();
-                } else {
-                  playAzanFromLocalDatabase(index);
-                }
-              },
+              onTap: () => _toggleWebPreview(index),
               title: Text(
                 _moreFajrAzanSoundsProvider.azanSounds[index].name,
                 overflow: TextOverflow.ellipsis,
@@ -329,17 +352,7 @@ class _PickAzanShiekhViewState extends State<PickFajrAzanShiekhView>
                       _moreFajrAzanSoundsProvider.filesStates[index] ==
                           FileDownloadState.initial
                   ? IconButton(
-                      onPressed: () {
-                        if (index ==
-                            _moreFajrAzanSoundsProvider
-                                .pickedAzanShiekhIndex) {
-                          audioPlayer.stop();
-                          _moreFajrAzanSoundsProvider.pickedAzanShiekhIndex;
-                          animationListWeb[index].reverse();
-                        } else {
-                          playAzanFromLocalDatabase(index);
-                        }
-                      },
+                      onPressed: () => _toggleWebPreview(index),
                       icon: _moreFajrAzanSoundsProvider.filesStates[index] ==
                               FileDownloadState.initial
                           ? Icon(

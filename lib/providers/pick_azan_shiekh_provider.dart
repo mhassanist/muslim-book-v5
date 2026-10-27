@@ -43,11 +43,16 @@ class PickAzanShiekhProvider extends ViewStateProvider {
           Constants.AZAN_SHIEKH + i.toString(),
           azanIndex.toString(),
         );
+        await locator<Prefs>().clearDownloadedAzanShiekh(i.toString());
       }
     } else {
       await locator<Prefs>().setAzanShiekh(
           Constants.AZAN_SHIEKH_LOCAL_ID + azanId.toString(),
           azanIndex.toString());
+      // The picker reads this key; without it, it showed the previous sheikh
+      await locator<Prefs>().setAzanShiekh(
+          Constants.AZAN_SHIEKH + azanId.toString(), azanIndex.toString());
+      await locator<Prefs>().clearDownloadedAzanShiekh(azanId.toString());
     }
     Navigator.pop(context, _pickedAzanShiekhIndex);
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:get/get.dart';
@@ -48,8 +50,60 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
 
   bool screenNoLongerActive = false;
 
+  // Bumped on every play/stop, so a slow load from an earlier tap can't start
+  // playing after a later one (fast taps used to leave the wrong one playing)
+  int _playRequest = 0;
+  int? _playingWebIndex;
+  StreamSubscription<void>? _completeSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _completeSubscription =
+        audioPlayer.onPlayerComplete.listen((_) => _stopPreview());
+  }
+
+  void _stopPreview() {
+    _playRequest++;
+    audioPlayer.stop();
+    if (!mounted) return;
+    setState(() {
+      currentPlayingItemId = null;
+      _playingWebIndex = null;
+    });
+    for (final c in animationList) {
+      c.reverse();
+    }
+    for (final c in animationListWeb) {
+      c.reverse();
+    }
+  }
+
+  String _assetShiekhId(int index) =>
+      (AppLocalizations.of(context)!.isEnglish()
+          ? Constants.EN_SHIEKH_NAMES
+          : Constants.AR_SHIEKH_NAMES)[index]["id"];
+
+  void _toggleAssetPreview(int index) {
+    final id = _assetShiekhId(index);
+    if (id == currentPlayingItemId) {
+      _stopPreview();
+    } else {
+      playAzan(id, index);
+    }
+  }
+
+  void _toggleWebPreview(int index) {
+    if (_playingWebIndex == index) {
+      _stopPreview();
+    } else {
+      playAzanFromLocalDatabase(index);
+    }
+  }
+
   @override
   void dispose() {
+    _completeSubscription?.cancel();
     for (final f in animationList) {
       f.dispose();
     }
@@ -151,47 +205,38 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
   }
 
   Future playAzan(id, index) async {
-    String tempPath = (await getApplicationDocumentsDirectory()).path;
-    String path = join(tempPath, "azan_$id.mp3");
-    if (!screenNoLongerActive) {
-      // await audioPlayer.play(path, isLocal: true);
-      await audioPlayer.play(DeviceFileSource(path));
-    }
-
-    animationList[index].forward();
+    final request = ++_playRequest;
     setState(() {
       currentPlayingItemId = id;
+      _playingWebIndex = null;
     });
     for (int i = 0; i < animationList.length; i++) {
-      if (i != index) {
-        animationList[i].reverse();
-      }
+      i == index ? animationList[i].forward() : animationList[i].reverse();
     }
-    animationList.forEach((f) {});
+    String tempPath = (await getApplicationDocumentsDirectory()).path;
+    String path = join(tempPath, "azan_$id.mp3");
+    if (request != _playRequest || screenNoLongerActive) return;
+    await audioPlayer.play(DeviceFileSource(path));
   }
 
   Future playAzanFromLocalDatabase(index) async {
+    final request = ++_playRequest;
+    _moreSoundsProvider.pickedAzanShiekhIndex = index;
+    setState(() {
+      _playingWebIndex = index;
+      currentPlayingItemId = null;
+    });
+    for (int i = 0; i < animationListWeb.length; i++) {
+      i == index ? animationListWeb[i].forward() : animationListWeb[i].reverse();
+    }
     if (_moreSoundsProvider.getAzanSound(index) != null) {
       await _moreSoundsProvider.downloadFile(index);
     }
-    if (!screenNoLongerActive)
-    // await audioPlayer.play(_moreSoundsProvider.getAzanSound(index).localPath);
-    if (_moreSoundsProvider.getAzanSound(index) != null) {
-      await audioPlayer.play(
-          DeviceFileSource(_moreSoundsProvider.getAzanSound(index)!.localPath));
+    final azanSound = _moreSoundsProvider.getAzanSound(index);
+    if (request != _playRequest || screenNoLongerActive || azanSound == null) {
+      return;
     }
-
-    _moreSoundsProvider.pickedAzanShiekhIndex = index;
-    setState(() {
-      animationListWeb[index].forward();
-    });
-
-    for (int i = 0; i < animationListWeb.length; i++) {
-      if (i != index) {
-        animationListWeb[i].reverse();
-      }
-    }
-    animationListWeb.forEach((f) {});
+    await audioPlayer.play(DeviceFileSource(azanSound.localPath));
   }
 
   _buildGetMoreAzanSoundsButton(sizeConfig) {
@@ -218,15 +263,11 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
   _buildAzanSoundsListFromAssets(sizeConfig) {
     displayingFromAssets = true;
 
-    AppLocalizations.of(context)!.isEnglish()
-        ? Constants.EN_SHIEKH_NAMES.forEach((f) {
-            animationList.add(AnimationController(
-                vsync: this, duration: const Duration(milliseconds: 300)));
-          })
-        : Constants.AR_SHIEKH_NAMES.forEach((f) {
-            animationList.add(AnimationController(
-                vsync: this, duration: const Duration(milliseconds: 300)));
-          });
+    // Create the controllers once; this used to add a new set on every build
+    while (animationList.length < Constants.AR_SHIEKH_NAMES.length) {
+      animationList.add(AnimationController(
+          vsync: this, duration: const Duration(milliseconds: 300)));
+    }
     return Container(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -244,20 +285,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
                     onTap: () {
                       _azanSoundFromAssetsProvider.pickedAzanShiekhIndex =
                           index;
-                      if (AppLocalizations.of(context)!.isEnglish()
-                          ? Constants.EN_SHIEKH_NAMES[index]["id"]
-                          : Constants.AR_SHIEKH_NAMES[index]["id"] ==
-                              currentPlayingItemId) {
-                        audioPlayer.stop();
-                        currentPlayingItemId = null;
-                        animationList[index].reverse();
-                      } else {
-                        playAzan(
-                            AppLocalizations.of(context)!.isEnglish()
-                                ? Constants.EN_SHIEKH_NAMES[index]["id"]
-                                : Constants.AR_SHIEKH_NAMES[index]["id"],
-                            index);
-                      }
+                      _toggleAssetPreview(index);
                     },
                     title: Text(
                       AppLocalizations.of(context)!.isEnglish()
@@ -265,29 +293,13 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
                           : Constants.AR_SHIEKH_NAMES[index]["name"],
                       overflow: TextOverflow.ellipsis,
                     ),
-                    leading: AppLocalizations.of(context)!.isEnglish()
-                        ? Constants.EN_SHIEKH_NAMES[index]["id"]
-                        : Constants.AR_SHIEKH_NAMES[index]["id"] ==
-                                currentPlayingItemId
+                    leading:
+                        _azanSoundFromAssetsProvider.pickedAzanShiekhIndex ==
+                                index
                             ? const Icon(Icons.check)
                             : null,
                     trailing: IconButton(
-                      onPressed: () {
-                        if (AppLocalizations.of(context)!.isEnglish()
-                            ? Constants.EN_SHIEKH_NAMES[index]["id"]
-                            : Constants.AR_SHIEKH_NAMES[index]["id"] ==
-                                currentPlayingItemId) {
-                          audioPlayer.stop();
-                          currentPlayingItemId = null;
-                          animationList[index].reverse();
-                        } else {
-                          playAzan(
-                              AppLocalizations.of(context)!.isEnglish()
-                                  ? Constants.EN_SHIEKH_NAMES[index]["id"]
-                                  : Constants.AR_SHIEKH_NAMES[index]["id"],
-                              index);
-                        }
-                      },
+                      onPressed: () => _toggleAssetPreview(index),
                       icon: AnimatedIcon(
                         icon: AnimatedIcons.play_pause,
                         progress: animationList[index],
@@ -335,29 +347,23 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
         _moreSoundsProvider.loadAzanSounds();
       }
       displayingFromAssets = false;
-      _moreSoundsProvider.azanSounds.forEach((f) {
+      while (animationListWeb.length < _moreSoundsProvider.azanSounds.length) {
         animationListWeb.add(AnimationController(
             vsync: this, duration: const Duration(milliseconds: 300)));
-      });
+      }
       return ListView.builder(
           itemCount: _moreSoundsProvider.azanSounds.length,
           itemBuilder: (context, index) {
             if (_moreSoundsProvider.filesStates[index] ==
                     FileDownloadState.initial &&
                 index == _moreSoundsProvider.pickedAzanShiekhIndex) {
-                  playAzanFromLocalDatabase(index);
+                  // Not during build: it updates the selection and state
+                  WidgetsBinding.instance.addPostFrameCallback(
+                      (_) => playAzanFromLocalDatabase(index));
                 }
             return ListTile(
               selected: _moreSoundsProvider.pickedAzanShiekhIndex == index,
-              onTap: () async {
-                if (_moreSoundsProvider.pickedAzanShiekhIndex == index) {
-                  audioPlayer.stop();
-                  _moreSoundsProvider.pickedAzanShiekhIndex;
-                  animationListWeb[index].reverse();
-                } else {
-                  playAzanFromLocalDatabase(index);
-                }
-              },
+              onTap: () => _toggleWebPreview(index),
               title: Text(
                 _moreSoundsProvider.azanSounds[index].name,
                 overflow: TextOverflow.ellipsis,
@@ -370,16 +376,7 @@ class _PickAzanShiekhViewState extends State<PickAzanShiekhView>
                       _moreSoundsProvider.filesStates[index] ==
                           FileDownloadState.initial
                   ? IconButton(
-                      onPressed: () {
-                        if (index ==
-                            _moreSoundsProvider.pickedAzanShiekhIndex) {
-                          audioPlayer.stop();
-                          _moreSoundsProvider.pickedAzanShiekhIndex;
-                          animationListWeb[index].reverse();
-                        } else {
-                          playAzanFromLocalDatabase(index);
-                        }
-                      },
+                      onPressed: () => _toggleWebPreview(index),
                       icon: _moreSoundsProvider.filesStates[index] ==
                               FileDownloadState.initial
                           ? const Icon(

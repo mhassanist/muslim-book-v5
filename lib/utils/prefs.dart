@@ -408,6 +408,26 @@ class Prefs {
         Constants.SELECTED_FAJR_SHEIKH_JSON, json.encode(sheikhJson));
   }
 
+  // The keys below are the ones the native azan reads to pick the sound
+  String getAzanShiekhLocalIdFor(String azanId) =>
+      prefs!.getString('${Constants.AZAN_SHIEKH_LOCAL_ID}$azanId') ?? '';
+
+  String getDownloadedAzanShiekhIdFor(String azanId) =>
+      prefs!.getString('${Constants.DOWNLOADED_SHEIKH_ID}$azanId') ?? '';
+
+  String getDownloadedFajrAzanSheikhId() =>
+      prefs!.getString(Constants.DOWNLOADED_FAJR_SHEIKH_ID) ?? '';
+
+  Future<void> clearDownloadedFajrAzanShiekh() async {
+    await prefs!.remove(Constants.DOWNLOADED_FAJR_SHEIKH_ID);
+  }
+
+  // A downloaded sheikh takes precedence natively, so picking a built-in one
+  // must clear it for that prayer or the old downloaded azan keeps playing
+  Future<void> clearDownloadedAzanShiekh(String azanId) async {
+    await prefs!.remove('${Constants.DOWNLOADED_SHEIKH_ID}$azanId');
+  }
+
   setAzanShiekhIdFromJSON(String id, String azanId) async {
     await prefs!.setString('${Constants.DOWNLOADED_SHEIKH_ID}$azanId', id);
     await prefs!.setString('${Constants.DOWNLOADED_SHEIKH_ID}$azanId', id);

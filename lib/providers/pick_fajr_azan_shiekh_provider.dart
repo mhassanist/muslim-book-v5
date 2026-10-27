@@ -26,6 +26,9 @@ class PickFajrAzanShiekhProvider extends ViewStateProvider {
   Future saveAssetsFajrSheikhId(context) async {
     //locator<Prefs>().setAzanShiekh(Constants.FAJR_SHIEKH_NAMES[_pickedAzanShiekhIndex]["id"]);
     locator<Prefs>().setFajrAzanShiekhIdAsset(Constants.FAJR_SHIEKH_NAMES[_pickedAzanShiekhIndex]["id"]);
+    // A downloaded Fajr sheikh takes precedence natively; clear it so the
+    // built-in one actually plays
+    await locator<Prefs>().clearDownloadedFajrAzanShiekh();
     Navigator.pop(context, _pickedAzanShiekhIndex);
   }
 

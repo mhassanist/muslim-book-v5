@@ -75,17 +75,16 @@ class _SettingsViewMobilePortraitState extends State<SettingsViewMobilePortrait>
       leading: const Icon(Icons.arrow_back_ios),
       icon: "assets/images/setting_view/clock.svg",
     ),
-    /// TODO Fix and show again
-    // ExpansionPanelItem(
-    //   isExpanded: false,
-    //   leading: const Icon(Icons.arrow_back_ios),
-    //   icon: "assets/images/setting_view/shaikh.svg",
-    // ),
-    // ExpansionPanelItem(
-    //   isExpanded: false,
-    //   leading: const Icon(Icons.arrow_back_ios),
-    //   icon: "assets/images/setting_view/moon.svg",
-    // ),
+    ExpansionPanelItem(
+      isExpanded: false,
+      leading: const Icon(Icons.arrow_back_ios),
+      icon: "assets/images/setting_view/shaikh.svg",
+    ),
+    ExpansionPanelItem(
+      isExpanded: false,
+      leading: const Icon(Icons.arrow_back_ios),
+      icon: "assets/images/setting_view/moon.svg",
+    ),
     ExpansionPanelItem(
       isExpanded: false,
       leading: const Icon(Icons.arrow_back_ios),
@@ -207,20 +206,19 @@ class _SettingsViewMobilePortraitState extends State<SettingsViewMobilePortrait>
                 content: ui.azanTime(),
                 leading: const Icon(Icons.arrow_back_ios),
               ),
-              /// TODO Fix and show again
-              // ExpansionPanelItem(
-              //   isExpanded: false,
-              //   title: AppLocalizations.of(context)!.translate("azan_shiekh"),
-              //   content: ui.azanShiekhPart(),
-              //   leading: const Icon(Icons.arrow_back_ios),
-              // ),
-              // ExpansionPanelItem(
-              //   isExpanded: false,
-              //   content: ui.fajrAzanShiekhPart(),
-              //   title:
-              //       AppLocalizations.of(context)!.translate("azan_shiekh_fajr"),
-              //   leading: const Icon(Icons.arrow_back_ios),
-              // ),
+              ExpansionPanelItem(
+                isExpanded: false,
+                title: AppLocalizations.of(context)!.translate("azan_shiekh"),
+                content: ui.azanShiekhPart(),
+                leading: const Icon(Icons.arrow_back_ios),
+              ),
+              ExpansionPanelItem(
+                isExpanded: false,
+                content: ui.fajrAzanShiekhPart(),
+                title:
+                    AppLocalizations.of(context)!.translate("azan_shiekh_fajr"),
+                leading: const Icon(Icons.arrow_back_ios),
+              ),
               ExpansionPanelItem(
                 isExpanded: false,
                 title:
