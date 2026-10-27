@@ -155,9 +155,12 @@ class AzanController extends GetxController {
             ? int.parse(locator<Prefs>().getAssalahTime("update${azan.id}"))
             : 0;
 
-        // Refresh entries that are already listed too: they used to be added
-        // once and never updated, so the times stayed frozen after a new
-        // timetable (settings change, new day or month) until a restart.
+        // Refresh the times of entries that are already listed: they used to
+        // be added once and never updated, so the times stayed frozen after a
+        // new timetable (settings change, new day or month) until a restart.
+        // The correction count and mute flag are edited in place by the
+        // screens (and saved by them), so leave those alone; overwriting them
+        // on every rebuild made the +/- correction buttons do nothing.
         final index = azanValue.indexWhere((product) => product.id == azan.id);
         if (index == -1) {
           azanValue.add(azan);
@@ -166,9 +169,7 @@ class AzanController extends GetxController {
             ..hours = azan.hours
             ..time = azan.time
             ..minute = azan.minute
-            ..count = azan.count
-            ..title = azan.title
-            ..volumeEnable = azan.volumeEnable;
+            ..title = azan.title;
         }
       }
 
