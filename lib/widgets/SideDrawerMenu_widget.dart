@@ -25,6 +25,8 @@ class SideDrawerMenu {
   late String flag;
   late String countryName;
   late String? image;
+  // Shared by the scrollbar and the list so the thumb can show
+  final ScrollController _scrollController = ScrollController();
 
   SideDrawerMenu(
     this.context,
@@ -49,7 +51,13 @@ class SideDrawerMenu {
               //boxShadow: [BoxShadow(color: Colors.black45)],
             ),
             child: SafeArea(
-              child: SingleChildScrollView(
+              // Logged in, the list is taller than many screens; show that it
+              // scrolls (Top users/Profile/Settings were hidden below the fold)
+              child: Scrollbar(
+                controller: _scrollController,
+                thumbVisibility: true,
+                child: SingleChildScrollView(
+                controller: _scrollController,
                 child: Column(
                   children: <Widget>[
                     Padding(
@@ -306,9 +314,6 @@ class SideDrawerMenu {
                           Navigator.pushNamed(context, '/settings');
                         }, false, ""),
 
-                        Container(
-                          height: 20,
-                        )
                         // _buildDivider(),
                         // _buildRow(
                         //     Icons.star,
@@ -320,19 +325,23 @@ class SideDrawerMenu {
                         //   //     context, "/rating_view");
                         //   LaunchReview.launch();
                         // }),
-                        // _buildDivider(),
-                        // _buildRow(
-                        //     Icons.exit_to_app,
-                        //     AppLocalizations.of(context)
-                        //         .translate("log_out"), () {
-                        //   //locator<Prefs>().setIsLogged(false);
-                        //   exitPopUp();
-                        // }, false, ""),
-                        // _buildDivider(),
+                        if (Provider.of<UserProvider>(context).isLoggedIn) ...[
+                          _buildDivider(),
+                          _buildRow(
+                              Icons.exit_to_app,
+                              AppLocalizations.of(context)!
+                                  .translate("log_out"), () {
+                            exitPopUp();
+                          }, false, ""),
+                        ],
+                        Container(
+                          height: 20,
+                        ),
                       ],
                     ),
                   ],
                 ),
+              ),
               ),
             ),
           ),
@@ -354,7 +363,7 @@ class SideDrawerMenu {
       child: InkWell(
         onTap: () => function?.call(),
         child: SizedBox(
-          height: sizeConfig.blockSizeVertical * 6,
+          height: sizeConfig.blockSizeVertical * 5,
           width: sizeConfig.blockSizeHorizontal * 65,
           child: Row(children: [
             !isSvg
