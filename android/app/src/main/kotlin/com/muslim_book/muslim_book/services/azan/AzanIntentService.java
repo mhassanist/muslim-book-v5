@@ -174,6 +174,10 @@ public class AzanIntentService extends Service {
                         Uri.fromFile(new File(getApplicationInfo().dataDir + "/app_flutter/azan_" + getMuazenName(key) + ".mp3")));
             }
 
+            // Which sound file the azan plays; the regression suite reads this
+            Log.i("MuslimBookAzan", "key=" + key + " file=azan_"
+                    + (key.equalsIgnoreCase("1") ? getFajrMuazenName() : getMuazenName(key))
+                    + ".mp3 player=" + (mMediaPlayer != null ? "ok" : "missing"));
             try {
                 if (mMediaPlayer != null) {
                     mMediaPlayer.prepare();
