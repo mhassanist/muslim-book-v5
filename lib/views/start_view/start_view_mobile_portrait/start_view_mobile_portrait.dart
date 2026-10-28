@@ -178,6 +178,12 @@ class _StartViewMobilePortraitViewState
       canPop: false,
       onPopInvokedWithResult: (didPop, _) async {
         if (didPop) return;
+        // canPop: false also blocks the drawer's own back handling, so Back
+        // asked to exit the app with the side menu still open
+        if (key.currentState?.isDrawerOpen ?? false) {
+          key.currentState!.closeDrawer();
+          return;
+        }
         // Every PopScope in the route is notified (unlike WillPopScope), so let
         // the competition tab's own confirmation handle back while it's shown
         if (_isCompetitionTabShown()) return;
