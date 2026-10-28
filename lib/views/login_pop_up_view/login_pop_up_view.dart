@@ -8,6 +8,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
+const _facebookLoginEnabled = false;
+
 class LoginPopUpView extends StatefulWidget {
   final bool? close;
 
@@ -75,32 +77,36 @@ class _LoginPopUpViewState extends State<LoginPopUpView> {
           SizedBox(
             height: sizeConfig.blockSizeVertical,
           ),
-          buildLoginButton(
-            sizeConfig,
-            AppLocalizations.of(context)!.translate("facebook_login"),
-            FontAwesomeIcons.squareFacebook.data,
-            const Color(0XFF3b5998),
-            onPressed: () async {
-              LoadingUtils util = LoadingUtils();
-              util.setIsLoading(context, true);
-              try {
-                await Provider.of<UserProvider>(context, listen: false)
-                    .openFaceBookDialogPicker()
-                    .then((value) {
-                  setState(() {});
-                  if (this.widget.close != null && this.widget.close!) {
-                    Navigator.of(context).pop();
-                  }
-                });
-              } catch (e) {
-                print(e);
-              }
-              util.setIsLoading(context, false);
-            },
-          ),
-          SizedBox(
-            height: sizeConfig.blockSizeVertical,
-          ),
+          // Hidden while Meta has the app deactivated (privacy policy review);
+          // set _facebookLoginEnabled back to true once it's reactivated
+          if (_facebookLoginEnabled) ...[
+            buildLoginButton(
+              sizeConfig,
+              AppLocalizations.of(context)!.translate("facebook_login"),
+              FontAwesomeIcons.squareFacebook.data,
+              const Color(0XFF3b5998),
+              onPressed: () async {
+                LoadingUtils util = LoadingUtils();
+                util.setIsLoading(context, true);
+                try {
+                  await Provider.of<UserProvider>(context, listen: false)
+                      .openFaceBookDialogPicker()
+                      .then((value) {
+                    setState(() {});
+                    if (this.widget.close != null && this.widget.close!) {
+                      Navigator.of(context).pop();
+                    }
+                  });
+                } catch (e) {
+                  print(e);
+                }
+                util.setIsLoading(context, false);
+              },
+            ),
+            SizedBox(
+              height: sizeConfig.blockSizeVertical,
+            ),
+          ],
           buildLoginButton(
               sizeConfig,
               AppLocalizations.of(context)!.translate("google_login"),

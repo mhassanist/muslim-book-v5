@@ -92,7 +92,7 @@ bug is back.
 
 | ID | Steps | Expected | Guards |
 |---|---|---|---|
-| AUTH-01 | Open Competitions and Sebha logged out | Facebook / Google / email / create-account options | |
+| AUTH-01 | Open Competitions and Sebha logged out | Google / email / create-account options (Facebook is hidden until Meta reactivates the app) | |
 | AUTH-02 | Email login: submit empty; enter `notanemail` | Required-field messages; "invalid email" | |
 | AUTH-03 | Create account: submit empty | "Choose your country" | |
 | FEED-01 | Community feed (Retry if offline) | Posts with Like/Share | Infinite loading when the API is down |
@@ -113,7 +113,7 @@ These write to the live server. LOGIN-06..08 leave the app logged out.
 | LOGIN-05 | Post `Alhamdulillah` (only with `--allow-posts`); scroll the feed to its top | The post is first | |
 | LOGIN-06 | Menu → Logout → Yes | Confirmation shown; avatar gone; Competitions asks to log in | Missing Logout |
 | LOGIN-07 | Google sign-in (only with `--google-account`) | Logged in; no "image url" error | Server rejecting accounts without a photo |
-| LOGIN-08 | Facebook login (stops before consenting) | Facebook's page opens; it doesn't say the app is not active; Back returns to the app | Deactivated Meta app |
+| LOGIN-08 | Facebook login (stops before consenting; skipped while the button is hidden) | Facebook's page opens; it doesn't say the app is not active; Back returns to the app | Deactivated Meta app |
 
 ### Stress
 
@@ -148,7 +148,7 @@ server. Tick them on a real phone with the **release** build.
 |---|---|
 | HOME-02 | The countdown shows `010:02:52` when more than 10 hours remain |
 | LOGIN-02 | Right after logging in, the profile shows "can't reach"; after an app restart it loads (seen on the G501, 2026-10-28; cause not found yet) |
-| LOGIN-08 | Facebook shows "App not active": the Meta developer app is deactivated (fix in the Meta console) |
+| LOGIN-08 | Facebook shows "App not active": Meta deactivated the app over the privacy policy (data deletion). The policy now has a public link (`…/pub`) set in the Meta dashboard; the button is hidden (`_facebookLoginEnabled` in login_pop_up_view.dart) until Meta reactivates the app |
 
 Other gaps found in testing that no test covers: no way to delete an account (Google
 Play requires one), likes are never saved on the server, Back doesn't close the

@@ -196,6 +196,8 @@ def facebook_login(ctx):
     a, d = ctx.app, ctx.device
     _logout_if_needed(ctx)
     _open_login_options(ctx)
+    if not d.find(S.LOGIN_FACEBOOK, exact=True):
+        raise Skip("Facebook login is hidden in this build")
     d.tap_label(S.LOGIN_FACEBOOK, exact=True, wait=5)
     # Wait for Facebook's page to settle: an error, or its login/consent form
     labels, message, ready = [], "", False

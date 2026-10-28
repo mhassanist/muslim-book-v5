@@ -10,8 +10,9 @@ from harness.runner import test, check, Skip
 
 
 def _login_options_shown(d):
-    return all(d.find(x, exact=True) for x in (S.LOGIN_FACEBOOK, S.LOGIN_GOOGLE,
-                                               S.LOGIN_EMAIL, S.CREATE_ACCOUNT))
+    # Facebook login is hidden while Meta has the app deactivated (LOGIN-08)
+    return all(d.find(x, exact=True) for x in (S.LOGIN_GOOGLE, S.LOGIN_EMAIL,
+                                               S.CREATE_ACCOUNT))
 
 
 @test("AUTH-01", "Competitions and Sebha ask logged-out users to log in", "account")
