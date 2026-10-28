@@ -142,13 +142,19 @@ class UserProvider extends ViewStateProvider {
     }
   }
 
+  // The server rejects a null or empty image_url ("image url must be a
+  // string"), which locked out every account without a profile photo; leave
+  // the field out instead
+  Map<String, dynamic> _imageUrlField(String? url) =>
+      url == null || url.isEmpty ? {} : {"image_url": url};
+
   Future<bool> googleLogging(GoogleSignInAccount? res,
       {name, id, email, imageUrl}) async {
     var response = await locator<ApiService>().googleLogin({
       "email": res == null ? email : res.email,
       "name": res == null ? name : res.displayName,
       "id": res == null ? id : res.id,
-      "image_url": res == null ? imageUrl : res.photoUrl
+      ..._imageUrlField(res == null ? imageUrl : res.photoUrl),
     });
     if (response is UserModel) {
       saveUser(
@@ -171,7 +177,7 @@ class UserProvider extends ViewStateProvider {
       "email": res == null ? email : res.email,
       "name": res == null ? name : res.name,
       "id": res == null ? id : res.id,
-      "image_url": res == null ? imageUrl : res.image
+      ..._imageUrlField(res == null ? imageUrl : res.image),
     });
 
     if (response is UserModel) {
