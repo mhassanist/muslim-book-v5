@@ -32,9 +32,16 @@ class App:
                 else:
                     self.d.back()
                 continue
-            if self.d.find(S.LEAVE_AZKAR, nodes=nodes):
-                self.d.tap_label(S.EXIT, exact=True)
+            skip = self.d.find(S.SKIP, nodes=nodes, exact=True)
+            if skip:                       # competitions intro popup
+                self.d.tap_node(skip)
                 continue
+            # "Leave the azkar/sebha/competition?" dialogs: confirm leaving
+            if any(n.label.startswith("الخروج من") for n in nodes):
+                exits = self.d.find_all(S.EXIT, exact=True, nodes=nodes)
+                if exits:
+                    self.d.tap_node(exits[-1])
+                    continue
             if self.on_home(nodes):
                 return
             home_tab = self._tab_node("الرئيسية", nodes)
@@ -49,8 +56,9 @@ class App:
     # ---- header / tabs ---------------------------------------------------
 
     def header_buttons(self) -> list:
-        """Unlabelled clickable icons in the home header, left to right
-        (Arabic layout: settings, language, ..., menu)."""
+        """Unlabelled clickable icons in the home header, left to right.
+        Arabic layout: [avatar (logged in only)], settings, language, menu;
+        so settings/language/menu are always the last three."""
         _, h = self.d.size()
         nodes = [n for n in self.d.dump()
                  if n.clickable and not n.label and n.visible and n.bounds[3] < h * 0.13]
@@ -61,17 +69,35 @@ class App:
 
     def open_settings(self):
         self.go_home()
-        self.d.tap_node(self.header_buttons()[0], wait=3)
+        self.d.tap_node(self.header_buttons()[-3], wait=3)
         if not self.d.wait_for(S.SETTINGS, exact=True, timeout=10):
             raise DeviceError("settings did not open")
 
     def open_language_picker(self):
         self.go_home()
-        self.d.tap_node(self.header_buttons()[1], wait=2)
+        self.d.tap_node(self.header_buttons()[-2], wait=2)
 
     def open_menu(self):
         self.go_home()
-        self.d.tap_node(self.header_buttons()[-1], wait=2)
+        self.d.tap_node(self.header_buttons()[-1], wait=2.5)
+
+    def logged_in(self) -> bool:
+        self.go_home()
+        return len(self.header_buttons()) == 4   # the avatar shows up
+
+    def menu_item(self, label):
+        """Tap a side-menu entry, scrolling the menu if it is below the fold."""
+        self.open_menu()
+        for _ in range(3):
+            node = self.d.find(label, exact=True)
+            if node:
+                self.d.tap_node(node, wait=4)
+                self.d.close_ad()
+                return
+            w, h = self.d.size()
+            self.d.shell(f"input swipe {int(w * .7)} {int(h * .8)} {int(w * .7)} {int(h * .35)} 400")
+            time.sleep(1.5)
+        raise DeviceError(f"menu entry not found: {label}")
 
     def _tab_node(self, label, nodes=None):
         for n in nodes if nodes is not None else self.d.dump():
@@ -179,7 +205,8 @@ class App:
         if d.wait_for(S.ALLOW_NOTIFICATIONS, exact=True, timeout=10):
             d.tap_label(S.ALLOW_NOTIFICATIONS, exact=True, wait=3)
         for _ in range(3):  # system dialogs (battery optimisation, permissions)
-            allow = d.find("Allow", exact=True) or d.find("السماح", exact=True)
+            allow = next((n for n in d.dump() if n.label.strip().lower() == "allow"
+                          or n.label.strip() == "السماح"), None)
             if not allow or d.top_activity().startswith(d.package) and d.find(S.MAIN_SECTIONS):
                 break
             d.shell(f"input tap {allow.center[0]} {allow.center[1]}")

@@ -24,6 +24,7 @@ ISLAMIYAT = "إسلاميات"
 COMMUNITY = "مجتمعنا"
 EXIT_APP_QUESTION = "هل انت متأكد انك تريد الخروج من التطبيق؟"
 CANCEL = "الغاء"
+SKIP = "تخطي"  # competitions intro popup; Back does not close it
 TAB_SUFFIX = "علامة التبويب"
 TABS = {  # bottom tab label -> a label expected on its screen
     "القرآن الكريم": "المصحف الشريف",
@@ -116,3 +117,18 @@ QIBLA_CALIBRATE = "معايرة البوصلة"
 EN_MAIN_SECTIONS = "Main Sections"
 EN_PRAYER_TIMINGS = "Prayer Timings"
 FR_MAIN_SECTIONS = "Sections principales"
+
+# Logged in
+LOGOUT = "تسجيل الخروج"
+LOGOUT_QUESTION = "هل انت متأكد انك تريد تسجيل الخروج؟"
+YES = "نعم"
+PROFILE = "حسابي الشخصي"
+COMPETITION_POINTS = "نقاط المسابقات"
+CANT_REACH = "لا يمكن الوصول"
+START_NOW = "إبدأ الآن"
+NEXT_QUESTION = "السؤال التالي"
+QUESTIONS_LEFT = r"لديك (\d+) اسئله"
+COMPETITION_BOARD = "أوائل المسابقات"
+TASBEEH_BOARD = "أوائل التسبيح"
+POST = "نشر"
+TEST_POST = "Alhamdulillah"   # adb can't type Arabic

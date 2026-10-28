@@ -38,8 +38,19 @@ Takes about 30–45 minutes. Useful options:
 | `--offline` | Skip tests that need the internet |
 | `--monkey 500` | Number of random stress events (0 to skip) |
 | `--device SERIAL` | Pick a device when several are connected |
+| `--account FILE` | Enable the logged-in tests (LOGIN-*); FILE has `email=...` and `password=...` lines. Keep it outside the repo |
+| `--google-account EMAIL` | Also test Google sign-in with this account (must be on the phone) |
+| `--allow-posts` | Let LOGIN-05 publish `Alhamdulillah` to the live feed |
 
 Exit code is 0 only when nothing failed.
+
+Logged-in tests use a dedicated test account on the **live** server. Every login
+issues a new token and invalidates the account's older ones, so don't use an account
+that is logged in on someone's phone. Run them on a dedicated phone, e.g.:
+
+```bash
+python3 tests/regression/run.py --no-install --only logged-in --account ~/.muslimbook-test-account
+```
 
 ## Reports
 

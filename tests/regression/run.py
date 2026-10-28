@@ -32,6 +32,16 @@ def pick_device(serial):
     return devices[0]
 
 
+def _read_account(path):
+    if not path:
+        return None
+    with open(path) as f:
+        cfg = dict(l.strip().split("=", 1) for l in f if "=" in l)
+    if not cfg.get("email") or not cfg.get("password"):
+        sys.exit(f"{path}: needs email=... and password=... lines")
+    return cfg
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__,
                                 formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -48,6 +58,12 @@ def main():
                    help="last released versionCode; the APK must be higher")
     p.add_argument("--allow-debug-signing", action="store_true",
                    help="don't fail REL-04 for debug-signed APKs")
+    p.add_argument("--account", help="file with email=... and password=... of a test "
+                   "account for the logged-in tests (keep it out of the repo)")
+    p.add_argument("--google-account", help="Google account on the device to test "
+                   "Google sign-in with (its email)")
+    p.add_argument("--allow-posts", action="store_true",
+                   help="let LOGIN-05 publish a test post to the live feed")
     p.add_argument("--list", action="store_true", help="list the tests and exit")
     p.add_argument("--out", help="report directory (default tests/regression/out/<time>)")
     args = p.parse_args()
@@ -84,7 +100,10 @@ def main():
                   network=not args.offline,
                   options=dict(monkey_events=args.monkey, no_install=args.no_install,
                                min_version_code=args.min_version_code,
-                               allow_debug=args.allow_debug_signing))
+                               allow_debug=args.allow_debug_signing,
+                               account=_read_account(args.account),
+                               google_account=args.google_account,
+                               allow_posts=args.allow_posts))
 
     print(f"Device {serial} (Android SDK {device.sdk()}), {len(selected)} tests -> {out}")
     results = run(ctx, selected)

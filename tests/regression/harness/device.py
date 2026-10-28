@@ -131,8 +131,10 @@ class Device:
 
     def top_activity(self) -> str:
         out = self.shell("dumpsys activity activities")
+        # Android 12+: "topResumedActivity=ActivityRecord{..}";
+        # Android 11: "mResumedActivity: ActivityRecord{..}"
         m = re.search(r"topResumedActivity=.*? (\S+/\S+)", out) or \
-            re.search(r"mResumedActivity=.*? (\S+/\S+)", out)
+            re.search(r"mResumedActivity[=:] ?.*? (\S+/\S+)", out)
         return m[1].rstrip("}") if m else ""
 
     def app_in_front(self) -> bool:

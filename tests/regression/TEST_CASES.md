@@ -100,6 +100,21 @@ bug is back.
 | FEED-03 | Share a post | System share sheet | |
 | LANG-01 | Switch to English, then French, then Arabic | Translated home; no "Aleasha/Alzuhr"; back to Arabic | Broken translations |
 
+### Logged in (needs `--account`)
+
+These write to the live server. LOGIN-06..08 leave the app logged out.
+
+| ID | Steps | Expected | Guards against |
+|---|---|---|---|
+| LOGIN-01 | Log out if needed; Competitions → email login with the test account | Avatar appears in the header | |
+| LOGIN-02 | Tap the avatar | Profile with "نقاط المسابقات", no "لا يمكن الوصول" | Score endpoint failing / stale token |
+| LOGIN-03 | Competitions → Start → answer one question; reopen Competitions | "Next question"; questions-left count goes down | Progress not saved |
+| LOGIN-04 | Open the side menu | "الأوائل" visible without scrolling; competition leaderboard lists users | Entry below the fold on small phones (G501) |
+| LOGIN-05 | Post `Alhamdulillah` (only with `--allow-posts`); scroll the feed to its top | The post is first | |
+| LOGIN-06 | Menu → Logout → Yes | Confirmation shown; avatar gone; Competitions asks to log in | Missing Logout |
+| LOGIN-07 | Google sign-in (only with `--google-account`) | Logged in; no "image url" error | Server rejecting accounts without a photo |
+| LOGIN-08 | Facebook login (stops before consenting) | Facebook's page opens; it doesn't say the app is not active; Back returns to the app | Deactivated Meta app |
+
 ### Stress
 
 | ID | Steps | Expected |
@@ -117,8 +132,8 @@ server. Tick them on a real phone with the **release** build.
 | M-02 | Reboot the phone; the next azan still plays | Rebooting mid-run is slow and unreliable |
 | M-03 | Phone on silent / Do Not Disturb at prayer time: no sound, and the **next** prayer still plays | Depends on device sound settings |
 | M-04 | Listen to: an azan, a muezzin preview, a Quran verse | Some devices don't report preview playback through `dumpsys` (see README) |
-| M-05 | Log in with Google, Facebook and email; log out | Real accounts |
-| M-06 | Logged in: post, like/unlike, profile and scores, competitions round, online Sebha | Writes to the live server |
+| M-05 | Finish a Facebook login (consent) and a Google login with an account that has a photo | Real accounts; LOGIN-07/08 cover the rest |
+| M-06 | Logged in: like/unlike, online Sebha counter, profile share buttons (WhatsApp/Facebook/Twitter; stop at the compose screen) | Writes to the live server / other apps |
 | M-07 | Ads: banners and interstitials show real ads (not "Test Ad"); no ad next to exit dialogs; EU consent form if in the EEA | Test devices only get test ads |
 | M-08 | Push notification arrives and opens the right post | Needs the backend to send one |
 | M-09 | Ramadan features (cannon, suhoor) during Ramadan | Seasonal |
@@ -132,3 +147,10 @@ server. Tick them on a real phone with the **release** build.
 | ID | Issue |
 |---|---|
 | HOME-02 | The countdown shows `010:02:52` when more than 10 hours remain |
+| LOGIN-02 | Right after logging in, the profile shows "can't reach"; after an app restart it loads (seen on the G501, 2026-10-28; cause not found yet) |
+| LOGIN-08 | Facebook shows "App not active": the Meta developer app is deactivated (fix in the Meta console) |
+
+Other gaps found in testing that no test covers: no way to delete an account (Google
+Play requires one), likes are never saved on the server, Back doesn't close the
+competitions intro popup (only Skip), and the app doesn't recover from an expired token
+until it is restarted.
