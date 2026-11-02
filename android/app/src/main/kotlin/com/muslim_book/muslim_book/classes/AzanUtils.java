@@ -13,22 +13,37 @@ import com.google.gson.Gson;
 import com.muslim_book.muslim_book.models.azan_model.AzanModel;
 import com.muslim_book.muslim_book.models.azan_model.AzanModelData;
 import com.muslim_book.muslim_book.models.azan_model.Timings;
+import com.muslim_book.muslim_book.receivers.azan.AzanReceiver;
 import com.muslim_book.muslim_book.services.azan.AzanService;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class AzanUtils {
 
     private Context mContext;
     private SharedPreferences mPreferences;
-    private Calendar mCalendar = Calendar.getInstance();
+    private Calendar mCalendar;
+    // Only set the alarm, without starting AzanService (for broadcasts that
+    // may not start a foreground service, e.g. a timezone change)
+    private final boolean mScheduleOnly;
     String pattern = "HH:mm";
-    SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+    SimpleDateFormat sdf;
 
     public AzanUtils(Context context) {
+        this(context, false);
+    }
+
+    public AzanUtils(Context context, boolean scheduleOnly) {
         mContext = context;
+        mScheduleOnly = scheduleOnly;
+        // Use the phone's current timezone, not the one this process started
+        // with: "today" and "now" below must match the timetable's local times
+        TimeZone.setDefault(null);
+        mCalendar = Calendar.getInstance();
+        sdf = new SimpleDateFormat(pattern);
         mPreferences = mContext
                 .getSharedPreferences(Constants.FLUTTER_SHARED_PREFERENCES, MODE_PRIVATE);
         convertJsonToAzanModel();
@@ -162,6 +177,13 @@ public class AzanUtils {
     }
 
     private void startAlarmReceiver(String time, String key) {
+        if (mScheduleOnly) {
+            Intent intent = new Intent(mContext, AzanReceiver.class);
+            intent.putExtra("time", time);
+            intent.putExtra("key", key);
+            new AzanReceiver().onReceive(mContext, intent);
+            return;
+        }
         if (new Prefs(mContext).getAllowAzan()) {
             Intent intent = new Intent(mContext, AzanService.class);
             Bundle extras = new Bundle();

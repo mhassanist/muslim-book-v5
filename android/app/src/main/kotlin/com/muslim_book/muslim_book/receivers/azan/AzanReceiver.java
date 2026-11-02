@@ -15,11 +15,13 @@ import android.os.Build.VERSION_CODES;
 import androidx.core.content.ContextCompat;
 
 import com.muslim_book.muslim_book.MainActivity;
+import com.muslim_book.muslim_book.classes.AzanUtils;
 import com.muslim_book.muslim_book.classes.Constants;
 import com.muslim_book.muslim_book.classes.Prefs;
 import com.muslim_book.muslim_book.services.azan.AzanIntentService;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 
 public class AzanReceiver extends BroadcastReceiver {
@@ -28,6 +30,15 @@ public class AzanReceiver extends BroadcastReceiver {
   public void onReceive(Context context, Intent intent) {
 
     if (new Prefs(context).getAllowAzan()) {
+      String action = intent.getAction();
+      if (Intent.ACTION_TIMEZONE_CHANGED.equals(action) || Intent.ACTION_TIME_CHANGED.equals(action)) {
+        // The pending alarm is an absolute instant: after a timezone change
+        // it went off at the old zone's local time, e.g. an hour early.
+        // Recompute it; only schedule, since Android 15 doesn't allow
+        // starting the mediaPlayback azan service from this broadcast.
+        new AzanUtils(context, true);
+        return;
+      }
       if (intent.getBooleanExtra(Constants.CLOSE_AZAN, false)) {
         closeAzan(context);
       } else if (intent.getBooleanExtra(Constants.START_AZAN, false)) {
@@ -113,6 +124,10 @@ public class AzanReceiver extends BroadcastReceiver {
       PendingIntent alarmIntent = PendingIntent
           .getBroadcast(context, Constants.AZAN_PENDING_INTENT_REQUEST_CODE, intent,
               PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+      // A long-running process can keep the timezone it started with (seen
+      // on a Samsung that kept UTC+3 after Egypt's clocks went back), which
+      // put every azan an hour off. Re-read the phone's current zone.
+      TimeZone.setDefault(null);
       Calendar calendar = Calendar.getInstance();
       calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time.split(":")[0]));
       calendar.set(Calendar.MINUTE, Integer.parseInt(time.split(":")[1]));

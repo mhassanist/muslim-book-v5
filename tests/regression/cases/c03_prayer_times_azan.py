@@ -85,3 +85,34 @@ def azan_close(ctx):
     d.stop_azan()
     time.sleep(2)
     check(not d.audio_playing(), "audio still playing after close")
+
+
+def _minutes(alarm):
+    h, m = alarm[-5:].split(":")
+    return int(h) * 60 + int(m)
+
+
+@test("AZAN-04", "The next azan keeps its local time when the timezone changes", "azan")
+def azan_timezone_change(ctx):
+    """Alarms are absolute instants. They used to stay put on a timezone
+    change, so after moving to a zone an hour behind the azan went off an
+    hour early (seen on a Samsung after Egypt's clocks went back)."""
+    d = ctx.device
+    original = d.shell("getprop persist.sys.timezone").strip()
+    try:
+        d.shell("cmd alarm set-timezone Europe/Istanbul")      # UTC+3
+        d.fire_azan("4")
+        time.sleep(5)
+        d.stop_azan()                                          # reschedules the next one
+        before = d.azan_alarms()
+        check(before, "no azan alarm on Istanbul time")
+        d.shell("cmd alarm set-timezone Africa/Cairo")         # UTC+2 in winter
+        time.sleep(5)
+        after = d.azan_alarms()
+        check(after, "no azan alarm after the timezone change")
+        ctx.note(f"Istanbul {before[-1][-5:]} -> Cairo {after[-1][-5:]}")
+        check(_minutes(after[-1]) != _minutes(before[-1]) - 60,
+              "the azan alarm kept its instant: it now goes off an hour early")
+    finally:
+        if original:
+            d.shell(f"cmd alarm set-timezone {original}")

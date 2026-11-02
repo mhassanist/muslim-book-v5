@@ -52,6 +52,7 @@ bug is back.
 | AZAN-01 | Fire the azan for prayers 1, 3, 4, 5, 6 (same intent as the alarm) | Each starts and logs the sound file it plays | Azan silently failing to start |
 | AZAN-02 | Fire Asr, read alarms while it plays | Next prayer already scheduled | Chain stopped when an azan was muted/unplayed |
 | AZAN-03 | Fire Maghrib, send the close action | Audio stops | |
+| AZAN-04 | With the app running, switch the phone from Istanbul (UTC+3) to Cairo (UTC+2) time; restores the original zone after | The pending azan keeps its local time | Alarm keeping its instant, so the azan plays an hour early after a timezone change (Samsung, Nov 2026) |
 
 ### Muezzin selection
 
