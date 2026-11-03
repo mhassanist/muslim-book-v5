@@ -107,8 +107,15 @@ def azan_timezone_change(ctx):
         before = d.azan_alarms()
         check(before, "no azan alarm on Istanbul time")
         d.shell("cmd alarm set-timezone Africa/Cairo")         # UTC+2 in winter
-        time.sleep(5)
-        after = d.azan_alarms()
+        # TIMEZONE_CHANGED goes to each listening app in turn, starting each
+        # one; on a slow phone it can take a while to reach this app
+        end = time.time() + 90
+        while True:
+            time.sleep(5)
+            after = d.azan_alarms()
+            if not after or _minutes(after[-1]) != _minutes(before[-1]) - 60 \
+                    or time.time() > end:
+                break
         check(after, "no azan alarm after the timezone change")
         ctx.note(f"Istanbul {before[-1][-5:]} -> Cairo {after[-1][-5:]}")
         check(_minutes(after[-1]) != _minutes(before[-1]) - 60,

@@ -94,7 +94,15 @@ def menu_policy(ctx):
     log = d.logcat()
     check("android.intent.action.VIEW" in log and "docs.google.com" in log,
           "tapping the usage policy did not launch the policy URL")
-    d.launch(wait=4)
+    # The link opens in a browser or, where installed, the Google Docs app,
+    # possibly inside the app's own task, so relaunching would show it again.
+    # This test opened it, so Back out of it.
+    for _ in range(4):
+        if d.app_in_front():
+            break
+        d.back(force=True, wait=2)
+    if not d.app_in_front():
+        d.launch(wait=4)
     a.go_home()
 
 

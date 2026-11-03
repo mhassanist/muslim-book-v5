@@ -90,8 +90,11 @@ def feed_share(ctx):
     a, d = ctx.app, ctx.device
     a.go_home()
     d.swipe_up(0.3)
-    share = d.find(S.SHARE, exact=False)
-    check(share, "no Share button")
+    # The smallest node whose text is exactly "Share": a whole post card
+    # also contains the word, and tapping its middle opens the login page
+    shares = d.find_all(S.SHARE, exact=True)
+    check(shares, "no Share button")
+    share = min(shares, key=lambda n: (n.bounds[2] - n.bounds[0]) * (n.bounds[3] - n.bounds[1]))
     d.tap_node(share, wait=3)
     check(not d.app_in_front() or d.find("Share", exact=False),
           "share sheet did not open")

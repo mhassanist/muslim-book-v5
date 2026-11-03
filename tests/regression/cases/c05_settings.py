@@ -65,6 +65,11 @@ def _set_madhab(ctx, label):
     if current.label != label:
         d.tap_node(current, wait=2)
         d.tap_label(label, exact=True, wait=2)
+    # On short screens the Save button is below the expanded section
+    for _ in range(4):
+        if d.find(S.SAVE_SETTINGS, exact=True):
+            break
+        d.swipe_up(0.4)
     d.tap_label(S.SAVE_SETTINGS, wait=10)
     d.close_ad()
 
