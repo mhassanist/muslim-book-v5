@@ -16,7 +16,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:muslim_book/ads/admob_banner.dart';
 import 'package:muslim_book/ads/ads_service.dart';
+import 'package:muslim_book/models/banner_names_enum.dart';
 import 'package:muslim_book/azan_feature/controllers/azan_controller.dart';
 import 'package:muslim_book/azkar_feature/providers/azkar_provider.dart';
 import 'package:muslim_book/core/dio_util.dart';
@@ -302,8 +304,11 @@ class MyApp extends StatefulWidget {
                       textAlign: TextAlign.center,
                     ),
                   ),
-                  // No ad here: AdMob discourages ads next to the buttons of an
-                  // exit confirmation screen (accidental clicks)
+                  // Kept clear of the buttons below so taps meant for them
+                  // don't land on the ad (AdMob accidental-click guidance)
+                  const SizedBox(height: 16),
+                  const AdmobBanner(bannerName: BannerName.TOP),
+                  const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[

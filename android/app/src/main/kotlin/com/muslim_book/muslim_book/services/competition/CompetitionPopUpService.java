@@ -43,10 +43,6 @@ import androidx.core.app.NotificationManagerCompat;
 //import com.facebook.ads.AdError;
 //import com.facebook.ads.InterstitialAd;
 //import com.facebook.ads.InterstitialAdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.muslim_book.muslim_book.MainActivity;
@@ -57,7 +53,6 @@ import at.markushi.ui.CircleButton;
 
 public class CompetitionPopUpService {
 
-  private InterstitialAd mInterstitialAd;
   private WindowManager mWindowManager;
   private View mView;
   private Context context;
@@ -177,65 +172,11 @@ public class CompetitionPopUpService {
 ////    adView.loadAd();
 
     mWindowManager.addView(mView, layoutParams());
+    // Just close; the interstitial this used to load was never shown
     exit.setOnClickListener(v -> {
       if (mWindowManager != null && mView.getWindowToken() != null) {
         mWindowManager.removeView(mView);
       }
-
-      AdRequest adRequest = new AdRequest.Builder().build();
-      InterstitialAd.load(context,mFirebaseRemoteConfig.getString("after_azan_pop_up_1"), adRequest,
-              new InterstitialAdLoadCallback() {
-                @Override
-                public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                  // The mInterstitialAd reference will be null until
-                  // an ad is loaded.
-                  mInterstitialAd = interstitialAd;
-                  Log.i("AzanServiceIntersecialAd", "onAdLoaded");
-                }
-
-                @Override
-                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                  // Handle the error
-                  Log.d("AzanServiceIntersecialAd", loadAdError.toString());
-                  mInterstitialAd = null;
-                }
-              });
-
-//      interstitialAd = new InterstitialAd(context,
-//          mFirebaseRemoteConfig.getString("after_azan_pop_up"));
-//      interstitialAd.loadAd(interstitialAd.buildLoadAdConfig()
-//          .withAdListener(new InterstitialAdListener() {
-//            @Override
-//            public void onInterstitialDisplayed(Ad ad) {
-//            }
-//
-//            @Override
-//            public void onInterstitialDismissed(Ad ad) {
-//
-//            }
-//
-//            @Override
-//            public void onError(Ad ad, AdError adError) {
-//            }
-//
-//            @Override
-//            public void onAdLoaded(Ad ad) {
-//              interstitialAd.show();
-//            }
-//
-//            @Override
-//            public void onAdClicked(Ad ad) {
-//
-//            }
-//
-//            @Override
-//            public void onLoggingImpression(Ad ad) {
-//
-//            }
-//          })
-//          .withCacheFlags(ALL)
-//          .build());
-
     });
 
     enter.setOnClickListener(v -> {

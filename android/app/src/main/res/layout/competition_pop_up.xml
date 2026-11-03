@@ -16,14 +16,16 @@
 
     <at.markushi.ui.CircleButton
         android:id="@+id/bt_competition_pop_up_exit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:padding="8dp"
+        android:contentDescription="إغلاق"
         android:src="@drawable/ic_close_black_24dp"
-        android:visibility="gone"
         app:cb_color="#658668"
         app:cb_pressedRingWidth="1dp" />
 
