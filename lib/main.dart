@@ -79,11 +79,15 @@ Future<FirebaseRemoteConfig> _setupRemoteConfig() async {
 
   });
   try {
-    // Using default duration to force fetching from remote server.
-    await remoteConfig.fetch(
-      // expiration: const Duration(seconds: 0),
-    );
-    await remoteConfig.fetchAndActivate();
+    // main() awaits this before runApp. On Wi-Fi without internet the fetch
+    // never completed (Firebase's fetchTimeout doesn't cover its token step),
+    // so the app sat on a white screen and the splash never scheduled the
+    // azan. Bound it; the defaults above or the cached values are used.
+    await remoteConfig.setConfigSettings(RemoteConfigSettings(
+      fetchTimeout: const Duration(seconds: 10),
+      minimumFetchInterval: const Duration(hours: 12),
+    ));
+    await remoteConfig.fetchAndActivate().timeout(const Duration(seconds: 12));
   } catch (exception) {
     if (kDebugMode) {
       print('Unable to fetch remote config. Cached or default values will be '

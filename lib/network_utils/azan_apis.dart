@@ -16,7 +16,7 @@ class AzanApis {
       var map = getParameters();
       var uri = Uri.https(baseUrl, path, map);
       http.Response response =
-          await http.get(uri).timeout(Duration(seconds: 300));
+          await http.get(uri).timeout(Duration(seconds: 30));
 
       if (response.statusCode == 200) {
         await locator<Prefs>().setAzanModel(response.body);

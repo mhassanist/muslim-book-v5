@@ -51,7 +51,23 @@ class _SplashViewState extends State<SplashView>
   }
 
   Future initializeData() async {
-    await Provider.of<UserProvider>(context, listen: false).checkLogin();
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    // Schedule the next azan on every start, and before anything that needs
+    // the network: on Wi-Fi without internet the login below could wait for
+    // minutes and the azan wasn't scheduled meanwhile. This uses the stored
+    // timetable; getAzan() reschedules itself when it fetches a new one.
+    // Native skips it if the azan is disabled.
+    try {
+      await Constants.platform.invokeMethod("fireAzan");
+    } catch (e) {
+      e.printError();
+    }
+    try {
+      // Dio has a connect timeout but no receive timeout: bound the wait
+      await userProvider.checkLogin().timeout(const Duration(seconds: 15));
+    } catch (e) {
+      e.printError();
+    }
     await invokeMethod();
     if (locator<Prefs>().getIsAzanUrlValid) {
       if (locator<Prefs>().getAzanModel().isNotEmpty) {
@@ -66,14 +82,6 @@ class _SplashViewState extends State<SplashView>
     // The displayed prayer times were only refreshed when the timetable was
     // re-fetched, so they could show an older day's times. Take today's row.
     await locator<AzanSingleton>().saveAzanTimes();
-    // Schedule the next azan on every start. Nothing did on a normal launch,
-    // so after an update/reinstall (which clears alarms) the azan stayed
-    // silent until the user changed a setting. Native skips it if disabled.
-    try {
-      await Constants.platform.invokeMethod("fireAzan");
-    } catch (e) {
-      e.printError();
-    }
     var checkOverLay = false;
     try {
       checkOverLay = await Constants.platform.invokeMethod("checkOverlay");
